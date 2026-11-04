@@ -15,6 +15,7 @@ import { appTitleBar } from '../.brock/title-bar';
 import { appStartupPrompts } from '../.brock/startup';
 import { appTours } from '../.brock/tours';
 import { appToolbars } from '../.brock/toolbars';
+import { chronokiProfileHooks } from './profiles/chronoki-profile-hooks';
 import { chronokiShellModule } from './shell/chronoki-shell-module';
 import { SETTINGS } from './main.constants';
 import { product } from './product';
@@ -39,6 +40,7 @@ createRoot(root).render(
       tours={appTours}
       startupPrompts={appStartupPrompts}
       toolbars={appToolbars}
+      profileHooks={chronokiProfileHooks}
     />
   </StrictMode>,
 );
