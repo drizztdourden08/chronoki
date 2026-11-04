@@ -1,10 +1,9 @@
 /* @layer renderer-lib @kind logic */
 import { platformFiles } from '@app/storage/platform-files';
-import { captureDirOf } from './capture-path';
+import { captureDirOf } from './capture-dir-of';
+import { KEY_OF_FILE } from './debug-capture.constants';
 import { readCaptureSession } from './read-capture-session';
 import type { CaptureSession, CaptureSummary } from './debug-capture.type';
-
-const KEY_OF_FILE = /\.json$/;
 
 const summaryOf = (session: CaptureSession): CaptureSummary => ({
   sessionKey: session.sessionKey,

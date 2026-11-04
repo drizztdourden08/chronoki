@@ -8,7 +8,7 @@ import { wordAt } from './word-at';
 const isSramSlotValid = (bytes: Uint8Array, slot: number): boolean => {
   if (bytes.byteLength < SRAM_MIN_BYTES || slot < 0 || slot >= SRAM_SLOT_COUNT) return false;
   if (wordAt(bytes, SRAM_SIGNATURE_OFFSET + slot * 2) !== SRAM_SIGNATURE) return false;
-  return slotChecksum(bytes, SRAM_SLOT_BASES[slot]) === wordAt(bytes, SRAM_CHECKSUM_OFFSET + slot * 2);
+  return slotChecksum(bytes, SRAM_SLOT_BASES[slot] ?? 0) === wordAt(bytes, SRAM_CHECKSUM_OFFSET + slot * 2);
 };
 
 export { isSramSlotValid };

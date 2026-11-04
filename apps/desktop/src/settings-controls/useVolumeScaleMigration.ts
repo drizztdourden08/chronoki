@@ -2,8 +2,7 @@
 import { useEffect } from 'react';
 import { useSettings } from '@drizztdourden08/brock-react';
 import type { AppSettings } from '@app/settings.type';
-
-const VOLUME_SCALE = 100;
+import { VOLUME_SCALE } from './volume-scale.constants';
 
 const useVolumeScaleMigration = (): void => {
   const { settings, patch } = useSettings<AppSettings>();

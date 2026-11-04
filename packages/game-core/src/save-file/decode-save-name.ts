@@ -15,7 +15,7 @@ const letterOf = (byte: number): string | null => {
 
 const decodeSaveName = (bytes: Uint8Array): string | null => {
   let end = bytes.length;
-  while (end > 0 && NAME_PADS.includes(bytes[end - 1])) end -= 1;
+  while (end > 0 && NAME_PADS.includes(bytes[end - 1] ?? 0)) end -= 1;
   const letters = Array.from(bytes.subarray(0, end), letterOf);
   if (letters.length === 0 || letters.includes(null)) return null;
   return letters.join('');

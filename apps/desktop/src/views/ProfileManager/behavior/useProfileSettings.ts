@@ -2,8 +2,7 @@
 import { useEffect, useState } from 'react';
 import { readConfig } from '@app/profiles/storage';
 import { platformFiles } from '@app/storage/platform-files';
-
-type ProfileSettings = Record<string, unknown> | null;
+import type { ProfileSettings } from './profile-settings.type';
 
 const useProfileSettings = (profileId: string): ProfileSettings | undefined => {
   const [settings, setSettings] = useState<ProfileSettings | undefined>(undefined);
@@ -11,7 +10,7 @@ const useProfileSettings = (profileId: string): ProfileSettings | undefined => {
   useEffect(() => {
     let current = true;
     setSettings(undefined);
-    readConfig(platformFiles(), profileId)
+    void readConfig(platformFiles(), profileId)
       .catch(() => null)
       .then((loaded) => { if (current) setSettings(loaded); });
     return () => { current = false; };

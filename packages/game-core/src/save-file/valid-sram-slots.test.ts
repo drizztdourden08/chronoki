@@ -8,7 +8,7 @@ const SIZE = 0x2000;
 const BASES = [0x0000, 0x0a00, 0x1400];
 
 const sealSlot = (bytes: Uint8Array, slot: number): void => {
-  const sum = slotChecksum(bytes, BASES[slot]);
+  const sum = slotChecksum(bytes, BASES[slot] ?? 0);
   bytes[0x1ff0 + slot * 2] = sum & 0xff;
   bytes[0x1ff1 + slot * 2] = sum >> 8;
   bytes[0x1ff8 + slot * 2] = 0x1b;
@@ -32,7 +32,7 @@ describe('validSramSlots', { tags: ['critical'] }, () => {
 
   it('rejects a slot whose data no longer matches its checksum', () => {
     const bytes = makeSave();
-    bytes[0x0a00 + 0x100] ^= 0xff;
+    bytes[0x0a00 + 0x100] = (bytes[0x0a00 + 0x100] ?? 0) ^ 0xff;
     expect(validSramSlots(bytes)).toEqual([0, 2]);
   });
 
@@ -53,7 +53,7 @@ describe('validSramSlots', { tags: ['critical'] }, () => {
     bytes.set([0xab, 0xce, 0xbc, 0xbc, 0xef, 0xff], 0x05b0 + 2 * 6);
     sealSlot(bytes, 0);
     expect(readSramSlotSummary(bytes, 0)?.leadName).toBe('Lucc');
-    bytes[0x0100] ^= 0x01;
+    bytes[0x0100] = (bytes[0x0100] ?? 0) ^ 0x01;
     expect(readSramSlotSummary(bytes, 0)).toBeNull();
   });
 });

@@ -1,10 +1,11 @@
 /* @layer renderer-components @kind constants */
 import type { SettingFormat, SettingsSection } from './settings-sections.type';
 
-const capitalized: SettingFormat = (value) => {
-  const text = typeof value === 'string' && value !== '' ? value : 'default';
-  return text.charAt(0).toUpperCase() + text.slice(1);
-};
+const VIEWPORT_LABELS: Readonly<Record<string, string>> = { none: 'Letterbox', fit: 'Fit Window', fill: 'Stretch' };
+
+const viewport: SettingFormat = (value) => (typeof value === 'string' ? (VIEWPORT_LABELS[value] ?? value) : 'Default');
+
+const percent: SettingFormat = (value) => (typeof value === 'number' ? `${Math.round(value <= 1 ? value * 100 : value)}%` : 'Default');
 
 const times: SettingFormat = (value) => (typeof value === 'number' ? `${value}x` : 'Default');
 
@@ -15,18 +16,17 @@ const count: SettingFormat = (value) => (Array.isArray(value) ? String(value.len
 const PICTURE_SECTION: SettingsSection = {
   title: 'Picture',
   keys: [
-    { key: 'widescreenAspect', label: 'Widescreen aspect' },
-    { key: 'renderScale', label: 'Render scale', format: times },
+    { key: 'widescreenAspect', label: 'Aspect Ratio' },
+    { key: 'renderScale', label: 'Render Scale', format: times },
+    { key: 'showFps', label: 'Show FPS' },
   ],
 };
 
 const WINDOW_SECTION: SettingsSection = {
   title: 'Window',
   keys: [
-    { key: 'windowMode', label: 'Window mode', format: capitalized },
-    { key: 'startFullscreen', label: 'Start fullscreen' },
-    { key: 'showFps', label: 'Show FPS' },
-    { key: 'viewportConstraint', label: 'Viewport', format: capitalized },
+    { key: 'startFullscreen', label: 'Start in Fullscreen' },
+    { key: 'viewportConstraint', label: 'Viewport', format: viewport },
     { key: 'pixelPerfect', label: 'Pixel Perfect' },
   ],
 };
@@ -34,19 +34,17 @@ const WINDOW_SECTION: SettingsSection = {
 const AUDIO_SECTION: SettingsSection = {
   title: 'Audio',
   keys: [
-    { key: 'enableAudio', label: 'Audio' },
-    { key: 'masterVolume', label: 'Master volume' },
-    { key: 'masterMuted', label: 'Muted' },
+    { key: 'masterVolume', label: 'Master Volume', format: percent },
   ],
 };
 
 const GAMEPLAY_SECTION: SettingsSection = {
   title: 'Gameplay',
   keys: [
-    { key: 'original', label: 'Original mode' },
-    { key: 'autoSaveIntervalSeconds', label: 'Auto-save interval', format: seconds },
-    { key: 'autoSaveMaxEntries', label: 'Max auto-save entries' },
-    { key: 'turboSpeed', label: 'Turbo speed', format: times },
+    { key: 'original', label: 'Original Mode' },
+    { key: 'autoSaveIntervalSeconds', label: 'Auto-Save Interval', format: seconds },
+    { key: 'autoSaveMaxEntries', label: 'Max Auto-Save Entries' },
+    { key: 'turboSpeed', label: 'Turbo Speed', format: times },
   ],
 };
 
