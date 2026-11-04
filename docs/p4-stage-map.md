@@ -23,7 +23,7 @@ counted in setup.py's "progress K/N". Ported 10, pending 55. Python paths are re
 | shapes-install | gen/shapes.py install | setup | ported (`tables/shapes-install-stage.ts`; needs `kit.shapes`) |
 | oracle | setup.py main (ct.exe) | setup | ported (needs the oracle driver) |
 | replay-recipes | recipes.py make_many | setup | ported (needs the oracle driver) |
-| snd_timing, anim_oplen, lz_pack, ow_world, ow_sprites, ct_window, ct_namewin, ct_namemsg | gen/<name>.py | captures | pending (oracle) |
+| snd_timing, anim_oplen, lz_pack, ow_world, ow_sprites, ct_window, ct_namewin, ct_namemsg | gen/<name>.py | captures | ported (`captures/capture-runners.ts`; need the oracle `PeekOracle` driver plus a `tool` mode, `oracle/oracle-capture.type.ts`) |
 | extract-assets | ../assets/extract_assets.py build | extract | ported (`extract/extract-assets.ts`, shell over the 24 packers; first 12 ported, last 12 per the table below) |
 | battle_trig | gen/battle_trig.py | generate | ported (`gen/battle-trig.ts`) |
 | menu_romdata | gen/menu_romdata.py | generate | ported (`gen/menu-romdata.ts`) |
@@ -31,12 +31,12 @@ counted in setup.py's "progress K/N". Ported 10, pending 55. Python paths are re
 | coll_slope | gen/coll_slope.py | generate | ported (`gen/coll-slope.ts`) |
 | ow_anim | gen/ow_anim.py | generate | ported (`gen/ow-anim.ts`) |
 | ct_regroup | gen/ct_regroup.py | generate | ported (`gen/ct-regroup.ts`) |
-| menu_desc | gen/menu_desc.py | generate | pending (text.py, compile) |
-| menu_equip, menu_techrom, animeng_pc, battle_hud_chrome | gen/<name>.py | generate | pending (ROM only, next to port) |
+| menu_desc | gen/menu_desc.py | generate | ported (`gen/menu-desc.ts`, text via `extract/text-tokens.ts`) |
+| menu_equip, menu_techrom, animeng_pc, battle_hud_chrome | gen/<name>.py | generate | ported (`gen/menu-equip.ts`, `menu-techrom.ts`, `animeng-pc.ts`, `battle-hud-chrome.ts`; registered in `gen/rom-gen-runners.ts`) |
 | animeng_gato, atbsel, battle_anim, battle_anim_add, battle_dissolve, battle_fx, battle_gato_atkfaces, battle_gato_faces, battle_hetake, battle_hud, battle_hud_sub, battle_marleatk, battle_settle, battle_stance, ct_charbase, ct_ng_pan, dlg_cursor, menu_arrow, menu_chrome | gen/<name>.py | generate | ported (`gen/<name>.ts`, registered in `gen/oracle-runners-a.ts`; need the oracle `PeekOracle` driver, `oracle/peek.type.ts`; --verify paths not ported) |
 | the other 18 gens (title_intro, seq_*, xlat_all stages, battle_hud_chrome excluded, ct_*, ow_*, menu_*) | gen/<name>.py, gen/xlat_all.py | generate | pending (oracle power-on) |
 | pack-tables | gen/pack_tables.py pack | tail | ported (`tables/pack-tables-stage.ts`; layout width from `ctx.abi`) |
-| steam-margins | steam_wide.py | tail | pending |
+| steam-margins | steam_wide.py | tail | ported (`steam/`; off without `ctx.steam`, find_steam is host work) |
 | write-player-assets | gen/pack_tables.py into | tail | ported |
 
 The `extract-assets` packers (24 `compile-*` calls inside extract_assets.build) are not stages of their own; they live in

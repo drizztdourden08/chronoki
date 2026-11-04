@@ -1,4 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
+import { CAPTURE_RUNNERS } from '../captures/capture-runners';
 import type { StageRun } from '../pipeline/stage.type';
 import { requireBytes, writeText } from '../pipeline/work-files';
 import { genAnimengPc } from './animeng-pc';
@@ -38,6 +39,7 @@ const ROM_GEN_RUNNERS: Record<string, StageRun> = {
   animeng_pc: animengPcStage,
   'steam-margins': steamMarginsStage,
   battle_hud_chrome: battleHudChromeStage,
+  ...CAPTURE_RUNNERS,
 };
 
 export { ROM_GEN_RUNNERS };

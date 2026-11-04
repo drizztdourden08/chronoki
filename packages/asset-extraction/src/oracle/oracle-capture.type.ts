@@ -1,25 +1,4 @@
 /* @layer shared-asset-extraction @kind types */
-import type { OracleDriver } from './oracle-driver.type';
-
-/** `ct.exe --peek <state> <out>.raw [--btnscript S] [--frames N]` (ctgen.peek): a state read for some frames, its dumps returned. */
-interface PeekRequest {
-  state: Uint8Array;
-  /** The pad script, already expanded (recipes' grammar), or null for none. */
-  script: string | null;
-  frames: number | null;
-  /** Extra environment (PEEK_ISOBG, ...). */
-  env: Record<string, string>;
-  /** True runs the cartridge under the logical rule (CT_ORACLE_LOGICAL=1); false is the plain oracle. */
-  rule: boolean;
-}
-
-/** The dumps of a peek: <out>.raw (the 512x480 [pad,B,G,R] framebuffer), .raw.wram, .raw.vram, .raw.oam. */
-interface PeekResult {
-  raw: Uint8Array;
-  wram: Uint8Array;
-  vram: Uint8Array;
-  oam: Uint8Array;
-}
 
 /**
  * One of ct.exe's tool modes (--sndtiming, --animoplen, --lzpack, --owforce, --owsprite, --owboat, --owbirds), run on
@@ -35,10 +14,9 @@ interface ToolRequest {
   outputs: string[];
 }
 
-/** What the capture stages need beyond recipe replay; the WASM driver (P3) implements it on top of OracleDriver. */
-interface OracleCaptureDriver extends OracleDriver {
-  peek: (request: PeekRequest) => Promise<PeekResult>;
+/** What the capture stages need beyond PeekOracle; the WASM driver (P3) implements it next to OracleDriver. */
+interface ToolOracle {
   tool: (request: ToolRequest) => Promise<Record<string, Uint8Array>>;
 }
 
-export type { OracleCaptureDriver, PeekRequest, PeekResult, ToolRequest };
+export type { ToolOracle, ToolRequest };

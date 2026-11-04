@@ -1,40 +1,31 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { OracleCaptureDriver, PeekResult } from '../oracle/oracle-capture.type';
+import type { OracleDriver } from '../oracle/oracle-driver.type';
+import type { ToolOracle } from '../oracle/oracle-capture.type';
+import type { PeekDump } from '../oracle/peek.type';
 import type { ImportContext } from '../pipeline/import-context.type';
-import { requireBytes } from '../pipeline/work-files';
-import { expandPadScript } from '../recipes/expand-pad-script';
-import { statePath } from '../recipes/recipe-store';
 
-/** The oracle with its capture modes; a stop with a clear message when the driver lacks them. */
-const captureDriver = (ctx: ImportContext): OracleCaptureDriver => {
-  const o = ctx.oracle as Partial<OracleCaptureDriver> | null;
-  if (o === null || typeof o.peek !== 'function' || typeof o.tool !== 'function') {
-    throw new Error('the oracle driver has no peek / tool modes: the capture stages cannot run');
+/** The oracle with ct.exe's tool modes; a stop with a clear message when the driver lacks them. */
+const toolOracle = (ctx: ImportContext): ToolOracle => {
+  const o = ctx.oracle as (OracleDriver & Partial<ToolOracle>) | null;
+  if (o === null || typeof o.tool !== 'function') {
+    throw new Error('this stage needs the oracle driver to implement tool (--sndtiming, --owforce, ...)');
   }
-  return o as OracleCaptureDriver;
+  return o as ToolOracle;
 };
 
-/** ctgen.recipe(): the state the replay-recipes stage made for `name`. */
-const recipeState = (ctx: ImportContext, name: string): Promise<Uint8Array> =>
-  requireBytes(ctx.work, statePath(name));
-
-interface PeekOptions {
-  script?: string | null;
-  frames?: number | null;
-  env?: Record<string, string>;
-  /** ctgen.peek's `rule`, default true. */
-  rule?: boolean;
-}
-
-/** ctgen.peek(): a state read under the oracle; `script` takes the recipes' grammar. */
-const peekState = (ctx: ImportContext, state: Uint8Array, o: PeekOptions = {}): Promise<PeekResult> =>
-  captureDriver(ctx).peek({
-    state,
-    script: o.script === undefined || o.script === null ? null : expandPadScript(o.script),
-    frames: o.frames ?? null,
-    env: o.env ?? {},
-    rule: o.rule ?? true,
-  });
+/** Runs one tool mode and returns its outputs; a stop naming the stage when the first output was not written. */
+const runTool = async (
+  ctx: ImportContext,
+  name: string,
+  args: string[],
+  outputs: string[],
+  state: Uint8Array | null = null,
+  inputs: Record<string, Uint8Array> = {},
+): Promise<Record<string, Uint8Array>> => {
+  const got = await toolOracle(ctx).tool({ args, state, inputs, outputs });
+  if (!got[outputs[0] as string]) throw new Error(`${name}: ct.exe ${args[0]} wrote nothing`);
+  return got;
+};
 
 /** ctgen.rgb_of_fb(): the 256x240 RGB picture of a 512x480 [pad,B,G,R] framebuffer dump (2x doubled). */
 const rgbOfFb = (d: Uint8Array): Uint8Array => {
@@ -51,7 +42,7 @@ const rgbOfFb = (d: Uint8Array): Uint8Array => {
   return out;
 };
 
-/** ctgen.cgram_of(): the 512-byte CGRAM of a peek (its .oam sidecar at 1056). */
-const cgramOf = (peek: PeekResult): Uint8Array => peek.oam.slice(1056, 1056 + 512);
+/** ctgen.cgram_of(): the 512-byte CGRAM of a peek (its oam dump at 1056). */
+const cgramOf = (peek: PeekDump): Uint8Array => peek.oam.slice(1056, 1056 + 512);
 
-export { captureDriver, cgramOf, peekState, recipeState, rgbOfFb };
+export { cgramOf, rgbOfFb, runTool, toolOracle };
