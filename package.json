@@ -1,0 +1,59 @@
+{
+  "name": "chronoki",
+  "version": "0.0.0",
+  "private": true,
+  "description": "ChronoKi, a desktop and mobile port of Chrono Trigger. You bring your own ROM.",
+  "license": "MIT",
+  "packageManager": "pnpm@10.17.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "core:import": "node tooling/import-core/import-core-cli.mjs",
+    "dev": "pnpm --filter ./apps/desktop dev",
+    "build": "pnpm --filter ./apps/desktop package",
+    "build:web": "pnpm --filter ./apps/desktop build:web",
+    "preview": "pnpm --filter ./apps/desktop exec electron-vite preview",
+    "test": "standards test",
+    "test:pr": "standards test pr",
+    "test:e2e": "standards test e2e",
+    "lint": "standards lint",
+    "lint:all": "standards lint --all",
+    "clean": "rimraf dist release",
+    "structure": "brock structure --check",
+    "prose": "brock prose",
+    "deadcode": "brock knip",
+    "duplicates": "jscpd ."
+  },
+  "devDependencies": {
+    "@chronoki/game-core": "workspace:*",
+    "@drizztdourden08/brock-build": "catalog:",
+    "@drizztdourden08/brock-lint-config": "catalog:",
+    "@drizztdourden08/brock-plugin-snes": "catalog:",
+    "@drizztdourden08/brock-thread": "catalog:",
+    "@drizztdourden08/standards": "^0.14.2",
+    "@drizztdourden08/tessera": "catalog:",
+    "@types/node": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "electron": "catalog:",
+    "electron-builder": "catalog:",
+    "electron-vite": "catalog:",
+    "eslint": "catalog:",
+    "jscpd": "catalog:",
+    "knip": "catalog:",
+    "markdownlint-cli2": "catalog:",
+    "rimraf": "^6.1.3",
+    "stylelint": "catalog:",
+    "stylelint-config-standard": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "brock": {
+    "version": "0.116.0",
+    "tessera": "0.93.2"
+  }
+}
