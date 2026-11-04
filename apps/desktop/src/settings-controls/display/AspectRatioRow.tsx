@@ -34,7 +34,9 @@ const AspectRatioRow = ({ settings, onChange }: SettingControlProps) => {
         customH={settings.customAspectH}
         limits={ASPECT_LIMITS}
         letterbox
-        onChange={(change) => onChange(aspectChangePatch(change))}
+        onChange={(change) => {
+          if (!locked) onChange(aspectChangePatch(change));
+        }}
       />
       {showLetterbox && <Small tone="dim">{LETTERBOX_NOTE}</Small>}
     </Box>

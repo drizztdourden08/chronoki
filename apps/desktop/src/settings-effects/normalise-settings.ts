@@ -12,7 +12,8 @@ const normaliseSettings = (settings: AppSettings, stored?: RawSettings | null): 
   const vanillaSafe = raw.vanillaSafe ?? raw.original ?? legacy ?? rest.vanillaSafe;
   const fromOldConfig = Array.isArray(raw.gates) && raw.vanillaSafe === undefined;
   const gates = withIds(fromOldConfig ? withIds(rest.gates, NEW_DEFAULT_GATES) : rest.gates, ALWAYS_ON_GATES);
-  const aspectRatio = migrateAspect(rest.aspectRatio, raw.widescreenAspect ?? widescreenAspect, gates);
+  const legacyAspect = raw.aspectRatio === undefined ? (raw.widescreenAspect ?? widescreenAspect) : undefined;
+  const aspectRatio = migrateAspect(rest.aspectRatio, legacyAspect, gates);
   return { ...rest, vanillaSafe: vanillaSafe === true, gates, aspectRatio };
 };
 

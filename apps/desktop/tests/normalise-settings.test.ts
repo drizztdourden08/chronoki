@@ -13,6 +13,10 @@ describe('aspect ratio migration', { tags: ['critical'] }, () => {
     expect('widescreenAspect' in settings).toBe(false);
   });
 
+  it('keeps a stored aspectRatio over a leftover widescreenAspect key', () => {
+    expect(load({ aspectRatio: 'custom', widescreenAspect: '16:9', vanillaSafe: false }).aspectRatio).toBe('custom');
+  });
+
   it('defaults a new install to 16:9', () => {
     expect(load({ vanillaSafe: false }).aspectRatio).toBe('16:9');
   });
