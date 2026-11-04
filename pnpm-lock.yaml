@@ -94,7 +94,7 @@ catalogs:
       specifier: ^5.0.13
       version: 5.0.16
 
-pnpmfileChecksum: sha256-rJ4aUR1xE4Oh1uhxci64biylC326dSkvQxEloMJzfiY=
+pnpmfileChecksum: sha256-JSIpN7P9MdPJAnUx/GM/R0wYHDHmII19/YQ512q7pzM=
 
 importers:
 
@@ -119,8 +119,8 @@ importers:
         specifier: file:C:/Users/drizz/.coord/localpkg/tgz/standards-0.15.0-17a5414b.tgz
         version: file:C:/Users/drizz/.coord/localpkg/tgz/standards-0.15.0-17a5414b.tgz(@types/node@24.19.2)(eslint@10.14.0(jiti@2.7.0))(stylelint@17.16.0(typescript@6.0.3))(typescript@6.0.3)(vitest@4.1.12(@types/node@24.19.2)(vite@7.3.7(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)))
       '@drizztdourden08/tessera':
-        specifier: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz
-        version: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
+        specifier: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz
+        version: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
@@ -224,8 +224,8 @@ importers:
         specifier: file:C:/Users/drizz/.coord/localpkg/tgz/brock-react-0.120.1-21233528.tgz
         version: file:C:/Users/drizz/.coord/localpkg/tgz/brock-react-0.120.1-21233528.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)(zustand@5.0.16(@types/react@19.3.0)(react@19.3.1))
       '@drizztdourden08/tessera':
-        specifier: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz
-        version: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
+        specifier: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz
+        version: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       '@electron-toolkit/utils':
         specifier: 'catalog:'
         version: 4.0.0(electron@42.11.18)
@@ -308,8 +308,8 @@ importers:
   packages/design:
     dependencies:
       '@drizztdourden08/tessera':
-        specifier: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz
-        version: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
+        specifier: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz
+        version: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       react:
         specifier: 'catalog:'
         version: 19.3.1
@@ -657,9 +657,9 @@ packages:
       vitest:
         optional: true
 
-  '@drizztdourden08/tessera@file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz':
-    resolution: {integrity: sha512-RkjBdXP+b1y/j1DtxiJ7upHDaW0EbllEhgThttyvG8tQYst6vHTiryyk9UpdGgrxGU/weu6trbVYaWrJCxUF5Q==, tarball: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz}
-    version: 0.103.0
+  '@drizztdourden08/tessera@file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz':
+    resolution: {integrity: sha512-wOuVM3C/CbgoeWEzUaD7eBMaErBOFFAaJKeZRJe7gf6npU+7a++xKpXRMKOl7oPIjjqEMvPjawJR9vLBv4cqBg==, tarball: file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz}
+    version: 0.103.1
     engines: {node: '>=24'}
     hasBin: true
     peerDependencies:
@@ -4842,7 +4842,7 @@ snapshots:
       '@ionic/utils-subprocess': 2.1.14
       '@ionic/utils-terminal': 2.3.5
       commander: 9.5.0
-      debug: 4.3.4
+      debug: 4.4.3
       env-paths: 2.2.1
       kleur: 4.1.5
       native-run: 2.1.0
@@ -4957,7 +4957,7 @@ snapshots:
       '@drizztdourden08/brock-core': file:C:/Users/drizz/.coord/localpkg/tgz/brock-core-0.120.1-9bcab314.tgz
       '@drizztdourden08/brock-electron': file:C:/Users/drizz/.coord/localpkg/tgz/brock-electron-0.120.1-f22a4c12.tgz(electron@42.11.18)
       '@drizztdourden08/brock-react': file:C:/Users/drizz/.coord/localpkg/tgz/brock-react-0.120.1-21233528.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)(zustand@5.0.16(@types/react@19.3.0)(react@19.3.1))
-      '@drizztdourden08/tessera': file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
+      '@drizztdourden08/tessera': file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       electron: 42.11.18
       react: 19.3.1
       zustand: 5.0.16(@types/react@19.3.0)(react@19.3.1)
@@ -4982,7 +4982,7 @@ snapshots:
       '@drizztdourden08/brock-electron': file:C:/Users/drizz/.coord/localpkg/tgz/brock-electron-0.120.1-f22a4c12.tgz(electron@42.11.18)
       '@drizztdourden08/brock-react': file:C:/Users/drizz/.coord/localpkg/tgz/brock-react-0.120.1-21233528.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)(zustand@5.0.16(@types/react@19.3.0)(react@19.3.1))
       '@drizztdourden08/build-cache': file:C:/Users/drizz/.coord/localpkg/tgz/build-cache-0.120.1-a70244ec.tgz
-      '@drizztdourden08/tessera': file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
+      '@drizztdourden08/tessera': file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       '@iconify-icons/lucide': 1.2.136
       '@iconify/react': 6.0.4(react@19.3.1)
       '@iconify/types': 2.0.0
@@ -5030,7 +5030,7 @@ snapshots:
       '@drizztdourden08/brock-core': file:C:/Users/drizz/.coord/localpkg/tgz/brock-core-0.120.1-9bcab314.tgz
       '@drizztdourden08/brock-electron': file:C:/Users/drizz/.coord/localpkg/tgz/brock-electron-0.120.1-f22a4c12.tgz(electron@42.11.18)
       '@drizztdourden08/brock-react': file:C:/Users/drizz/.coord/localpkg/tgz/brock-react-0.120.1-21233528.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)(zustand@5.0.16(@types/react@19.3.0)(react@19.3.1))
-      '@drizztdourden08/tessera': file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
+      '@drizztdourden08/tessera': file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       electron: 42.11.18
       react: 19.3.1
     transitivePeerDependencies:
@@ -5043,7 +5043,7 @@ snapshots:
   '@drizztdourden08/brock-react@file:C:/Users/drizz/.coord/localpkg/tgz/brock-react-0.120.1-21233528.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)(zustand@5.0.16(@types/react@19.3.0)(react@19.3.1))':
     dependencies:
       '@drizztdourden08/brock-core': file:C:/Users/drizz/.coord/localpkg/tgz/brock-core-0.120.1-9bcab314.tgz
-      '@drizztdourden08/tessera': file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
+      '@drizztdourden08/tessera': file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
       zustand: 5.0.16(@types/react@19.3.0)(react@19.3.1)
@@ -5087,7 +5087,7 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@drizztdourden08/tessera@file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.0-aa31040f.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)':
+  '@drizztdourden08/tessera@file:C:/Users/drizz/.coord/localpkg/tgz/tessera-0.103.1-cc0cc296.tgz(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)':
     dependencies:
       '@iconify-icons/lucide': 1.2.136
       '@iconify-icons/ph': 2.0.0
@@ -5455,7 +5455,7 @@ snapshots:
 
   '@ionic/utils-array@2.1.6':
     dependencies:
-      debug: 4.3.4
+      debug: 4.4.3
       tslib: 2.6.2
     transitivePeerDependencies:
       - supports-color
@@ -5463,7 +5463,7 @@ snapshots:
   '@ionic/utils-fs@3.1.7':
     dependencies:
       '@types/fs-extra': 8.1.5
-      debug: 4.3.4
+      debug: 4.4.3
       fs-extra: 9.1.0
       tslib: 2.6.2
     transitivePeerDependencies:

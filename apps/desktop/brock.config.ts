@@ -14,7 +14,7 @@ export default defineBrockConfig({
     window: { titleBar: { mobile: false } },
     artifactPrefix: 'chronoki-',
     dataDirs: ['assets', 'roms', 'profiles', 'config', 'input'],
-    icons: { brand: 'chronoki', wordmark: { src: './logos/wordmark.svg' } },
+    icons: { brand: 'chronoki', wordmark: { src: './logos/wordmark.svg', rendering: 'pixelated' } },
     profilesRoute: 'data/profiles',
   },
   packaging: {
