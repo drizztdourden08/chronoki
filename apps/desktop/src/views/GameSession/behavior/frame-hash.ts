@@ -1,10 +1,7 @@
 /* @layer renderer-appshell @kind logic */
 import { chronokiCore } from '@app/game/lifecycle';
 import { FRAME_HEIGHT_EXPORT, FRAME_WIDTH_EXPORT } from '../GameSession.constants';
-
-const FNV_OFFSET = 0x811c9dc5;
-
-const FNV_PRIME = 0x01000193;
+import { FNV_OFFSET, FNV_PRIME } from './frame-hash.constants';
 
 const frameHash = (): string => {
   const calls = chronokiCore.calls();
