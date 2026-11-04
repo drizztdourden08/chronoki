@@ -105,7 +105,7 @@ const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean } => {
   if (words.length === 0 || !Object.hasOwn(SCALAR_TYPES, key)) {
     throw new PackError(`${env.header}: unknown type ${JSON.stringify(key)} near ${JSON.stringify(cur.peek())}`);
   }
-  return { type: SCALAR_TYPES[key], isConst };
+  return { type: SCALAR_TYPES[key] as CType, isConst };
 };
 
 export { isCharScalar, parseDims, parseTypeSpec };

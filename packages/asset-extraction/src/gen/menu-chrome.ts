@@ -36,8 +36,8 @@ const genMenuChrome = async (ctx: ImportContext): Promise<GenFiles> => {
   };
   const rib: number[][] = [];
   const ent: number[][] = [];
-  let vram0 = new Uint8Array(0);
-  let cg0 = new Uint8Array(0);
+  let vram0: Uint8Array = new Uint8Array(0);
+  let cg0: Uint8Array = new Uint8Array(0);
   for (let n = 0; n < 6; n += 1) {
     const { vram, w, cg } = await cap('menu', ribbon(n));
     need(w[0x67] === 0, `the ribbon view ${n} is not the main menu ($0067 = ${hexN(w[0x67] as number, 2)})`);

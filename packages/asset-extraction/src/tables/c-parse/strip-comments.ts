@@ -5,7 +5,7 @@ const stripComments = (s: string): string => {
   const n = s.length;
   let i = 0;
   while (i < n) {
-    const c = s[i];
+    const c = s[i] as string;
     if (c === '"' || c === "'") {
       let j = i + 1;
       while (j < n && s[j] !== c) j += s[j] === '\\' ? 2 : 1;

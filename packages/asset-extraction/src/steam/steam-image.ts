@@ -45,8 +45,8 @@ const pngRgba = async (data: Uint8Array): Promise<Rgba | null> => {
   if (PNG_MAGIC.some((m, i) => data[i] !== m)) return null;
   const dv = new DataView(data.buffer, data.byteOffset, data.byteLength);
   const idat: Uint8Array[] = [];
-  let plte = new Uint8Array(0);
-  let trns = new Uint8Array(0);
+  let plte: Uint8Array = new Uint8Array(0);
+  let trns: Uint8Array = new Uint8Array(0);
   let w = 0;
   let h = 0;
   let depth = 0;

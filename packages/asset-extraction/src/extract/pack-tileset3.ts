@@ -16,7 +16,7 @@ const packTileset3: Packer = ({ rom, tables }) => {
   for (const ts of distinctHeaderBytes(rom, 2)) {
     if (ts >= tsGfx.length || tsGfx[ts] === 0) continue;
     const tiles = decodeTiles(lzDecompress(rom, tsGfx[ts]!), 2);
-    let metab = new Uint8Array(0);
+    let metab: Uint8Array = new Uint8Array(0);
     let hasMetas = 0;
     if (ts < asm3Ptrs.length && asm3Ptrs[ts] !== 0) {
       const raw3 = parseMetatiles(lzDecompress(rom, asm3Ptrs[ts]!), 256, 4);
