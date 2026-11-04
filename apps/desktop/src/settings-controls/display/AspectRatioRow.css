@@ -1,0 +1,10 @@
+.aspect-ratio-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.aspect-ratio-row--locked > :first-child {
+  opacity: 0.5;
+  pointer-events: none;
+}

@@ -1,11 +1,13 @@
 /* @layer renderer-appshell @kind hook */
 import { useMemo } from 'react';
 import { useSettings } from '@drizztdourden08/brock-react';
+import { aspectRatioValue } from '@drizztdourden08/brock-display/aspect-ratio';
 import { buildCoreConfigIni, gateSettings } from '@chronoki/game-core';
 import { resolveGates } from '@chronoki/features';
 import { useLegacyModeMigration } from '@app/profiles/useLegacyModeMigration';
 import { isPackaged } from '@app/launch-flags/is-packaged';
 import { startupFlag } from '@app/launch-flags/startup-flag';
+import { ASPECT_LIMITS } from '@app/settings-controls/display/display.constants';
 import { useVolumeScaleMigration } from '@app/settings-controls/useVolumeScaleMigration';
 import { useWindowModeReset } from '@app/settings-controls/useWindowModeReset';
 import type { AppSettings } from '@app/settings.type';
@@ -19,7 +21,10 @@ const useCoreSettings = (): CoreSettings => {
   const muted = app.masterMuted || startupFlag('muted') === true;
   const volume = Math.round(app.masterVolume);
   const { vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, steamDataImported, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration } = app;
-  const screenRatio = window.screen.width / window.screen.height;
+  const screenRatio = useMemo(
+    () => aspectRatioValue(aspectRatio === 'auto' ? 'auto' : 'screen', { customW: customAspectW, customH: customAspectH, limits: ASPECT_LIMITS, letterbox: true }),
+    [aspectRatio, customAspectW, customAspectH],
+  );
   return useMemo(() => {
     const satisfied = new Set(steamDataImported ? ['steamData'] : []);
     const { effective } = resolveGates(gates, { vanillaSafe, packaged: isPackaged(), satisfied });

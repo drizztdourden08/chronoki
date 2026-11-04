@@ -10,6 +10,8 @@ import { stageClass } from './behavior/stage-class';
 import { useGameBoot } from './behavior/useGameBoot';
 import { useAspectRatioLock } from './behavior/useAspectRatioLock';
 import { useGameInput } from './behavior/useGameInput';
+import { usePresentBox } from './behavior/usePresentBox';
+import { usePresentRatioVar } from './behavior/usePresentRatioVar';
 import { useLegacyStretchMigration } from './behavior/useLegacyStretchMigration';
 import { usePixelPerfectSize } from './behavior/usePixelPerfectSize';
 import { useViewport } from './behavior/useViewport';
@@ -24,14 +26,16 @@ const GameLayer = () => {
   const { settings } = useGameSession();
   useLegacyStretchMigration();
   const baseFrame = frameSizeOf({ widescreen: settings.widescreen, wideWidth: settings.wideWidth, renderScale: 1, interpolation: false });
-  useAspectRatioLock(launch !== null, baseFrame);
-  usePixelPerfectSize(stageRef, pixelPerfect, baseFrame);
+  const box = usePresentBox(gates, baseFrame);
+  usePresentRatioVar(stageRef, box);
+  useAspectRatioLock(launch !== null, box);
+  usePixelPerfectSize(stageRef, pixelPerfect, box);
   useGameBoot({ canvasRef, launch });
   useGameInput(status === 'running' || status === 'paused', launch?.profileId ?? null, onFunctionAction, onFunctionRelease);
 
   return (
     <Box className="game-layer">
-      <Box ref={stageRef} className={stageClass({ visible: launch !== null, gates, viewport, pixelPerfect })}>
+      <Box ref={stageRef} className={stageClass({ visible: launch !== null, gates, viewport, pixelPerfect, boxed: box.boxed })}>
         <GameCanvas canvasRef={canvasRef} label={GAME_LAYER_LABEL} />
       </Box>
       {status === 'error' && <Text className="game-layer__error" variant="body">{`${GAME_LAYER_ERROR_TITLE}: ${error ?? ''}`}</Text>}
