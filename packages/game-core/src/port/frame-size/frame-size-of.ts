@@ -13,8 +13,8 @@ const wideWidth = ({ widescreen, wideWidth: configured }: Pick<CkSettings, 'wide
   return configured > 0 ? configured : ratioToWidth(CT_WIDE_RATIOS[widescreen]);
 };
 
-const tallLines = ({ widescreen, tallLines: lines }: CkFrameInput): number => {
-  if (widescreen !== 'off' || !lines || lines <= CT_FRAME_HEIGHT) return 0;
+const viewLines = ({ tallLines: lines }: CkFrameInput): number => {
+  if (!lines || lines <= CT_FRAME_HEIGHT) return CT_FRAME_HEIGHT;
   return Math.min(CT_TALL_MAX_LINES, lines & ~1);
 };
 
@@ -24,10 +24,8 @@ const pictureScale = ({ renderScale, interpolation }: Pick<CkSettings, 'renderSc
 };
 
 const frameSizeOf = (settings: CkFrameInput): CkFrameSize => {
-  const lines = tallLines(settings);
-  if (lines > 0) return { width: CT_FRAME_WIDTH, height: lines };
   const k = pictureScale(settings);
-  return { width: wideWidth(settings) * k, height: CT_FRAME_HEIGHT * k };
+  return { width: wideWidth(settings) * k, height: viewLines(settings) * k };
 };
 
 export { frameSizeOf };

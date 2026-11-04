@@ -12,15 +12,15 @@ const gateSettings = (
 ): CkSettings => {
   const { width, lines } = resolveFrame(effective, options);
   const wide = width > CT_ASPECT_MIN_WIDTH;
-  const tall = !wide && lines > CT_ASPECT_HEIGHT;
+  const tall = lines > CT_ASPECT_HEIGHT;
   return {
     ...DEFAULT_CK_SETTINGS,
     ...audio,
     widescreen: wide ? '16:9' : 'off',
     wideWidth: wide ? width : 0,
     tallLines: tall ? lines : 0,
-    renderScale: effective.has('renderScale') && !tall ? options.renderScale : 1,
-    interpolation: effective.has('interpolate') && !tall,
+    renderScale: effective.has('renderScale') ? options.renderScale : 1,
+    interpolation: effective.has('interpolate'),
     steamMargins: effective.has('wideSteamMargins'),
     fillBottomLines: effective.has('fillBottomLine'),
     sceneAdjustments: effective.has('sceneAdjust'),

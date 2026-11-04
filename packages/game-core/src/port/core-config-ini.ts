@@ -13,7 +13,7 @@ const controlLines = (): string[] =>
     `pad_${stem}=${DEFAULT_PAD_NAMES[i]}`,
   ]);
 
-const tallLine = (s: CkSettings): string[] => (s.widescreen === 'off' && s.tallLines > 0 ? [`tall_lines=${s.tallLines}`] : []);
+const tallLine = (s: CkSettings): string[] => (s.tallLines > 0 ? [`tall_lines=${s.tallLines}`] : []);
 
 const wideLine = (s: CkSettings): string[] => (s.widescreen === 'off' ? [] : [`wide_width=${s.wideWidth}`]);
 

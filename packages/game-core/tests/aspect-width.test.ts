@@ -21,15 +21,28 @@ describe('tall ratio lines', { tags: ['critical'] }, () => {
     expect(['4:5', '3:4', '1:3'].map((r) => ratioToLines(parseRatio(r)))).toEqual([320, 340, 480]);
   });
 
-  it('sizes a tall frame 256 x lines at 1x whatever the render scale', () => {
-    const settings = { widescreen: 'off', wideWidth: 0, tallLines: 340, renderScale: 2, interpolation: true } as const;
-    expect(frameSizeOf(settings)).toEqual({ width: 256, height: 340 });
-    expect(frameSizeOf({ ...settings, tallLines: 0, renderScale: 1, interpolation: false })).toEqual({ width: 256, height: 224 });
+  it('applies the pixel aspect: 3:4 and 4:3 aspect (8/7), clamped to 224..480', () => {
+    expect(ratioToLines(parseRatio('3:4'), 8 / 7)).toBe(390);
+    expect(ratioToLines(parseRatio('4:3'), 8 / 7)).toBe(224);
+    expect(ratioToLines(parseRatio('1:3'))).toBe(480);
+    expect(ratioToLines(parseRatio('16:9'))).toBe(224);
+    expect(ratioToWidth(parseRatio('4:3'), 8 / 7)).toBe(260);
+  });
+
+  it('sizes the frame W k x H k: tall, wide, both, and the original', () => {
+    const base = { widescreen: 'off', wideWidth: 0, tallLines: 340, renderScale: 2, interpolation: true } as const;
+    expect(frameSizeOf(base)).toEqual({ width: 256 * 4, height: 340 * 4 });
+    expect(frameSizeOf({ ...base, renderScale: 3, interpolation: false })).toEqual({ width: 768, height: 1020 });
+    expect(frameSizeOf({ ...base, widescreen: '16:9', wideWidth: 398, renderScale: 1, interpolation: false })).toEqual({ width: 398, height: 340 });
+    expect(frameSizeOf({ ...base, tallLines: 600, renderScale: 1, interpolation: false }).height).toBe(480);
+    expect(frameSizeOf({ ...base, tallLines: 0, renderScale: 1, interpolation: false })).toEqual({ width: 256, height: 224 });
   });
 
   it('writes tall_lines only for a tall picture', () => {
     expect(buildCoreConfigIni({ tallLines: 340 }).split('\n')).toContain('tall_lines=340');
-    expect(buildCoreConfigIni({ widescreen: '16:9', wideWidth: 398, tallLines: 340 })).not.toContain('tall_lines');
+    expect(buildCoreConfigIni({ widescreen: '16:9', wideWidth: 398, tallLines: 340 })).toContain('tall_lines=340');
+    expect(buildCoreConfigIni({ widescreen: '16:9', wideWidth: 398 })).not.toContain('tall_lines');
+    expect(buildCoreConfigIni({ tallLines: 340 })).not.toContain('wide_width');
   });
 });
 
@@ -61,10 +74,10 @@ describe('gate settings width', { tags: ['critical'] }, () => {
     expect(widthFor(false, '3:4')).toBe(0);
   });
 
-  it('renders a tall ratio as 256 x lines with widescreen off and 1x', () => {
+  it('renders a tall ratio as 256 x lines with widescreen off, keeping the render scale', () => {
     const { effective } = resolveGates(ALL, { vanillaSafe: false, satisfied: new Set(['steamData']) });
     const settings = gateSettings(effective, { ...DEFAULT_GATE_OPTIONS, aspectRatio: '3:4' }, audio);
-    expect([settings.widescreen, settings.tallLines, settings.renderScale, settings.interpolation]).toEqual(['off', 340, 1, false]);
+    expect([settings.widescreen, settings.tallLines, settings.interpolation]).toEqual(['off', 340, false]);
   });
 });
 
