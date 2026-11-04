@@ -1,4 +1,5 @@
 /* @layer renderer-app @kind component */
+import { useLockCauseOf } from '@drizztdourden08/brock-react';
 import { AspectRatioControl } from '@drizztdourden08/brock-display/renderer';
 import { Box, Small } from '@drizztdourden08/tessera/primitives';
 import { effectiveGatesOf } from '../effective-gates-of';
@@ -15,7 +16,8 @@ import './AspectRatioRow.css';
 const lockedMessageOf = (vanillaSafe: boolean): string => (vanillaSafe ? ASPECT_VANILLA_LOCKED_MESSAGE : ASPECT_LOCKED_MESSAGE);
 
 const AspectRatioRow = ({ settings, onChange }: SettingControlProps) => {
-  const locked = isSettingDisabled('aspectRatio', settings);
+  const lockCauseOf = useLockCauseOf();
+  const locked = isSettingDisabled('aspectRatio', settings, lockCauseOf('aspectRatio', settings));
   const { options, widePresets, tallPresets } = aspectChoices(effectiveGatesOf(settings).has('tallRendering'));
   const showLetterbox = !locked && isLetterboxed(settings);
   return (
