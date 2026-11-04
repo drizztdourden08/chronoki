@@ -1,10 +1,13 @@
 // Builds ChronoKi's two WebAssembly modules with emcc (the emsdk RotP uses), data-free: no ROM, no asset, no table is
 // embedded; the shell puts /ct_assets.dat (and /ct_tables.dat) in the core's file system before it starts the engine.
 //   node core/wasm-build/build.mjs [--only game|oracle] [--emsdk <dir>] [--debug] [--trace]
-// Output (git-ignored): core/wasm-build/out/chronoki-core.{js,wasm}  (factory ChronoKiCore, the game: JSPI)
+// --out-app <dir> (default apps/desktop/public/wasm) gets the game and oracle .js/.wasm flat plus ck_kit.json (kit-json CLI,
+// from --belthasar <dir>, default X:/chronoki-ref/belthasar; skipped with a warning when absent). The oracle is an ES module
+// in out/oracle/ (own package.json); the game stays CommonJS in out/.
+// Output (git-ignored): core/wasm-build/out/chronoki.{js,wasm}  (factory Chronoki, the game: JSPI)
 //                       core/wasm-build/out/chronoki-oracle.{js,wasm} (factory ChronoKiOracle, the full ct tool: JSPI)
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,6 +16,7 @@ import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root 
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = join(here, 'out');
+const oracleDir = join(outDir, 'oracle');
 const isWin = process.platform === 'win32';
 
 const argValue = (name) => {
@@ -21,6 +25,8 @@ const argValue = (name) => {
 };
 const only = argValue('--only');
 const debug = process.argv.includes('--debug');
+const outApp = resolve(argValue('--out-app') ?? join(here, '..', '..', 'apps', 'desktop', 'public', 'wasm'));
+const kitBelthasar = resolve(argValue('--belthasar') ?? 'X:/chronoki-ref/belthasar');
 const trace = process.argv.includes('--trace');   // CK_TRACE: stderr lines at each park, resume and coroutine switch
 
 const findEmsdk = () => {
@@ -85,7 +91,7 @@ const gameArgs = (gen) => [
   ...gen.gameFiles,
   ...reconnectSources,
   ...hostSources,
-  '-o', join(outDir, 'chronoki-core.js'),
+  '-o', join(outDir, 'chronoki.js'),
   // JSPI: field.c's blocking main() suspends at each present (ck_loop.c); the sound program's coroutine is a JSPI
   // stack of its own, entered through ck_coro_entry (reconnect/coro_wasm.c)
   '-sJSPI', '-sJSPI_EXPORTS=main,ck_coro_entry',
@@ -95,11 +101,11 @@ const gameArgs = (gen) => [
   // JS frame. Legacy EH: what Node 24 and the browsers run without a flag.
   '-fwasm-exceptions', '-sSUPPORT_LONGJMP=wasm', '-sWASM_LEGACY_EXCEPTIONS=1',
   ...(trace ? ['-DCK_TRACE'] : []),
-  '-sINVOKE_RUN=0',            // the shell fills the file system first, then calls callMain
-  '-sMODULARIZE=1', '-sEXPORT_NAME=ChronoKiCore', '-sENVIRONMENT=web,worker,node',
+  '-sINVOKE_RUN=1',            // main runs after preRun (the shell writes its files there) and parks at the first present
+  '-sMODULARIZE=1', '-sEXPORT_NAME=Chronoki', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
-  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkSaveState,_CkLoadState,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_ck_coro_entry',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkSaveState,_CkLoadState,_CkStateStatus,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,callMain,FS,ENV,HEAPU8,HEAP16,HEAP32',
   '-lm',
 ];
@@ -115,16 +121,34 @@ const oracleArgs = (gen) => [
   ...gen.gameFiles,
   join(here, 'xlat_stubs.c'),
   join(root, 'core', 'reconnect', 'coro_wasm.c'),
-  '-o', join(outDir, 'chronoki-oracle.js'),
+  '-o', join(oracleDir, 'chronoki-oracle.js'),
   '-sJSPI', '-sJSPI_EXPORTS=main,ck_coro_entry',
   '-fwasm-exceptions', '-sSUPPORT_LONGJMP=wasm', '-sWASM_LEGACY_EXCEPTIONS=1',
-  '-sINVOKE_RUN=0', '-sEXIT_RUNTIME=1',
+  '-sINVOKE_RUN=0', '-sEXIT_RUNTIME=1', '-sEXPORT_ES6=1',
   '-sMODULARIZE=1', '-sEXPORT_NAME=ChronoKiOracle', '-sENVIRONMENT=node,web,worker',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=134217728', '-sSTACK_SIZE=8388608',
   '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=callMain,FS,ENV',
   '-lm',
 ];
+
+const deliverToApp = () => {
+  mkdirSync(outApp, { recursive: true });
+  const files = [
+    [join(outDir, 'chronoki.js'), 'chronoki.js'], [join(outDir, 'chronoki.wasm'), 'chronoki.wasm'],
+    [join(oracleDir, 'chronoki-oracle.js'), 'chronoki-oracle.js'], [join(oracleDir, 'chronoki-oracle.wasm'), 'chronoki-oracle.wasm'],
+  ];
+  for (const [from, name] of files) {
+    if (existsSync(from)) copyFileSync(from, join(outApp, name));
+    else console.warn(`warning: ${from} was not built, not copied`);
+  }
+  if (!existsSync(kitBelthasar)) {
+    console.warn(`warning: ${kitBelthasar} is missing, ck_kit.json not emitted (--belthasar <dir>)`);
+    return;
+  }
+  const kit = spawnSync(process.execPath, ['packages/asset-extraction/src/cli/kit-json.ts', '--belthasar', kitBelthasar, '--out', join(outApp, 'ck_kit.json')], { stdio: 'inherit', cwd: root });
+  if (kit.status !== 0) console.warn(`warning: kit-json exited with ${kit.status}, ck_kit.json not emitted`);
+};
 
 const main = () => {
   if (!existsSync(join(belthasar, 'CMakeLists.txt'))) {
@@ -140,6 +164,7 @@ const main = () => {
   const env = emsdk ? emsdkEnv(emsdk) : process.env;
   console.log(`emsdk: ${emsdk ?? '(emcc on PATH)'}`);
   mkdirSync(outDir, { recursive: true });
+  mkdirSync(oracleDir, { recursive: true });
   const gen = writeShapes(outDir);
   if (!gen.tables32) console.log('note: no out/tables32/tables_storage.c; the imported 64-bit table storage is used (docs/p3-findings.md)');
   const jobs = [];
@@ -154,6 +179,8 @@ const main = () => {
     }
   }
   writeFileSync(join(outDir, 'package.json'), `${JSON.stringify({ type: 'commonjs' })}\n`);
+  writeFileSync(join(oracleDir, 'package.json'), `${JSON.stringify({ type: 'module' })}\n`);
+  deliverToApp();
   console.log('done: core/wasm-build/out/');
 };
 

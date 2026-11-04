@@ -15,9 +15,12 @@ EMSCRIPTEN_KEEPALIVE void CkRunFrame(void) {
 EMSCRIPTEN_KEEPALIVE void CkSetInput(unsigned mask) { ck_set_input_snes(mask); }
 /* The engine writes /saves/ct_sram.srm itself at an in-game save; the shell persists that file. */
 EMSCRIPTEN_KEEPALIVE int CkSaveSram(void) { return 1; }
-/* No whole-core snapshot in the engine yet (docs/p3-findings.md, unknown 4). */
-EMSCRIPTEN_KEEPALIVE int CkSaveState(void) { return 0; }
-EMSCRIPTEN_KEEPALIVE int CkLoadState(void) { return 0; }
+/* Field-scene save states: a synthetic F5 / F9 edge (sdl_events.c). The engine keeps one state, /ct_debug.state and
+   .apu, so the slot is the shell's to file the result under. CkStateStatus: 0 idle, 1 pending, 2 ok, 3 failed. */
+EMSCRIPTEN_KEEPALIVE int CkSaveState(int slot) { (void)slot; return ck_state_request(1); }
+EMSCRIPTEN_KEEPALIVE int CkLoadState(int slot) { (void)slot; return ck_state_request(0); }
+EMSCRIPTEN_KEEPALIVE int CkStateStatus(void) { return ck_state_status(); }
+EMSCRIPTEN_KEEPALIVE int CkStateAvailable(void) { return ck_state_available(); }
 EMSCRIPTEN_KEEPALIVE const void* CkFramePtr(void) { return ck_frame_rgba(); }
 EMSCRIPTEN_KEEPALIVE int CkFrameWidth(void) { int w, h; ck_frame_info(&w, &h); return w; }
 EMSCRIPTEN_KEEPALIVE int CkFrameHeight(void) { int w, h; ck_frame_info(&w, &h); return h; }

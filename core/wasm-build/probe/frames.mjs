@@ -1,6 +1,7 @@
 // Probe 1: load the built game module with the reference ct_assets.dat in its file system, run N frames through
 // CkRunFrame (the same synchronous call port-kit makes), print frames, ms per frame and a framebuffer hash.
-//   node core/wasm-build/probe/frames.mjs [N=600] [--assets <ct_assets.dat>] [--tables <ct_tables.dat>]
+//   node core/wasm-build/probe/frames.mjs [N=600 | --frames N] [--assets <ct_assets.dat>] [--tables <ct_tables.dat>] [--sram <ct_sram.srm>]
+// Like port-kit's bootCore: the files are written in Module.preRun and the engine's main runs by itself (INVOKE_RUN=1).
 // Exit codes: 0 ran, 2 the engine stopped early (its message is printed: the table-pack mismatch of unknown 2 shows here),
 // 3 no frame was ever presented (the JSPI loop of unknown 1 did not run).
 import { spawnSync } from 'node:child_process';
@@ -22,25 +23,33 @@ const argValue = (name, fallback) => {
   const i = process.argv.indexOf(name);
   return i >= 0 ? process.argv[i + 1] : fallback;
 };
-const frames = Number(process.argv.slice(2).find((a) => /^\d+$/.test(a)) ?? 600);
+const frames = Number(argValue('--frames', process.argv.slice(2).find((a) => /^\d+$/.test(a)) ?? 600));
 const assets = argValue('--assets', 'X:/chronoki-ref/out/ct_assets.dat');
 const tables = argValue('--tables', join(dirname(assets), 'ct_tables.dat'));
+const sram = argValue('--sram', null);
 
-const glue = join(here, '..', 'out', 'chronoki-core.js');
+const glue = join(here, '..', 'out', 'chronoki.js');
 if (!existsSync(glue)) {
   console.error('not built: node core/wasm-build/build.mjs');
   process.exit(1);
 }
 const lines = [];
-const factory = createRequire(import.meta.url)(glue);
-const m = await factory({ print: (s) => { lines.push(s); console.log(`[engine] ${s}`); }, printErr: (s) => console.error(`[engine!] ${s}`) });
-
-m.FS.writeFile('/ct_assets.dat', readFileSync(assets));
-if (existsSync(tables)) m.FS.writeFile('/ct_tables.dat', readFileSync(tables));
-m.FS.mkdir('/saves');
-
 let stopped = null;
-Promise.resolve(m.callMain([])).then((code) => { stopped = code ?? 0; }, (e) => { stopped = `error: ${e}`; });
+const options = {
+  print: (s) => { lines.push(s); console.log(`[engine] ${s}`); },
+  printErr: (s) => console.error(`[engine!] ${s}`),
+  onExit: (code) => { stopped = code ?? 0; },
+  onAbort: (what) => { stopped = `abort: ${what}`; },
+  preRun: [() => {
+    const fs = options.FS;
+    fs.writeFile('/ct_assets.dat', readFileSync(assets));
+    if (existsSync(tables)) fs.writeFile('/ct_tables.dat', readFileSync(tables));
+    fs.writeFile('/ct_settings.ini', '');
+    fs.mkdir('/saves');
+    if (sram) fs.writeFile('/saves/ct_sram.srm', readFileSync(sram));
+  }],
+};
+const m = await createRequire(import.meta.url)(glue)(options);
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 const t0 = performance.now();

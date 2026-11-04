@@ -56,3 +56,6 @@ apps/desktop/public/logos/icon-bot.ico
 apps/desktop/public/logos/icon-bot-256.png
 apps/desktop/public/logos/mark.svg
 # brock sync: generated icon files, end.
+
+# wasm build delivered to the renderer (build.mjs --out-app)
+apps/desktop/public/wasm/
