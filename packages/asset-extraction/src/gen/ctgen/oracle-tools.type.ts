@@ -46,11 +46,13 @@ interface TeleportRequest {
  */
 interface OracleTools extends OracleDriver {
   peek: (request: PeekRequest) => Promise<PeekResult>;
-  boot: (request: BootRequest) => Promise<BootResult>;
+  /** Renamed from `boot`, which OracleDriver already names (the ROM start-up). */
+  powerOn: (request: BootRequest) => Promise<BootResult>;
   /** `ct.exe --teleport scene tx ty facing --from start --out o --frames N` under the rule: the state it writes. */
   teleport: (request: TeleportRequest) => Promise<Uint8Array>;
   /** `ct.exe --monitor REGS --from state --frames N` under the rule: its stdout. */
-  monitor: (state: Uint8Array, regs: string, frames: number) => Promise<string>;
+  /** Renamed from `monitor`, which PeekOracle already names (the request form). */
+  monitorText: (state: Uint8Array, regs: string, frames: number) => Promise<string>;
   /** `ct.exe --owforce state world out` (the plain oracle): the state it writes. */
   owforce: (state: Uint8Array, world: number) => Promise<Uint8Array>;
 }

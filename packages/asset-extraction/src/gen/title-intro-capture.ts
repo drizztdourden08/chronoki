@@ -70,8 +70,8 @@ const checkWindow = (w: (a: number) => number): void => {
 /** The title_intro captures with every refusal check of tools/gen/title_intro.py applied. */
 const captureTitle = async (ctx: ImportContext): Promise<TitleCapture> => {
   const tools = requireTools(ctx);
-  const seedBoot = await tools.boot({ frames: SEED_FRAME, sram: null });
-  const gfx = await tools.boot({ frames: GFX_FRAME, sram: null });
+  const seedBoot = await tools.powerOn({ frames: SEED_FRAME, sram: null });
+  const gfx = await tools.powerOn({ frames: GFX_FRAME, sram: null });
   const a = await peek(ctx, gfx.state, '0:200', { rule: false });
   const b = await peek(ctx, gfx.state, '0:600', { rule: false });
   checkStatic(a.vram, b.vram);

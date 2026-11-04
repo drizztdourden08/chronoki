@@ -109,7 +109,7 @@ const render = (font: number[], bgp: number[], oamp: number[], text: number[]): 
 
 /** tools/gen/seq_credits.py: the data sequence-table entry 1 (the staff credits, $7E:6B04) runs on. */
 const genSeqCredits = async (ctx: ImportContext): Promise<string> => {
-  const boot = await requireTools(ctx).boot({ frames: BOOT_FRAMES, sram: null });
+  const boot = await requireTools(ctx).powerOn({ frames: BOOT_FRAMES, sram: null });
   const p1 = await peek(ctx, boot.state, '0:1', { rule: false });
   const p2 = await peek(ctx, boot.state, `0:${PAGE2_AFTER}`, { rule: false });
   checkCapture('capture A', p1.wram, 1);
