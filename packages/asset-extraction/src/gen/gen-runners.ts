@@ -9,6 +9,7 @@ import { genMenuWingrad } from './menu-wingrad';
 import { ORACLE_RUNNERS_A } from './oracle-runners-a';
 import { ORACLE_GEN_RUNNERS_B } from './oracle-gen-runners-b';
 import { genOwAnim } from './ow-anim';
+import { XLAT_RUNNERS } from './xlat-runners';
 
 /** A generator that reads only the ROM and writes src/data/<name>.h into the workdir (the file the C build would include). */
 const textGenStage =
@@ -27,6 +28,7 @@ const GEN_RUNNERS: Record<string, StageRun> = {
   ct_regroup: textGenStage('ct_regroup', genCtRegroup),
   ...ORACLE_RUNNERS_A,
   ...ORACLE_GEN_RUNNERS_B,
+  ...XLAT_RUNNERS,
 };
 
 export { GEN_RUNNERS, textGenStage };
