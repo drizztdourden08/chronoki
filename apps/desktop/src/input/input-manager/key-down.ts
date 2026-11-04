@@ -1,5 +1,6 @@
 /* @layer renderer-lib @kind logic */
 import { isTextInput } from '@chronoki/input-mapping';
+import { gameplayOwnsKeys, releaseFocus } from './gameplay-owns-keys';
 import type { InputManager } from './input-manager';
 
 const isShortcutChord = (e: KeyboardEvent): boolean =>
@@ -22,6 +23,12 @@ const keyDown = (m: InputManager, e: KeyboardEvent): void => {
   if (m.keyboardMap.has(e.code)) {
     e.preventDefault();
     m.keyStates.set(e.code, true);
+    return;
+  }
+
+  if (gameplayOwnsKeys(m, e)) {
+    e.preventDefault();
+    releaseFocus();
   }
 };
 
