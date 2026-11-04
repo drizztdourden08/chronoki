@@ -4,12 +4,18 @@ import { findGiftOperands } from './find-gift-operands';
 import {
   CTAS_TYPE_SCENE_HEADER, CTAS_TYPE_SCRIPT, GIFT_ID_PREFIX, SCENE_HEADER_SCRIPT_AT, SCENE_LOCATIONS,
 } from './gift-ops.constants';
+import { groupGiftOperands } from './group-gift-operands';
 import { readPackEntries } from './read-pack-entries';
-import type { PackEntry } from './read-pack-entries.type';
+import type { GiftGroup, PackEntry } from './read-pack-entries.type';
+
+const checkId = (loc: number, g: GiftGroup): string => {
+  const base = `${GIFT_ID_PREFIX}-${loc.toString(16).padStart(3, '0')}-o${g.object}`;
+  return g.variant === null ? base : `${base}-${g.variant}`;
+};
 
 const locationChecks = (pack: Uint8Array, loc: number, script: PackEntry): CheckDef[] =>
-  findGiftOperands(pack.subarray(script.start, script.start + script.length)).map((g, n) => ({
-    id: `${GIFT_ID_PREFIX}-${loc.toString(16).padStart(3, '0')}-${n}`,
+  groupGiftOperands(findGiftOperands(pack.subarray(script.start, script.start + script.length))).map((g) => ({
+    id: checkId(loc, g),
     kind: 'gift',
     locationId: loc,
     vanillaItem: g.item,

@@ -11,7 +11,7 @@ type CheckDef = {
   probe?: FlagProbe;
   vanillaItem: number;
   scriptId?: number;
-  patchAt?: number;
+  patchAt?: number[];
 };
 
 export type { CheckDef, CheckKind, FlagProbe };
