@@ -7,7 +7,8 @@
   "bin": { "import-core": "./src/cli.ts" },
   "scripts": {
     "import": "node src/cli.ts",
-    "check": "node src/cli.ts --check"
+    "check": "node src/cli.ts --check",
+    "typecheck": "tsc -p tsconfig.json"
   },
-  "devDependencies": { "@types/node": "catalog:" }
+  "devDependencies": { "@types/node": "catalog:", "typescript": "catalog:" }
 }
