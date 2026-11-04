@@ -93,6 +93,21 @@ const CREDITS: CreditCategory[] = [
     ],
   },
   {
+    id: 'icons',
+    title: 'Button & Controller Icons',
+    entries: [
+      {
+        name: 'Kenney',
+        project: 'Input Prompts',
+        description: 'Free game asset pack with 1500+ controller button/stick/key SVG icons (64x64).',
+        usage: 'assets-direct',
+        usageNote: 'Switch, Xbox, PlayStation, GameCube, Keyboard, and Generic SVG icons used as-is for button prompts.',
+        url: 'https://kenney.nl/assets/input-prompts',
+        license: 'CC0',
+      },
+    ],
+  },
+  {
     id: 'research',
     title: 'Research & Thanks',
     entries: [
