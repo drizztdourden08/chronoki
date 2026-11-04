@@ -11,6 +11,8 @@ const meta: ScreenMeta = {
 
 const asSeconds = (value: number): string => `${value} s`;
 
+const asMinutes = (seconds: number): string => (seconds >= 60 ? `${Math.floor(seconds / 60)}m` : `${seconds}s`);
+
 const asCount = (value: number): string => String(value);
 
 const sections: Section[] = [
@@ -19,22 +21,6 @@ const sections: Section[] = [
     title: 'Game Flow',
     subsections: [
       {
-        id: 'save-states',
-        title: 'Save States',
-        items: [
-          gateItem('saveStates'),
-          gateItem('enhancedSaveSlotShortcut'),
-          {
-            key: 'saveHoldDuration',
-            label: 'Hold to Save Duration',
-            description: 'How long to hold the key to save (seconds).',
-            hint: 'Needs Hold Save for Slot Picker.',
-            keywords: 'save hold duration time seconds',
-            control: { kind: 'range', min: 1, max: 5, step: 0.5, format: asSeconds },
-          },
-        ],
-      },
-      {
         id: 'save-auto',
         title: 'Auto-Save',
         items: [
@@ -42,18 +28,35 @@ const sections: Section[] = [
           {
             key: 'autoSaveIntervalSeconds',
             label: 'Auto-Save Interval',
-            description: 'How often a state is saved on its own.',
+            description: 'How often to create an automatic save',
             hint: 'Needs Enable Auto-Save.',
+            keywords: 'auto save interval time frequency',
+            control: { kind: 'range', min: 60, max: 1800, step: 60, format: asMinutes },
           },
           {
             key: 'autoSaveMaxEntries',
             label: 'Max Auto-Save Entries',
-            description: 'How many auto-saves to keep, removing the oldest first.',
-            hint: 'Needs Enable Auto-Save.',
+            description: 'Maximum number of auto-saves to keep (oldest are pruned)',
             keywords: 'auto save max limit entries prune keep',
             control: { kind: 'range', min: 1, max: 20, step: 1, format: asCount },
           },
           gateItem('saveOnQuit'),
+        ],
+      },
+      {
+        id: 'save-shortcuts',
+        title: 'Quick Save Shortcuts',
+        items: [
+          gateItem('saveStates'),
+          gateItem('enhancedSaveSlotShortcut'),
+          {
+            key: 'saveHoldDuration',
+            label: 'Hold to Save Duration',
+            description: 'How long to hold the key to save (seconds)',
+            hint: 'Needs Hold Save for Slot Picker.',
+            keywords: 'save hold duration time seconds',
+            control: { kind: 'range', min: 1, max: 5, step: 0.5, format: asSeconds },
+          },
         ],
       },
       {

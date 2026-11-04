@@ -7,6 +7,7 @@ import { useGameSession } from '@app/views/GameSession';
 import { useOverlaySlots } from './behavior/useOverlaySlots';
 import { useSaveOverlay } from './behavior/useSaveOverlay';
 import { shortcutLabel } from './behavior/shortcut-label';
+import { useCancelOnOtherInput } from './behavior/useCancelOnOtherInput';
 import { useOverlayPresence } from './behavior/useOverlayPresence';
 import { HOLDING_HINTS, IDLE_HINTS } from './SaveStateOverlay.constants';
 import { OverlayHints } from './sub-components/OverlayHints';
@@ -20,6 +21,8 @@ const SaveStateOverlay = () => {
   useEffect(() => {
     if (!running) closeSaveOverlay();
   }, [running]);
+
+  useCancelOnOtherInput(open, closeSaveOverlay);
 
   const { visible, exiting } = useOverlayPresence(open);
   if (!visible) return null;
@@ -51,7 +54,9 @@ const SaveStateOverlay = () => {
             </Box>
           ))}
         </Box>
-        <OverlayHints actions={holdProgress > 0 ? HOLDING_HINTS : IDLE_HINTS} slot={highlighted} holdProgress={holdProgress} />
+        {highlighted >= 0 && (
+          <OverlayHints actions={holdProgress > 0 ? HOLDING_HINTS : IDLE_HINTS} slot={highlighted} holdProgress={holdProgress} />
+        )}
       </Box>
     </Box>
   );
