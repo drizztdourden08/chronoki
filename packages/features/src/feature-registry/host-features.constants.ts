@@ -36,7 +36,7 @@ const HOST_FEATURES: FeatureDef[] = [
   {
     id: 'perGroupVolume', label: 'Independent Music / SFX', description: 'Set music and sound effects apart, with a volume for each.',
     userMessage: 'Set music and sound effects apart, with a volume for each.',
-    group: 'Audio', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: true, live: true,
+    group: 'Audio', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: true, live: true,
   },
   {
     id: 'gameInfo', label: 'Game Info widget',
