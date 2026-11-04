@@ -53,6 +53,28 @@ of the repo), to confirm its claims and its licence before we vendor it.
 
 The decision is on the board as a question on I-2.
 
+## Can BelthasarProject's core be taken without its frontend? (checked 2026-11-03)
+
+Mostly yes, with one file to carve. From its `CMakeLists.txt` and `src/`:
+
+- **Already frontend-free** (built into its headless, SDL-free `ct` target): the engine (`ct_vm`,
+  `battle`, `menu`, `scene`, `collision`, `player`, `world`, `oam`, ...), the scripted sequences
+  (`seq_*`), the sound driver (`src/sound/*`), the ROM layer (`ct_cpu_infra`, `rom_verify`, ...)
+  and LakeSnes (`snes/`). About 5 MB of the 6.8 MB of C.
+- **The frontend, to drop**: `present.c`/`present_vk.c` (SDL/Vulkan output), `settings.c`,
+  `launcher*`, `overlay.cpp` (ImGui), `touchpad.c`, the macOS and Android files.
+- **The one knot: `src/field.c`** (1.4 MB), the playable host. It includes `SDL.h` and holds the
+  frame loop, pacing, window and cursor calls in the same file as the field and world logic
+  (separate functions, shared globals). It must be split: the game side stays, the SDL calls go
+  behind a small host interface (clock, frame pacing, present, input, audio out), which is what
+  RotP's `core/game-hooks` is for zelda3.
+- **Assets**: the game reads a `ct_assets.dat` that Python scripts (`assets/*.py`) build from the
+  ROM. RotP's extractor is pure TS; we either port it or run theirs at import.
+
+Cost: the split is a bounded refactor (estimate one to three weeks of agent work), then a fork to
+keep in step with an upstream that pushes daily. Offering the split upstream as a PR would let us
+vendor their code unchanged.
+
 ## Toolchain (I-5, details in `decomp-tools.md`)
 
 snesrev's zelda3 method, still the reference: rewrite routine by routine in C using an existing
