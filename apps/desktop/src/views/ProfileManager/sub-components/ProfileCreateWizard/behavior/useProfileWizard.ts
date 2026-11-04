@@ -8,6 +8,7 @@ import { DEFAULT_PROFILE_PRESET, applyProfilePreset } from '@app/profiles/preset
 import type { ProfileWizardValues } from '../../../ProfileManager.type';
 import { profileWizardSteps } from './profile-wizard-steps';
 import { useModuleProfileSteps } from './useModuleProfileSteps';
+import { withRandomizerGate } from './with-randomizer-gate';
 
 const errorMessage = (failure: unknown): string => (failure instanceof Error ? failure.message : String(failure));
 
@@ -24,7 +25,7 @@ const useProfileWizard = (onCreated: (profile: Profile) => void) => {
     const { name, rom, preset } = values;
     try {
       const extra = wizardCreateOptions(moduleSteps, values);
-      const profile = await create({ ...extra, name: name.trim(), romFile: rom, initialConfig: applyProfilePreset(preset) });
+      const profile = await create({ ...extra, name: name.trim(), romFile: rom, initialConfig: withRandomizerGate(applyProfilePreset(preset), extra.randomizer !== undefined) });
       created.current = profile;
       return { success: true, id: profile.id };
     } catch (failure) {
