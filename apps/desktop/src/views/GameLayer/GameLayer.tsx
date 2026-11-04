@@ -5,20 +5,21 @@ import { Box, Text } from '@drizztdourden08/tessera/primitives';
 import { chronokiCore } from '@app/game/lifecycle';
 import { useGameSession } from '@app/views/GameSession';
 import { GAME_LAYER_ERROR_TITLE, GAME_LAYER_LABEL } from './GameLayer.constants';
+import { stageClass } from './behavior/stage-class';
 import { useGameBoot } from './behavior/useGameBoot';
 import { useGameInput } from './behavior/useGameInput';
 import './GameLayer.css';
 
 const GameLayer = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const { launch, onFunctionAction } = useGameSession();
+  const { launch, gates, onFunctionAction } = useGameSession();
   const { status, error } = useCoreState(chronokiCore);
   useGameBoot({ canvasRef, launch });
   useGameInput(status === 'running' || status === 'paused', launch?.profileId ?? null, onFunctionAction);
 
   return (
     <Box className="game-layer">
-      <Box className={launch ? 'game-layer__stage' : 'game-layer__stage game-layer__stage--idle'}>
+      <Box className={stageClass(launch !== null, gates)}>
         <GameCanvas canvasRef={canvasRef} label={GAME_LAYER_LABEL} />
       </Box>
       {status === 'error' && <Text className="game-layer__error" variant="body">{`${GAME_LAYER_ERROR_TITLE}: ${error ?? ''}`}</Text>}

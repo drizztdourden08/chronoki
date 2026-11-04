@@ -1,4 +1,6 @@
 /* @layer bridge-wasm @kind logic */
-const hostGate = (_id: string): boolean => false;
+import { hostGateState } from './host-gate-state';
+
+const hostGate = (id: string): boolean => hostGateState.effective.has(id);
 
 export { hostGate };
