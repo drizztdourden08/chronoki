@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind types */
-import type { Sprite } from '../shared/oam-decode';
+import type { Sprite } from '../shared/oam-decode.type';
 
 type Spec = [pal: number, pose: string, repF: number, ...extra: number[]];
 

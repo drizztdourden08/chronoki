@@ -3,7 +3,9 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import { BTN, emitStance } from './battle-stance-emit';
 import type { GenFiles } from './oracle-gen-stage';
-import { decodeOam, oamBlob, oamCgram } from './shared/oam-decode';
+import { decodeOam } from './shared/oam-decode';
+import { oamCgram } from './shared/oam-cgram';
+import { oamBlob } from './shared/oam-blob';
 
 /** The active-PC bracket corner (own asset), excluded from the bake. */
 const BRACKET_TILE = 0x006;

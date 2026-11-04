@@ -3,7 +3,8 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import type { GenFiles } from './oracle-gen-stage';
 import { cgramOf } from './shared/fb-decode';
-import { block16, cgramRgb } from './shared/tile-decode';
+import { block16 } from './shared/block16';
+import { cgramRgb } from './shared/cgram-rgb';
 
 const HEAD = [
   '// menu_arrow.h - the ribbon SELECTION cursor arrow (the ▼/▲ straddling the highlighted icon).',

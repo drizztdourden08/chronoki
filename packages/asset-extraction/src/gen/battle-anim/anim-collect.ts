@@ -2,8 +2,10 @@
 import type { ImportContext } from '../../pipeline/import-context.type';
 import { peekOracle } from '../../oracle/peek-access';
 import type { PeekDump } from '../../oracle/peek.type';
-import type { Sprite } from '../shared/oam-decode';
-import { decodeOam, oamBlob, oamCgram } from '../shared/oam-decode';
+import type { Sprite } from '../shared/oam-decode.type';
+import { decodeOam } from '../shared/oam-decode';
+import { oamCgram } from '../shared/oam-cgram';
+import { oamBlob } from '../shared/oam-blob';
 import { KEYS } from './anim-consts.constants';
 import { combatant } from './combatant';
 import { scriptFor } from './script-for';

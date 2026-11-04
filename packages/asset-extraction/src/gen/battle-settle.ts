@@ -4,8 +4,9 @@ import { peekOracle, recipeState } from '../oracle/peek-access';
 import { emitSettle, NTILE } from './battle-settle-emit';
 import type { SettleKf } from './battle-settle-emit';
 import type { GenFiles } from './oracle-gen-stage';
-import { decodeOam, oamBlob } from './shared/oam-decode';
-import type { Sprite } from './shared/oam-decode';
+import { decodeOam } from './shared/oam-decode';
+import { oamBlob } from './shared/oam-blob';
+import type { Sprite } from './shared/oam-decode.type';
 
 /** The active-PC selection bracket: excluded (its own asset). */
 const BRACKET = 0x006;

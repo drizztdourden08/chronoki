@@ -6,8 +6,12 @@ import { hex } from './c-text';
 import { atkFacesText } from './battle-gato-atkfaces/atkfaces-emit';
 import type { Face, Pose } from './battle-gato-atkfaces/atkfaces-emit.type';
 import type { GenFiles } from './oracle-gen-stage';
-import { BRACKET_TILE, bodyMd5, gatoFoot, tileSheet } from './shared/gato-bake';
-import { decodeOam, oamBlob } from './shared/oam-decode';
+import { tileSheet } from './shared/tile-sheet';
+import { bodyMd5 } from './shared/body-md5';
+import { gatoFoot } from './shared/gato-foot';
+import { BRACKET_TILE } from './shared/gato-bake.constants';
+import { decodeOam } from './shared/oam-decode';
+import { oamBlob } from './shared/oam-blob';
 import { peekSaved } from './shared/peek-save';
 
 const CRONO_AT: Record<string, [number, number]> = { L: [96, 111], R: [180, 111], U: [136, 55] };

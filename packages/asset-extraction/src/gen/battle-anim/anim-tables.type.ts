@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind types */
-import type { Sprite } from '../shared/oam-decode';
+import type { Sprite } from '../shared/oam-decode.type';
 
 type Mon = Map<number, Sprite[]>;
 type CronoStep = [F: number, dx: number | null, dy: number | null, pose: number];

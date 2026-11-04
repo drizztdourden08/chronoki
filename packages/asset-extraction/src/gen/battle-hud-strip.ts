@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { PeekDump } from '../oracle/peek.type';
-import { rgbOfFb } from './shared/fb-decode';
+import { rgbOfFb } from './shared/rgb-of-fb';
 
 type Rgb3 = [number, number, number];
 

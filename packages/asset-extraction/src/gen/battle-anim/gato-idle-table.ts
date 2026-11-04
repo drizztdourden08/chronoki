@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { Mon, GatoStep } from './anim-tables.type';
-import type { Sprite } from '../shared/oam-decode';
+import type { Sprite } from '../shared/oam-decode.type';
 import { inView } from './in-view';
 import { BRACKET_TILE, GATO_REF } from './anim-consts.constants';
 

@@ -1,33 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-interface Sprite {
-  idx: number;
-  x: number;
-  y: number;
-  tile: number;
-  attr: number;
-  prio: number;
-  pal: number;
-  size: number;
-  vflip: number;
-  hflip: number;
-  onscreen: boolean;
-}
-
-const OAM_SIZE = 544;
-
-const oamBlob = (sidecar: Uint8Array): Uint8Array => {
-  if (sidecar.length === OAM_SIZE) return sidecar;
-  if (sidecar.length !== 1056 && sidecar.length !== 1568) {
-    throw new Error(`not a 544/1056/1568-byte .oam sidecar (${sidecar.length} bytes)`);
-  }
-  const out = new Uint8Array(OAM_SIZE);
-  out.set(sidecar.subarray(0, 512), 0);
-  out.set(sidecar.subarray(1024, 1056), 512);
-  return out;
-};
-
-const oamCgram = (sidecar: Uint8Array): Uint8Array | null =>
-  sidecar.length === 1568 ? sidecar.slice(1056, 1568) : null;
+import type { Sprite } from './oam-decode.type';
+import { OAM_SIZE } from './oam-decode.constants';
 
 const decodeOam = (data: Uint8Array): Sprite[] => {
   if (data.length < OAM_SIZE) throw new Error(`OAM blob must be ${OAM_SIZE} bytes, got ${data.length}`);
@@ -58,5 +31,4 @@ const decodeOam = (data: Uint8Array): Sprite[] => {
   return sprites;
 };
 
-export type { Sprite };
-export { decodeOam, oamBlob, oamCgram };
+export { decodeOam };

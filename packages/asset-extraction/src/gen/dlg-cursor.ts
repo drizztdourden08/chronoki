@@ -3,7 +3,7 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState, teleportState } from '../oracle/peek-access';
 import { requireBytes } from '../pipeline/work-files';
 import type { GenFiles } from './oracle-gen-stage';
-import { rgbOfFb } from './shared/fb-decode';
+import { rgbOfFb } from './shared/rgb-of-fb';
 
 const CELL_X = 16;
 const CELL_Y = 10;

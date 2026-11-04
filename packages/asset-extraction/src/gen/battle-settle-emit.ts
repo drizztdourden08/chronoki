@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
-import { dec, hexN } from './shared/py-format';
-import type { Sprite } from './shared/oam-decode';
+import { dec } from './shared/py-format';
+import { hexN } from './shared/hex-n';
+import type { Sprite } from './shared/oam-decode.type';
 
 const NTILE = 0x40;
 

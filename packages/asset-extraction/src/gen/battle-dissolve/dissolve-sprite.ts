@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { tile4 } from '../shared/tile-decode';
+import { tile4 } from '../shared/tile4';
 import { ENEMY_TILES, TILE_ORIGIN } from './dissolve-sprite.constants';
 
 const sprite = (vram: Uint8Array): number[] => {

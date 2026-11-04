@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import { hex } from '../c-text';
-import { NTILE, sheetRows } from '../shared/gato-bake';
+import { sheetRows } from '../shared/sheet-rows';
+import { NTILE } from '../shared/gato-bake.constants';
 import { dec } from '../shared/py-format';
 import type { Pose, Face } from './atkfaces-emit.type';
 import { HEAD } from './atkfaces-emit.constants';

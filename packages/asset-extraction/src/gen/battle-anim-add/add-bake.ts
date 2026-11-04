@@ -4,7 +4,8 @@ import { peekOracle } from '../../oracle/peek-access';
 import { bakeTiles } from '../battle-anim/bake-tiles';
 import { combatant } from '../battle-anim/combatant';
 import { holdScript } from '../battle-anim/hold-script';
-import { decodeOam, oamBlob } from '../shared/oam-decode';
+import { decodeOam } from '../shared/oam-decode';
+import { oamBlob } from '../shared/oam-blob';
 import type { Spec, AddKf, AddGroup } from './add-bake.type';
 
 const bakeGroup = async (ctx: ImportContext, state: Uint8Array, specs: Spec[]): Promise<AddGroup> => {

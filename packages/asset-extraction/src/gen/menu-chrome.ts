@@ -4,7 +4,7 @@ import { peekOracle, recipeState } from '../oracle/peek-access';
 import { chromeText } from './menu-chrome/chrome-text';
 import type { GenFiles } from './oracle-gen-stage';
 import { cgramOf } from './shared/fb-decode';
-import { hexN } from './shared/py-format';
+import { hexN } from './shared/hex-n';
 
 const TMW = 32;
 const TMH = 28;

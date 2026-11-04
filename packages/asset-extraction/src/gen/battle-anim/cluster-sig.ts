@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { Sprite } from '../shared/oam-decode';
+import type { Sprite } from '../shared/oam-decode.type';
 import { inView } from './in-view';
 import { hex } from '../c-text';
 

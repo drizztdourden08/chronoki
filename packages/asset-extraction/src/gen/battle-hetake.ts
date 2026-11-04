@@ -5,8 +5,9 @@ import { hetakeText } from './battle-hetake/hetake-emit';
 import type { Cell, Cluster } from './battle-hetake/hetake-emit.type';
 import type { GenFiles } from './oracle-gen-stage';
 import { cgramOf } from './shared/fb-decode';
-import { decodeOam, oamBlob } from './shared/oam-decode';
-import type { Sprite } from './shared/oam-decode';
+import { decodeOam } from './shared/oam-decode';
+import { oamBlob } from './shared/oam-blob';
+import type { Sprite } from './shared/oam-decode.type';
 
 /** The 16x16-cell tile range [lo,hi) of each slot's Hetake body. */
 const SLOT_TILES: [number, number][] = [[0x40, 0x48], [0x48, 0x50], [0x60, 0x68]];

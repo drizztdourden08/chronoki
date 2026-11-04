@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
-import { hexN } from './shared/py-format';
+import { hexN } from './shared/hex-n';
 import type { GenFiles } from './oracle-gen-stage';
 
 const REGS = '7E0100:2,7E0020:2,7E0026:2,7E00E3:1,7E00E7:1';

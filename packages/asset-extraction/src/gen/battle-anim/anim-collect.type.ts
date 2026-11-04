@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind types */
 import type { Key } from './anim-consts.type';
-import type { Sprite } from '../shared/oam-decode';
+import type { Sprite } from '../shared/oam-decode.type';
 
 interface Keyframe {
   key: Key;

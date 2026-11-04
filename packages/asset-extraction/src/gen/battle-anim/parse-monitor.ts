@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { Sprite } from '../shared/oam-decode';
+import type { Sprite } from '../shared/oam-decode.type';
 import { MON } from './anim-sprites.constants';
 import { decodeOam } from '../shared/oam-decode';
 

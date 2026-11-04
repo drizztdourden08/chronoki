@@ -5,8 +5,9 @@ import type { PeekOracle } from '../oracle/peek.type';
 import { emitMarleAtk, NTILE } from './battle-marleatk-emit';
 import type { MarleKf, SparkKf, TrajRow } from './battle-marleatk-emit';
 import type { GenFiles } from './oracle-gen-stage';
-import { decodeOam, oamBlob } from './shared/oam-decode';
-import type { Sprite } from './shared/oam-decode';
+import { decodeOam } from './shared/oam-decode';
+import { oamBlob } from './shared/oam-blob';
+import type { Sprite } from './shared/oam-decode.type';
 
 const BRK = 0x006;
 const MARLE_HOME = [164, 63];
