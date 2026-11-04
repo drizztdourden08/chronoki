@@ -6,6 +6,7 @@ import { genCollSlope } from './coll-slope';
 import { genCtRegroup } from './ct-regroup';
 import { genMenuRomdata } from './menu-romdata';
 import { genMenuWingrad } from './menu-wingrad';
+import { ORACLE_RUNNERS_A } from './oracle-runners-a';
 import { genOwAnim } from './ow-anim';
 import { ROM_GEN_RUNNERS } from './rom-gen-runners';
 
@@ -25,6 +26,7 @@ const GEN_RUNNERS: Record<string, StageRun> = {
   ow_anim: textGenStage('ow_anim', genOwAnim),
   ct_regroup: textGenStage('ct_regroup', genCtRegroup),
   ...ROM_GEN_RUNNERS,
+  ...ORACLE_RUNNERS_A,
 };
 
 export { GEN_RUNNERS, textGenStage };

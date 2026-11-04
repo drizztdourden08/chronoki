@@ -33,7 +33,8 @@ counted in setup.py's "progress K/N". Ported 10, pending 55. Python paths are re
 | ct_regroup | gen/ct_regroup.py | generate | ported (`gen/ct-regroup.ts`) |
 | menu_desc | gen/menu_desc.py | generate | pending (text.py, compile) |
 | menu_equip, menu_techrom, animeng_pc, battle_hud_chrome | gen/<name>.py | generate | pending (ROM only, next to port) |
-| the other 37 gens (title_intro, seq_*, battle_*, ct_*, ow_*, dlg_cursor, menu_*) | gen/<name>.py, gen/xlat_all.py | generate | pending (oracle power-on) |
+| animeng_gato, atbsel, battle_anim, battle_anim_add, battle_dissolve, battle_fx, battle_gato_atkfaces, battle_gato_faces, battle_hetake, battle_hud, battle_hud_sub, battle_marleatk, battle_settle, battle_stance, ct_charbase, ct_ng_pan, dlg_cursor, menu_arrow, menu_chrome | gen/<name>.py | generate | ported (`gen/<name>.ts`, registered in `gen/oracle-runners-a.ts`; need the oracle `PeekOracle` driver, `oracle/peek.type.ts`; --verify paths not ported) |
+| the other 18 gens (title_intro, seq_*, xlat_all stages, battle_hud_chrome excluded, ct_*, ow_*, menu_*) | gen/<name>.py, gen/xlat_all.py | generate | pending (oracle power-on) |
 | pack-tables | gen/pack_tables.py pack | tail | ported (`tables/pack-tables-stage.ts`; layout width from `ctx.abi`) |
 | steam-margins | steam_wide.py | tail | pending |
 | write-player-assets | gen/pack_tables.py into | tail | ported |
