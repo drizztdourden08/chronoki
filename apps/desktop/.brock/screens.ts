@@ -4,6 +4,7 @@ import config from '../src/screens/screens.config';
 import { searchIndex } from './search';
 import { meta as creditsCardMeta } from '../src/screens/credits.card';
 import { meta as dataLibraryLibraryPageMeta } from '../src/screens/data/library/library.page';
+import GameEnhancementsSettings, { meta as gameEnhancementsSettingsMeta } from '../src/screens/game/enhancements.settings';
 import { meta as gameGameplayControlsCustomMeta } from '../src/screens/game/gameplay/controls.custom';
 import GameGeneralSettings, { meta as gameGeneralSettingsMeta } from '../src/screens/game/general.settings';
 import { meta as gameHomeHeroMeta } from '../src/screens/game/home.hero';
@@ -13,6 +14,7 @@ import { meta as gameViewBaseMeta } from '../src/screens/game-view.base';
 const screenTree = buildScreenTree(config, [
   { kind: 'card', id: 'credits', component: lazyComponent(() => import('../src/screens/credits.card')), meta: creditsCardMeta },
   { kind: 'page', bucket: 'data', group: 'library', id: 'library', component: lazyComponent(() => import('../src/screens/data/library/library.page')), meta: dataLibraryLibraryPageMeta },
+  { kind: 'settings', bucket: 'game', id: 'enhancements', sections: GameEnhancementsSettings, meta: gameEnhancementsSettingsMeta },
   { kind: 'custom', bucket: 'game', group: 'gameplay', id: 'controls', component: lazyComponent(() => import('../src/screens/game/gameplay/controls.custom')), meta: gameGameplayControlsCustomMeta },
   { kind: 'settings', bucket: 'game', id: 'general', sections: GameGeneralSettings, meta: gameGeneralSettingsMeta },
   { kind: 'hero', bucket: 'game', id: 'home', component: lazyComponent(() => import('../src/screens/game/home.hero')), meta: gameHomeHeroMeta },
