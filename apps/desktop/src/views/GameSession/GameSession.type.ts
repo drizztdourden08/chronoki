@@ -12,12 +12,16 @@ interface GameLaunch {
 interface GameSessionValue {
   launch: GameLaunch | null;
   notice: string | null;
+  running: boolean;
+  paused: boolean;
   config: string;
   settings: CkSettings;
   volume: number;
   gates: ReadonlySet<string>;
   play: () => void;
   stop: () => void;
+  reset: () => void;
+  togglePause: () => void;
   onStarted: () => void;
   onFunctionAction: (action: FunctionAction) => void;
   onFunctionRelease: (action: FunctionAction) => void;

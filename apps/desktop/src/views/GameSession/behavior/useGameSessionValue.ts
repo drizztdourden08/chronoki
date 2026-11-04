@@ -1,6 +1,7 @@
 /* @layer renderer-appshell @kind hook */
 import { useCallback, useMemo, useState } from 'react';
-import { activeGameHolder } from '@app/game/lifecycle';
+import { useCoreState } from '@drizztdourden08/brock-port-kit/renderer';
+import { activeGameHolder, chronokiCore, setGamePaused } from '@app/game/lifecycle';
 import { NOTICE_NO_PROFILE, NOTICE_NO_ROM } from '../GameSession.constants';
 import type { GameLaunch, GameSessionValue } from '../GameSession.type';
 import { attachAudioFrameCounter } from './attach-audio-frame-counter';
@@ -20,6 +21,9 @@ const useGameSessionValue = (): GameSessionValue => {
   const [launch, setLaunch] = useState<GameLaunch | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [counter, setCounter] = useState(0);
+  const { status } = useCoreState(chronokiCore);
+  const running = launch !== null && (status === 'running' || status === 'paused');
+  const paused = status === 'paused';
 
   const play = useCallback(() => {
     if (!profile) {
@@ -36,6 +40,10 @@ const useGameSessionValue = (): GameSessionValue => {
 
   const stop = useCallback(() => setLaunch(null), []);
 
+  const reset = play;
+
+  const togglePause = useCallback(() => setGamePaused(!paused), [paused]);
+
   const onStarted = useCallback(() => {
     const game = activeGameHolder.current;
     if (game) attachAudioFrameCounter(game.session.audio);
@@ -51,8 +59,8 @@ const useGameSessionValue = (): GameSessionValue => {
   useLaunchProbes(launch);
 
   return useMemo(
-    () => ({ launch, notice, ...core, play, stop, onStarted, onFunctionAction, onFunctionRelease }),
-    [launch, notice, core, play, stop, onStarted, onFunctionAction, onFunctionRelease],
+    () => ({ launch, notice, running, paused, ...core, play, stop, reset, togglePause, onStarted, onFunctionAction, onFunctionRelease }),
+    [launch, notice, running, paused, core, play, stop, reset, togglePause, onStarted, onFunctionAction, onFunctionRelease],
   );
 };
 
