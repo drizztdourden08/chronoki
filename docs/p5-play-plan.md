@@ -73,7 +73,7 @@ It passes when:
   errors;
 - title.png is not black.
 
-Second launch: `--probe-state` (quick save and load in the field). Third launch: `--probe-import` (expected to fail until
+Second launch: `--probe-state --screenshot=state` (quick save and load in the field; the screenshot flag makes the app quit when the probe ends). Third launch: `--probe-import` (expected to fail until
 P4 is verified).
 
 The pack staged in test-roms/data is git-ignored and never committed.
