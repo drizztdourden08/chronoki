@@ -1,9 +1,9 @@
 /* @layer renderer-app @kind types */
-import type { MutableRefObject } from 'react';
+import type { RefObject } from 'react';
 
 interface SettingsEffectDeps {
   changedKeys: string[];
-  restartToastShownRef: MutableRefObject<boolean>;
+  restartToastShownRef: RefObject<boolean>;
 }
 
 export type { SettingsEffectDeps };
