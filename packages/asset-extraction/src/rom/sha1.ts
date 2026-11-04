@@ -23,15 +23,15 @@ const roundOf = (t: number, b: number, c: number, d: number): [number, number] =
 /** SHA-1 as lower-case hex, in plain TypeScript so the same code runs in Node and in a web worker. */
 const sha1Hex = (data: Uint8Array): string => {
   const view = padded(data);
-  const h = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
+  const h: [number, number, number, number, number] = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
   const w = new Uint32Array(80);
   for (let off = 0; off < view.byteLength; off += 64) {
     for (let t = 0; t < 16; t += 1) w[t] = view.getUint32(off + t * 4);
-    for (let t = 16; t < 80; t += 1) w[t] = rotl(w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16], 1);
+    for (let t = 16; t < 80; t += 1) w[t] = rotl((w[t - 3] as number) ^ (w[t - 8] as number) ^ (w[t - 14] as number) ^ (w[t - 16] as number), 1);
     let [a, b, c, d, e] = h;
     for (let t = 0; t < 80; t += 1) {
       const [f, k] = roundOf(t, b, c, d);
-      const next = (rotl(a, 5) + (f >>> 0) + e + k + w[t]) >>> 0;
+      const next = (rotl(a, 5) + (f >>> 0) + e + k + (w[t] as number)) >>> 0;
       e = d;
       d = c;
       c = rotl(b, 30);

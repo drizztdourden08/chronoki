@@ -34,7 +34,7 @@ const collect = async (ctx: ImportContext, state: Uint8Array): Promise<Collected
   const kfs: Keyframe[] = [];
   const objFlat: Sprite[] = [];
   const tiles: Uint8Array[][] = [];
-  let cgram = new Uint8Array(0);
+  let cgram: Uint8Array = new Uint8Array(0);
   for (const key of KEYS) {
     const id = `${key.driver}:${key.repFrame}`;
     let dump = dumps.get(id);

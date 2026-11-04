@@ -33,11 +33,11 @@ const numberValue = (s: string): bigint => {
  */
 const evaluateExpr = (defines: DefineMap, toks: PackToken[], context = '', depth = 0): bigint => {
   let i = 0;
-  const peek = (): string | null => (i < toks.length ? toks[i].text : null);
+  const peek = (): string | null => (i < toks.length ? (toks[i] as PackToken).text : null);
   const take = (): PackToken => {
     if (i >= toks.length) throw new PackError(`${context}: unexpected end of an expression`);
     i += 1;
-    return toks[i - 1];
+    return toks[i - 1] as PackToken;
   };
 
   const primary = (): bigint => {
@@ -51,7 +51,7 @@ const evaluateExpr = (defines: DefineMap, toks: PackToken[], context = '', depth
     if (kind === 'chr') {
       const b = unescape(text.slice(1, -1));
       if (b.length !== 1) throw new PackError(`multi-char literal ${text}`);
-      return BigInt(b[0]);
+      return BigInt(b[0] as number);
     }
     const sub = kind === 'id' ? defines.get(text) : undefined;
     if (sub !== undefined) {
@@ -74,7 +74,7 @@ const evaluateExpr = (defines: DefineMap, toks: PackToken[], context = '', depth
   const binary = (level: number): bigint => {
     if (level === PREC.length) return unary();
     let v = binary(level + 1);
-    while (PREC[level].includes(peek() ?? '')) {
+    while ((PREC[level] as string[]).includes(peek() ?? '')) {
       const op = take().text;
       v = applyOp(op, v, binary(level + 1));
     }

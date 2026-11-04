@@ -11,7 +11,7 @@ const unescape = (body: string): Uint8Array => {
   const out: number[] = [];
   let i = 0;
   while (i < body.length) {
-    const c = body[i];
+    const c = body[i] as string;
     if (c.charCodeAt(0) > 127) throw new PackError(`non-ASCII character in a literal: ${JSON.stringify(body)}`);
     if (c !== '\\') {
       out.push(c.charCodeAt(0));
@@ -28,7 +28,7 @@ const unescape = (body: string): Uint8Array => {
       out.push(parseInt(oct[0], 8) & 0xff);
       i += 1 + oct[0].length;
     } else if (e !== undefined && Object.hasOwn(ESC, e)) {
-      out.push(ESC[e]);
+      out.push(ESC[e] as number);
       i += 2;
     } else {
       throw new PackError(`unknown escape \\${e ?? ''}`);

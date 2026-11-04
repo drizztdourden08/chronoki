@@ -11,14 +11,14 @@ interface DefineLog {
 }
 
 const sameTokens = (a: PackToken[], b: PackToken[]): boolean =>
-  a.length === b.length && a.every((t, i) => t.kind === b[i].kind && t.text === b[i].text);
+  a.length === b.length && a.every((t, i) => t.kind === (b[i] as PackToken).kind && t.text === (b[i] as PackToken).text);
 
 const recordDefine = (line: string, header: string, log: DefineLog): boolean => {
   const d = /^#\s*define\s+(\w+)(\(?)\s*(.*)$/.exec(line);
   if (d === null) return false;
-  if (d[2] !== '') throw new PackError(`${header}: function-like macro ${d[1]}`);
-  const name = d[1];
-  const toks = lex(d[3].trim());
+  if (d[2] !== '') throw new PackError(`${header}: function-like macro ${d[1] as string}`);
+  const name = d[1] as string;
+  const toks = lex((d[3] as string).trim());
   const known = log.defines.get(name);
   if (known !== undefined && !sameTokens(known, toks)) throw new PackError(`${header}: #define ${name} differs from another header`);
   if (known === undefined) log.order.push({ header, name });

@@ -19,11 +19,11 @@ interface TokenCursor {
 const createCursor = (toks: LexToken[], header: string): TokenCursor => {
   let p = 0;
   return {
-    peek: (k = 0) => (p + k < toks.length ? toks[p + k].text : null),
-    peekKind: () => (p < toks.length ? toks[p].kind : null),
+    peek: (k = 0) => (p + k < toks.length ? (toks[p + k] as LexToken).text : null),
+    peekKind: () => (p < toks.length ? (toks[p] as LexToken).kind : null),
     take: (want) => {
       if (p >= toks.length) throw new PackError(`${header}: unexpected end`);
-      const tok = toks[p];
+      const tok = toks[p] as LexToken;
       if (want !== undefined && tok.text !== want) {
         throw new PackError(`${header}: expected ${JSON.stringify(want)}, found ${JSON.stringify(tok.text)} near offset ${tok.start}`);
       }
@@ -31,8 +31,8 @@ const createCursor = (toks: LexToken[], header: string): TokenCursor => {
       return tok;
     },
     done: () => p >= toks.length,
-    nextStart: () => toks[p].start,
-    lastEnd: () => toks[p - 1].end,
+    nextStart: () => (toks[p] as LexToken).start,
+    lastEnd: () => (toks[p - 1] as LexToken).end,
   };
 };
 

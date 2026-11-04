@@ -71,7 +71,7 @@ const createInitWriter = (env: WriterEnv) => {
     let i = from;
     for (const sub of subobjects(t)) {
       if (i >= items.length) break;
-      const it = items[i];
+      const it = items[i] as InitNode;
       if (it.kind === 'list') {
         braced(sub.type, off + sub.offset, it, dry);
         i += 1;
@@ -93,7 +93,7 @@ const createInitWriter = (env: WriterEnv) => {
     const items = node.items;
     if (!isAggregate(t)) {
       if (items.length !== 1) err(`a braced scalar with ${items.length} items`);
-      return scalar(t, off, items[0], dry);
+      return scalar(t, off, items[0] as InitNode, dry);
     }
     const only = items[0] as InitNode | undefined;
     if (isCharArray(t) && items.length === 1 && only?.kind === 'str') return string(t, off, only.bytes, dry);
@@ -120,7 +120,7 @@ const countElements = (elem: CType, init: InitNode, name: string): number => {
   let i = 0;
   let n = 0;
   while (i < items.length) {
-    const it = items[i];
+    const it = items[i] as InitNode;
     const flat = it.kind === 'list' || !isAggregate(elem) || (it.kind === 'str' && isCharArray(elem));
     i = flat ? i + 1 : dry.fill(elem, 0, items, i, true);
     n += 1;

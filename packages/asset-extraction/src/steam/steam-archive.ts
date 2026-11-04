@@ -20,7 +20,7 @@ const keystreamXor = (data: Uint8Array, seed: number): Uint8Array => {
 
 /** Inflates a gzip (the archive's blocks) or zlib (PNG) stream. */
 const inflate = async (data: Uint8Array, format: 'gzip' | 'deflate'): Promise<Uint8Array> => {
-  const stream = new Blob([data]).stream().pipeThrough(new DecompressionStream(format));
+  const stream = new Blob([new Uint8Array(data)]).stream().pipeThrough(new DecompressionStream(format));
   return new Uint8Array(await new Response(stream).arrayBuffer());
 };
 
