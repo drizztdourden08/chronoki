@@ -2,6 +2,7 @@
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { chronokiAutomationFlags } from '../automation/chronoki-automation-flags';
+import { launchCwd } from '../automation/launch-cwd';
 import type { AppendResult } from './append-event-log.type';
 import { EVENT_LOG_FLAG } from './test-handlers.constants';
 
@@ -12,7 +13,7 @@ const appendEventLog = (event: unknown): AppendResult => {
   if (raw === null) return { success: false, error: `${EVENT_LOG_FLAG} is not set` };
   if (!isJsonObject(event)) return { success: false, error: 'an event is a JSON object' };
   try {
-    const path = resolve(raw);
+    const path = resolve(launchCwd(), raw);
     mkdirSync(dirname(path), { recursive: true });
     appendFileSync(path, `${JSON.stringify(event)}\n`, 'utf8');
     return { success: true };
