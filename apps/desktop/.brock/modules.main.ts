@@ -3,11 +3,13 @@ import type { MainModule } from '@drizztdourden08/brock-electron/main';
 import displayMain from '@drizztdourden08/brock-display/main';
 import portKitMain from '@drizztdourden08/brock-port-kit/main';
 import inputMain from '@drizztdourden08/brock-input/main';
+import randomizerMain from '@drizztdourden08/brock-randomizer/main';
 
 const mainModules: MainModule[] = [
   displayMain,
   portKitMain,
   inputMain,
+  randomizerMain,
 ];
 
 export { mainModules };

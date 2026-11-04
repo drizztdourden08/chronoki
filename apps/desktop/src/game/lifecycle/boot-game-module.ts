@@ -4,7 +4,7 @@ import type { PortSession } from '@drizztdourden08/brock-port-kit/renderer';
 import { createPortSession } from '@drizztdourden08/brock-port-kit/renderer';
 import type { CkSettings } from '@chronoki/game-core';
 import { CT_SRAM_FILE, DEFAULT_CK_SETTINGS, frameSizeOf, sizePortFrame } from '@chronoki/game-core';
-import { chronokiCore } from './chronoki-core';
+import { seededCore } from '../randomizer/seeded-core';
 import { readProfileSram } from './read-profile-sram';
 import { steamBootFiles } from './steam-boot-files';
 import type { StartGameRequest } from './start-game.type';
@@ -15,7 +15,7 @@ const bootGameModule = async (request: StartGameRequest, store: SaveStore): Prom
   const frameFiles = sizePortFrame(frameSizeOf(settings ?? DEFAULT_CK_SETTINGS));
   const steamFiles = await steamBootFiles(settings);
   const session = createPortSession<CkSettings>({
-    core: chronokiCore,
+    core: seededCore(request.profileId),
     canvas,
     files,
     romFile,
