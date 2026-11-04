@@ -1,6 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { CkStateParts } from './ck-state.type';
-import { CKST_HEADER_BYTES, CKST_LENGTH_BYTES, CKST_MAGIC, CKST_VERSION } from './ck-state.constants';
+import { CKST_HEADER_BYTES, CKST_LENGTH_BYTES, CKST_MAGIC, CKST_VERSION_V1 } from './ck-state.constants';
 
 const encodeCkState = (parts: CkStateParts): Uint8Array => {
   const sections = [parts.scene, parts.apu, parts.options];
@@ -8,7 +8,7 @@ const encodeCkState = (parts: CkStateParts): Uint8Array => {
   const out = new Uint8Array(total);
   const view = new DataView(out.buffer);
   out.set(new TextEncoder().encode(CKST_MAGIC), 0);
-  view.setUint32(CKST_LENGTH_BYTES, CKST_VERSION, true);
+  view.setUint32(CKST_LENGTH_BYTES, CKST_VERSION_V1, true);
   let at = CKST_HEADER_BYTES;
   for (const section of sections) {
     view.setUint32(at, section.length, true);
