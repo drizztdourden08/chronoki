@@ -1,4 +1,4 @@
-/* @layer shared-asset-extraction @kind constants */
+/* @layer shared-asset-extraction @kind verbatim @source the text-token defaults of Belthasar's dialogue decoder, written into the text pack */
 
 const DICT_BASE = 0x1efa00;
 const DICT_COUNT = 128;

@@ -26,23 +26,29 @@ const battleMessage = (rom: Uint8Array, start: number, seen: Set<number>): void 
   }
 };
 
+const isLoopTail = (rom: Uint8Array, at: number, b: number): boolean =>
+  b === 0xee && byteAt(rom, at + 1) === 0x0f && byteAt(rom, at + 2) === 0xa0;
+
+const jumpTarget = (rom: Uint8Array, at: number): number | null =>
+  byteAt(rom, at + 1) === 0xbb && byteAt(rom, at + 2) === 0x75 ? null : C1 + wordAt(rom, at + 1);
+
+const scanHandler = (rom: Uint8Array, hb: number, seen: Set<number>): number | null => {
+  for (let i = 0; i < 0x100; i += 1) {
+    for (let k = hb + i; k < hb + i + 5; k += 1) seen.add(k);
+    const b = byteAt(rom, hb + i);
+    if (isLoopTail(rom, hb + i, b)) return null;
+    if (b === 0x4c) return jumpTarget(rom, hb + i);
+    if (b === 0x60 || b === 0x6b) return null;
+  }
+  return null;
+};
+
 const animFreeScan = (rom: Uint8Array, h: number, seen: Set<number>): void => {
   let hb = C1 + h;
   for (let hop = 0; hop < 4; hop += 1) {
-    let jumped = false;
-    for (let i = 0; i < 0x100; i += 1) {
-      for (let k = hb + i; k < hb + i + 5; k += 1) seen.add(k);
-      const b = byteAt(rom, hb + i);
-      if (b === 0xee && byteAt(rom, hb + i + 1) === 0x0f && byteAt(rom, hb + i + 2) === 0xa0) return;
-      if (b === 0x4c) {
-        if (byteAt(rom, hb + i + 1) === 0xbb && byteAt(rom, hb + i + 2) === 0x75) return;
-        hb = C1 + wordAt(rom, hb + i + 1);
-        jumped = true;
-        break;
-      }
-      if (b === 0x60 || b === 0x6b) return;
-    }
-    if (!jumped) return;
+    const next = scanHandler(rom, hb, seen);
+    if (next === null) return;
+    hb = next;
   }
 };
 

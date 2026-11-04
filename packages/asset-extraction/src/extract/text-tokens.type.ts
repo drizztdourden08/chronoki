@@ -6,4 +6,21 @@ interface DecodeOptions {
   ind?: string;
 }
 
-export type { DecodeOptions };
+interface TokenSource {
+  subs: string[];
+  length: number | null;
+}
+
+interface TokenState {
+  rom: Uint8Array;
+  o: number;
+  out: string[];
+  pb: string;
+  namesub: boolean;
+  ind: string;
+  source: TokenSource;
+}
+
+type TokenHandler = (v: number, st: TokenState) => boolean | undefined;
+
+export type { DecodeOptions, TokenSource, TokenState, TokenHandler };

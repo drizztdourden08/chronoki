@@ -55,7 +55,7 @@ const readMargins = async (archive: SteamArchive, files: SteamFiles): Promise<Ma
     const tileset = hv.getUint16(2, true);
     const assembly = hv.getUint16(4, true);
     const bs = files.get(`Game/field/BGSetTable/bgsettable_${tileset}.dat`);
-    const slots = bs ? Array.from((await readEntry(archive, bs)).subarray(0, 6)) : Array(6).fill(0xff);
+    const slots = bs ? Array.from((await readEntry(archive, bs)).subarray(0, 6)) : new Array<number>(6).fill(0xff);
     const ce = files.get(`Game/field/ChipTable/ChipTable_${String(assembly).padStart(4, '0')}.dat`);
     const asm = ce ? await readEntry(archive, ce) : new Uint8Array(0);
     out.set(loc, { w, h, planes, slots, metas: metatiles(asm, planes), pages: sheetPages(loc) });

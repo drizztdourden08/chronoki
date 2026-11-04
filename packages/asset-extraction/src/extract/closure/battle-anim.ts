@@ -6,20 +6,25 @@ import { byteSpans } from './byte-spans';
 import { romLabel } from './rom-label';
 import type { RomTable } from './closure.type';
 import { C1, CE, ANIM_OP_JT, ANIM_OPS, ANIM_TABLES } from './battle-anim.constants';
-import type { WalkState } from './battle-anim.type';
+import type { WalkSpan, WalkState } from './battle-anim.type';
 import { animHandler } from './anim-handler';
 
 const popcount = (v: number): number => v.toString(2).replace(/0/g, '').length;
 
-const animWalk = (rom: Uint8Array, start: number, bankEnd: number, st: WalkState, depth = 0): void => {
+const isWalkStop = (h: number, op: number): boolean => h === 0x4cf0 || h === 0x4cf7 || op === 0x1f;
+
+const opLength = (rom: Uint8Array, q: number, op: number, lens: number[]): number =>
+  op === 0x80 ? 1 + (byteAt(rom, q + 1) & 0x0f) : itemAt(lens, op);
+
+const animWalk = (rom: Uint8Array, st: WalkState, span: WalkSpan): void => {
+  const { start, bankEnd, depth } = span;
   let q = start;
   for (let i = 0; i < 512; i += 1) {
     if (q >= bankEnd) return;
     const op = byteAt(rom, q);
     st.seen.add(q);
-    const h = animHandler(rom, op);
-    if (h === 0x4cf0 || h === 0x4cf7 || op === 0x1f) return;
-    const n = op === 0x80 ? 1 + (byteAt(rom, q + 1) & 0x0f) : itemAt(st.lens, op);
+    if (isWalkStop(animHandler(rom, op), op)) return;
+    const n = opLength(rom, q, op, st.lens);
     if (n <= 0) return;
     for (let k = q; k < q + n; k += 1) st.seen.add(k);
     if (op === 0x1e && depth < 3) {
@@ -28,7 +33,7 @@ const animWalk = (rom: Uint8Array, start: number, bankEnd: number, st: WalkState
       const tb = CE + 2 * ss;
       st.seen.add(tb);
       st.seen.add(tb + 1);
-      animWalk(rom, CE | wordAt(rom, tb), CE + 0x10000, st, depth + 1);
+      animWalk(rom, st, { start: CE | wordAt(rom, tb), bankEnd: CE + 0x10000, depth: depth + 1 });
     }
     q += n;
   }
@@ -39,7 +44,7 @@ const animScript = (rom: Uint8Array, hdr: number, bank: number, st: WalkState): 
   const m2 = (byteAt(rom, hdr + 2) << 8) | byteAt(rom, hdr + 3);
   const n = popcount(m1) + popcount(m2);
   for (let k = hdr; k < hdr + 4 + 2 * n; k += 1) st.seen.add(k);
-  for (let k = 0; k < n; k += 1) animWalk(rom, bank | wordAt(rom, hdr + 4 + 2 * k), bank + 0x10000, st);
+  for (let k = 0; k < n; k += 1) animWalk(rom, st, { start: bank | wordAt(rom, hdr + 4 + 2 * k), bankEnd: bank + 0x10000, depth: 0 });
 };
 
 const animTables = (rom: Uint8Array, lens: number[]): RomTable[] => {

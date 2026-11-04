@@ -1,24 +1,9 @@
 /* @layer shared-asset-extraction @kind constants */
 import type { XlatProgram } from './xlat-program.type';
-
-const press = (at: number): string => `0:${at},100:10,0:400`;
+import { press } from './press';
+import { cutScript } from './cut-script';
 
 const S8_MASH = `0:15,${Array.from({ length: 120 }, () => '100:3,0:27').join(',')}`;
-
-const cutScript = (script: string, frames: number): string => {
-  const out: string[] = [];
-  let at = 0;
-  for (const tok of script.split(',')) {
-    const n = Number.parseInt(tok.split(':')[1] as string, 10);
-    if (at + n >= frames) {
-      out.push(`${(tok.split(':')[0] as string)}:${frames - at}`);
-      break;
-    }
-    out.push(tok);
-    at += n;
-  }
-  return out.join(',');
-};
 
 const HDMA_RETURNS = ['C0:00CB', 'C0:00E4', 'C0:01AE', 'C0:0B15', 'C0:0B19', 'C0:0B32', 'C0:1909', 'C0:1951', 'C0:19BA'];
 const FROM_C3 = { CPUTRACE_FROM: 'C30000' };

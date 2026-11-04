@@ -13,6 +13,7 @@ import type { TableAbi } from './table-abi.type';
 import type { PackInput } from './build-pack.type';
 import { FORMAT_VERSION, LITTLE_ENDIAN } from './build-pack.constants';
 import { layoutOf } from './layout-of';
+import { byName } from './storage/by-name';
 
 const encoder = new TextEncoder();
 
@@ -66,7 +67,7 @@ const buildTable = (t: PackTable, input: PackInput, pool: ReturnType<typeof crea
 
 const buildPack = (input: PackInput): { pack: Uint8Array; built: BuiltTable[] } => {
   const pool = createStringPool();
-  const sorted = [...input.tables].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+  const sorted = [...input.tables].sort((a, b) => byName(a.name, b.name));
   const built = sorted.map((t) => buildTable(t, input, pool));
   if (new Set(built.map((b) => b.table.name)).size !== built.length) throw new PackError('two tables share a name');
   const entries: CtasEntry[] = [entryHeader(built, input.defines, input.abi)];

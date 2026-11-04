@@ -14,41 +14,42 @@ const flat24 = (bank: number, off: number): number | null => {
   return null;
 };
 
-const localArith = (c: RunCtx, op: number, addr: number): void => {
+const localOperands = (c: RunCtx, op: number, addr: number): [number, number] => {
   const o1 = b(c, addr, 1);
-  let src: number;
-  let di: number;
-  if (op === 0x60) {
-    src = o1 | (b(c, addr, 2) << 8);
-    di = b(c, addr, 3);
-  } else if (op === 0x5e || op === 0x61) {
-    src = c.mem.r16(LOC + o1 * 2);
-    di = b(c, addr, 2);
-  } else if (op === 0x63 || op === 0x64) {
+  if (op === 0x60) return [o1 | (b(c, addr, 2) << 8), b(c, addr, 3)];
+  if (op === 0x5e || op === 0x61) return [c.mem.r16(LOC + o1 * 2), b(c, addr, 2)];
+  if (op === 0x63 || op === 0x64) {
     const k = (op === 0x64 ? 8 : 0) + o1;
-    src = k < 16 ? (MASKS[k] as number) : 0;
-    di = b(c, addr, 2);
-  } else {
-    src = o1;
-    di = b(c, addr, 2);
+    return [k < 16 ? (MASKS[k] as number) : 0, b(c, addr, 2)];
   }
+  return [o1, b(c, addr, 2)];
+};
+
+const shiftRight = (cur: number, src: number): number => {
+  let res = cur;
+  let n = src;
+  do {
+    res = (res & 0xff) >> 1;
+    n = (n - 1) & 0xff;
+  } while (n !== 0);
+  return res;
+};
+
+const localCompute = (op: number, cur: number, src: number): number => {
+  if (op === 0x5b || op === 0x5e) return cur + src;
+  if (op === 0x5f || op === 0x60 || op === 0x61) return cur - src;
+  if (op === 0x63 || op === 0x69) return cur | src;
+  if (op === 0x64 || op === 0x67) return cur & src;
+  if (op === 0x6b) return cur ^ src;
+  return shiftRight(cur, src);
+};
+
+const localArith = (c: RunCtx, op: number, addr: number): void => {
+  const [src, di] = localOperands(c, op, addr);
   const a = LOC + di * 2;
   const wide = op === 0x5e || op === 0x60;
   const cur = wide ? c.mem.r16(a) : c.mem.r8(a);
-  let res: number;
-  if (op === 0x5b || op === 0x5e) res = cur + src;
-  else if (op === 0x5f || op === 0x60 || op === 0x61) res = cur - src;
-  else if (op === 0x63 || op === 0x69) res = cur | src;
-  else if (op === 0x64 || op === 0x67) res = cur & src;
-  else if (op === 0x6b) res = cur ^ src;
-  else {
-    res = cur;
-    let n = src;
-    do {
-      res = (res & 0xff) >> 1;
-      n = (n - 1) & 0xff;
-    } while (n !== 0);
-  }
+  const res = localCompute(op, cur, src);
   if (wide) c.mem.w16(a, res & 0xffff);
   else c.mem.w8(a, res);
 };

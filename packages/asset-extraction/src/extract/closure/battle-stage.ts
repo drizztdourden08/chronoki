@@ -5,22 +5,22 @@ import { byteSpans } from './byte-spans';
 import { romLabel } from './rom-label';
 import type { RomTable } from './closure.type';
 import { CD, CE, CC } from './battle-stage.constants';
-import type { StageCfg } from './battle-stage.type';
+import type { StageAdd, StageCfg } from './battle-stage.type';
 const D1 = 0x110000;
 
 const stageCfgs = (rom: Uint8Array): StageCfg[] => {
   const out: StageCfg[] = [];
-  const add = (base: number, stride: number, first: number, d1: number, t2: number, t3: number): void => {
+  const add = (base: number, { stride, first, d1, t2, t3 }: StageAdd): void => {
     for (let i = 0; i < 256; i += 1) {
       const r = base + stride * i;
       out.push([byteAt(rom, r + first), byteAt(rom, r + first + 1), byteAt(rom, r + first + 2), D1 + d1, t2, t3]);
     }
   };
   for (const [base, t2, t3] of [[CD + 0x5526, CD + 0x6a2c, CD + 0x666e], [CD + 0x5c26, CD + 0x6c2c, CD + 0x656e], [CD + 0x45a6, CD + 0x692c, CD + 0x656e]] as number[][]) {
-    add(base as number, 7, 3, 0x60, t2 as number, t3 as number);
+    add(base as number, { stride: 7, first: 3, d1: 0x60, t2: t2 as number, t3: t3 as number });
   }
-  for (const base of [CD + 0x4926, CD + 0x4f26]) add(base, 6, 3, 0x60, CD + 0x6a2c, CD + 0x666e);
-  for (const base of [CD + 0x4015, CD + 0x401a, CD + 0x401f]) add(base, 15, 2, 0x0, CD + 0x686e, CD + 0x64b0);
+  for (const base of [CD + 0x4926, CD + 0x4f26]) add(base, { stride: 6, first: 3, d1: 0x60, t2: CD + 0x6a2c, t3: CD + 0x666e });
+  for (const base of [CD + 0x4015, CD + 0x401a, CD + 0x401f]) add(base, { stride: 15, first: 2, d1: 0x0, t2: CD + 0x686e, t3: CD + 0x64b0 });
   return out;
 };
 

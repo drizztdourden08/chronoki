@@ -1,4 +1,4 @@
-/* @layer shared-asset-extraction @kind constants */
+/* @layer shared-asset-extraction @kind verbatim @source the text-code tables of Belthasar's dialogue decoder, glyphs written into the text pack */
 
 const PUNCT: Record<number, string> = {
   0xde: '!', 0xdf: '?', 0xe0: '/', 0xe1: '"', 0xe2: '"', 0xe3: ':', 0xe4: '&', 0xe5: '(', 0xe6: ')', 0xe7: "'",

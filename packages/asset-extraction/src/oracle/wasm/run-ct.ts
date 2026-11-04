@@ -35,7 +35,7 @@ const runCt = async (
     module.FS.writeFile(path, data);
   }
   for (const path of invocation.outputs) ensureDir(module.FS, path.slice(0, path.lastIndexOf('/')));
-  let status = 0;
+  let status: number;
   try {
     status = (await module.callMain(invocation.argv)) ?? 0;
   } catch (error) {

@@ -12,4 +12,15 @@ interface ParseEnv {
   evalConst: ConstEval;
 }
 
-export type { ParseEnv };
+interface SpecState {
+  words: string[];
+  isConst: boolean;
+}
+
+interface TypeSpec {
+  type: CType;
+  isConst: boolean;
+  anon?: boolean;
+}
+
+export type { ParseEnv, SpecState, TypeSpec };

@@ -4,7 +4,8 @@ import { wordAt } from '../bytes/word-at';
 import type { RomTable } from './closure.type';
 import { MENU_STRING_OPERANDS } from './menu-lib.constants';
 
-const menuString = (rom: Uint8Array, start: number, seen: Set<number>, out: RomTable[], depth = 0): number[] => {
+const menuString = (rom: Uint8Array, start: number, sink: { seen: Set<number>; out: RomTable[] }, depth = 0): number[] => {
+  const { seen, out } = sink;
   let a = start;
   const caps: number[] = [];
   while (a < rom.length && byteAt(rom, a) !== 0) {
@@ -15,7 +16,7 @@ const menuString = (rom: Uint8Array, start: number, seen: Set<number>, out: RomT
       const inc = ((byteAt(rom, a + 2) - 0xc0) << 16) | wordAt(rom, a);
       if (!seen.has(inc)) {
         seen.add(inc);
-        caps.push(...menuString(rom, inc, seen, out, depth + 1));
+        caps.push(...menuString(rom, inc, sink, depth + 1));
       }
     }
     if (c === 0x0c) caps.push(byteAt(rom, a));

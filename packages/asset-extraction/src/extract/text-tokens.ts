@@ -3,7 +3,7 @@ import type { DecodeOptions } from './text-tokens.type';
 import { decodeTokens } from './decode-tokens';
 
 const decodeString = (rom: Uint8Array, off: number, subs: string[], opts: DecodeOptions = {}): string =>
-  decodeTokens(rom, off, subs, null, opts);
+  decodeTokens(rom, off, { subs, length: null }, opts);
 
 export { decodeString };
 export type { DecodeOptions };

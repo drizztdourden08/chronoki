@@ -17,20 +17,22 @@ import type { MakerEnv } from './recipe-maker.type';
 
 const isExecutable = (op: string): boolean => op !== 'sram' && op !== 'sram_file';
 
+const keyForRecipe = (env: MakerEnv, fileHashes: Map<string, string>, name: string): string =>
+  recipeKey(
+    {
+      recipes: env.recipes,
+      romSha1: env.romSha1,
+      oracleTag: env.oracle.tag,
+      fileHash: (path) => fileHashes.get(path) ?? path,
+    },
+    name,
+  );
+
 const createRecipeMaker = (env: MakerEnv) => {
   const limit = createLimiter(env.jobs);
   const inflight = new Map<string, Promise<Uint8Array>>();
   const fileHashes = new Map<string, string>();
-  const keyOf = (name: string): string =>
-    recipeKey(
-      {
-        recipes: env.recipes,
-        romSha1: env.romSha1,
-        oracleTag: env.oracle.tag,
-        fileHash: (path) => fileHashes.get(path) ?? path,
-      },
-      name,
-    );
+  const keyOf = (name: string): string => keyForRecipe(env, fileHashes, name);
 
   const sramFor = async (r: Recipe): Promise<Uint8Array | null> => {
     let sram: Uint8Array | null = null;
