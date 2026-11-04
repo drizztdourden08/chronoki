@@ -16,8 +16,9 @@ import { appStartupPrompts } from '../.brock/startup';
 import { appTours } from '../.brock/tours';
 import { appToolbars } from '../.brock/toolbars';
 import { chronokiProfileHooks } from './profiles/chronoki-profile-hooks';
+import { chronokiBugReport } from './bug-report/chronoki-bug-report';
 import { chronokiShellModule } from './shell/chronoki-shell-module';
-import { SETTINGS } from './main.constants';
+import { DEVELOPER_TOOLS, SETTINGS, VOLUME } from './main.constants';
 import { LEGAL_TEXT } from './legal.constants';
 import { product } from './product';
 import type { AppSettings } from './settings.type';
@@ -31,6 +32,10 @@ createRoot(root).render(
       product={product}
       legalText={LEGAL_TEXT}
       settings={SETTINGS}
+      restoreNavigation={false}
+      volume={VOLUME}
+      developerTools={DEVELOPER_TOOLS}
+      bugReport={chronokiBugReport}
       screenTree={screenTree}
       modules={[...rendererModules, chronokiShellModule]}
       bootTasks={rendererBootTasks}

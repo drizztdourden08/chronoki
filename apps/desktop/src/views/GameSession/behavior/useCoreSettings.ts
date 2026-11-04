@@ -10,7 +10,7 @@ import type { AppSettings } from '@app/settings.type';
 
 const useCoreSettings = (): { settings: CkSettings; config: string; volume: number; gates: ReadonlySet<string>; autoSaveIntervalSeconds: number } => {
   const { settings: app } = useSettings<AppSettings>();
-  const muted = !app.enableAudio || startupFlag('muted') === true;
+  const muted = !app.enableAudio || app.masterMuted || startupFlag('muted') === true;
   const volume = Math.round(app.masterVolume * 100);
   const { original, gates, widescreenAspect, renderScale, steamDataImported, autoSaveIntervalSeconds } = app;
   return useMemo(() => {
