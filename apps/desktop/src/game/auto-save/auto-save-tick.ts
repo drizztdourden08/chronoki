@@ -10,7 +10,7 @@ import { writeAutoState } from './write-auto-state';
 const autoSaveTick = async (): Promise<void> => {
   const game = activeGameHolder.current;
   if (!game || !hostGate(AUTO_SAVE_GATE) || chronokiCore.state().status !== 'running') return;
-  const result = await writeAutoState(contextOfGame(game), 'Auto');
+  const result = await writeAutoState(contextOfGame(game), 'timer');
   appLog.info(`[auto-save] ${result.ok ? 'ok' : result.reason}`);
 };
 
