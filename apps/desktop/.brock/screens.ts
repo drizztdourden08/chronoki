@@ -8,11 +8,11 @@ import { meta as dataLibraryProfilesPageMeta } from '../src/screens/data/library
 import { meta as dataLibraryRomsPageMeta } from '../src/screens/data/library/roms.page';
 import { meta as dataStoragePageMeta } from '../src/screens/data/storage.page';
 import GameAppContributingSettings, { meta as gameAppContributingSettingsMeta } from '../src/screens/game/app/contributing.settings';
-import GameExtrasEnhancementsSettings, { meta as gameExtrasEnhancementsSettingsMeta } from '../src/screens/game/extras/enhancements.settings';
 import GameGameplayAudioSettings, { meta as gameGameplayAudioSettingsMeta } from '../src/screens/game/gameplay/audio.settings';
 import { meta as gameGameplayControlsCustomMeta } from '../src/screens/game/gameplay/controls.custom';
 import GameGameplayGameplaySettings, { meta as gameGameplayGameplaySettingsMeta } from '../src/screens/game/gameplay/gameplay.settings';
 import { meta as gameHomeHeroMeta } from '../src/screens/game/home.hero';
+import GameVideoGraphicsSettings, { meta as gameVideoGraphicsSettingsMeta } from '../src/screens/game/video/graphics.settings';
 import GameVideoPictureSettings, { meta as gameVideoPictureSettingsMeta } from '../src/screens/game/video/picture.settings';
 import GameVideoWindowSettings, { meta as gameVideoWindowSettingsMeta } from '../src/screens/game/video/window.settings';
 import { meta as gameViewBaseMeta } from '../src/screens/game-view.base';
@@ -24,12 +24,12 @@ const screenTree = buildScreenTree(config, [
   { kind: 'page', bucket: 'data', group: 'library', id: 'roms', component: lazyComponent(() => import('../src/screens/data/library/roms.page')), meta: dataLibraryRomsPageMeta },
   { kind: 'page', bucket: 'data', id: 'storage', component: lazyComponent(() => import('../src/screens/data/storage.page')), meta: dataStoragePageMeta },
   { kind: 'settings', bucket: 'game', group: 'app', id: 'contributing', sections: GameAppContributingSettings, meta: gameAppContributingSettingsMeta },
-  { kind: 'settings', bucket: 'game', group: 'extras', id: 'enhancements', sections: GameExtrasEnhancementsSettings, meta: gameExtrasEnhancementsSettingsMeta },
   { kind: 'backdrop', bucket: 'game', id: 'game', component: lazyComponent(() => import('../src/screens/game/game.backdrop')) },
   { kind: 'settings', bucket: 'game', group: 'gameplay', id: 'audio', sections: GameGameplayAudioSettings, meta: gameGameplayAudioSettingsMeta },
   { kind: 'custom', bucket: 'game', group: 'gameplay', id: 'controls', component: lazyComponent(() => import('../src/screens/game/gameplay/controls.custom')), meta: gameGameplayControlsCustomMeta },
   { kind: 'settings', bucket: 'game', group: 'gameplay', id: 'gameplay', sections: GameGameplayGameplaySettings, meta: gameGameplayGameplaySettingsMeta },
   { kind: 'hero', bucket: 'game', id: 'home', component: lazyComponent(() => import('../src/screens/game/home.hero')), meta: gameHomeHeroMeta },
+  { kind: 'settings', bucket: 'game', group: 'video', id: 'graphics', sections: GameVideoGraphicsSettings, meta: gameVideoGraphicsSettingsMeta },
   { kind: 'settings', bucket: 'game', group: 'video', id: 'picture', sections: GameVideoPictureSettings, meta: gameVideoPictureSettingsMeta },
   { kind: 'settings', bucket: 'game', group: 'video', id: 'window', sections: GameVideoWindowSettings, meta: gameVideoWindowSettingsMeta },
   { kind: 'base', id: 'game-view', component: lazyComponent(() => import('../src/screens/game-view.base')), meta: gameViewBaseMeta },
