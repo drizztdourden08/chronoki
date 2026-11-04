@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { activeStateContext, loadState, saveState } from '@app/game/save-states';
 import { appLog } from '@app/log/app-log';
 import type { SlotInfo } from '../HomeTab.type';
-import { emptySlots, fetchQuickSlots } from './fetch-quick-slots';
+import { emptySlots } from './empty-slots';
+import { fetchQuickSlots } from './fetch-quick-slots';
 
 const useQuickSaves = (profileId: string | null, running: boolean) => {
   const [slots, setSlots] = useState<SlotInfo[]>(emptySlots);

@@ -1,9 +1,8 @@
 /* @layer renderer-components @kind component */
 import { Button, Icon } from '@drizztdourden08/tessera/primitives';
 import type { HeroToolsProps } from '../ProfileHero.type';
+import { IMPORT_HINT, IMPORT_STOPPED_HINT } from '../ProfileHero.constants';
 
-const IMPORT_HINT = 'Import a raw SRAM save (.srm) from another emulator';
-const IMPORT_STOPPED_HINT = 'Stop the game to import a save';
 
 const HeroTools = ({ canRevealFolder, importDisabled = false, onOpenFolder, onImportSram }: HeroToolsProps) => (
   <>

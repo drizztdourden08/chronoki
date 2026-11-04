@@ -1,5 +1,5 @@
 /* @layer renderer-components @kind component */
-import { Button, Stack, Status, Text } from '@drizztdourden08/tessera/primitives';
+import { Button, Flex, Stack, Status, Text } from '@drizztdourden08/tessera/primitives';
 import { formatBytes } from '@drizztdourden08/brock-core';
 import { ROMS_TEXT, VERDICT_LABEL, VERDICT_TONE } from '../Roms.constants';
 import type { RomDetailProps } from './RomDetail.type';
@@ -17,12 +17,12 @@ const RomDetail = ({ rom, detail, loading, busy, onRebuild, onDelete }: RomDetai
       <Text>
         Assets: {rom.ready ? `${ROMS_TEXT.ready}${rom.assetBytes ? ` (${formatBytes(rom.assetBytes)})` : ''}` : ROMS_TEXT.notBuilt}
       </Text>
-      <Stack direction="row">
+      <Flex direction="row">
         <Button variant="primary" size="sm" disabled={busy || detail.verdict === 'refused'} onClick={() => onRebuild(rom.romFile)}>
           {rom.ready ? ROMS_TEXT.rebuild : ROMS_TEXT.build}
         </Button>
         <Button variant="danger" size="sm" disabled={busy} onClick={() => onDelete(rom.romFile)}>{ROMS_TEXT.deleteLabel}</Button>
-      </Stack>
+      </Flex>
     </Stack>
   );
 };
