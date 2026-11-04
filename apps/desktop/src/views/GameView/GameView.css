@@ -1,7 +1,7 @@
 /* @layer renderer-components @kind style */
 .game-view {
   position: absolute;
-  inset: 0;
+  inset: calc(var(--game-bleed-top, 0) * -1) calc(var(--game-bleed-right, 0) * -1) calc(var(--game-bleed-bottom, 0) * -1) calc(var(--game-bleed-left, 0) * -1);
   overflow: hidden;
 }
 

@@ -5,8 +5,8 @@ const CORE_FEATURES: FeatureDef[] = [
   {
     id: 'widescreen',
     label: 'Extended Rendering',
-    description: 'Enables the widescreen picture. Off is fixed 4:3.',
-    userMessage: 'Enables the widescreen picture. Off is fixed 4:3.',
+    description: 'Enables widescreen and tall rendering. Off is fixed 4:3.',
+    userMessage: 'Enables widescreen and tall rendering. Off is fixed 4:3.',
     group: 'Display',
     kind: 'core-setting',
     origin: 'belthasar',
@@ -19,9 +19,9 @@ const CORE_FEATURES: FeatureDef[] = [
   },
   {
     id: 'tallRendering',
-    label: 'Tall (letterboxed)',
-    description: 'Allows tall aspect ratios. The engine draws 224 lines, so the picture is letterboxed with bars above and below.',
-    userMessage: 'Needs Extended Rendering.',
+    label: 'Tall Rendering',
+    description: 'Adds extra rows above and below, which enables tall presets in the picker. Separate from widescreen.',
+    userMessage: 'Turning it off puts a tall picture back to 4:3. Needs Extended Rendering.',
     group: 'Display',
     kind: 'core-setting',
     origin: 'chronoki',

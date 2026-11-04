@@ -11,6 +11,7 @@ type MsuFormat = 'false' | 'msu1' | 'opuz' | 'layered';
 interface AppSettings extends BaseSettings {
   vanillaSafe: boolean;
   gates: string[];
+  knownGates?: string[];
   aspectRatio: AspectRatioChoice;
   customAspectW: number;
   customAspectH: number;

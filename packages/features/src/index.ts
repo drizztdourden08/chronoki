@@ -1,4 +1,5 @@
 /* @layer shared @kind barrel */
+export { ALL_FEATURE_IDS } from './all-feature-ids.constants';
 export { DEFAULT_GATES } from './default-gates.constants';
 export { FEATURE_REGISTRY } from './feature-registry/feature-registry.constants';
 export { FEATURES_BY_ID } from './feature-registry/features-by-id.constants';
@@ -11,6 +12,6 @@ export { resolveFeatures } from './resolve-features';
 export { resolveGates } from './resolve-gates';
 export type { LockCause, LockCauseContext } from './lock-cause';
 export type { AutoDisabledFeature, ResolveResult } from './resolve-features';
-export type { AspectRatioChoice, GateOptions, RenderScaleFactor } from './gate-options/gate-options.type';
+export type { AspectRatioChoice, GateOptions, PixelArea, RenderScaleFactor } from './gate-options/gate-options.type';
 export type { FeatureDef, FeatureGroup, FeatureIniKey, FeatureKind, FeatureOrigin } from './feature.type';
 export type { ResolveGatesOptions } from './resolve-gates.type';

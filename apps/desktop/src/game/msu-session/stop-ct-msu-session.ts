@@ -6,6 +6,7 @@ const stopCtMsuSession = (): void => {
   msuRuntime.generation += 1;
   msuRuntime.stopPoll?.();
   msuRuntime.stopPoll = null;
+  msuRuntime.packName = null;
   const bridge = msuRuntime.bridge;
   msuRuntime.bridge = null;
   disposeMsuSession();

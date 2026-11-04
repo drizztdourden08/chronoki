@@ -13,56 +13,27 @@
   width: 100%;
   height: 100%;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--c-bg);
 }
 
 .game-layer__stage canvas {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  flex: none;
+  width: var(--canvas-w, 100%);
+  height: var(--canvas-h, 100%);
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+  clip-path: inset(var(--canvas-clip-y, 0) var(--canvas-clip-x, 0));
+  background: var(--c-bg);
   outline: none;
   image-rendering: pixelated;
 }
 
 .game-layer__stage--smooth canvas {
   image-rendering: auto;
-}
-
-.game-layer__stage--stretch canvas {
-  object-fit: fill;
-}
-
-.game-layer__stage--fit canvas {
-  object-fit: contain;
-}
-
-.game-layer__stage--boxed {
-  align-items: center;
-  justify-content: center;
-}
-
-.game-layer__stage--boxed canvas {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  aspect-ratio: var(--present-ratio);
-  object-fit: contain;
-  background: #000;
-}
-
-.game-layer__stage--pixel-perfect {
-  align-items: center;
-  justify-content: center;
-}
-
-.game-layer__stage--pixel-perfect canvas {
-  flex: none;
-  max-width: none;
-  max-height: none;
-  aspect-ratio: auto;
-  width: var(--pixel-perfect-w, 100%);
-  height: var(--pixel-perfect-h, 100%);
-  image-rendering: pixelated;
 }
 
 .game-layer__stage--idle {

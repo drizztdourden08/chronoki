@@ -31,3 +31,21 @@ describe('tall rendering cascade', { tags: ['critical'] }, () => {
     expect(load({ aspectRatio: '3:4', gates: ['widescreen', 'tallRendering'], vanillaSafe: false }).aspectRatio).toBe('3:4');
   });
 });
+
+describe('default-on feature migration', { tags: ['critical'] }, () => {
+  it('turns on default features an old profile has never seen', () => {
+    const settings = load({ gates: ['widescreen'], vanillaSafe: false });
+    expect(settings.gates).toContain('gameInfo');
+    expect(settings.gates).toContain('perGroupVolume');
+  });
+
+  it('keeps a feature off when the profile already knew it', () => {
+    const settings = load({ gates: ['widescreen'], knownGates: ['gameInfo', 'perGroupVolume'], vanillaSafe: false });
+    expect(settings.gates).not.toContain('gameInfo');
+    expect(settings.gates).not.toContain('perGroupVolume');
+  });
+
+  it('records every known feature id', () => {
+    expect(load({ vanillaSafe: false }).knownGates).toContain('gameInfo');
+  });
+});

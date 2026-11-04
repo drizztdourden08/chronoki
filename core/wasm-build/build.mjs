@@ -12,6 +12,7 @@ import { tmpdir } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeMixerGains } from './patches/mixer-gains.mjs';
+import { writeTallField } from './patches/tall-field.mjs';
 import { writeShapes } from './shapes.mjs';
 import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
 
@@ -113,7 +114,7 @@ const gameArgs = (gen) => [
   '-sMODULARIZE=1', '-sEXPORT_NAME=Chronoki', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
-  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkViewWidth,_CkViewHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,callMain,FS,ENV,HEAPU8,HEAP16,HEAP32',
   '-lm',
 ];
@@ -175,6 +176,7 @@ const main = () => {
   mkdirSync(oracleDir, { recursive: true });
   const gen = writeShapes(outDir);
   gen.gains = writeMixerGains(gen.dir, belthasar);   // the S-DSP's voice-group gains (patches/mixer-gains.mjs)
+  gen.tall = writeTallField(gen.state, belthasar);   // the tall picture, gated by tall_lines (patches/tall-field.mjs)
   if (!gen.tables32) {
     const missing = join(outDir, 'tables32', 'tables_storage.c');
     if (!allowMissingTables) {

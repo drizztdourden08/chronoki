@@ -7,7 +7,8 @@ const useWindowModeReset = (): void => {
   const { settings, patch } = useSettings<AppSettings>();
   const { windowMode } = settings;
   useEffect(() => {
-    if (windowMode !== 'windowed') patch({ windowMode: 'windowed' });
+    if (windowMode === 'fullscreen') patch({ windowMode: 'windowed', startFullscreen: true });
+    else if (windowMode !== 'windowed') patch({ windowMode: 'windowed' });
   }, [windowMode, patch]);
 };
 
