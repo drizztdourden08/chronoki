@@ -10,7 +10,7 @@ import { SNES_ACTION_LABELS, SNES_ICON_IDS } from './controls.constants';
 import type { SnesBindingsTabProps } from './SnesBindingsTab.type';
 
 const SnesBindingsTab = ({ ctrl, onRebind }: SnesBindingsTabProps) => {
-  const mappings = useMemo(() => buildDisplayMappings(ctrl.activeProfile), [ctrl.activeProfile]);
+  const mappings = useMemo(() => buildDisplayMappings(ctrl.activeProfile, ctrl.devices), [ctrl.activeProfile, ctrl.devices]);
   return (
     <Box className="controls-settings__binding-list">
       <BindingListHeader middleLabel="SNES" />
