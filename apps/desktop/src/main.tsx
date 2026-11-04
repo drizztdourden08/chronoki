@@ -8,6 +8,7 @@ import { BrockApp } from '@drizztdourden08/brock-react';
 import { rendererModules } from '../.brock/modules.renderer';
 import { rendererBootTasks } from '../.brock/boot.renderer';
 import { screenTree } from '../.brock/screens';
+import { withOwnRowTabs } from './settings-controls/own-row-tabs';
 import { appWidgetLayout, appWidgets } from '../.brock/widgets';
 import { appWidgetKits } from '../.brock/widget-kits';
 import { appReview } from '../.brock/review';
@@ -38,7 +39,7 @@ createRoot(root).render(
       developerTools={DEVELOPER_TOOLS}
       dataDomains={CHRONOKI_DATA_DOMAINS}
       bugReport={chronokiBugReport}
-      screenTree={screenTree}
+      screenTree={withOwnRowTabs(screenTree)}
       modules={[...rendererModules, chronokiShellModule]}
       bootTasks={rendererBootTasks}
       widgets={appWidgets}

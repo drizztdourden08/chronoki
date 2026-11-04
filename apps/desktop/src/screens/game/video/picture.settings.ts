@@ -6,7 +6,7 @@ const meta: ScreenMeta = {
   title: 'Picture',
   icon: 'image',
   order: 1,
-  keywords: ['picture', 'widescreen', 'aspect', 'scale', 'resolution', 'interpolation', 'sync', 'fps'],
+  keywords: ['picture', 'widescreen', 'aspect', 'scale', 'resolution', 'fps', 'performance'],
 };
 
 const aspects = [
@@ -23,14 +23,11 @@ const sections: Section[] = [
       gateItem('widescreen'),
       {
         key: 'widescreenAspect',
-        label: 'Widescreen aspect',
-        description: 'The shape of the wide picture.',
-        hint: 'Needs Widescreen. 16:9 suits most screens.',
+        label: 'Aspect Ratio',
+        description: 'The shape of the wide picture, with 16:9 suiting most screens.',
+        hint: 'Needs Widescreen.',
         control: { kind: 'choice', options: aspects },
       },
-      gateItem('sceneAdjust'),
-      gateItem('wideSteamMargins'),
-      gateItem('fillBottomLine'),
     ],
   },
   {
@@ -40,16 +37,22 @@ const sections: Section[] = [
       gateItem('renderScale'),
       {
         key: 'renderScale',
-        label: 'Render scale',
-        description: 'Draw the picture at 2 to 4 times the SNES size.',
-        hint: 'Needs Internal resolution. Higher is sharper and needs a faster computer.',
+        label: 'Render Scale',
+        description: 'How many times the SNES size the picture is drawn at, from 2x to 4x.',
+        hint: 'Needs Internal Resolution.',
       },
     ],
   },
   {
     id: 'performance',
     title: 'Performance',
-    items: [gateItem('interpolate'), gateItem('freeSync')],
+    items: [
+      {
+        key: 'showFps',
+        label: 'Show FPS',
+        description: 'Display the current frames per second, and the refresh rate of your display, in the title bar while the game is running.',
+      },
+    ],
   },
 ];
 

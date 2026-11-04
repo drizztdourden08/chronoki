@@ -5,13 +5,15 @@ import { buildCoreConfigIni, gateSettings } from '@chronoki/game-core';
 import { resolveGates } from '@chronoki/features';
 import { isPackaged } from '@app/launch-flags/is-packaged';
 import { startupFlag } from '@app/launch-flags/startup-flag';
+import { useVolumeScaleMigration } from '@app/settings-controls/useVolumeScaleMigration';
 import type { AppSettings } from '@app/settings.type';
 import type { CoreSettings } from './useCoreSettings.type';
 
 const useCoreSettings = (): CoreSettings => {
   const { settings: app } = useSettings<AppSettings>();
+  useVolumeScaleMigration();
   const muted = !app.enableAudio || app.masterMuted || startupFlag('muted') === true;
-  const volume = Math.round(app.masterVolume * 100);
+  const volume = Math.round(app.masterVolume);
   const { original, gates, widescreenAspect, renderScale, steamDataImported, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed } = app;
   return useMemo(() => {
     const satisfied = new Set(steamDataImported ? ['steamData'] : []);

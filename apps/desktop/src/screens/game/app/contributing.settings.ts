@@ -10,9 +10,8 @@ const sections: Section[] = [
     items: [
       {
         key: 'developerToolsEnabled',
-        label: 'Developer tools',
-        description: 'Allow opening the developer tools.',
-        hint: 'On, the menu shows the developer entries and the shortcut opens the browser developer tools.',
+        label: 'Developer Mode',
+        description: 'Turns on developer tools.',
         keywords: 'developer mode devtools instrumentation',
       },
     ],
@@ -23,9 +22,8 @@ const sections: Section[] = [
     items: [
       {
         key: 'allowDebugLogging',
-        label: 'Debug logging',
-        description: 'Write debug lines to the session log.',
-        hint: 'On, the session log keeps the detailed lines that help when you report a bug. The log grows faster.',
+        label: 'Allow debugging logs tracking',
+        description: 'Keeps detailed logs to help when you report a bug.',
         keywords: 'debug logs tracking report crash capture',
       },
     ],
