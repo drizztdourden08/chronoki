@@ -6,17 +6,19 @@ import { sceneExits } from './scene-exits';
 import type { SceneExit } from './scene-exits';
 import type { Packer } from './extract.type';
 
+const exitsOf = (rom: Uint8Array, s: number): SceneExit[] => {
+  try {
+    return sceneExits(rom, s);
+  } catch {
+    return [];
+  }
+};
+
 const packExits: Packer = ({ rom }) => {
   const entries: CtasEntry[] = [];
   for (let s = 0; s < 512; s += 1) {
-    let exits: SceneExit[] = [];
-    try {
-      exits = sceneExits(rom, s);
-    } catch {
-      exits = [];
-    }
     const w = createBlobWriter();
-    const list = exits.slice(0, 255);
+    const list = exitsOf(rom, s).slice(0, 255);
     w.u8(list.length);
     for (const e of list) {
       w.u16(e.pos[0]);

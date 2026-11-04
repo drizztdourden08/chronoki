@@ -3,6 +3,7 @@ import { byteAt } from './bytes/byte-reader';
 import { spriteAnimTables } from './sprite-anim-tables';
 import { animSetIndex } from './anim-set-index';
 import { nextAnimPointer } from './next-anim-pointer';
+import type { AnimTables, AssemblyFrame } from './sprite-anims.type';
 
 const buildAnim = (rom: Uint8Array, spriteIndex: number, action: number): [number[], number][] => {
   const { fp, dp } = spriteAnimTables(rom);

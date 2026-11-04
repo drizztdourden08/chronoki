@@ -5,7 +5,7 @@ import { snes15ToRgb } from './snes-color';
 import { tilePixel4 } from './tile-pixel';
 import type { Packer } from './extract.type';
 
-const spriteCrop = (rom: Uint8Array, pal: number[][], gfx: number, cx: number, cy: number, w: number, h: number): Uint8Array => {
+const spriteCrop = (rom: Uint8Array, pal: number[][], gfx: number, { cx, cy, w, h }: { cx: number; cy: number; w: number; h: number }): Uint8Array => {
   const out = new Uint8Array(2 + w * h * 4);
   out[0] = w;
   out[1] = h;
@@ -25,8 +25,8 @@ const spriteCrop = (rom: Uint8Array, pal: number[][], gfx: number, cx: number, c
 const packNamesprites: Packer = ({ rom }) => {
   const pal = Array.from({ length: 16 }, (_, i) => [...snes15ToRgb(u16(rom, BANK_FF + 0x9df0 + i * 2)), i === 0 ? 0 : 255]);
   return [
-    { type: T_NAMESPRITES, id: 0, blob: spriteCrop(rom, pal, 0x9cf0, 0, 0, 16, 16) },
-    { type: T_NAMESPRITES, id: 1, blob: spriteCrop(rom, pal, 0x9d70, 2, 1, 11, 12) },
+    { type: T_NAMESPRITES, id: 0, blob: spriteCrop(rom, pal, 0x9cf0, { cx: 0, cy: 0, w: 16, h: 16 }) },
+    { type: T_NAMESPRITES, id: 1, blob: spriteCrop(rom, pal, 0x9d70, { cx: 2, cy: 1, w: 11, h: 12 }) },
   ];
 };
 

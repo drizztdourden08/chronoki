@@ -32,7 +32,7 @@ const priorityPlane = (md: Uint8Array, start: number, n: number): Uint8Array => 
   return tprio;
 };
 
-const applyAdd = (layer: number[], w: number, h: number, add: boolean[], sw: number): void => {
+const applyAdd = (layer: number[], add: boolean[], { w, h, sw }: { w: number; h: number; sw: number }): void => {
   for (let y = 0; y < h; y += 1) for (let x = 0; x < w; x += 1) if (add[y * sw + x]) layer[y * w + x] = (layer[y * w + x] as number) | 256;
 };
 
@@ -64,8 +64,8 @@ const packMaps: Packer = ({ rom, tables }) => {
     const sw = Math.max(w1, w2);
     const sh = Math.max(h1, h2);
     const [l1add, l2add] = parseProps(md, p, sw * sh);
-    applyAdd(l1, w1, h1, l1add, sw);
-    applyAdd(l2, w2, h2, l2add, sw);
+    applyAdd(l1, l1add, { w: w1, h: h1, sw });
+    applyAdd(l2, l2add, { w: w2, h: h2, sw });
     const blob = createLeWriter();
     blob.bytes(Uint8Array.of(w1, h1, w2, h2, w3, h3, hasL3 ? 1 : 0, md[4] as number, md[5] as number));
     for (const v of [...l1, ...l2, ...l3]) blob.u16(v);

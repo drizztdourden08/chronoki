@@ -2,7 +2,7 @@
 import { byteAt } from '../bytes/byte-reader';
 import { wordAt } from '../bytes/word-at';
 import type { RomTable } from './closure.type';
-import { CC, FD } from './battle-records.constants';
+import { CC, FD, ENEMY_SCRIPT_POINTERS_LABEL, ENEMY_SCRIPT_LABEL, ACTION_LENGTHS_LABEL, TARGET_RESOLVERS_LABEL } from './battle-records.constants';
 
 const C1 = 0x010000;
 const C2 = 0x020000;
@@ -10,7 +10,7 @@ const E1 = 0x210000;
 
 const hex2 = (v: number): string => v.toString(16).toUpperCase().padStart(2, '0');
 
-const aiSectionEnd = (rom: Uint8Array, start: number): number => {
+const scriptSectionEnd = (rom: Uint8Array, start: number): number => {
   let p = start;
   while (byteAt(rom, CC + p) !== 0xff) {
     while (byteAt(rom, CC + p) !== 0xfe) p += 1;
@@ -27,10 +27,10 @@ const recordTables = (rom: Uint8Array): RomTable[] => {
   t('enemy stats ($CC:4700, 23 x 256)', CC + 0x4700, 23 * 256);
   t('enemy names ($CC:6500, 11 x 256)', CC + 0x6500, 11 * 256);
   t('enemy rewards ($CC:5E00, 7 x 256)', CC + 0x5e00, 7 * 256);
-  t('enemy AI pointers ($CC:8B08)', CC + 0x8b08, 2 * 256);
+  t(ENEMY_SCRIPT_POINTERS_LABEL, CC + 0x8b08, 2 * 256);
   for (let i = 0; i < 256; i += 1) {
     const p = wordAt(rom, CC + 0x8b08 + 2 * i);
-    out.push([`enemy AI script ${hex2(i)}`, CC + p, CC + aiSectionEnd(rom, aiSectionEnd(rom, p)) + 4]);
+    out.push([ENEMY_SCRIPT_LABEL + hex2(i), CC + p, CC + scriptSectionEnd(rom, scriptSectionEnd(rom, p)) + 4]);
   }
   t('enemy action records ($CC:88CA, 11 x 256)', CC + 0x88ca, 11 * 256);
   t('enemy attack records ($CC:89C6, 12 x 256)', CC + 0x89c6, 12 * 256);
@@ -64,7 +64,7 @@ const recordTables = (rom: Uint8Array): RomTable[] => {
     out.push([`area record ${hex2(i)}`, CC + r, CC + r + 1 + 3 * byteAt(rom, CC + r)]);
   }
   t('battle RNG ($FD:BA61, 8-bit)', FD + 0xba61, 256);
-  t('AI action lengths ($FD:BA4A, the op)', FD + 0xba4a, 256);
+  t(ACTION_LENGTHS_LABEL, FD + 0xba4a, 256);
   t('combatant blocks ($FD:A80B, 11 seats)', FD + 0xa80b, 2 * 11);
   t('command records ($FD:A849, 11 seats)', FD + 0xa849, 2 * 11);
   t('tech singles ($FD:A89D, char + 1)', FD + 0xa89d, 9);
@@ -73,7 +73,7 @@ const recordTables = (rom: Uint8Array): RomTable[] => {
     const p = wordAt(rom, FD + 0xb957 + 2 * i);
     out.push([`seat rows ${hex2(i)}`, FD + p, FD + p + 0x15]);
   }
-  t('AI target resolvers ($C1:B8BB, 24 words)', C1 + 0xb8bb, 48);
+  t(TARGET_RESOLVERS_LABEL, C1 + 0xb8bb, 48);
   t('timer flag bases ($C1:B947, 13 words)', C1 + 0xb947, 26);
   return out;
 };

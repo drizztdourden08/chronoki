@@ -7,13 +7,14 @@ import { wordAt } from './bytes/word-at';
 import { createBlobWriter } from './bytes/blob-writer';
 import type { Packer } from './extract.type';
 import { SPRITE_FILES } from './pack-world.constants';
+import type { WorldDumps } from './pack-world.type';
 
 const findLead = (w: Uint8Array): number => {
   for (let b = 0x0b30; b < 0x1b30; b += 0x40) if (wordAt(w, b) === 0x3404) return b;
   return 0;
 };
 
-const worldBlob = (rom: Uint8Array, n: number, w: Uint8Array, v: Uint8Array, objw: Uint8Array): Uint8Array => {
+const worldBlob = ({ rom, n, w, v, objw }: WorldDumps): Uint8Array => {
   const lead = findLead(w);
   let posx = lead ? wordAt(w, lead + 0x14) : 0;
   let posy = lead ? wordAt(w, lead + 0x18) : 0;
@@ -58,7 +59,7 @@ const worlds = async (rom: Uint8Array, work: WorkStore, log: (m: string) => void
       continue;
     }
     const bak = n === 0 ? await work.readBytes('saves/ow_w0.live.wram.bak') : null;
-    entries.push({ type: T_WORLD, id: n, blob: worldBlob(rom, n, w, v, bak ?? w) });
+    entries.push({ type: T_WORLD, id: n, blob: worldBlob({ rom, n, w, v, objw: bak ?? w }) });
     const iw = (await work.readBytes(`saves/ow_w${n}.intro.wram`)) ?? w;
     const intro = iw.slice(0x0b30, 0x1b30);
     if (intro.length === 0x1000) entries.push({ type: T_WORLDINTROSEED, id: n, blob: intro });

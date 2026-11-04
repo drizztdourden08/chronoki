@@ -3,6 +3,7 @@ import { SCENE_PAL } from './asset-types.constants';
 import { u16 } from './u16';
 import type { Rgb } from './snes-color';
 import { snes15ToRgb } from './snes-color';
+import type { PaletteAnim } from './scene-palette.type';
 
 const scenePalette = (rom: Uint8Array, pi: number): Rgb[] => {
   let p = SCENE_PAL + pi * 210;

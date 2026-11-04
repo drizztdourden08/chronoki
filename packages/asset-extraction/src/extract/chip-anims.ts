@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic @source Python maps.chip_anim_data, maps.parse_chip_anims */
 import { u16 } from './u16';
 import { ANIM_PTRS, ANIM_REL, ANIM_END } from './chip-anims.constants';
+import type { ChipAnim } from './chip-anims.type';
 
 const chipAnimData = (rom: Uint8Array, index: number): Uint8Array => {
   const addrs: number[] = [];

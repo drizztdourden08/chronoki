@@ -5,27 +5,40 @@ import type { Actor } from './script/script-run.type';
 import { loadScript } from './script/script-load';
 import { opLen } from './script/script-oplen';
 
-const sweepBody = (rom: Uint8Array, scene: number, sprites: Set<number>, usage: SpriteUsage): void => {
+const loaderOffset = (op: number): number => {
+  if (op === 0x82) return 7;
+  if (op === 0x83) return 256;
+  return 0;
+};
+
+const noteOp = (op: number, arg: number, sprites: Set<number>, usage: SpriteUsage): void => {
+  if (op === 0xac) {
+    for (const sp of sprites) usage.staticMax.set(sp, Math.max(usage.staticMax.get(sp) ?? 0, arg));
+  } else if (op >= 0x80 && op <= 0x83) {
+    const sp = arg + loaderOffset(op);
+    usage.usedSprites.add(sp);
+    sprites.add(sp);
+  }
+};
+
+const sweepOps = (body: Uint8Array, sprites: Set<number>, usage: SpriteUsage): void => {
+  let o = 0;
+  while (o < body.length - 1) {
+    const ln = opLen(body, o);
+    if (ln <= 0) break;
+    noteOp(body[o] as number, body[o + 1] as number, sprites, usage);
+    o += ln;
+  }
+};
+
+const sweepBody = (rom: Uint8Array, scene: number, sprites: Set<number>, usage: SpriteUsage): boolean => {
   try {
     const h = rom.slice(0x360000 + scene * 14, 0x360000 + scene * 14 + 14);
     const { body } = loadScript(rom, (h[8] as number) | ((h[9] as number) << 8));
-    let o = 0;
-    while (o < body.length - 1) {
-      const ln = opLen(body, o);
-      if (ln <= 0) break;
-      const op = body[o] as number;
-      const arg = body[o + 1] as number;
-      if (op === 0xac) {
-        for (const sp of sprites) usage.staticMax.set(sp, Math.max(usage.staticMax.get(sp) ?? 0, arg));
-      } else if (op >= 0x80 && op <= 0x83) {
-        const sp = arg + (op === 0x82 ? 7 : op === 0x83 ? 256 : 0);
-        usage.usedSprites.add(sp);
-        sprites.add(sp);
-      }
-      o += ln;
-    }
+    sweepOps(body, sprites, usage);
+    return true;
   } catch {
-    // Python: `except Exception: pass`
+    return false;
   }
 };
 

@@ -4,6 +4,7 @@ import { getEntries2Byte } from './get-entries-2byte';
 import { getEntries3Byte } from './rom-read';
 import { PTR_TABLE } from './sprite-records.constants';
 import type { SpriteTables } from './sprite-records.type';
+import type { SpriteHeader } from './sprite-records.type';
 
 const tablesCache = new WeakMap<Uint8Array, SpriteTables>();
 

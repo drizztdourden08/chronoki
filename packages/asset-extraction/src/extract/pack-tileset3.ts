@@ -21,7 +21,7 @@ const packTileset3: Packer = ({ rom, tables }) => {
     if (ts < asm3Ptrs.length && asm3Ptrs[ts] !== 0) {
       const raw3 = parseMetatiles(lzDecompress(rom, asm3Ptrs[ts] as number), 256, 4);
       metab = serMetas(
-        raw3.map((m) => m.map(([c, b, fx, fy, pr]) => [c ? c : 0xffff, b, fx, fy, pr] as Corner)),
+        raw3.map((m) => m.map(([c, b, fx, fy, pr]) => [c || 0xffff, b, fx, fy, pr] as Corner)),
         256,
       );
       hasMetas = 1;

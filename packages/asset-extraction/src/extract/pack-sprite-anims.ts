@@ -6,18 +6,38 @@ import { animSetIndex } from './anim-set-index';
 import { buildAnim } from './sprite-anims';
 import { nextAnimPointer } from './next-anim-pointer';
 import { spriteAnimTables } from './sprite-anim-tables';
+import type { BlobWriter } from './bytes/blob-writer.type';
 import type { Packer } from './extract.type';
 
 const animCount = (rom: Uint8Array, si: number): number => {
   try {
     const { fp } = spriteAnimTables(rom);
-    const ai = animSetIndex(rom, si);
-    const base = ai < fp.length ? (fp[ai] as number) : 0;
+    const animSet = animSetIndex(rom, si);
+    const base = animSet < fp.length ? (fp[animSet] as number) : 0;
     const nxt = base ? nextAnimPointer(fp, base) : 0;
     const dpf = base ? Math.floor((nxt - base) / 4) : 0;
     return Math.max(1, Math.min(Math.floor(dpf / 4), 64));
   } catch {
     return 1;
+  }
+};
+
+const framesOf = (rom: Uint8Array, si: number, action: number): [number[], number][] => {
+  try {
+    return buildAnim(rom, si, action);
+  } catch {
+    return [];
+  }
+};
+
+const writeAnims = (w: BlobWriter, rom: Uint8Array, si: number, nanims: number): void => {
+  for (let action = 0; action < nanims; action += 1) {
+    const list = framesOf(rom, si, action).slice(0, 255);
+    w.u8(list.length);
+    for (const [sf, delay] of list) {
+      for (const f of sf) w.u8(f & 0xff);
+      w.u8(delay & 0xff);
+    }
   }
 };
 
@@ -29,20 +49,7 @@ const packSpriteAnims: Packer = ({ rom, tables }) => {
     const nanims = animCount(rom, si);
     const w = createBlobWriter();
     w.u8(nanims);
-    for (let action = 0; action < nanims; action += 1) {
-      let frames: [number[], number][] = [];
-      try {
-        frames = buildAnim(rom, si, action);
-      } catch {
-        frames = [];
-      }
-      const list = frames.slice(0, 255);
-      w.u8(list.length);
-      for (const [sf, delay] of list) {
-        for (const f of sf) w.u8(f & 0xff);
-        w.u8(delay & 0xff);
-      }
-    }
+    writeAnims(w, rom, si, nanims);
     entries.push({ type: T_SPRITEANIM, id: si, blob: w.toBytes() });
   }
   return entries;

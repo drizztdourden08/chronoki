@@ -30,6 +30,10 @@ const codeMap = (timing: Uint8Array): { blo: number; blen: number; cmap: Uint8Ar
   return { blo: wordAt(timing, 8), blen, cmap: timing.subarray(12, 12 + ((blen + 7) >> 3)) };
 };
 
+const clearUnusedCode = (blk: Uint8Array, cmap: Uint8Array, blen: number): void => {
+  for (let k = 0; k < blen; k += 1) if (((byteAt(cmap, k >> 3) >> (k & 7)) & 1) !== 0) blk[k] = 0;
+};
+
 const bootBlocks = (rom: Uint8Array, timing: Uint8Array | null): CtasEntry[] => {
   const out: CtasEntry[] = [];
   for (let b = 0; b < 6; b += 1) {
@@ -38,7 +42,7 @@ const bootBlocks = (rom: Uint8Array, timing: Uint8Array | null): CtasEntry[] => 
     if (b === 0 && timing) {
       const { blo, blen, cmap } = codeMap(timing);
       if (blo !== wordAt(rom, C7 + 0x1c) || blen !== blk.length) throw new Error("saves/snd_timing.bin is not this ROM's block 0");
-      for (let k = 0; k < blen; k += 1) if (((byteAt(cmap, k >> 3) >> (k & 7)) & 1) !== 0) blk[k] = 0;
+      clearUnusedCode(blk, cmap, blen);
     }
     out.push({ type: T_SND_BOOT, id: b, blob: concatBytes([u16le(wordAt(rom, C7 + 0x1c + 2 * b)), blk]) });
   }
