@@ -33,3 +33,10 @@ target/
 
 # Plan pages (published as artifacts)
 /plans/
+
+# Imported engine (tooling/import-core writes it at the pin; never edited, never committed)
+/core/belthasar/
+/third_party/
+
+# Local app data for dev and worktree runs
+.user-data/
