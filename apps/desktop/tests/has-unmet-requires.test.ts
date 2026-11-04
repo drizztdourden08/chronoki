@@ -8,7 +8,7 @@ import type { AppSettings } from '@app/settings.type';
 
 vi.mock('@app/launch-flags/is-packaged', () => ({ isPackaged: () => false }));
 
-const sourceValues = { view: 'full', refreshHz: 4 } as unknown as AppSettings;
+const sourceValues: AppSettings = Object.assign({} as AppSettings, { view: 'full', refreshHz: 4 });
 
 describe('settings rows backed by a value source (widget prefs, no gates key)', { tags: ['critical'] }, () => {
   it('does not read gates for a key that is not a feature key', () => {

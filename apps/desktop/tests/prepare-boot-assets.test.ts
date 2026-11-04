@@ -2,12 +2,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { prepareBootAssets } from '@app/game/randomizer/prepare-boot-assets';
 
-const state = vi.hoisted(() => ({
-  result: { ok: true, assets: new Uint8Array([1]) } as { ok: true; assets: Uint8Array } | { ok: false; reason: string },
-  reported: [] as string[],
+const state = vi.hoisted((): { result: { ok: true; assets: Uint8Array } | { ok: false; reason: string }; reported: string[] } => ({
+  result: { ok: true, assets: new Uint8Array([1]) },
+  reported: [],
 }));
 
-vi.mock('@app/game/randomizer/prepare-seeded-assets', () => ({ prepareSeededAssets: async () => state.result }));
+vi.mock('@app/game/randomizer/prepare-seeded-assets', () => ({ prepareSeededAssets: () => Promise.resolve(state.result) }));
 vi.mock('@app/game/randomizer/report-boot-refusal', () => ({ reportBootRefusal: (reason: string) => state.reported.push(reason) }));
 
 describe('prepareBootAssets', { tags: ['critical'] }, () => {

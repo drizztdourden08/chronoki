@@ -11,14 +11,14 @@ const state = vi.hoisted(() => ({
 
 vi.mock('@drizztdourden08/brock-react', () => ({ useProfilesStore: { getState: () => ({ profiles: state.profiles }) } }));
 vi.mock('@app/game/randomizer/checks-of-rom', () => ({
-  checksOfRom: async (romFile: string) => {
+  checksOfRom: (romFile: string) => {
     state.loaded.push(romFile);
-    return state.checks;
+    return Promise.resolve(state.checks);
   },
 }));
 vi.mock('@chronoki/game-core', () => ({ rollCtPlacement: (input: { checks: unknown[] }, seed: string) => ({ seed, count: input.checks.length }) }));
 
-const config = { seed: 's1', options: {} } as unknown as RandomizerProfileConfig;
+const config: RandomizerProfileConfig = { mode: 'local', seed: 's1', options: {} };
 
 describe('rollChronokiSeed', { tags: ['critical'] }, () => {
   beforeEach(() => {
@@ -28,7 +28,7 @@ describe('rollChronokiSeed', { tags: ['critical'] }, () => {
   });
 
   it('reads the checks of the ROM named by the profile being created', async () => {
-    const placement = await rollChronokiSeed(config, { create: { name: 'n', romFile: 'new.sfc' } as never });
+    const placement = await rollChronokiSeed(config, { create: { name: 'n', romFile: 'new.sfc' } });
     expect(state.loaded).toEqual(['new.sfc']);
     expect(placement).toEqual({ seed: 's1', count: 2 });
   });
