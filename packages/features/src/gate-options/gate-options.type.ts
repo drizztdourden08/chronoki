@@ -1,11 +1,14 @@
 /* @layer shared @kind types */
-type WideAspect = '16:9' | '16:10' | '21:9';
+type AspectRatioChoice = 'original' | 'auto' | 'screen' | '4:3' | '16:10' | '16:9' | '21:9' | '4:5' | '3:4' | 'custom';
 
 type RenderScaleFactor = 2 | 3 | 4;
 
 interface GateOptions {
-  widescreenAspect: WideAspect;
+  aspectRatio: AspectRatioChoice;
+  customAspectW: number;
+  customAspectH: number;
   renderScale: RenderScaleFactor;
+  screenRatio?: number;
 }
 
-export type { GateOptions, RenderScaleFactor, WideAspect };
+export type { AspectRatioChoice, GateOptions, RenderScaleFactor };

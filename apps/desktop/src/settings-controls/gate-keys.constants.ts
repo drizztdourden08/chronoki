@@ -2,7 +2,9 @@
 const GATE_KEY_PREFIX = 'gate:';
 
 const OPTION_KEY_FEATURE: Record<string, string> = {
-  widescreenAspect: 'widescreen',
+  aspectRatio: 'widescreen',
+  customAspectW: 'widescreen',
+  customAspectH: 'widescreen',
   renderScale: 'renderScale',
   autoSaveIntervalSeconds: 'autoSave',
   autoSaveMaxEntries: 'autoSave',

@@ -1,6 +1,6 @@
 /* @layer renderer-app @kind types */
 import type { BaseSettings } from '@drizztdourden08/brock-core';
-import type { RenderScaleFactor, WideAspect } from '@chronoki/features';
+import type { AspectRatioChoice, RenderScaleFactor } from '@chronoki/features';
 
 type ViewportMode = 'none' | 'fit' | 'fill';
 
@@ -11,7 +11,9 @@ type MsuFormat = 'false' | 'msu1' | 'opuz' | 'layered';
 interface AppSettings extends BaseSettings {
   vanillaSafe: boolean;
   gates: string[];
-  widescreenAspect: WideAspect;
+  aspectRatio: AspectRatioChoice;
+  customAspectW: number;
+  customAspectH: number;
   renderScale: RenderScaleFactor;
   steamDataImported: boolean;
   autoSaveIntervalSeconds: number;
