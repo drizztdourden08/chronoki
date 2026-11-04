@@ -1,0 +1,61 @@
+/* @layer shared-asset-extraction @kind logic */
+import type { ImportContext } from '../../pipeline/import-context.type';
+import { peekOracle } from '../../oracle/peek-access';
+import type { PeekDump } from '../../oracle/peek.type';
+import type { Sprite } from '../shared/oam-decode';
+import { decodeOam, oamBlob, oamCgram } from '../shared/oam-decode';
+import { KEYS, NTILE } from './anim-consts';
+import type { Key } from './anim-consts';
+import { combatant, scriptFor } from './anim-sprites';
+
+interface Keyframe {
+  key: Key;
+  objOff: number;
+  nObj: number;
+  ax: number;
+  ay: number;
+}
+
+interface Collected {
+  kfs: Keyframe[];
+  objFlat: Sprite[];
+  tiles: Uint8Array[][];
+  cgram: Uint8Array;
+}
+
+/** The first NTILE 8x8 tiles of a VRAM dump, 32 bytes each. */
+const bakeTiles = (vram: Uint8Array): Uint8Array[] =>
+  Array.from({ length: NTILE }, (_, t) => vram.slice(t * 32, t * 32 + 32));
+
+/** battle_anim.py collect(): one peek per distinct (driver, repFrame), the combatant's OAM and tiles per keyframe. */
+const collect = async (ctx: ImportContext, state: Uint8Array): Promise<Collected> => {
+  const oracle = peekOracle(ctx);
+  const dumps = new Map<string, PeekDump>();
+  const kfs: Keyframe[] = [];
+  const objFlat: Sprite[] = [];
+  const tiles: Uint8Array[][] = [];
+  let cgram = new Uint8Array(0);
+  for (const key of KEYS) {
+    const id = `${key.driver}:${key.repFrame}`;
+    let dump = dumps.get(id);
+    if (!dump) {
+      dump = await oracle.peek({ state, script: scriptFor(key.driver, key.repFrame) });
+      dumps.set(id, dump);
+    }
+    cgram = oamCgram(dump.oam) ?? cgram;
+    const on = combatant(decodeOam(oamBlob(dump.oam)), key.pal);
+    kfs.push({
+      key,
+      objOff: objFlat.length,
+      nObj: on.length,
+      ax: Math.min(...on.map((s) => s.x)),
+      ay: Math.min(...on.map((s) => s.y)),
+    });
+    objFlat.push(...on);
+    tiles.push(bakeTiles(dump.vram));
+  }
+  return { kfs, objFlat, tiles, cgram };
+};
+
+export type { Collected, Keyframe };
+export { bakeTiles, collect };

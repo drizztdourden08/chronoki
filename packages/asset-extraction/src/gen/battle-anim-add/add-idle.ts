@@ -1,0 +1,56 @@
+/* @layer shared-asset-extraction @kind logic */
+import type { ImportContext } from '../../pipeline/import-context.type';
+import { peekOracle } from '../../oracle/peek-access';
+import type { MonitorRequest, PeekDump } from '../../oracle/peek.type';
+import { BRACKET_TILE, GATO_REF } from '../battle-anim/anim-consts';
+import { inView, monitorRequest, parseMonitor } from '../battle-anim/anim-sprites';
+import type { GatoStep } from '../battle-anim/anim-tables';
+
+const GATO_V2_F0 = 67;
+const GATO_V2_F1 = 186;
+/** GATO's two action slots emptied (gato_noatk = the 400-frame idle state + this). */
+const NOATK_POKE = 'AFAC=FF,AFB1=FF';
+const SAVED_STATE = 'gato_idle400.state';
+
+/**
+ * The oracle driver extras this one generator needs beyond PeekOracle: a peek whose env PEEK_SAVE makes it hand back
+ * the final state (PeekDump.state), and a monitor that takes env (PEEK_POKE).
+ */
+type SavingDump = PeekDump & { state?: Uint8Array };
+type PokeMonitorRequest = MonitorRequest & { env?: Record<string, string> };
+
+/** make_gato_noatk: the hold run to frame 400, saved as a state. */
+const makeIdleState = async (ctx: ImportContext, state: Uint8Array): Promise<Uint8Array> => {
+  const dump: SavingDump = await peekOracle(ctx).peek({
+    state,
+    script: '100:8,0:392',
+    env: { PEEK_SAVE: SAVED_STATE },
+  });
+  if (!dump.state) throw new Error('battle_anim_add: the oracle driver did not return the PEEK_SAVE state');
+  return dump.state;
+};
+
+/** gato_idle_v2: the steady (no-attack) idle: body bob +-1px, arm A-dominant, footDY 0. */
+const gatoIdleV2 = async (ctx: ImportContext, state: Uint8Array): Promise<GatoStep[]> => {
+  const idle = await makeIdleState(ctx, state);
+  const req: PokeMonitorRequest = {
+    ...monitorRequest(idle, `100:0,0:${GATO_V2_F1 + 4}`),
+    env: { PEEK_POKE: NOATK_POKE },
+  };
+  const frames = parseMonitor(await peekOracle(ctx).monitor(req));
+  const rows: GatoStep[] = [];
+  for (let F = GATO_V2_F0; F <= GATO_V2_F1; F += 1) {
+    const sprites = frames.get(F);
+    if (!sprites) continue;
+    const on = sprites.filter((s) => inView(s) && s.pal === 1 && s.tile !== BRACKET_TILE);
+    if (!on.length) continue;
+    const ax = Math.min(...on.map((s) => s.x));
+    const ay = Math.min(...on.map((s) => s.y));
+    const c68 = on.find((s) => s.tile === 0x68);
+    const arm = c68 && c68.y - ay > 25 ? 1 : 0;
+    rows.push([F, ax - GATO_REF[0], ay - GATO_REF[1], arm, 0]);
+  }
+  return rows;
+};
+
+export { GATO_V2_F0, gatoIdleV2 };
