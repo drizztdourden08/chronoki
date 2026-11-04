@@ -1,32 +1,23 @@
 /* @layer bridge-wasm @kind logic */
-import { CT_STATE_APU_FILE, CT_STATE_FILE } from '@chronoki/game-core';
+import { checkLoadable, engineStateOf } from '@chronoki/game-core';
 import type { SaveSlotRef } from '@drizztdourden08/brock-port-kit';
-import { awaitState } from './await-state';
+import { readCoreStamp } from '../state-stamp';
 import { decodeStoredState } from './decode-stored-state';
-import { isStateAvailable } from './is-state-available';
-import { outcomeResult } from './outcome-result';
-import { removeDebugFiles } from './remove-debug-files';
+import { pushState } from './push-state';
 import type { SaveStateContext, StateResult } from './save-state.type';
 
 const loadState = async (ctx: SaveStateContext, ref: SaveSlotRef): Promise<StateResult> => {
   const { core, store, profileId } = ctx;
   if (!profileId) return { ok: false, reason: 'no-profile' };
-  if (!isStateAvailable(core)) return { ok: false, reason: 'unavailable' };
-  const calls = core.calls();
-  const fs = core.fs();
-  const { loadState: loadExport } = core.definition.core.exports;
-  if (!calls || !fs || !loadExport) return { ok: false, reason: 'not-running' };
+  if (core.state().status !== 'running' || !core.calls()) return { ok: false, reason: 'not-running' };
   const bytes = await store.slots.read(profileId, ref);
   if (!bytes) return { ok: false, reason: 'missing' };
-  const parts = decodeStoredState(bytes, core.definition.id);
-  if (!parts) return { ok: false, reason: 'corrupt' };
-  removeDebugFiles(fs);
-  fs.writeFile(CT_STATE_FILE, parts.scene);
-  fs.writeFile(CT_STATE_APU_FILE, parts.apu);
-  calls.call(loadExport, core.definition.core.files.scratchSlot);
-  const outcome = await awaitState(calls);
-  removeDebugFiles(fs);
-  return outcomeResult(outcome);
+  const stored = decodeStoredState(bytes, core.definition.id);
+  const state = stored ? engineStateOf(stored) : null;
+  if (!state) return { ok: false, reason: 'corrupt' };
+  const verdict = checkLoadable(state, readCoreStamp(core));
+  if (!verdict.ok) return { ok: false, reason: 'refused', message: verdict.message };
+  return pushState(core, state);
 };
 
 export { loadState };

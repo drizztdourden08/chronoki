@@ -11,10 +11,11 @@ interface SaveStateContext {
   profileId: string | null;
 }
 
-type StateFailure = 'unavailable' | 'not-running' | 'no-profile' | 'failed' | 'timeout' | 'missing' | 'corrupt';
+type StateFailure =
+  | 'unavailable' | 'not-running' | 'no-profile' | 'failed' | 'timeout' | 'missing' | 'corrupt' | 'refused' | 'not-now';
 
-type StateResult = { ok: true } | { ok: false; reason: StateFailure };
+type StateResult = { ok: true } | { ok: false; reason: StateFailure; message?: string };
 
-type StateOutcome = 'ok' | 'failed' | 'timeout';
+type StateOutcome = 'ok' | 'failed' | 'timeout' | 'not-now';
 
 export type { SaveStateContext, StateFailure, StateOutcome, StateResult };

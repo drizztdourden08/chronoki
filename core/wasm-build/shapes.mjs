@@ -9,7 +9,9 @@
 //    if upstream's line changes.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { belthasar } from './sources.mjs';
+import { belthasar, root } from './sources.mjs';
+import { writeStampHeader } from './state-stamp.mjs';
+import { writeStatePatches } from './state-patches.mjs';
 
 const sheetShape = () => {
   const src = readFileSync(join(belthasar, 'src', 'tables', 'animeng_sheet_gato.h'), 'utf8');
@@ -47,7 +49,7 @@ const tableStorage = (outDir) => {
   return { text: fixed, is32: existsSync(own) };
 };
 
-// returns { dir, gameFiles, oracleIncludes, tables32 }
+// returns { dir, gameFiles, state: { files, replaced }, tables32 }; state is the game module's patched engine files (state-patches.mjs)
 const writeShapes = (outDir) => {
   const gen = join(outDir, 'gen');
   mkdirSync(join(gen, 'data'), { recursive: true });
@@ -55,7 +57,9 @@ const writeShapes = (outDir) => {
   writeFileSync(join(gen, 'datapack.c'), patchedDatapack());
   const ts = tableStorage(outDir);
   writeFileSync(join(gen, 'tables_storage.c'), ts.text);
-  return { dir: gen, gameFiles: [join(gen, 'datapack.c'), join(gen, 'tables_storage.c')], tables32: ts.is32 };
+  writeStampHeader(gen, belthasar, root);
+  const state = writeStatePatches(gen, belthasar);
+  return { dir: gen, gameFiles: [join(gen, 'datapack.c'), join(gen, 'tables_storage.c')], state, tables32: ts.is32 };
 };
 
 export { writeShapes }
