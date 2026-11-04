@@ -29,10 +29,8 @@ const FIELD_PATCHES = [
   ['int f5b = dks2[SDL_SCANCODE_F5];', 'int f5b = 0;', 1],
   ['int f9b = dks2[SDL_SCANCODE_F9];', 'int f9b = 0;', 1],
   [
-    '  int w = ((int)(ar[st->widescreen] * CAMH / par + 0.5)) & ~1;
-',
-    '  int w = ck_wide_width() > 0 ? ck_wide_width() : ((int)(ar[st->widescreen] * CAMH / par + 0.5)) & ~1;
-',
+    '  int w = ((int)(ar[st->widescreen] * CAMH / par + 0.5)) & ~1;\n',
+    '  int w = ck_wide_width() > 0 ? ck_wide_width() : ((int)(ar[st->widescreen] * CAMH / par + 0.5)) & ~1;\n',
     1,
   ],
 ];

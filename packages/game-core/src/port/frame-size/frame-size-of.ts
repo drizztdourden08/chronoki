@@ -17,8 +17,6 @@ const pictureScale = ({ renderScale, interpolation }: Pick<CkSettings, 'renderSc
   return k === 1 && interpolation ? CT_INTERPOLATED_SCALE : k;
 };
 
-/* The largest picture the core draws under these settings: the canvas size. A smaller picture (a 1x frame between
-   interpolated ones) is scaled up to it by the core. */
 const frameSizeOf = (settings: Pick<CkSettings, 'widescreen' | 'wideWidth' | 'renderScale' | 'interpolation'>): CkFrameSize => {
   const k = pictureScale(settings);
   return { width: wideWidth(settings) * k, height: CT_FRAME_HEIGHT * k };

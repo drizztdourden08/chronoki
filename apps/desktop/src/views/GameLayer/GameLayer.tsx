@@ -23,8 +23,9 @@ const GameLayer = () => {
   const { viewport, pixelPerfect } = useViewport();
   const { settings } = useGameSession();
   useLegacyStretchMigration();
-  useAspectRatioLock(launch !== null, frameSizeOf({ widescreen: settings.widescreen, renderScale: 1, interpolation: false }));
-  usePixelPerfectSize(stageRef, pixelPerfect, frameSizeOf({ widescreen: settings.widescreen, renderScale: 1, interpolation: false }));
+  const baseFrame = frameSizeOf({ widescreen: settings.widescreen, wideWidth: settings.wideWidth, renderScale: 1, interpolation: false });
+  useAspectRatioLock(launch !== null, baseFrame);
+  usePixelPerfectSize(stageRef, pixelPerfect, baseFrame);
   useGameBoot({ canvasRef, launch });
   useGameInput(status === 'running' || status === 'paused', launch?.profileId ?? null, onFunctionAction, onFunctionRelease);
 
