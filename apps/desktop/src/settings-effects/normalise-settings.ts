@@ -3,7 +3,6 @@ import type { AppSettings } from '@app/settings.type';
 import { ALWAYS_ON_GATES, NEW_DEFAULT_GATES } from './normalise-settings.constants';
 import type { RawSettings } from './normalise-settings.type';
 
-
 const withIds = (gates: readonly string[], ids: readonly string[]): string[] => [...gates, ...ids.filter((id) => !gates.includes(id))];
 
 const normaliseSettings = (settings: AppSettings, stored?: RawSettings | null): AppSettings => {
