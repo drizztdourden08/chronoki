@@ -1,9 +1,11 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../../pipeline/import-context.type';
 import { peekOracle } from '../../oracle/peek-access';
-import { BRACKET_TILE, GATO_REF } from '../battle-anim/anim-consts';
-import { inView, monitorRequest, parseMonitor } from '../battle-anim/anim-sprites';
-import type { GatoStep } from '../battle-anim/anim-tables';
+import { BRACKET_TILE, GATO_REF } from '../battle-anim/anim-consts.constants';
+import { parseMonitor } from '../battle-anim/parse-monitor';
+import { monitorRequest } from '../battle-anim/monitor-request';
+import { inView } from '../battle-anim/in-view';
+import type { GatoStep } from '../battle-anim/anim-tables.type';
 import type { SavingDump, PokeMonitorRequest } from './add-idle.type';
 import { GATO_V2_F0, GATO_V2_F1, NOATK_POKE, SAVED_STATE } from './add-idle.constants';
 

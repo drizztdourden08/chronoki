@@ -4,27 +4,11 @@ import { peekOracle } from '../../oracle/peek-access';
 import type { PeekDump } from '../../oracle/peek.type';
 import type { Sprite } from '../shared/oam-decode';
 import { decodeOam, oamBlob, oamCgram } from '../shared/oam-decode';
-import { KEYS, NTILE } from './anim-consts';
-import type { Key } from './anim-consts';
-import { combatant, scriptFor } from './anim-sprites';
-
-interface Keyframe {
-  key: Key;
-  objOff: number;
-  nObj: number;
-  ax: number;
-  ay: number;
-}
-
-interface Collected {
-  kfs: Keyframe[];
-  objFlat: Sprite[];
-  tiles: Uint8Array[][];
-  cgram: Uint8Array;
-}
-
-const bakeTiles = (vram: Uint8Array): Uint8Array[] =>
-  Array.from({ length: NTILE }, (_, t) => vram.slice(t * 32, t * 32 + 32));
+import { KEYS } from './anim-consts.constants';
+import { combatant } from './combatant';
+import { scriptFor } from './script-for';
+import type { Keyframe, Collected } from './anim-collect.type';
+import { bakeTiles } from './bake-tiles';
 
 const collect = async (ctx: ImportContext, state: Uint8Array): Promise<Collected> => {
   const oracle = peekOracle(ctx);
@@ -55,5 +39,4 @@ const collect = async (ctx: ImportContext, state: Uint8Array): Promise<Collected
   return { kfs, objFlat, tiles, cgram };
 };
 
-export type { Collected, Keyframe };
-export { bakeTiles, collect };
+export { collect };

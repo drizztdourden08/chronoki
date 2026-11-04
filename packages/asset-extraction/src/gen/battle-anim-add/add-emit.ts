@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hexBytes } from '../battle-anim/anim-emit';
-import { objLine } from '../battle-anim/anim-sprites';
-import type { GatoStep } from '../battle-anim/anim-tables';
+import { hexBytes } from '../battle-anim/hex-bytes';
+import { objLine } from '../battle-anim/obj-line';
+import type { GatoStep } from '../battle-anim/anim-tables.type';
 import { dec } from '../shared/py-format';
 import type { AddGroup } from './add-bake.type';
 import { GATO_V2_F0 } from './add-idle.constants';

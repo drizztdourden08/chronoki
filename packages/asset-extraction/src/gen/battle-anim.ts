@@ -2,10 +2,14 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import { collect } from './battle-anim/anim-collect';
-import { ANIM_RECIPE } from './battle-anim/anim-consts';
+import { ANIM_RECIPE } from './battle-anim/anim-consts.constants';
 import { emitBattleAnim } from './battle-anim/anim-emit';
-import { monitorRequest, parseMonitor, scriptFor } from './battle-anim/anim-sprites';
-import { cronoAttackTable, cronoBobTable, gatoIdleTable } from './battle-anim/anim-tables';
+import { parseMonitor } from './battle-anim/parse-monitor';
+import { monitorRequest } from './battle-anim/monitor-request';
+import { scriptFor } from './battle-anim/script-for';
+import { gatoIdleTable } from './battle-anim/gato-idle-table';
+import { cronoBobTable } from './battle-anim/crono-bob-table';
+import { cronoAttackTable } from './battle-anim/crono-attack-table';
 import type { GenFiles } from './oracle-gen-stage';
 
 /** tools/gen/battle_anim.py: the Crono attack, GATO idle and GATO attack animations as src/data/battle_anim.h. */

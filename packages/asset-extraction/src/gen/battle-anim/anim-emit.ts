@@ -1,13 +1,12 @@
 /* @layer shared-asset-extraction @kind logic */
 import { hex } from '../c-text';
 import { dec } from '../shared/py-format';
-import { CRONO_REF, GATO_REF, NTILE } from './anim-consts';
-import type { Collected } from './anim-collect';
+import { CRONO_REF, GATO_REF, NTILE } from './anim-consts.constants';
+import type { Collected } from './anim-collect.type';
 import { emitTraj } from './anim-emit-traj';
-import { objLine } from './anim-sprites';
-import type { BobStep, CronoStep, GatoStep } from './anim-tables';
-
-const hexBytes = (b: Uint8Array): string => Array.from(b, (x) => `0x${hex(x, 2)}`).join(',');
+import { objLine } from './obj-line';
+import type { BobStep, CronoStep, GatoStep } from './anim-tables.type';
+import { hexBytes } from './hex-bytes';
 
 const emitBattleAnim = (c: Collected, cronoTab: CronoStep[], bobTab: BobStep[], gidleTab: GatoStep[]): string => {
   const o: string[] = [];
@@ -70,4 +69,4 @@ const emitBattleAnim = (c: Collected, cronoTab: CronoStep[], bobTab: BobStep[], 
   return o.join('');
 };
 
-export { emitBattleAnim, hexBytes };
+export { emitBattleAnim };

@@ -1,8 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../../pipeline/import-context.type';
 import { peekOracle } from '../../oracle/peek-access';
-import { bakeTiles } from '../battle-anim/anim-collect';
-import { combatant, holdScript } from '../battle-anim/anim-sprites';
+import { bakeTiles } from '../battle-anim/bake-tiles';
+import { combatant } from '../battle-anim/combatant';
+import { holdScript } from '../battle-anim/hold-script';
 import { decodeOam, oamBlob } from '../shared/oam-decode';
 import type { Spec, AddKf, AddGroup } from './add-bake.type';
 
