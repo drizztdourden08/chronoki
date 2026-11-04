@@ -1,0 +1,16 @@
+{
+  "name": "@chronoki/import-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Fetches BelthasarProject at the pinned commit and copies its core into core/belthasar/",
+  "type": "module",
+  "bin": { "import-core": "./src/cli.ts" },
+  "scripts": {
+    "import": "tsx src/cli.ts",
+    "check": "tsx src/cli.ts --check"
+  },
+  "devDependencies": {
+    "tsx": "latest",
+    "@types/node": "latest"
+  }
+}
