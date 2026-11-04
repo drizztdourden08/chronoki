@@ -1,7 +1,9 @@
 /* @layer shared-asset-extraction @kind logic @source Python lz.lz_decompress */
 import { at } from './rom-at';
 import type { LzState } from './lz-decompress.type';
-import { rawBlock, flagBlock, nextSegment } from './lz-ops';
+import { flagBlock } from './lz-flag-block';
+import { nextSegment } from './lz-next-segment';
+import { rawBlock } from './lz-raw-block';
 
 const lzDecompress = (data: Uint8Array, start: number): Uint8Array => {
   const compressedSize = (at(data, start + 1) << 8) | at(data, start);

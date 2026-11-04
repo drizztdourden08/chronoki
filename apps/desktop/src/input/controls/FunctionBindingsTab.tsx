@@ -1,14 +1,8 @@
 /* @layer renderer-components @kind component */
 import { Box } from '@drizztdourden08/tessera/primitives';
 import { FUNCTION_ACTION_LABELS } from '@chronoki/input-mapping';
-import type { FunctionAction } from '@chronoki/input-mapping';
 import { BindingRow } from './BindingRow';
-import type { ControlsState } from './controls.type';
-
-interface FunctionBindingsTabProps {
-  ctrl: ControlsState;
-  onRebind: (action: FunctionAction) => void;
-}
+import type { FunctionBindingsTabProps } from './FunctionBindingsTab.type';
 
 const FunctionBindingsTab = ({ ctrl, onRebind }: FunctionBindingsTabProps) => (
   <Box className="controls-settings__bindings">

@@ -1,14 +1,8 @@
 /* @layer shared-asset-extraction @kind logic @source Python text.decode_tokens branches */
 import type { TokenHandler, TokenState } from './text-tokens.type';
-import { at } from './rom-at';
 import { parseCharacter } from './parse-character';
 import { special } from './text-codes';
-
-const takeByte = (st: TokenState): number => {
-  const b = at(st.rom, st.o);
-  st.o += 1;
-  return b;
-};
+import { takeByte } from './take-byte';
 
 const delayText = (delay: number): string =>
   `\x03${String.fromCharCode(0x41 + (delay >> 4))}${String.fromCharCode(0x41 + (delay & 15))}`;
@@ -58,7 +52,7 @@ const dictSub: TokenHandler = (v, st) => {
 const literal: TokenHandler = (v, st) => {
   const { length } = st.source;
   if (!((length === null && v > 0x9f) || (length !== null && v >= 0x9f))) return undefined;
-  st.out.push(st.namesub && v === 0xe2 ? '”' : parseCharacter(v));
+  st.out.push(st.namesub && v === 0xe2 ? '\u201d' : parseCharacter(v));
   return false;
 };
 
@@ -69,14 +63,14 @@ const fallback: TokenHandler = (v, st) => {
   return false;
 };
 
-const HANDLERS: TokenHandler[] = [charPrefix, delayToken, pageBreak, indentBreak, newPage, dictSub, literal, fallback];
+const tokenHandlers: TokenHandler[] = [charPrefix, delayToken, pageBreak, indentBreak, newPage, dictSub, literal, fallback];
 
 const stepToken = (v: number, st: TokenState): boolean => {
-  for (const handler of HANDLERS) {
+  for (const handler of tokenHandlers) {
     const stop = handler(v, st);
     if (stop !== undefined) return stop;
   }
   return false;
 };
 
-export { stepToken, takeByte };
+export { stepToken };

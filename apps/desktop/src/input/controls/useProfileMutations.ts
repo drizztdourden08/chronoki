@@ -1,6 +1,6 @@
 /* @layer renderer-components @kind hook */
 import { useCallback, useState } from 'react';
-import type { FunctionAction, FunctionMapping, InputBinding, InputProfile, SnesButton } from '@chronoki/input-mapping';
+import type { FunctionAction, InputBinding, InputProfile, SnesButton } from '@chronoki/input-mapping';
 import { getInputManager } from '../input-manager/get-input-manager';
 import { addProfile } from '../profile-store/add-profile';
 import { removeProfile } from '../profile-store/remove-profile';
@@ -15,16 +15,7 @@ import { buildPresetProfile } from '../profile-edit/build-preset-profile';
 import { clearSnesMapping } from '../profile-edit/clear-snes-mapping';
 import { NO_BINDING } from '../profile-edit/profile-edit.constants';
 import type { DevicePreset } from '../profile-edit/profile-edit.type';
-import type { ControlsState } from './controls.type';
-
-interface MutationArgs {
-  activeProfile: InputProfile | null;
-  profiles: InputProfile[];
-  functionMappings: FunctionMapping[];
-  sync: () => void;
-}
-
-type Mutations = Pick<ControlsState, 'newlyCreatedId' | 'select' | 'create' | 'rename' | 'remove' | 'bindSnes' | 'clearSnes' | 'bindFunction' | 'clearFunction' | 'createForDevice' | 'applyToActive'>;
+import type { MutationArgs, Mutations } from './useProfileMutations.type';
 
 const useProfileMutations = ({ activeProfile, profiles, functionMappings, sync }: MutationArgs): Mutations => {
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null);

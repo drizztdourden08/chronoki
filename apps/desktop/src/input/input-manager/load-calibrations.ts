@@ -1,5 +1,6 @@
 /* @layer renderer-lib @kind logic */
 import { useCalibrationStore, controllerInputStore } from '@drizztdourden08/brock-input/renderer';
+import { appLog } from '@app/log/app-log';
 
 const logLoadedCalibrations = (): void => {
   const { sticks, triggers } = useCalibrationStore.getState();
@@ -12,7 +13,7 @@ const logLoadedCalibrations = (): void => {
 const loadCalibrations = (): void => {
   useCalibrationStore.getState().refresh()
     .then(logLoadedCalibrations)
-    .catch((e: unknown) => console.warn('[input] failed to load controller calibration', e));
+    .catch((e: unknown) => appLog.warn('[input] failed to load controller calibration', e));
 };
 
 export { loadCalibrations };

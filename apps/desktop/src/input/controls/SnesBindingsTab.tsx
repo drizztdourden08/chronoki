@@ -2,15 +2,9 @@
 import { useMemo } from 'react';
 import { Box } from '@drizztdourden08/tessera/primitives';
 import { SNES_BUTTON_LABELS } from '@chronoki/input-mapping';
-import type { SnesButton } from '@chronoki/input-mapping';
 import { BindingRow } from './BindingRow';
 import { buildDisplayMappings } from './build-display-mappings';
-import type { ControlsState } from './controls.type';
-
-interface SnesBindingsTabProps {
-  ctrl: ControlsState;
-  onRebind: (button: SnesButton) => void;
-}
+import type { SnesBindingsTabProps } from './SnesBindingsTab.type';
 
 const SnesBindingsTab = ({ ctrl, onRebind }: SnesBindingsTabProps) => {
   const mappings = useMemo(() => buildDisplayMappings(ctrl.activeProfile), [ctrl.activeProfile]);

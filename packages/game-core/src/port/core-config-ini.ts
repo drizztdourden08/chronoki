@@ -1,18 +1,6 @@
 /* @layer bridge-wasm @kind logic */
+import { DEFAULT_CK_SETTINGS } from './core-config-ini.constants';
 import type { CkSettings } from './core-config-ini.type';
-
-const DEFAULT_CK_SETTINGS: CkSettings = {
-  widescreen: 'off',
-  renderScale: 1,
-  interpolation: false,
-  steamMargins: false,
-  fillBottomLines: false,
-  sceneAdjustments: false,
-  volume: 100,
-  mute: false,
-  sync: 'frame',
-  instantSoundUploads: false,
-};
 
 const flag = (value: boolean): string => (value ? '1' : '0');
 
@@ -38,4 +26,4 @@ const buildCoreConfigIni = (settings: Partial<CkSettings> = {}): string => {
   ].join('\n');
 };
 
-export { buildCoreConfigIni, DEFAULT_CK_SETTINGS };
+export { buildCoreConfigIni };

@@ -1,7 +1,6 @@
 /* @layer renderer-appshell @kind logic */
 import type { AudioAdapter } from '@drizztdourden08/brock-port-kit/renderer';
-
-const totals = { frames: 0 };
+import { totals } from './audio-frame-totals';
 
 const attachAudioFrameCounter = (adapter: AudioAdapter): void => {
   totals.frames = 0;
@@ -12,6 +11,4 @@ const attachAudioFrameCounter = (adapter: AudioAdapter): void => {
   };
 };
 
-const audioFrameTotal = (): number => totals.frames;
-
-export { attachAudioFrameCounter, audioFrameTotal };
+export { attachAudioFrameCounter };

@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { activeGameHolder } from '@app/game/lifecycle';
 import { NOTICE_NO_PROFILE, NOTICE_NO_ROM } from '../GameSession.constants';
 import type { GameLaunch, GameSessionValue } from '../GameSession.type';
-import { attachAudioFrameCounter } from './audio-frame-counter';
+import { attachAudioFrameCounter } from './attach-audio-frame-counter';
 import { resolveLaunch } from './resolve-launch';
 import { runFunctionAction } from './run-function-action';
 import { useAutoLaunch } from './useAutoLaunch';
