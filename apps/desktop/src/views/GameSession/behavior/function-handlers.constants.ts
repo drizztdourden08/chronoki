@@ -7,7 +7,6 @@ import { currentSlot } from './current-slot';
 import { loadFromSlot } from './load-from-slot';
 import { cycleProfile } from './cycle-profile';
 import { pressSaveKey } from './press-save-key';
-import { resetCore } from './reset-core';
 import { SLOT_HANDLERS } from './slot-handlers.constants';
 import { stepSlot } from './step-slot';
 import { takeScreenshot } from './take-screenshot';
@@ -15,7 +14,6 @@ import { toggleFullscreen } from './toggle-fullscreen';
 
 const FUNCTION_HANDLERS: Partial<Record<FunctionAction, () => void | Promise<void>>> = {
   turbo: () => setTurboHeld(true),
-  reset: resetCore,
   fullscreen: toggleFullscreen,
   'toggle-debug-capture': toggleDebugCapture,
   'slot-next': () => stepSlot(1),

@@ -53,8 +53,9 @@ const useGameSessionValue = (): GameSessionValue => {
   }, []);
 
   const onFunctionAction = useCallback((action: Parameters<typeof runFunctionAction>[0]) => {
-    void runFunctionAction(action);
-  }, []);
+    if (action === 'reset') reset();
+    else void runFunctionAction(action);
+  }, [reset]);
 
   const onFunctionRelease = useCallback((action: Parameters<typeof runFunctionRelease>[0]) => runFunctionRelease(action), []);
 
