@@ -3,8 +3,8 @@ import { hexBytes } from '../battle-anim/anim-emit';
 import { objLine } from '../battle-anim/anim-sprites';
 import type { GatoStep } from '../battle-anim/anim-tables';
 import { dec } from '../shared/py-format';
-import type { AddGroup } from './add-bake';
-import { GATO_V2_F0 } from './add-idle';
+import type { AddGroup } from './add-bake.type';
+import { GATO_V2_F0 } from './add-idle.constants';
 
 const emitGroup = (arr: string, g: AddGroup, doc: string): string => {
   const up = arr.toUpperCase();

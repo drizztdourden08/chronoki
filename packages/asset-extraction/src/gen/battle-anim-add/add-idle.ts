@@ -1,18 +1,11 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../../pipeline/import-context.type';
 import { peekOracle } from '../../oracle/peek-access';
-import type { MonitorRequest, PeekDump } from '../../oracle/peek.type';
 import { BRACKET_TILE, GATO_REF } from '../battle-anim/anim-consts';
 import { inView, monitorRequest, parseMonitor } from '../battle-anim/anim-sprites';
 import type { GatoStep } from '../battle-anim/anim-tables';
-
-const GATO_V2_F0 = 67;
-const GATO_V2_F1 = 186;
-const NOATK_POKE = 'AFAC=FF,AFB1=FF';
-const SAVED_STATE = 'gato_idle400.state';
-
-type SavingDump = PeekDump & { state?: Uint8Array };
-type PokeMonitorRequest = MonitorRequest & { env?: Record<string, string> };
+import type { SavingDump, PokeMonitorRequest } from './add-idle.type';
+import { GATO_V2_F0, GATO_V2_F1, NOATK_POKE, SAVED_STATE } from './add-idle.constants';
 
 const makeIdleState = async (ctx: ImportContext, state: Uint8Array): Promise<Uint8Array> => {
   const dump: SavingDump = await peekOracle(ctx).peek({
@@ -24,7 +17,7 @@ const makeIdleState = async (ctx: ImportContext, state: Uint8Array): Promise<Uin
   return dump.state;
 };
 
-const gatoIdleV2 = async (ctx: ImportContext, state: Uint8Array): Promise<GatoStep[]> => {
+const gatoIdleNoAttack = async (ctx: ImportContext, state: Uint8Array): Promise<GatoStep[]> => {
   const idle = await makeIdleState(ctx, state);
   const req: PokeMonitorRequest = {
     ...monitorRequest(idle, `100:0,0:${GATO_V2_F1 + 4}`),
@@ -46,4 +39,4 @@ const gatoIdleV2 = async (ctx: ImportContext, state: Uint8Array): Promise<GatoSt
   return rows;
 };
 
-export { GATO_V2_F0, gatoIdleV2 };
+export { gatoIdleNoAttack };
