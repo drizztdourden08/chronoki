@@ -11,7 +11,6 @@ export default defineBrockConfig({
     author: { name: 'drizztdourden_', email: 'drizztdourden08@users.noreply.github.com' },
     linuxCategory: 'Game',
     window: { titleBar: { mobile: false } },
-    profilesRoute: 'data/profiles',
     artifactPrefix: 'chronoki-',
     dataDirs: ['assets', 'roms', 'profiles', 'config', 'input'],
     icons: { brand: 'chronoki' },
