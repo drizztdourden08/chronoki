@@ -9,7 +9,7 @@ import { ProfileDetailPanel } from './sub-components/ProfileDetailPanel';
 import { ProfileListPane } from './sub-components/ProfileListPane';
 
 const ProfileManager = ({ onOpenProfile }: ProfileManagerProps) => {
-  const manager = useProfileManager();
+  const manager = useProfileManager(onOpenProfile);
   const { profiles, readyRoms, selectedProfile, creating, listCollapsed } = manager;
 
   const list = (

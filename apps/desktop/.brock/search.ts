@@ -4,8 +4,9 @@ import config from '../src/screens/screens.config';
 
 const searchIndex = buildSearchIndex(config, [
   {"kind":"card","id":"credits","title":"Credits","icon":"file-text","keywords":["thanks","authors","licence","font"]},
-  {"kind":"page","id":"library","bucket":"data","group":"library","title":"ROMs","icon":"gamepad-2","keywords":["rom","import","extract","assets","rebuild","sfc","smc","cartridge","library"]},
+  {"kind":"hero","id":"home","bucket":"data","title":"Home","icon":"house","keywords":["data","overview","disk","folder","total","library"]},
   {"kind":"page","id":"profiles","bucket":"data","group":"library","title":"Profiles","icon":"users","keywords":["profile","create","delete","rom","mode","original","modified"]},
+  {"kind":"page","id":"roms","bucket":"data","group":"library","title":"ROMs","icon":"gamepad-2","keywords":["rom","import","extract","assets","rebuild","sfc","smc","cartridge","library"]},
   {"kind":"page","id":"storage","bucket":"data","title":"Storage","icon":"hard-drive","keywords":["data","disk","folder","export","import","clean","backup"]},
   {"kind":"settings","id":"contributing","bucket":"game","group":"app","title":"Contributing","icon":"braces","keywords":["developer","debug","logs","contributor","report"],"sections":[{"id":"developer-instrumentation","title":"Instrumentation","rows":[{"key":"developerToolsEnabled","label":"Developer Mode","description":"Turns on developer tools.","keywords":["developer","mode","devtools","instrumentation"]}]},{"id":"developer-debug-reporting","title":"Debug Reporting","rows":[{"key":"allowDebugLogging","label":"Allow debugging logs tracking","description":"Keeps detailed logs to help when you report a bug.","keywords":["debug","logs","tracking","report","crash","capture"]}]}]},
   {"kind":"settings","id":"enhancements","bucket":"game","group":"extras","title":"Enhancements","icon":"sparkles","keywords":["enhancements","belthasar","interpolation","steam","free","sync","uploads","scene","bottom","lines"],"sections":[{"id":"motion","title":"Motion","rows":[]},{"id":"widescreen","title":"Widescreen","rows":[]},{"id":"sound","title":"Sound","rows":[]}]},

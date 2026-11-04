@@ -3,8 +3,9 @@ import { buildScreenTree, lazyComponent } from '@drizztdourden08/brock-react';
 import config from '../src/screens/screens.config';
 import { searchIndex } from './search';
 import { meta as creditsCardMeta } from '../src/screens/credits.card';
-import { meta as dataLibraryLibraryPageMeta } from '../src/screens/data/library/library.page';
+import { meta as dataHomeHeroMeta } from '../src/screens/data/home.hero';
 import { meta as dataLibraryProfilesPageMeta } from '../src/screens/data/library/profiles.page';
+import { meta as dataLibraryRomsPageMeta } from '../src/screens/data/library/roms.page';
 import { meta as dataStoragePageMeta } from '../src/screens/data/storage.page';
 import GameAppContributingSettings, { meta as gameAppContributingSettingsMeta } from '../src/screens/game/app/contributing.settings';
 import GameExtrasEnhancementsSettings, { meta as gameExtrasEnhancementsSettingsMeta } from '../src/screens/game/extras/enhancements.settings';
@@ -18,8 +19,9 @@ import { meta as gameViewBaseMeta } from '../src/screens/game-view.base';
 
 const screenTree = buildScreenTree(config, [
   { kind: 'card', id: 'credits', component: lazyComponent(() => import('../src/screens/credits.card')), meta: creditsCardMeta },
-  { kind: 'page', bucket: 'data', group: 'library', id: 'library', component: lazyComponent(() => import('../src/screens/data/library/library.page')), meta: dataLibraryLibraryPageMeta },
+  { kind: 'hero', bucket: 'data', id: 'home', component: lazyComponent(() => import('../src/screens/data/home.hero')), meta: dataHomeHeroMeta },
   { kind: 'page', bucket: 'data', group: 'library', id: 'profiles', component: lazyComponent(() => import('../src/screens/data/library/profiles.page')), meta: dataLibraryProfilesPageMeta },
+  { kind: 'page', bucket: 'data', group: 'library', id: 'roms', component: lazyComponent(() => import('../src/screens/data/library/roms.page')), meta: dataLibraryRomsPageMeta },
   { kind: 'page', bucket: 'data', id: 'storage', component: lazyComponent(() => import('../src/screens/data/storage.page')), meta: dataStoragePageMeta },
   { kind: 'settings', bucket: 'game', group: 'app', id: 'contributing', sections: GameAppContributingSettings, meta: gameAppContributingSettingsMeta },
   { kind: 'settings', bucket: 'game', group: 'extras', id: 'enhancements', sections: GameExtrasEnhancementsSettings, meta: gameExtrasEnhancementsSettingsMeta },

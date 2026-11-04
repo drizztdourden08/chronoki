@@ -1,10 +1,11 @@
 /* @layer renderer-components @kind component */
 import { useState } from 'react';
 import { Button, Flex, Icon, Stack, Status, Tabs, Text, Title } from '@drizztdourden08/tessera/primitives';
-import { DATA_TAB, MODE_LABELS, OVERVIEW_TAB, PROFILE_TABS, PROFILE_TEXT } from '../ProfileManager.constants';
+import { DATA_TAB, MODE_LABELS, OVERVIEW_TAB, PROFILE_TABS, PROFILE_TEXT, SETTINGS_TAB } from '../ProfileManager.constants';
 import type { ProfileDetailPanelProps } from '../ProfileManager.type';
 import { ProfileDataTab } from './ProfileDataTab';
 import { ProfileOverviewTab } from './ProfileOverviewTab';
+import { ProfileSettingsTab } from './ProfileSettingsTab';
 
 const ProfileDetailPanel = ({ profile, readyRoms, onOpen, onDelete }: ProfileDetailPanelProps) => {
   const [tab, setTab] = useState<string>(OVERVIEW_TAB);
@@ -26,6 +27,7 @@ const ProfileDetailPanel = ({ profile, readyRoms, onOpen, onDelete }: ProfileDet
       </Flex>
       <Tabs tabs={PROFILE_TABS} activeTab={tab} onTabChange={setTab} />
       {tab === OVERVIEW_TAB && <ProfileOverviewTab profile={profile} readyRoms={readyRoms} />}
+      {tab === SETTINGS_TAB && <ProfileSettingsTab profile={profile} />}
       {tab === DATA_TAB && <ProfileDataTab profile={profile} />}
     </Stack>
   );

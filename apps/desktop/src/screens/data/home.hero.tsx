@@ -1,0 +1,42 @@
+/* @layer renderer-app @kind component */
+import { useMemo } from 'react';
+import { usePlatform } from '@drizztdourden08/brock-react';
+import type { HeroProps, ScreenMeta } from '@drizztdourden08/brock-react';
+import { Button, Icon } from '@drizztdourden08/tessera/primitives';
+import { DataHome, dataHomeFacts, useStorageSummary } from '@app/views/DataHome';
+
+const meta: ScreenMeta = {
+  title: 'Home',
+  icon: 'house',
+  keywords: ['data', 'overview', 'disk', 'folder', 'total', 'library'],
+  hero: { size: 'compact' },
+};
+
+const DataHomeHero = (props: HeroProps) => {
+  const { slots, open } = props;
+  const { Art, Eyebrow, Title, Actions, Tools, Facts } = slots;
+  const { storage, capabilities } = usePlatform();
+  const { summary, loading, refresh } = useStorageSummary(storage);
+  const facts = useMemo(() => dataHomeFacts(summary), [summary]);
+
+  return (
+    <>
+      <Art kind="none" />
+      <Eyebrow>Data</Eyebrow>
+      <Title>Your library</Title>
+      {capabilities.revealDataFolder && (
+        <Actions>
+          <Button variant="primary" icon={<Icon name="folder-open" />} onClick={() => void storage.reveal()}>Open data folder</Button>
+        </Actions>
+      )}
+      <Tools>
+        <Button size="sm" variant="ghost" icon={<Icon name="refresh-cw" />} onClick={refresh}>Refresh</Button>
+      </Tools>
+      <Facts rows={facts} />
+      <DataHome summary={summary} loading={loading} open={open} />
+    </>
+  );
+};
+
+export default DataHomeHero;
+export { meta };
