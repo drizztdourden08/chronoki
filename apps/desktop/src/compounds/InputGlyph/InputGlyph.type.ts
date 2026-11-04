@@ -1,0 +1,22 @@
+/* @layer renderer-components @kind types */
+import type { InputBinding, ButtonIcon } from '@chronoki/input-mapping';
+
+interface InputGlyphProps {
+  binding?: InputBinding;
+  iconId?: string | null;
+  label?: string;
+  icon?: ButtonIcon | null;
+  showLabel?: boolean;
+  size?: 'sm' | 'md';
+  fallbackVariant?: 'key' | 'plain';
+  fallbackClassName?: string;
+  className?: string;
+}
+
+interface GlyphFallbackProps {
+  variant: 'key' | 'plain';
+  label: string;
+  className: string;
+}
+
+export type { GlyphFallbackProps, InputGlyphProps };

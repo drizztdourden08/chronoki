@@ -1,4 +1,17 @@
 /* @layer renderer-components @kind constants */
-const SAVE_OVERLAY_HINT = 'Hold the save key to save, tap it to load, Esc to close';
+import type { HintAction } from './SaveStateOverlay.type';
 
-export { SAVE_OVERLAY_HINT };
+const ANIM_MS = 180;
+
+const HINT_LABELS: Record<HintAction, string> = {
+  'tap-load': 'Tap to load',
+  'hold-save': 'Hold to save',
+  'holding-save': 'Saving...',
+  'esc-cancel': 'Cancel',
+};
+
+const IDLE_HINTS: readonly HintAction[] = ['tap-load', 'hold-save', 'esc-cancel'];
+
+const HOLDING_HINTS: readonly HintAction[] = ['holding-save', 'esc-cancel'];
+
+export { ANIM_MS, HINT_LABELS, HOLDING_HINTS, IDLE_HINTS };

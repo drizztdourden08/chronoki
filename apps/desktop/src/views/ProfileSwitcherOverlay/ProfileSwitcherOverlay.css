@@ -39,6 +39,16 @@
   gap: var(--space-xs);
 }
 
+.profile-switcher__hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding-top: var(--space-xs);
+  border-top: var(--border-width-thin) solid var(--c-border);
+  color: var(--c-text-dim);
+  font-size: var(--text-xs);
+}
+
 .profile-switcher__item {
   display: flex;
   align-items: center;

@@ -1,12 +1,15 @@
 /* @layer renderer-components @kind component */
 import { useEffect } from 'react';
-import { Box, Text } from '@drizztdourden08/tessera/primitives';
+import { Box } from '@drizztdourden08/tessera/primitives';
 import { SaveSlot } from '@app/compounds/SaveSlot';
 import { closeSaveOverlay } from '@app/game/save-overlay';
 import { useGameSession } from '@app/views/GameSession';
 import { useOverlaySlots } from './behavior/useOverlaySlots';
 import { useSaveOverlay } from './behavior/useSaveOverlay';
-import { SAVE_OVERLAY_HINT } from './SaveStateOverlay.constants';
+import { shortcutLabel } from './behavior/shortcut-label';
+import { useOverlayPresence } from './behavior/useOverlayPresence';
+import { HOLDING_HINTS, IDLE_HINTS } from './SaveStateOverlay.constants';
+import { OverlayHints } from './sub-components/OverlayHints';
 import './SaveStateOverlay.css';
 
 const SaveStateOverlay = () => {
@@ -18,11 +21,12 @@ const SaveStateOverlay = () => {
     if (!running) closeSaveOverlay();
   }, [running]);
 
-  if (!open) return null;
+  const { visible, exiting } = useOverlayPresence(open);
+  if (!visible) return null;
 
   return (
     <Box className="save-overlay-backdrop" onClick={closeSaveOverlay}>
-      <Box className="save-overlay" onClick={(event) => event.stopPropagation()}>
+      <Box className={exiting ? 'save-overlay save-overlay--exit' : 'save-overlay'} onClick={(event) => event.stopPropagation()}>
         <Box className="save-overlay__track">
           {slots.map((info) => (
             <Box
@@ -39,6 +43,7 @@ const SaveStateOverlay = () => {
                 isEmpty={info.savedAt === null}
                 busy={busySlot === info.slot}
                 highlighted={info.slot === highlighted}
+                shortcutKey={shortcutLabel(info.slot)}
                 holdProgress={info.slot === highlighted ? holdProgress : undefined}
                 onSave={(target) => void save(target)}
                 onLoad={(target) => void load(target)}
@@ -46,7 +51,7 @@ const SaveStateOverlay = () => {
             </Box>
           ))}
         </Box>
-        <Text className="save-overlay__hint">{SAVE_OVERLAY_HINT}</Text>
+        <OverlayHints actions={holdProgress > 0 ? HOLDING_HINTS : IDLE_HINTS} slot={highlighted} holdProgress={holdProgress} />
       </Box>
     </Box>
   );

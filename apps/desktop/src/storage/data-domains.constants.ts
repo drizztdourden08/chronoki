@@ -7,7 +7,7 @@ const CHRONOKI_DATA_DOMAINS: DataDomainDef[] = [
   { domain: 'assets', label: 'Assets', dir: 'assets', description: 'Game assets built from each ROM; built again on demand.' },
   { domain: 'input', label: 'Input', dir: 'input', description: 'Your input profiles and bindings.', clearable: false },
   { domain: 'config', label: 'Config', dir: 'config', description: 'App configuration files.', clearable: false },
-  { domain: 'logs', label: 'Logs', dir: 'debug', description: 'Session and console logs.', cleanOlderThanDays: [7, 30], portable: false },
+  { domain: 'logs', label: 'Logs', dir: 'debug', description: 'Logs and debug captures.', cleanOlderThanDays: [7, 30], portable: false },
 ];
 
 export { CHRONOKI_DATA_DOMAINS };
