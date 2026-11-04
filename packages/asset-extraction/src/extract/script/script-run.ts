@@ -1,21 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, RomIndexError } from '../lib/byte-reader';
-import { ACTOR_OPS } from './script-ops-actor';
-import { DATA_OPS } from './script-ops-data';
-import { FLOW_OPS } from './script-ops-flow';
+import { byteAt } from '../bytes/byte-reader';
+import { RomIndexError } from '../bytes/rom-index-error';
 import { opLen } from './script-oplen';
-import type { OpHandler, RunCtx } from './script-run.type';
+import type { RunCtx } from './script-run.type';
+import { OP_HANDLERS, STOP_OPS, OP_LIMIT } from './script-run.constants';
 
-const OP_HANDLERS = new Map<number, OpHandler>([...FLOW_OPS, ...DATA_OPS, ...ACTOR_OPS]);
-/** Return / yield-forever / hand to the player: the function ends. */
-const STOP_OPS = new Set([0x00, 0xaf, 0xb0, 0xb1, 0xb2]);
-const OP_LIMIT = 6000;
-
-/**
- * script.run_func (the init-pass use: no textbox capture, no cross-object follow): executes object `c.obj`'s function
- * from `start`, updating the actors and WRAM until Return, a forever-yield, the end of the body or the op limit.
- * A read past the end of the body ends it (Python's IndexError).
- */
 const runFunc = (c: RunCtx, start: number): void => {
   let addr = start;
   let ops = 0;

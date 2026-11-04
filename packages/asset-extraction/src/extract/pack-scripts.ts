@@ -1,12 +1,11 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_scripts */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_SCRIPT } from './asset-types.constants';
 import { lzDecompress } from './lz-decompress';
-import { sceneHeader } from './lib/scene-props';
-import { scriptPointers } from './script/script-load';
+import { sceneHeader } from './scene-props-header';
+import { scriptPointers } from './script/script-pointers';
 import type { Packer } from './extract.type';
 
-/** extract_assets.pack_scripts: per scene-script index the decompressed bytecode, deduped by index. */
 const packScripts: Packer = ({ rom }) => {
   const entries: CtasEntry[] = [];
   const ptrs = scriptPointers(rom);

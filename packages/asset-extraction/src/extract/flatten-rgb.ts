@@ -1,7 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { Rgb } from './snes-color';
 
-/** b''.join(bytes(c) for c in colors): the colors as r, g, b bytes. */
 const flattenRgb = (colors: Rgb[]): Uint8Array => {
   const out = new Uint8Array(colors.length * 3);
   colors.forEach(([r, g, b], i) => {

@@ -1,5 +1,10 @@
-/* @layer shared-asset-extraction @kind logic */
-/** gfx.decode_tiles: 8x8 tiles as 64 palette indices each; bpp in {2, 4}. */
+/* @layer shared-asset-extraction @kind logic @source Python gfx.decode_tiles */
+const planeValue = (planes: [number, number][], bit: number): number => {
+  let v = 0;
+  for (const [b, shift] of planes) v |= ((b >> bit) & 1) << shift;
+  return v;
+};
+
 const decodeTiles = (data: Uint8Array, bpp: number): Uint8Array[] => {
   const tileBytes = 8 * bpp;
   const tiles: Uint8Array[] = [];
@@ -10,14 +15,11 @@ const decodeTiles = (data: Uint8Array, bpp: number): Uint8Array[] => {
     for (let y = 0; y < 8; y += 1) {
       const planes: [number, number][] = [];
       for (let pair = 0; pair < bpp / 2; pair += 1) {
-        planes.push([data[base + pair * 16 + y * 2]!, 2 * pair]);
-        planes.push([data[base + pair * 16 + y * 2 + 1]!, 2 * pair + 1]);
+        planes.push([data[base + pair * 16 + y * 2] as number, 2 * pair]);
+        planes.push([data[base + pair * 16 + y * 2 + 1] as number, 2 * pair + 1]);
       }
       for (let x = 0; x < 8; x += 1) {
-        const bit = 7 - x;
-        let v = 0;
-        for (const [b, shift] of planes) v |= ((b >> bit) & 1) << shift;
-        px[y * 8 + x] = v;
+        px[y * 8 + x] = planeValue(planes, 7 - x);
       }
     }
     tiles.push(px);

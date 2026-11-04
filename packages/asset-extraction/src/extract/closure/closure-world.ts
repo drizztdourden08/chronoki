@@ -1,30 +1,23 @@
-/* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
-import { lzCtlibDecompress } from '../lib/lz-ctlib';
-import { ptr24 } from './closure-location';
-import { until0 } from './menu-lib';
-import { animvmWalk, objvmWalk } from './vm-walk';
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure.world_headers, rom_closure.place_name_ids, rom_closure.world_scripts, rom_closure.world_tables */
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
+import { lzCtlibDecompress } from '../lz-ctlib';
+import { ptr24 } from './ptr24';
+import { until0 } from './until0';
+import { animvmWalk } from './animvm-walk';
+import { objvmWalk } from './vm-walk';
 import type { Span } from './vm-walk';
 import type { RomTable } from './closure.type';
+import { C6, WORLD_HDRS, WORLD_HDR_LEN, WORLD_PACKET_TABLES, OW_C2_SCRIPTS, OW_C2_ANIMS } from './closure-world.constants';
 
 const C2 = 0x020000;
-const C6 = 0x060000;
-const WORLD_HDRS = C6 + 0xfd00;
-const WORLD_HDR_LEN = 0x17;
-const WORLD_PACKET_TABLES = [0xfdf0, 0xfe20, 0xfea0, 0xff00, 0xff20, 0xff40, 0xff80, 0xffa0, 0xffc0, 0xffe0, 0x10000];
-/** The bank-C2 scripts the engine starts itself (the world's entry/return, the boarding manager, the Epoch, the world map, the time gauge). */
-const OW_C2_SCRIPTS = [0x2ec1, 0x2ec4, 0x2ec7, 0x2ed0, 0x31a8, 0x4a9b, 0x4aad, 0x4b8c, 0x4c8f, 0x69f8, 0x69ff, 0x6a0a, 0x74ae, 0x74b3, 0x74b8, 0x7504];
-const OW_C2_ANIMS = [0x6a18, 0x6a20];
 
 const hex = (v: number, width: number): string => v.toString(16).toUpperCase().padStart(width, '0');
 
-/** The 24-bit ROM address of a table in bank `C6` used as a packet pointer: the decompressed packet. */
 const packet = (rom: Uint8Array, tableAt: number, index: number): Uint8Array => lzCtlibDecompress(rom, ptr24(rom, C6 + tableAt + 3 * index) as number);
 
-/** rom_closure.world_headers: [file offset] of the eight worlds' headers. */
 const worldHeaders = (rom: Uint8Array): number[] => Array.from({ length: 8 }, (_, w) => C6 + wordAt(rom, WORLD_HDRS + 2 * w));
 
-/** rom_closure.place_name_ids: every entrance's name byte in every world's trigger packet, and the world map's labels. */
 const placeNameIds = (rom: Uint8Array): number[] => {
   const ids = new Set<number>([0x6f]);
   for (let w = 0; w < 8; w += 1) ids.add(byteAt(rom, C2 + 0x69f0 + w));
@@ -38,7 +31,6 @@ const placeNameIds = (rom: Uint8Array): number[] => {
   return [...ids].sort((a, b) => a - b);
 };
 
-/** rom_closure.world_scripts: [start, end) the overworld's scripts read from the ROM (the bank-C2 ones and every world's script packet). */
 const worldScripts = (rom: Uint8Array): Span[] => {
   const [spans, data] = objvmWalk(rom, OW_C2_SCRIPTS.map((e): [number, number] => [0xc2, e]));
   for (const h of worldHeaders(rom)) {
@@ -54,7 +46,6 @@ const worldScripts = (rom: Uint8Array): Span[] => {
   return [...spans, ...data, ...animvmWalk(rom, OW_C2_ANIMS)];
 };
 
-/** The bank-C2 and bank-C6 tables of the overworld, each from its reader (a word read at the largest index: + 2). */
 const readerTables = (): RomTable[] => [
   ['BG tilemap rebuild words (C2:0556/055C/0562, layer 0-2)', C2 + 0x0556, C2 + 0x0562 + 4 + 2],
   ['row fade steps (C2:2062)', C2 + 0x2062, C2 + 0x2062 + 0x40],
@@ -81,7 +72,6 @@ const readerTables = (): RomTable[] => [
   ['time gauge nybbles (C6:F700, 0x400)', C6 + 0xf700, C6 + 0xf700 + 0x400],
 ];
 
-/** rom_closure.world_tables: the tables the overworld reads, each extent the reading code's index range or a walked program. */
 const worldTables = (rom: Uint8Array): RomTable[] => {
   const out: RomTable[] = [['world header pointers ($C6:FD00, 8 worlds)', WORLD_HDRS, WORLD_HDRS + 16]];
   worldHeaders(rom).forEach((h, w) => out.push([`world ${w} header (0x17 bytes)`, h, h + WORLD_HDR_LEN]));

@@ -1,5 +1,4 @@
 /* @layer shared-asset-extraction @kind constants */
-/** extract_assets.py asset type numbers (T_*). */
 const T_SCENE_PAL = 1;
 const T_SPRITE_PAL = 2;
 const T_SCENE_HDR = 3;
@@ -37,13 +36,11 @@ const T_SND_TIMING = 35;
 const T_LZ = 36;
 const T_TABLE = 37;
 
-/** T_STRINGS ids. */
 const S_DICT = 0;
 const S_ITEMS = 1;
 const S_WORLD = 2;
 const S_LOCATIONS = 3;
 
-/** ROM layout constants of maps.py. */
 const SCENE_HDR = 0x360000;
 const SCENE_TS = 0x361c00;
 const SCENE_PAL = 0x3624c0;
@@ -51,7 +48,6 @@ const MAP_PTRS = 0x361e00;
 const TS_PTRS = 0x362220;
 const ASM_PTRS = 0x362100;
 const ASM3_PTRS = 0x3621c0;
-/** HiROM bank $FF as a file offset. */
 const BANK_FF = 0x3f0000;
 
 export {

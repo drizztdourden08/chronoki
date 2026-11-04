@@ -1,18 +1,14 @@
-/* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
-import { OPCODE_TABLE, operandLength } from './cpu65816';
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure._handler_lengths */
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
+import { operandLength } from './cpu65816';
+import { OPCODE_TABLE } from './cpu65816.constants';
+import type { HandlerLength, Seen, Walk } from './handler-lengths.type';
 
 const C2 = 0x020000;
 
-/** [bytes the handler advances, the operand index of its branch displacement or null]. */
-type HandlerLength = [number, number | null];
-type Seen = [string, string, number];
-/** [pc, M flag, X flag, LDY value, the last three instructions]. */
-type Walk = [number, number, number, number | null, Seen[]];
-
 const bankBase = (p: number): number => Math.floor(p / 0x10000) * 0x10000;
 
-/** Follows one handler through its branches; returns its largest `LDA #n / [CLC] / RTS` and the displacement operand index. */
 const followHandler = (rom: Uint8Array, start: number): HandlerLength => {
   const rets: number[] = [];
   let rel: number | null = null;
@@ -69,7 +65,6 @@ const followHandler = (rom: Uint8Array, start: number): HandlerLength => {
 
 const cache = new WeakMap<Uint8Array, Map<string, Map<number, HandlerLength>>>();
 
-/** rom_closure._handler_lengths: {op: [length, rel]} of a bank-C2 dispatcher's handlers (`JSR (table,X)`, the returned A = bytes to advance). */
 const handlerLengths = (rom: Uint8Array, table: number, count: number): Map<number, HandlerLength> => {
   const perRom = cache.get(rom) ?? new Map<string, Map<number, HandlerLength>>();
   cache.set(rom, perRom);

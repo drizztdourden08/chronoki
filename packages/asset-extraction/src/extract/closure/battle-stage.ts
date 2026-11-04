@@ -1,17 +1,13 @@
-/* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
-import { byteSpans, romLabel } from './byte-spans';
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure_battle.stage_cfgs, rom_closure_battle.anim_set_end, rom_closure_battle.stage_tables */
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
+import { byteSpans } from './byte-spans';
+import { romLabel } from './rom-label';
 import type { RomTable } from './closure.type';
-
-const CD = 0x0d0000;
-const CE = 0x0e0000;
-const CC = 0x0c0000;
+import { CD, CE, CC } from './battle-stage.constants';
+import type { StageCfg } from './battle-stage.type';
 const D1 = 0x110000;
 
-/** [$987E index, $9881 index, $9884 index, D1 word table, CD word table, CE word table]. */
-type StageCfg = [number, number, number, number, number, number];
-
-/** rom_closure_battle.stage_cfgs: every (987E, 9881, 9884) triple a config can stage, with the word tables it reads them through. */
 const stageCfgs = (rom: Uint8Array): StageCfg[] => {
   const out: StageCfg[] = [];
   const add = (base: number, stride: number, first: number, d1: number, t2: number, t3: number): void => {
@@ -28,7 +24,6 @@ const stageCfgs = (rom: Uint8Array): StageCfg[] => {
   return out;
 };
 
-/** rom_closure_battle.anim_set_end: C1/48EC's walk of the CE animation set at `x` (4-byte records, 16 animations). */
 const animSetEnd = (rom: Uint8Array, start: number): number => {
   let x = start;
   let anim = 0;
@@ -46,7 +41,6 @@ const animSetEnd = (rom: Uint8Array, start: number): number => {
   return x;
 };
 
-/** rom_closure_battle.stage_tables: the anim config tables, the words they stage and the data those name. */
 const stageTables = (rom: Uint8Array): RomTable[] => {
   const out: RomTable[] = [
     ['PC tech anim configs ($CD:45A6, 7 x 256)', CD + 0x45a6, CD + 0x45a6 + 7 * 256],

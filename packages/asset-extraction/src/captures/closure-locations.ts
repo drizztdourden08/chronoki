@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { u16 } from '../extract/rom-read';
+import { u16 } from '../extract/u16';
 
 /** rom_closure.py ptr24: a 3-byte HiROM pointer -> its file offset, or null outside the ROM. */
 const ptr24 = (rom: Uint8Array, at: number): number | null => {

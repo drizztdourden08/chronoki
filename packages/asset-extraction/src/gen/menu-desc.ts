@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import { decodeString, loadDict } from '../extract/text-tokens';
+import { decodeString } from '../extract/text-tokens';
+import { loadDict } from '../extract/load-dict';
 import { BASE } from './menu-desc.constants';
 
 const N = 242;

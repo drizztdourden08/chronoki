@@ -1,36 +1,12 @@
-/* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure.ptr24, rom_closure.location_indices, rom_closure.colour_slot_tables, rom_closure.location_tables */
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
 import type { RomTable } from './closure.type';
-
-const LOC_RECORDS = 0x360000;
-const TILESET_LISTS = 0x361c00;
-const MAP_PTRS = 0x361e00;
-const ASM_PTRS = 0x362100;
-const ASM3_PTRS = 0x3621c0;
-const TS_PTRS = 0x362220;
-const SCRIPT_PTRS = 0x3cf9f0;
-const SCENE_PALETTES = 0x3624c0;
-const EXITS = 0x250000;
-const TREASURE = 0x35f000;
+import { LOC_RECORDS, TILESET_LISTS, MAP_PTRS, ASM_PTRS, ASM3_PTRS, TS_PTRS, SCRIPT_PTRS, SCENE_PALETTES, EXITS, TREASURE } from './closure-location.constants';
+import type { LocationIndices } from './closure-location.type';
 
 const maxOf = (values: Iterable<number>): number => Math.max(...values);
 
-/** rom_closure.ptr24: a 3-byte HiROM pointer -> its file offset, or null outside the ROM. */
-const ptr24 = (rom: Uint8Array, at: number): number | null => {
-  const bank = byteAt(rom, at + 2);
-  if (bank < 0xc0) return null;
-  return ((bank - 0xc0) << 16) | wordAt(rom, at);
-};
-
-interface LocationIndices {
-  ts: Set<number>;
-  b3s: Set<number>;
-  idxs: Set<number>;
-  maps: Set<number>;
-  scripts: Set<number>;
-}
-
-/** rom_closure.location_indices: the tilesets, BG3 tilesets, tileset-list entries, maps and scripts every location reaches. */
 const locationIndices = (rom: Uint8Array): LocationIndices => {
   const r: LocationIndices = { ts: new Set(), b3s: new Set(), idxs: new Set(), maps: new Set(), scripts: new Set() };
   for (let loc = 0; loc < 512; loc += 1) {
@@ -51,7 +27,6 @@ const locationIndices = (rom: Uint8Array): LocationIndices => {
   return r;
 };
 
-/** rom_closure.colour_slot_tables: bank F6's colour tables FD/E292's records name, over every location. */
 const colourSlotTables = (rom: Uint8Array): [number, number] => {
   let lo: number | null = null;
   let hi: number | null = null;
@@ -89,7 +64,6 @@ const colourSlotTables = (rom: Uint8Array): [number, number] => {
   return [0x360000 + (lo as number), 0x360000 + (hi as number)];
 };
 
-/** rom_closure.location_tables: the location load's tables, each to the last index or byte a location reaches. */
 const locationTables = (rom: Uint8Array): RomTable[] => {
   const { ts, b3s, idxs, maps, scripts } = locationIndices(rom);
   const pals = new Set<number>();
@@ -112,4 +86,4 @@ const locationTables = (rom: Uint8Array): RomTable[] => {
   ];
 };
 
-export { locationTables, ptr24 };
+export { locationTables };

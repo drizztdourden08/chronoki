@@ -1,24 +1,21 @@
-/* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets._fd_tile_anim_end, extract_assets._fd_obj_slot_ends, extract_assets.rom_tables, extract_assets.table_spans */
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
 import { animTables } from './battle-anim';
 import { effectTables } from './battle-effect';
-import { miscTables, smallTables } from './battle-misc';
+import { miscTables } from './battle-misc';
+import { smallTables } from './small-tables';
 import { recordTables } from './battle-records';
 import { stageTables } from './battle-stage';
 import { locationTables } from './closure-location';
 import { menuTables } from './closure-menu';
 import { sequenceTables } from './closure-sequence';
-import { partyTables, spriteTables } from './closure-sprites';
+import { partyTables } from './party-tables';
+import { spriteTables } from './closure-sprites';
 import { worldTables } from './closure-world';
 import type { RomTable } from './closure.type';
+import type { ClosureInputs } from './rom-tables.type';
 
-/** The engine's closure inputs from the workdir: saves/anim_oplen.bin (signed lengths) and the lz_pack.skipped offsets. */
-interface ClosureInputs {
-  animLens: number[];
-  lzSkipped: Set<number>;
-}
-
-/** extract_assets._fd_tile_anim_end: FD/DE98's program (FD:F310..): the last byte any location's records read, + 1. */
 const fdTileAnimEnd = (rom: Uint8Array): number => {
   let mx = 0;
   for (let loc = 0; loc < 512; loc += 1) {
@@ -42,7 +39,6 @@ const fdTileAnimEnd = (rom: Uint8Array): number => {
   return mx + 1;
 };
 
-/** extract_assets._fd_obj_slot_ends: FD/E292's set table (FD:F9C7) and descriptor stream (FD:FA77): the ends any location's walk reaches. */
 const fdObjSlotEnds = (rom: Uint8Array): [number, number] => {
   let mset = 0;
   let mdesc = 0;
@@ -75,7 +71,6 @@ const fdObjSlotEnds = (rom: Uint8Array): [number, number] => {
   return [mset + 1, mdesc + 1];
 };
 
-/** extract_assets.rom_tables: every small table the engine reads through src/romview.h. */
 const romTables = (rom: Uint8Array, inputs: ClosureInputs): RomTable[] => {
   const taEnd = fdTileAnimEnd(rom);
   const [osSetEnd, osDescEnd] = fdObjSlotEnds(rom);
@@ -111,7 +106,6 @@ const romTables = (rom: Uint8Array, inputs: ClosureInputs): RomTable[] => {
   ];
 };
 
-/** extract_assets.table_spans: rom_tables' extents merged where they overlap or touch, so one span covers any read of the union. */
 const tableSpans = (rom: Uint8Array, inputs: ClosureInputs): [number, number][] => {
   const out: [number, number][] = [];
   const sorted = romTables(rom, inputs).sort((x, y) => x[1] - y[1] || x[2] - y[2]);

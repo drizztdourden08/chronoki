@@ -1,18 +1,16 @@
-/* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
-import { byteSpans, romLabel } from './byte-spans';
-import { wordTable } from './menu-lib';
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure_battle.fx_layout_extent, rom_closure_battle.effect_tables */
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
+import { byteSpans } from './byte-spans';
+import { romLabel } from './rom-label';
+import { wordTable } from './word-table';
 import type { RomTable } from './closure.type';
-
-const CD = 0x0d0000;
-const CE = 0x0e0000;
-const CF = 0x0f0000;
+import { CD, CE, CF } from './battle-effect.constants';
 const D0 = 0x100000;
 const D1 = 0x110000;
 
 const popcount = (v: number): number => v.toString(2).replace(/0/g, '').length;
 
-/** rom_closure_battle.fx_layout_extent: CD/10AB's layout at D1 + lp: [stride][0x20 mask bytes][the tiles]. */
 const fxLayoutExtent = (rom: Uint8Array, lp: number): number => {
   const stride = byteAt(rom, D1 + lp);
   let bits = 0;
@@ -21,7 +19,6 @@ const fxLayoutExtent = (rom: Uint8Array, lp: number): number => {
   return 1 + 0x20 + Math.max(n, 1);
 };
 
-/** The BG3 sheets (CD/11E8) and the OBJ sheets (CD/1368), and the pool tiles they name. */
 const sheetTables = (rom: Uint8Array): RomTable[] => {
   const seen = new Set<number>();
   const two = (a: number): void => void (seen.add(a), seen.add(a + 1));
@@ -46,7 +43,6 @@ const sheetTables = (rom: Uint8Array): RomTable[] => {
   return byteSpans(seen).map(([a, b]): RomTable => [`effect sheets ${romLabel(a)}`, a, b]);
 };
 
-/** The HDMA presets (CE/EE6E: CE:F24E[idx * 2] -> nine words at CE:F58E.. -> 0x1E bytes each). */
 const hdmaPresets = (rom: Uint8Array): RomTable[] => {
   const seen = new Set<number>();
   for (let i = 0; i < 256; i += 1) {
@@ -62,7 +58,6 @@ const hdmaPresets = (rom: Uint8Array): RomTable[] => {
   return byteSpans(seen).map(([a, b]): RomTable => [`HDMA preset tables ${romLabel(a)}`, a, b]);
 };
 
-/** rom_closure_battle.effect_tables: the battle effects (CD/0F4F .. CD/3BFD, D1's programs and layouts, CE's tables, CF / D0's sheets). */
 const effectTables = (rom: Uint8Array): RomTable[] => {
   const out: RomTable[] = [];
   const t = (name: string, a: number, n: number): void => void out.push([name, a, a + n]);

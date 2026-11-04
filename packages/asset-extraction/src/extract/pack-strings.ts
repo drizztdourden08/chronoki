@@ -1,11 +1,12 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_strings */
 import { S_DICT, S_ITEMS, S_LOCATIONS, S_WORLD, T_STRINGS } from './asset-types.constants';
 import { strList } from './str-list';
-import { itemNames, locationNames, worldNames } from './text-lists';
-import { loadDict } from './text-tokens';
+import { itemNames } from './text-lists';
+import { locationNames } from './location-names';
+import { worldNames } from './world-names';
+import { loadDict } from './load-dict';
 import type { Packer } from './extract.type';
 
-/** extract_assets.pack_strings: the dictionary, item names, world names and location names. */
 const packStrings: Packer = ({ rom }) => {
   const subs = loadDict(rom);
   return [

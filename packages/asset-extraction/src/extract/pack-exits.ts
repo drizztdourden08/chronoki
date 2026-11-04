@@ -1,23 +1,24 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_exits */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_EXITS } from './asset-types.constants';
-import { createBlobWriter } from './lib/blob-writer';
-import { sceneExits } from './lib/scene-exits';
-import type { SceneExit } from './lib/scene-exits';
+import { createBlobWriter } from './bytes/blob-writer';
+import { sceneExits } from './scene-exits';
+import type { SceneExit } from './scene-exits';
 import type { Packer } from './extract.type';
 
-/** extract_assets.pack_exits: per scene [count u8] + per exit {x,y,w,h u16, kind u8, dest u16, dx,dy i16, facing u8}. */
+const exitsOf = (rom: Uint8Array, s: number): SceneExit[] => {
+  try {
+    return sceneExits(rom, s);
+  } catch {
+    return [];
+  }
+};
+
 const packExits: Packer = ({ rom }) => {
   const entries: CtasEntry[] = [];
   for (let s = 0; s < 512; s += 1) {
-    let exits: SceneExit[] = [];
-    try {
-      exits = sceneExits(rom, s);
-    } catch {
-      exits = [];
-    }
     const w = createBlobWriter();
-    const list = exits.slice(0, 255);
+    const list = exitsOf(rom, s).slice(0, 255);
     w.u8(list.length);
     for (const e of list) {
       w.u16(e.pos[0]);

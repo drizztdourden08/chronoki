@@ -1,7 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
-type Rgb = [number, number, number];
 
-/** palettes.snes15_to_rgb: full-range 5-bit -> 8-bit (max 255). */
+import type { Rgb } from './snes-color.type';
+
+
 const snes15ToRgb = (word: number): Rgb => {
   const r = word & 0x1f;
   const g = (word >> 5) & 0x1f;

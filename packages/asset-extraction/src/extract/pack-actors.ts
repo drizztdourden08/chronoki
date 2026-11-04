@@ -1,22 +1,23 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_actors */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_ACTORS } from './asset-types.constants';
-import { createBlobWriter } from './lib/blob-writer';
+import { createBlobWriter } from './bytes/blob-writer';
 import { extractActors } from './script/extract-actors';
 import type { Actor } from './script/script-run.type';
 import type { Packer } from './extract.type';
 
-/** extract_assets.pack_actors: per scene [count u8] + per visible actor {obj u8, sprite u16, x u16, y u16, facing u8}. */
+const actorsOf = (rom: Uint8Array, s: number): Actor[] => {
+  try {
+    return extractActors(rom, s).actors;
+  } catch {
+    return [];
+  }
+};
+
 const packActors: Packer = ({ rom }) => {
   const entries: CtasEntry[] = [];
   for (let s = 0; s < 512; s += 1) {
-    let actors: Actor[] = [];
-    try {
-      actors = extractActors(rom, s).actors;
-    } catch {
-      actors = [];
-    }
-    const vis = actors.filter((a) => a.visible && a.sprite !== null && a.pos !== null).slice(0, 255);
+    const vis = actorsOf(rom, s).filter((a) => a.visible && a.sprite !== null && a.pos !== null).slice(0, 255);
     const w = createBlobWriter();
     w.u8(vis.length);
     for (const a of vis) {

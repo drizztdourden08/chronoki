@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_LZ } from './asset-types.constants';
-import { concatBytes } from './lib/blob-writer';
+import { concatBytes } from './bytes/concat-bytes';
 import type { Packer } from './extract.type';
 
 const readU32 = (d: Uint8Array, o: number): number => {
@@ -9,10 +9,6 @@ const readU32 = (d: Uint8Array, o: number): number => {
   return ((d[o] as number) | ((d[o + 1] as number) << 8) | ((d[o + 2] as number) << 16) | ((d[o + 3] as number) << 24)) >>> 0;
 };
 
-/**
- * extract_assets.pack_lz: the ct.exe --lzpack capture (saves/lz_pack.bin: 'CTLZ', count, then {offset, length, cost $7E,
- * cost $7F, the stream decompressed}) as one entry per stream, id = the stream's ROM offset; none when the file is absent.
- */
 const packLz: Packer = async ({ work }) => {
   const d = await work.readBytes('saves/lz_pack.bin');
   if (d === null) return [];

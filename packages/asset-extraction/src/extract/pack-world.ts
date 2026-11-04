@@ -1,19 +1,20 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_world */
 import type { CtasEntry } from '../ctas/ctas.type';
 import type { WorkStore } from '../pipeline/work-store.type';
 import { T_NAMEMSG, T_NAMEWIN, T_WINDOW, T_WORLD, T_WORLDINTROSEED, T_WORLDSPR } from './asset-types.constants';
-import { byteAt, wordAt } from './lib/byte-reader';
-import { createBlobWriter } from './lib/blob-writer';
+import { byteAt } from './bytes/byte-reader';
+import { wordAt } from './bytes/word-at';
+import { createBlobWriter } from './bytes/blob-writer';
 import type { Packer } from './extract.type';
+import { SPRITE_FILES } from './pack-world.constants';
+import type { WorldDumps } from './pack-world.type';
 
-/** The player object = the block whose handler word is C2/3404, blocks 0x40-strided at $0B30-$1B30; 0 when none. */
 const findLead = (w: Uint8Array): number => {
   for (let b = 0x0b30; b < 0x1b30; b += 0x40) if (wordAt(w, b) === 0x3404) return b;
   return 0;
 };
 
-/** One world's T_WORLD blob (fmt 5): header, grids, defs, palette, props, triggers, records, char, objects, script, ROM tables, BG3, colour math. */
-const worldBlob = (rom: Uint8Array, n: number, w: Uint8Array, v: Uint8Array, objw: Uint8Array): Uint8Array => {
+const worldBlob = ({ rom, n, w, v, objw }: WorldDumps): Uint8Array => {
   const lead = findLead(w);
   let posx = lead ? wordAt(w, lead + 0x14) : 0;
   let posy = lead ? wordAt(w, lead + 0x18) : 0;
@@ -47,7 +48,6 @@ const worldBlob = (rom: Uint8Array, n: number, w: Uint8Array, v: Uint8Array, obj
   return out.toBytes();
 };
 
-/** The eight worlds' T_WORLD entries (+ the intro seeds); a world with a missing dump is skipped with a warning. */
 const worlds = async (rom: Uint8Array, work: WorkStore, log: (m: string) => void): Promise<CtasEntry[]> => {
   const entries: CtasEntry[] = [];
   for (let n = 0; n < 8; n += 1) {
@@ -59,7 +59,7 @@ const worlds = async (rom: Uint8Array, work: WorkStore, log: (m: string) => void
       continue;
     }
     const bak = n === 0 ? await work.readBytes('saves/ow_w0.live.wram.bak') : null;
-    entries.push({ type: T_WORLD, id: n, blob: worldBlob(rom, n, w, v, bak ?? w) });
+    entries.push({ type: T_WORLD, id: n, blob: worldBlob({ rom, n, w, v, objw: bak ?? w }) });
     const iw = (await work.readBytes(`saves/ow_w${n}.intro.wram`)) ?? w;
     const intro = iw.slice(0x0b30, 0x1b30);
     if (intro.length === 0x1000) entries.push({ type: T_WORLDINTROSEED, id: n, blob: intro });
@@ -67,14 +67,6 @@ const worlds = async (rom: Uint8Array, work: WorkStore, log: (m: string) => void
   return entries;
 };
 
-const SPRITE_FILES: [string, number][] = [
-  ['saves/ow_crono.spr', 0],
-  ['saves/ow_gulls.spr', 1],
-  ['saves/ow_boat.spr', 2],
-  ['saves/ow_balloons.spr', 3],
-];
-
-/** extract_assets.pack_world: the overworlds' captured states, the overworld sprite atlases and the window bitmaps. */
 const packWorld: Packer = async ({ rom, work, log }) => {
   const entries = await worlds(rom, work, log);
   for (const [path, id] of SPRITE_FILES) {

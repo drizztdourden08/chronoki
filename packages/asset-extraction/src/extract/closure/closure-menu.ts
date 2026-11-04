@@ -1,17 +1,18 @@
-/* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
-import { hdmaRuns, menuString, until0, windowProgram, wordTable } from './menu-lib';
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure.menu_tables */
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
+import { hdmaRuns } from './hdma-runs';
+import { menuString } from './menu-lib';
+import { until0 } from './until0';
+import { windowProgram } from './window-program';
+import { wordTable } from './word-table';
 import type { RomTable } from './closure.type';
-
-const FF = 0x3f0000;
+import { FF, CC, DE } from './closure-menu.constants';
 const C2 = 0x020000;
-const CC = 0x0c0000;
-const DE = 0x1e0000;
 
 const hex4 = (v: number): string => v.toString(16).toUpperCase().padStart(4, '0');
 const bytesAt = (rom: Uint8Array, at: number, n: number): number[] => Array.from({ length: n }, (_, i) => byteAt(rom, at + i));
 
-/** The menu strings (every string by C2/EF7E's codes), stat caps, item classes and the VWF strings, font and columns. */
 const stringTables = (rom: Uint8Array, out: RomTable[]): void => {
   const t = (name: string, a: number, b: number): void => void out.push([name, a, b]);
   const [ss, end] = wordTable(rom, FF + 0xc457, FF);
@@ -38,7 +39,6 @@ const stringTables = (rom: Uint8Array, out: RomTable[]): void => {
   t('VWF column offsets and advances ($C2:5FE6-61E5)', C2 + 0x5fe6, C2 + 0x60e6 + 0x100);
 };
 
-/** The portraits, element plaques, cursor graphs, window programs and the menus' HDMA tables. */
 const windowTables = (rom: Uint8Array, out: RomTable[]): void => {
   const t = (name: string, a: number, b: number): void => void out.push([name, a, b]);
   const tiles = bytesAt(rom, FF + 0xce70, 8);
@@ -73,7 +73,6 @@ const windowTables = (rom: Uint8Array, out: RomTable[]): void => {
   }
 };
 
-/** The pop-up, party places, item names and records, shops, exchange screen, treasure messages, dictionary and captions. */
 const itemTables = (rom: Uint8Array, out: RomTable[]): void => {
   const t = (name: string, a: number, b: number): void => void out.push([name, a, b]);
   let a = FF + 0xceba + 0x2a;
@@ -120,7 +119,6 @@ const itemTables = (rom: Uint8Array, out: RomTable[]): void => {
   t('caption records ($FD:A000, 128)', 0x3da000, cap);
 };
 
-/** rom_closure.menu_tables: the tables the menus and their text read, each extent the reading code's own index range or a walked program. */
 const menuTables = (rom: Uint8Array): RomTable[] => {
   const out: RomTable[] = [];
   stringTables(rom, out);

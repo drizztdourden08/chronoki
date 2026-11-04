@@ -1,8 +1,6 @@
-/* @layer shared-asset-extraction @kind logic */
-import { parseCharacter } from './text-codes';
-import { decodeString } from './text-tokens';
+/* @layer shared-asset-extraction @kind logic @source Python text._font8, text.decode_mapped, text.item_names, text.read_string_list */
+import { parseCharacter } from './parse-character';
 
-/** text._font8: one byte -> one FONT_8_MAP entry. */
 const buildFont8 = (): string[] => {
   const m: string[] = Array.from({ length: 256 }, () => '');
   const icons = ['<BLADE>', '<BOW>', '<GUN>', '<ARM>', '<SWORD>', '<FIST>', '<SCYTHE>', '<HELM>', '<ARMOR>', '<RING>',
@@ -21,15 +19,12 @@ const buildFont8 = (): string[] => {
   return m;
 };
 
-const FONT_8_MAP = buildFont8();
+const font8Map = buildFont8();
 
-/** Python's str.rstrip(): trailing whitespace off. */
 const rstrip = (s: string): string => s.replace(/\s+$/u, '');
 
-/** text.decode_mapped */
-const decodeMapped = (data: Uint8Array): string => rstrip(Array.from(data, (b) => FONT_8_MAP[b]!).join(''));
+const decodeMapped = (data: Uint8Array): string => rstrip(Array.from(data, (b) => (font8Map[b] as string)).join(''));
 
-/** text.item_names: 11-byte fixed records at $C0B5E. */
 const itemNames = (rom: Uint8Array): string[] => {
   const data = rom.slice(0xc0b5e, 0xc0b5e + 0xa71);
   const out: string[] = [];
@@ -37,18 +32,4 @@ const itemNames = (rom: Uint8Array): string[] => {
   return out;
 };
 
-/** text.read_string_list: `count` page-relative u16 pointers into the table's bank, each a tokenized string. */
-const readStringList = (rom: Uint8Array, ptrStart: number, count: number, subs: string[]): string[] => {
-  const seg = ptrStart & 0xff0000;
-  const out: string[] = [];
-  for (let i = 0; i < count; i += 1) {
-    const ptr = rom[ptrStart + i * 2]! | (rom[ptrStart + i * 2 + 1]! << 8);
-    out.push(decodeString(rom, seg + ptr, subs));
-  }
-  return out;
-};
-
-const worldNames = (rom: Uint8Array, subs: string[]): string[] => readStringList(rom, 0x6f4d4, 6, subs);
-const locationNames = (rom: Uint8Array, subs: string[]): string[] => readStringList(rom, 0x6f400, 112, subs);
-
-export { itemNames, locationNames, worldNames };
+export { itemNames };

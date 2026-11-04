@@ -1,17 +1,12 @@
-/* @layer shared-asset-extraction @kind logic */
-import { byteAt } from '../lib/byte-reader';
+/* @layer shared-asset-extraction @kind logic @source Python script.extract_actors */
+import { byteAt } from '../bytes/byte-reader';
 import { loadScript } from './script-load';
 import type { LoadedScript } from './script-load';
 import { createScriptMem } from './script-mem';
 import { runFunc } from './script-run';
 import type { Actor } from './script-run.type';
+import type { SceneActors } from './extract-actors.type';
 
-interface SceneActors {
-  actors: Actor[];
-  scriptIndex: number;
-}
-
-/** script.extract_actors: interprets every object's init (slot 0) and returns the resolved actor states. */
 const extractActors = (rom: Uint8Array, scene: number): SceneActors => {
   const h = rom.slice(0x360000 + scene * 14, 0x360000 + scene * 14 + 14);
   const scriptIndex = byteAt(h, 8) | (byteAt(h, 9) << 8);

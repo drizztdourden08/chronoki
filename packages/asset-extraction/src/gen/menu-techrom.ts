@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import { romRegion } from '../rom/hirom';
-import { decodeString, loadDict } from '../extract/text-tokens';
+import { decodeString } from '../extract/text-tokens';
+import { loadDict } from '../extract/load-dict';
 import { cArray } from './c-array';
 import { IDX_LO, IDX_HI, DESC_N, TECH_N } from './menu-techrom.constants';
 
