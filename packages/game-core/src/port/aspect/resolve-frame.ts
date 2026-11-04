@@ -9,13 +9,11 @@ import { ORIGINAL_FRAME } from './resolve-frame.constants';
 import { ratioToLines } from './ratio-to-lines';
 import { ratioToWidth } from './ratio-to-width';
 
-/* Pixel perfect with tall rendering frees both axes (wide_width and tall_lines together); else one axis follows the ratio. */
 const rangesFor = (options: GateOptions, tallOn: boolean, tall: boolean): CkFrameRanges => {
   if (tallOn && options.wholePixels === true) return CT_FREE_RANGES;
   return tall ? CT_TALL_RANGES : CT_WIDE_RANGES;
 };
 
-/* With the measured stage, the frame is planned to fill it (whole pixels under pixel perfect); without, it follows the ratio. */
 const plannedFrame = (options: GateOptions, ratio: number, ranges: CkFrameRanges): CkResolvedFrame | null => {
   if (!options.stageArea) return null;
   const cover = coverFrame(options.stageArea, ratio, ranges, options.wholePixels === true);

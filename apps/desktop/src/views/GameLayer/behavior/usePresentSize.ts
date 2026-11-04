@@ -7,7 +7,6 @@ import { CANVAS_CLIP_X_VAR, CANVAS_CLIP_Y_VAR, CANVAS_HEIGHT_VAR, CANVAS_VARS, C
 import type { SessionPicture } from '../GameLayer.type';
 import { deviceAreaOf } from './device-area-of';
 
-/* Sizes the canvas to cover its box on the stage and clips what passes the box (the stage clips what passes the stage). */
 const usePresentSize = (stageRef: RefObject<HTMLElement | null>, picture: SessionPicture | null, mode: CkPresentMode): void => {
   const width = picture?.frame.width ?? 0;
   const height = picture?.frame.height ?? 0;

@@ -4,8 +4,6 @@ import type { RefObject } from 'react';
 import { BLEED_VARS, DOCK_EDGE_NAMES, DOCK_MAIN_SELECTOR, DOCK_SELECTOR } from '../GameView.constants';
 import { bleedOf } from './bleed-of';
 
-/* Tessera's dock keeps a GAP border round its main slot. The game view bleeds over that border on every edge its slot touches
-   (all four in fullscreen, or whenever no pane is docked beside it), so the stage runs edge to edge; never into a pane's gap. */
 const useDockBleed = (viewRef: RefObject<HTMLElement | null>): void => {
   useEffect(() => {
     const el = viewRef.current;

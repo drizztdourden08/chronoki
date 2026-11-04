@@ -18,7 +18,6 @@ const detectedRatio = (app: AppSettings, area: CkArea): number => {
   return aspectRatioValue('screen', { customW: app.customAspectW, customH: app.customAspectH, limits: ASPECT_LIMITS });
 };
 
-/* The stage plans the frame unless the picture is stretched (Fill), and whole pixels only apply with no viewport constraint. */
 const displayInputsOf = (app: AppSettings, stageArea: CkArea | null): DisplayInputs => {
   const area = stageArea ?? windowArea();
   const planned: PixelArea | undefined = app.viewportConstraint === 'fill' ? undefined : area;

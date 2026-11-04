@@ -1,7 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import { CT_ASPECT_HEIGHT, CT_ASPECT_MAX_WIDTH, CT_ASPECT_MIN_WIDTH, CT_SQUARE_PIXEL } from './aspect.constants';
 
-/* The wide picture's width for a screen ratio A and pixel aspect p: round(224 A / p), even, 256 to 544. */
 const ratioToWidth = (ratio: number, pixelAspect: number = CT_SQUARE_PIXEL): number => {
   if (!Number.isFinite(ratio) || ratio <= 0) return CT_ASPECT_MIN_WIDTH;
   const even = Math.floor((ratio * CT_ASPECT_HEIGHT) / pixelAspect + 0.5) & ~1;

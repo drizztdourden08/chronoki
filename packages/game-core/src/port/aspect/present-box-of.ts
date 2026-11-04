@@ -6,8 +6,6 @@ import { wholeScaleOf } from './whole-scale-of';
 
 const rounded = (area: CkArea): CkArea => ({ width: Math.round(area.width), height: Math.round(area.height) });
 
-/* The box the picture shows on the stage: the stage when stretched; for a wide or tall ratio its fill box (the whole stage
-   when the ratio matches it); for Original the frame's own shape inside the stage, whole-scaled under pixel perfect. */
 const presentBoxOf = (stage: CkArea, frame: CkArea, ratio: number, mode: CkPresentMode): CkArea => {
   if (mode === 'stretch') return stage;
   if (ratio > 0) return rounded(fillBox(ratio, stage));

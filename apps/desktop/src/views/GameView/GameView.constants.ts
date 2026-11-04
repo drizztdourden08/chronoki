@@ -1,7 +1,6 @@
 /* @layer renderer-components @kind constants */
 import type { DockEdgeName } from './GameView.type';
 
-/* Tessera's DockLayout GAP: the border it keeps round the dock and between its slots (not exported by the composites barrel). */
 const DOCK_GAP = 8;
 
 const DOCK_GAP_TOLERANCE = 0.5;

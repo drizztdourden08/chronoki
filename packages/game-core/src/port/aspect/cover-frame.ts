@@ -10,22 +10,16 @@ const evenRound = (value: number): number => Math.floor(value + 0.5) & ~1;
 
 const clamp = (value: number, low: number, high: number): number => Math.min(high, Math.max(low, value));
 
-/* Whole pixels: the smallest whole scale whose fixed side covers the box (and whose free side can reach it), then the free
-   side's length that covers the box at that scale. */
 const planWhole = (axis: CkFrameAxis): CkAxisPlan => {
   const scale = Math.max(1, Math.ceil(axis.boxFixed / axis.fixed - EPSILON), Math.ceil(axis.boxFree / axis.max - EPSILON));
   return { free: clamp(evenCeil(axis.boxFree / scale), axis.min, axis.max), scale };
 };
 
-/* Free scale: the free side follows the box's ratio, and the scale is the one that covers the box with it. */
 const planFit = (axis: CkFrameAxis): CkAxisPlan => {
   const free = clamp(evenRound((axis.fixed * axis.boxFree) / axis.boxFixed), axis.min, axis.max);
   return { free, scale: Math.max(axis.boxFixed / axis.fixed, axis.boxFree / free) };
 };
 
-/* The frame that fills the stage for a ratio: wide pictures keep their lines and pick a width, tall ones keep their width and
-   pick lines; with both axes free and whole pixels, both are picked (wholeFrame). The picture covers the fill box; what
-   passes it is cropped. */
 const coverFrame = (area: CkArea, ratio: number, ranges: CkFrameRanges, whole: boolean): CkCoverFrame => {
   const box = fillBox(ratio, area);
   if (box.width <= 0 || box.height <= 0) return { width: ranges.minWidth, height: ranges.minHeight, scale: 1 };
