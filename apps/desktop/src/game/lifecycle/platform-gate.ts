@@ -1,10 +1,9 @@
 /* @layer bridge-wasm @kind logic */
 import { Capacitor } from '@capacitor/core';
-
-const isNativeMobile = (): boolean => Capacitor.isNativePlatform();
+import { isNativeMobile } from './is-native-mobile';
 
 const isAndroidWebView = (): boolean => isNativeMobile() && Capacitor.getPlatform() === 'android';
 
 const canRunGameCore = (): boolean => !isAndroidWebView();
 
-export { canRunGameCore, isNativeMobile };
+export { canRunGameCore };
