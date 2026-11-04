@@ -1,6 +1,6 @@
 // Builds ChronoKi's two WebAssembly modules with emcc (the emsdk RotP uses), data-free: no ROM, no asset, no table is
 // embedded; the shell puts /ct_assets.dat (and /ct_tables.dat) in the core's file system before it starts the engine.
-//   node core/wasm-build/build.mjs [--only game|oracle] [--emsdk <dir>] [--debug]
+//   node core/wasm-build/build.mjs [--only game|oracle] [--emsdk <dir>] [--debug] [--trace]
 // Output (git-ignored): core/wasm-build/out/chronoki-core.{js,wasm}  (factory ChronoKiCore, the game: JSPI)
 //                       core/wasm-build/out/chronoki-oracle.{js,wasm} (factory ChronoKiOracle, ct_oracle: the replay check)
 import { spawnSync } from 'node:child_process';
@@ -21,6 +21,7 @@ const argValue = (name) => {
 };
 const only = argValue('--only');
 const debug = process.argv.includes('--debug');
+const trace = process.argv.includes('--trace');   // CK_TRACE: stderr lines at each park, resume and coroutine switch
 
 const findEmsdk = () => {
   const candidates = [
@@ -88,6 +89,12 @@ const gameArgs = (gen) => [
   // JSPI: field.c's blocking main() suspends at each present (ck_loop.c); the sound program's coroutine is a JSPI
   // stack of its own, entered through ck_coro_entry (reconnect/coro_wasm.c)
   '-sJSPI', '-sJSPI_EXPORTS=main,ck_coro_entry',
+  // sound/driver.c's SndDrvProgram calls setjmp. Emscripten's default (JS) setjmp routes every call made from such a
+  // function through an invoke_* JS wrapper, and JSPI cannot suspend across a JS frame: the coroutine's first yield
+  // died there (SuspendError, swallowed) and main then waited forever on its second resume. Wasm-EH setjmp has no
+  // JS frame. Legacy EH: what Node 24 and the browsers run without a flag.
+  '-fwasm-exceptions', '-sSUPPORT_LONGJMP=wasm', '-sWASM_LEGACY_EXCEPTIONS=1',
+  ...(trace ? ['-DCK_TRACE'] : []),
   '-sINVOKE_RUN=0',            // the shell fills the file system first, then calls callMain
   '-sMODULARIZE=1', '-sEXPORT_NAME=ChronoKiCore', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',

@@ -50,6 +50,11 @@ other side's promise (O(1) a switch, two microtask hops), and each side restores
 (the coroutine runs on its own 1 MiB block). `sources.mjs` drops `coro.c`. Risks: nested JSPI (a promising export
 entered from inside a suspending import's JS) and the per-switch promise cost during uploads, both unmeasured;
 `-sSTACK_OVERFLOW_CHECK=2` must stay off (the limits are not swapped).
+Found by the first 32-bit probe (0 presents, no error): `SndDrvProgram` calls `setjmp`, and emscripten's JS setjmp
+puts an `invoke_*` JS frame under every call it makes, so each yield hit that JS frame. The yield's JS had already woken main
+and cleared `fail`, so the SuspendError was lost and main waited forever on the next resume. The build now uses Wasm-EH
+setjmp (`-fwasm-exceptions -sSUPPORT_LONGJMP=wasm`, legacy EH), which has no JS frame; `coro_wasm.c` keeps a dead
+coroutine's error and throws it at the next resume.
 
 ## Unknown 2: the 32-bit table layout (hypothesis: the 64-bit reference pack does not load in wasm32)
 

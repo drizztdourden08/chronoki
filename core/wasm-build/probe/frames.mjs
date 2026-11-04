@@ -58,6 +58,10 @@ const h = m._CkFrameHeight();
 const ptr = m._CkFramePtr();
 const hash = ptr ? createHash('sha256').update(m.HEAPU8.subarray(ptr, ptr + w * h * 4)).digest('hex').slice(0, 16) : 'none';
 console.log(`frames requested ${frames}, presented ${presented}, ${w}x${h}, ${(ms / Math.max(1, frames)).toFixed(3)} ms/frame, audio ${audioFrames} stereo frames, framebuffer ${hash}`);
+// where main sits: parked at a present (ckWake set), or waiting on the sound coroutine (ck_coro_js_resume's promise)
+const coros = [...(m.ckCoros ?? new Map()).values()].map((s, i) =>
+  `coro ${i}: started ${s.started}, resumes ${s.switches ?? '?'}, suspended ${!!s.toCoro}, resumer waiting ${!!s.toCaller}, dead ${s.dead ? String(s.dead).split('\n')[0] : 'no'}`);
+console.log(`main parked at a present: ${typeof m.ckWake === 'function'}; ${coros.length ? coros.join('; ') : 'no coroutine'}`);
 if (stopped !== null) {
   console.log(`engine stopped early: ${stopped}`);
   process.exit(2);
