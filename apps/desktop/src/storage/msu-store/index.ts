@@ -6,5 +6,4 @@ export { importMsuFile } from './import-msu-file';
 export { importMsuFolder } from './import-msu-folder';
 export { importMsuUrl } from './import-msu-url';
 export { importMsuBytes } from './import-msu-bytes';
-export { chronokiMsuConfig } from './chronoki-msu-config';
 export type { MsuImportProgress, MsuImportResult, MsuSourceFile } from './msu-store.type';
