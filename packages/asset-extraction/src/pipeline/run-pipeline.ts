@@ -1,27 +1,14 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from './import-context.type';
-import { createLimiter } from './limit';
+import { createStageRunner } from './create-stage-runner';
 import { planGroups } from './plan-groups';
+import { runBatch } from './run-batch';
 import type { ProgressEvent, ProgressKind, ProgressSink } from './progress.type';
 import { GROUP_PLAN } from './stage-groups.constants';
-import { STAGES } from './stages';
+import { STAGES } from './stages.constants';
 import type { ImportStage } from './stage.type';
+import type { PipelineResult } from './run-pipeline.type';
 
-interface PipelineResult {
-  /** True when every stage ran: nothing skipped and nothing failed. */
-  complete: boolean;
-  done: string[];
-  skipped: string[];
-  failed: { stageId: string; message: string }[];
-}
-
-const skipReason = (s: ImportStage, ctx: ImportContext): string | null => {
-  if (s.run === null) return `not ported yet (${s.python})`;
-  if (s.needs.includes('oracle') && ctx.oracle === null) return 'needs the oracle';
-  return null;
-};
-
-/** Runs the registry in order (setup.py main): serial or side-by-side per group, progress events like RotP's. */
 const runPipeline = async (
   ctx: ImportContext,
   onProgress: ProgressSink = () => undefined,
@@ -41,38 +28,10 @@ const runPipeline = async (
     if (s.step) step += 1;
     emit(kind, s, message);
   };
-  const runOne = async (s: ImportStage): Promise<boolean> => {
-    const reason = skipReason(s, ctx);
-    if (reason !== null || s.run === null) {
-      result.skipped.push(s.id);
-      finish('stage-skipped', s, reason ?? 'skipped');
-      return true;
-    }
-    emit('stage-start', s);
-    try {
-      await s.run(ctx);
-      result.done.push(s.id);
-      finish('stage-done', s);
-      return true;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      result.failed.push({ stageId: s.id, message });
-      finish('stage-failed', s, message);
-      return false;
-    }
-  };
+  const runOne = createStageRunner(ctx, { result, hooks: { emit, finish } });
   for (const batch of planGroups(stages)) {
-    const plan = GROUP_PLAN[batch.group];
-    if (plan.parallel) {
-      const limit = createLimiter(ctx.jobs);
-      await Promise.all(batch.stages.map((s) => limit(() => runOne(s))));
-    } else {
-      for (const s of batch.stages) {
-        const ok = await runOne(s);
-        if (!ok && plan.fatal) break;
-      }
-    }
-    if (plan.fatal && result.failed.length > 0) break;
+    await runBatch(batch, ctx.jobs, runOne);
+    if (GROUP_PLAN[batch.group].fatal && result.failed.length > 0) break;
   }
   result.complete = result.skipped.length === 0 && result.failed.length === 0;
   const last = stages[stages.length - 1] as ImportStage;
@@ -81,4 +40,3 @@ const runPipeline = async (
 };
 
 export { runPipeline };
-export type { PipelineResult };

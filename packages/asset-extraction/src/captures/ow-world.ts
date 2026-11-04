@@ -1,9 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import type { StageRun } from '../pipeline/stage.type';
-import { runTool } from './capture-io';
+import { runTool } from './run-tool';
 
-/** gen/ow_world.py: the overworld captures pack_world packs as T_WORLD and T_WORLDINTROSEED, under saves/. */
 const owWorldStage: StageRun = async (ctx) => {
   const oracle = peekOracle(ctx);
   const pan = await recipeState(ctx, 'ow_intro_pan');
@@ -18,7 +18,7 @@ const owWorldStage: StageRun = async (ctx) => {
   await put('ow_w0.live.vram', live.vram);
   for (let n = 1; n < 8; n += 1) {
     const args = ['--owforce', '{state}', String(n), `{out:ow_w${n}}`];
-    const got = await runTool(ctx, 'ow_world', args, [`ow_w${n}.wram`, `ow_w${n}.vram`], w0);
+    const got = await runTool(ctx, { name: 'ow_world', args, outputs: [`ow_w${n}.wram`, `ow_w${n}.vram`], state: w0 });
     await put(`ow_w${n}.live.wram`, got[`ow_w${n}.wram`] as Uint8Array);
     await put(`ow_w${n}.live.vram`, got[`ow_w${n}.vram`] as Uint8Array);
   }

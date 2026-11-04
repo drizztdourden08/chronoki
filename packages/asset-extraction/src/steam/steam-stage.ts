@@ -2,7 +2,6 @@
 import type { StageRun } from '../pipeline/stage.type';
 import { buildCtWide } from './steam-wide';
 
-/** setup.py's Steam step: never a reason to fail the setup. Without a Steam copy the option stays off. */
 const steamMarginsStage: StageRun = async (ctx) => {
   if (!ctx.steam) {
     ctx.log('the Steam margins: no Steam copy of Chrono Trigger found -- the option stays off (optional)');

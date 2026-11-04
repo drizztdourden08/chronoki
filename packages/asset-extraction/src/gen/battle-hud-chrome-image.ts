@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 
 const chromeImage = (rom: Uint8Array, queue: boolean[]): Uint8Array => {
   const b = romRegion(rom, 0x115800, 0x115800 + 0x180);

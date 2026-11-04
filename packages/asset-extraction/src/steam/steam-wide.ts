@@ -1,15 +1,17 @@
 /* @layer shared-asset-extraction @kind logic */
 import { writeCtWide } from './ct-wide-writer';
-import type { ResolvedMargin } from './ct-wide-writer';
-import { halve, pngRgba } from './steam-image';
-import { readDirectory, readEntry } from './steam-archive';
-import type { SteamArchive, SteamFiles } from './steam-archive';
+import type { ResolvedMargin } from './ct-wide-writer.type';
+import { pngRgba } from './steam-image';
+import { halve } from './halve';
+import { readEntry } from './steam-archive';
+import { readDirectory } from './read-directory';
+import type { SteamArchive, SteamFiles } from './steam-archive.type';
 import { readMargins } from './steam-margins';
-import type { Margin } from './steam-margins';
-import { chipSet, pixelSheet, steamPalette } from './steam-sheets';
-
-/** The special scenes' extension art the port draws, halved to the SNES's pixels (the Epoch's cockpit walls, sequence entry 6). */
-const SPECIAL = ['Game/special/into_lavos/40_kokscr_ext.png'];
+import type { Margin } from './steam-margins.type';
+import { chipSet } from './steam-sheets';
+import { steamPalette } from './steam-palette';
+import { pixelSheet } from './pixel-sheet';
+import { SPECIAL } from './steam-wide.constants';
 
 const specials = async (archive: SteamArchive, files: SteamFiles) => {
   const out = [];
@@ -22,7 +24,6 @@ const specials = async (archive: SteamArchive, files: SteamFiles) => {
   return out;
 };
 
-/** The chip sets the margins' slots name, each once; a set the archive lacks is dropped. */
 const chipSets = async (archive: SteamArchive, files: SteamFiles, margins: Map<number, Margin>) => {
   const sets = new Map<number, Uint8Array>();
   const seen = new Set<number>();
@@ -37,20 +38,22 @@ const chipSets = async (archive: SteamArchive, files: SteamFiles, margins: Map<n
   return sets;
 };
 
-/** Each pixel sheet once; a location names its pages by sheet index, a later entry for a page replacing an earlier one. */
 const resolvePages = async (archive: SteamArchive, files: SteamFiles, margins: Map<number, Margin>) => {
   const sheets: Uint8Array[] = [];
   const index = new Map<string, number | null>();
   const resolved = new Map<number, ResolvedMargin>();
+  const indexOfSheet = async (name: string): Promise<number | null | undefined> => {
+    if (!index.has(name)) {
+      const px = await pixelSheet(archive, files, name);
+      index.set(name, px ? sheets.length : null);
+      if (px) sheets.push(px);
+    }
+    return index.get(name);
+  };
   for (const [loc, m] of margins) {
     let pages: [number, number][] = [];
     for (const [pg, name] of m.pages) {
-      if (!index.has(name)) {
-        const px = await pixelSheet(archive, files, name);
-        index.set(name, px ? sheets.length : null);
-        if (px) sheets.push(px);
-      }
-      const at = index.get(name);
+      const at = await indexOfSheet(name);
       if (at !== null && at !== undefined) pages = [...pages.filter((p) => p[0] !== pg), [pg, at]];
     }
     resolved.set(loc, { ...m, pages });
@@ -58,7 +61,6 @@ const resolvePages = async (archive: SteamArchive, files: SteamFiles, margins: M
   return { sheets, resolved };
 };
 
-/** tools/steam_wide.py: the Steam release's widescreen margins, read from the player's own copy, as the bytes of ct_wide.dat. */
 const buildCtWide = async (archive: SteamArchive): Promise<Uint8Array> => {
   const files = await readDirectory(archive);
   const margins = await readMargins(archive, files);

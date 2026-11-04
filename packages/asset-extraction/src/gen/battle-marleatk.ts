@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import type { PeekOracle } from '../oracle/peek.type';
 import { emitMarleAtk } from './battle-marleatk-emit';
 import { NTILE } from './battle-marleatk-emit.constants';

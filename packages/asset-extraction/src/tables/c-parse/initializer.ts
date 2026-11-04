@@ -2,7 +2,7 @@
 import { PackError } from '../pack-error';
 import type { InitNode, PackToken } from '../pack.type';
 import { unescape } from './unescape';
-import type { ParseEnv } from './type-spec';
+import type { ParseEnv } from './type-spec.type';
 
 const concat = (parts: Uint8Array[]): Uint8Array => {
   const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
@@ -14,7 +14,6 @@ const concat = (parts: Uint8Array[]): Uint8Array => {
   return out;
 };
 
-/** An integer expression: tokens up to the `,` `}` or `;` that ends it outside parentheses. */
 const parseExprTokens = (env: ParseEnv): InitNode => {
   const { cur } = env;
   const tokens: PackToken[] = [];
@@ -31,7 +30,6 @@ const parseExprTokens = (env: ParseEnv): InitNode => {
   return { kind: 'expr', tokens };
 };
 
-/** pack_tables.py initializer(): a braced list, adjacent string literals joined, or an integer expression. */
 const parseInitializer = (env: ParseEnv): InitNode => {
   const { cur } = env;
   if (cur.peek() === '{') {

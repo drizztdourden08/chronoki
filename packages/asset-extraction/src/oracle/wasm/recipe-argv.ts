@@ -1,22 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { RecipeStep } from '../../recipes/recipe.type';
 import { RAW_OUT, STATE_IN, STATE_OUT } from './wasm-paths.constants';
+import type { StepCall } from './recipe-argv.type';
+import { SAVE } from './recipe-argv.constants';
 
-/** What one executable recipe step asks of ct.exe (recipes.py _build). */
-interface StepCall {
-  args: string[];
-  env: Record<string, string>;
-  /** Whether the step reads the previous state (staged at STATE_IN). */
-  needsState: boolean;
-}
-
-const SAVE = { PEEK_SAVE: STATE_OUT };
-
-/**
- * power_on: `ROM --fb raw --frames N`; boot_to_bedroom: `ROM --fb raw --script --frames 1`; pad: `ROM --peek state raw
- * --btnscript S`; poke: the same with `0:0` and PEEK_POKE; teleport: `ROM --teleport sc tx ty face --from state
- * --method m --frames n --out state`. All but teleport write the state through PEEK_SAVE.
- */
 const stepCall = (step: RecipeStep): StepCall => {
   switch (step.op) {
     case 'power_on':
@@ -46,4 +33,3 @@ const stepCall = (step: RecipeStep): StepCall => {
 };
 
 export { stepCall };
-export type { StepCall };

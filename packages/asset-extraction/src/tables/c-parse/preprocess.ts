@@ -1,14 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import { PackError } from '../pack-error';
 import type { PackToken } from '../pack.type';
-import type { DefineMap } from './expr';
-import { lex } from './lexer';
 
-interface DefineLog {
-  defines: DefineMap;
-  /** (header, name) of every #define, in the order the headers met them. */
-  order: { header: string; name: string }[];
-}
+import { lex } from './lexer';
+import type { DefineLog } from './preprocess.type';
 
 const sameTokens = (a: PackToken[], b: PackToken[]): boolean =>
   a.length === b.length && a.every((t, i) => t.kind === (b[i] as PackToken).kind && t.text === (b[i] as PackToken).text);
@@ -26,10 +21,6 @@ const recordDefine = (line: string, header: string, log: DefineLog): boolean => 
   return true;
 };
 
-/**
- * The preprocessor lines (a line starting with #, continued by backslash) are recorded and blanked, so the
- * C tokens keep their offsets. Only #define and the guard/include lines are understood.
- */
 const blankDirectives = (text: string, header: string, log: DefineLog): string => {
   const body = text.split('');
   for (const m of text.matchAll(/^[ \t]*#(?:[^\n]*\\\n)*[^\n]*/gm)) {
@@ -43,4 +34,3 @@ const blankDirectives = (text: string, header: string, log: DefineLog): string =
 };
 
 export { blankDirectives };
-export type { DefineLog };

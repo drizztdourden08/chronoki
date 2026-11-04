@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../../pipeline/import-context.type';
 import type { StageRun } from '../../pipeline/stage.type';
-import { writeText } from '../../pipeline/work-files';
+import { writeText } from '../../pipeline/write-text';
 
 const ctxTextStage =
   (file: string, gen: (ctx: ImportContext) => Promise<string>): StageRun =>

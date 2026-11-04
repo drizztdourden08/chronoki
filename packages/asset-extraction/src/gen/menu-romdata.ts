@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 import { cArray } from './c-array';
 import { hex } from './c-hex';
 import { CC, CFG, MC, NAV, CDEF, ITEM_NAV_NOTE, FONT_NOTE } from './menu-romdata.constants';

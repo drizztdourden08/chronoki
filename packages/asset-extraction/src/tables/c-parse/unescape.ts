@@ -1,12 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import { PackError } from '../pack-error';
+import { ESC } from './unescape.constants';
 
-const ESC: Record<string, number> = { n: 10, t: 9, r: 13, '0': 0, '\\': 92, '"': 34, "'": 39, a: 7, b: 8, f: 12, v: 11, '?': 63 };
-
-/**
- * pack_tables.py unescape(): a C literal's body (no quotes) -> its bytes. The source is UTF-8; a non-ASCII
- * character is refused (the compilers would not agree on its bytes).
- */
 const unescape = (body: string): Uint8Array => {
   const out: number[] = [];
   let i = 0;

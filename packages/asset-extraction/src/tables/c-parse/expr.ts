@@ -2,11 +2,8 @@
 import { PackError } from '../pack-error';
 import type { PackToken } from '../pack.type';
 import { unescape } from './unescape';
-
-type DefineMap = Map<string, PackToken[]>;
-
-const PREC: string[][] = [['|'], ['^'], ['&'], ['<<', '>>'], ['+', '-'], ['*', '/', '%']];
-const MAX_DEPTH = 50;
+import type { DefineMap } from './expr.type';
+import { PREC, MAX_DEPTH } from './expr.constants';
 
 const applyOp = (op: string, v: bigint, r: bigint): bigint => {
   if (op === '|') return v | r;
@@ -20,17 +17,11 @@ const applyOp = (op: string, v: bigint, r: bigint): bigint => {
   return op === '/' ? v / r : v % r;
 };
 
-/** A C integer literal: hex, a leading 0 meaning octal, else decimal; u/l suffixes dropped. */
 const numberValue = (s: string): bigint => {
   const digits = s.replace(/[uUlL]+$/, '');
   return /^0\d+$/.test(digits) ? BigInt(`0o${digits.slice(1)}`) : BigInt(digits);
 };
 
-/**
- * pack_tables.py Expr.value(): an integer constant expression over the headers' object-like #defines
- * (C precedence for | ^ & << >> + - * / % ?: and unary - + ~ !), evaluated exactly (arbitrary precision,
- * division truncating toward zero as C's does).
- */
 const evaluateExpr = (defines: DefineMap, toks: PackToken[], context = '', depth = 0): bigint => {
   let i = 0;
   const peek = (): string | null => (i < toks.length ? (toks[i] as PackToken).text : null);
@@ -97,4 +88,3 @@ const evaluateExpr = (defines: DefineMap, toks: PackToken[], context = '', depth
 };
 
 export { evaluateExpr };
-export type { DefineMap };

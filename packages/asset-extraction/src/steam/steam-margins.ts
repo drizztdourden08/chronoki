@@ -1,25 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import { readEntry } from './steam-archive';
-import type { SteamArchive, SteamFiles } from './steam-archive';
-import { sheetPages } from './steam-sheets';
-
-const LOCATIONS = 0x200;
-
-/** A metatile the margins use: its id and four corners [chip, palette, flags (H 1, V 2, priority 4)]. */
-interface Metatile {
-  t: number;
-  corners: [number, number, number][];
-}
-
-/** One location's margins: the five planes (u16 cells), its chip-set slots, the metatiles, the pages [page, sheet name or index]. */
-interface Margin {
-  w: number;
-  h: number;
-  planes: Uint8Array;
-  slots: number[];
-  metas: Metatile[];
-  pages: [number, string][];
-}
+import type { SteamArchive, SteamFiles } from './steam-archive.type';
+import { sheetPages } from './sheet-pages';
+import type { Metatile, Margin } from './steam-margins.type';
+import { LOCATIONS } from './steam-margins.constants';
 
 const u16s = (b: Uint8Array): Uint16Array => {
   const out = new Uint16Array(b.length >> 1);
@@ -44,7 +28,6 @@ const metatiles = (asm: Uint8Array, planes: Uint8Array): Metatile[] => {
   return metas;
 };
 
-/** The flag and the fifth plane after the four (the loader 0x4DB0C4); zeros where the Steam release has none. */
 const withFifthPlane = (d: Uint8Array, w: number, h: number): Uint8Array | null => {
   const planes = d.slice(2, 2 + 8 * w * h);
   if (planes.length !== 8 * w * h || !planes.some((b) => b !== 0)) return null;
@@ -56,7 +39,6 @@ const withFifthPlane = (d: Uint8Array, w: number, h: number): Uint8Array | null 
   return out;
 };
 
-/** steam_wide.py margins(): every location 0..511 with a margins map and a Mapinfo. */
 const readMargins = async (archive: SteamArchive, files: SteamFiles): Promise<Map<number, Margin>> => {
   const out = new Map<number, Margin>();
   for (let loc = 0; loc < LOCATIONS; loc += 1) {
@@ -82,4 +64,3 @@ const readMargins = async (archive: SteamArchive, files: SteamFiles): Promise<Ma
 };
 
 export { readMargins };
-export type { Margin, Metatile };

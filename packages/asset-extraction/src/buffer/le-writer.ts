@@ -1,19 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-interface LeWriter {
-  u8: (v: number) => void;
-  u16: (v: number) => void;
-  u32: (v: number) => void;
-  u64: (v: bigint) => void;
-  i64: (v: bigint) => void;
-  /** An unsigned integer of `size` bytes (4 or 8 for a pointer), little-endian. */
-  uint: (v: bigint, size: number) => void;
-  bytes: (b: Uint8Array) => void;
-  zeros: (n: number) => void;
-  length: () => number;
-  toBytes: () => Uint8Array;
-}
+import type { LeWriter } from './le-writer.type';
 
-/** The little-endian byte sink the container and pack formats are written through (Python's struct.pack + +=). */
 const createLeWriter = (): LeWriter => {
   const chunks: Uint8Array[] = [];
   let total = 0;
@@ -53,4 +40,3 @@ const createLeWriter = (): LeWriter => {
 };
 
 export { createLeWriter };
-export type { LeWriter };

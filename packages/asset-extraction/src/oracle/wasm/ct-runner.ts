@@ -1,32 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { CtOutcome } from './ct-invocation.type';
-import type { ModuleFactory, ModuleOptions } from './emscripten-module.type';
 import { BASE_ENV, NOT_ORACLE_STATUS, RULE_ENV, ROM_PATH } from './wasm-paths.constants';
 import { runCt } from './run-ct';
+import type { CtRunner, CtRunnerSource } from './ct-runner.type';
 
-/** One ct.exe call as the driver's methods describe it; the ROM is staged and passed first, as `ct.exe ROM ...`. */
-interface CtCall {
-  args: string[];
-  /** CT_ORACLE_LOGICAL=1 (the cartridge under the logical rule). */
-  rule: boolean;
-  env?: Record<string, string>;
-  files?: Record<string, Uint8Array>;
-  outputs?: string[];
-}
-
-type CtRunner = (call: CtCall) => Promise<CtOutcome>;
-
-interface CtRunnerSource {
-  factory: ModuleFactory;
-  instantiateWasm?: ModuleOptions['instantiateWasm'] | undefined;
-  /** The ROM given to `boot`; a stop with a clear message before that. */
-  rom: () => Uint8Array;
-}
-
-/** The last lines of what a failed ct.exe printed (recipes.py kept the tails of stdout and stderr in its log). */
-const tailOf = (outcome: CtOutcome): string => [...outcome.stdout.slice(-8), ...outcome.stderr.slice(-8)].join('\n');
-
-/** Runs ct.exe calls, each on a fresh module instance; the slim oracle build's refusal of a mode becomes a stop naming it. */
 const createCtRunner =
   (source: CtRunnerSource): CtRunner =>
   async (call) => {
@@ -46,5 +22,4 @@ const createCtRunner =
     return outcome;
   };
 
-export { createCtRunner, tailOf };
-export type { CtCall, CtRunner, CtRunnerSource };
+export { createCtRunner };

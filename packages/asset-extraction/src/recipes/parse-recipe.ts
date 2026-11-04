@@ -1,7 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { Recipe, RecipeExpect, RecipeStep } from './recipe.type';
-
-type Json = unknown;
+import type { Json } from './parse-recipe.type';
 
 const asString = (v: Json, what: string): string => {
   if (typeof v !== 'string') throw new Error(`recipe: ${what} must be a string`);
@@ -55,7 +54,6 @@ const parseExpect = (raw: Json): RecipeExpect => {
   };
 };
 
-/** A recipe from its JSON text (tools/recipes/<name>.json). */
 const parseRecipe = (text: string): Recipe => {
   const r = JSON.parse(text) as { name?: string; from?: string; doc?: string; steps?: Json[]; expect?: Json };
   const name = asString(r.name, 'name');

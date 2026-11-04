@@ -1,17 +1,17 @@
 /* @layer shared-asset-extraction @kind logic */
-import { cpuTraceCall, owforceCall, teleportCall, toolCall } from './mode-calls';
+import { toolCall } from './mode-calls';
+import { cpuTraceCall } from './cpu-trace-call';
+import { owforceCall } from './owforce-call';
+import { teleportCall } from './teleport-call';
 import { createCtRunner } from './ct-runner';
-import { monitorCall, peekCall, peekShotsCall, powerOnCall } from './peek-calls';
+import { peekCall } from './peek-calls';
+import { powerOnCall } from './power-on-call';
+import { monitorCall } from './monitor-call';
+import { peekShotsCall } from './peek-shots-call';
 import { runRecipeSteps } from './run-recipe';
 import type { WasmOracle, WasmOracleOptions } from './wasm-oracle.type';
+import { DEFAULT_TAG } from './wasm-oracle.constants';
 
-const DEFAULT_TAG = 'chronoki-oracle-wasm';
-
-/**
- * The oracle driver on the WebAssembly build of Belthasar's main.c: each ct.exe invocation of setup.py is one
- * `callMain` on a fresh module instance, with its files staged in MEMFS and its environment in ENV. The module factory is
- * injected, so Electron main and the browser both supply it; `instantiateWasm` lets them share one compiled module.
- */
 const createWasmOracle = (options: WasmOracleOptions): WasmOracle => {
   let rom: Uint8Array | null = null;
   const ct = createCtRunner({

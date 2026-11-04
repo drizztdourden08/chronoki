@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 import { hexByte } from './c-hex-byte';
 import { TABLES } from './coll-slope.constants';
 

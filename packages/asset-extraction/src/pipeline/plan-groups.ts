@@ -1,12 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { ImportStage, StageGroupId } from './stage.type';
+import type { ImportStage } from './stage.type';
+import type { StageBatch } from './plan-groups.type';
 
-interface StageBatch {
-  group: StageGroupId;
-  stages: ImportStage[];
-}
-
-/** Consecutive stages of one group become one batch; the group plan says whether the batch runs side by side. */
 const planGroups = (stages: ImportStage[]): StageBatch[] => {
   const batches: StageBatch[] = [];
   for (const s of stages) {
@@ -18,4 +13,3 @@ const planGroups = (stages: ImportStage[]): StageBatch[] => {
 };
 
 export { planGroups };
-export type { StageBatch };

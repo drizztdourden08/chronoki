@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind constants */
 import type { CScalar } from './c-type.type';
-import { makeScalar } from './c-types';
+import { makeScalar } from './make-scalar';
 
 const U8 = makeScalar('u8', 1, false);
 const I8 = makeScalar('i8', 1, true);
@@ -9,7 +9,6 @@ const I16 = makeScalar('i16', 2, true);
 const U32 = makeScalar('u32', 4, false);
 const I32 = makeScalar('i32', 4, true);
 
-/** pack_tables.py SCALARS, keyed by the type words joined with a space ("unsigned short int"). */
 const SCALAR_TYPES: Record<string, CScalar> = {
   uint8_t: U8,
   int8_t: I8,

@@ -1,29 +1,13 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CType } from './c-type.type';
 import { describeType } from './c-types';
-import { CHAR_KINDS } from './scalars.constants';
+
 import { PackError } from './pack-error';
-import type { ConstEval, InitNode } from './pack.type';
-import type { StringPool } from './string-pool';
-
-interface WriterEnv {
-  tableName: string;
-  header: string;
-  buf: Uint8Array;
-  relocs: number[];
-  pool: StringPool;
-  evalConst: ConstEval;
-}
-
-const isCharArray = (t: CType): boolean => t.tag === 'array' && t.elem.tag === 'scalar' && CHAR_KINDS.includes(t.elem.kind);
-const isAggregate = (t: CType): boolean => t.tag === 'array' || t.tag === 'struct';
-
-/** The sub-objects of an aggregate in initializer order, with their offsets. */
-const subobjects = (t: CType): { type: CType; offset: number }[] => {
-  if (t.tag === 'array') return Array.from({ length: t.n }, (_, k) => ({ type: t.elem, offset: k * t.elem.size }));
-  if (t.tag === 'struct') return t.fields.map((f) => ({ type: f.type, offset: f.offset }));
-  return [];
-};
+import type { InitNode } from './pack.type';
+import type { FillArgs, WriterEnv } from './init-writer.type';
+import { isAggregate } from './is-aggregate';
+import { isCharArray } from './is-char-array';
+import { subobjects } from './subobjects';
 
 const writeUint = (buf: Uint8Array, off: number, value: bigint, size: number): void => {
   let rest = BigInt.asUintN(size * 8, value);
@@ -33,10 +17,6 @@ const writeUint = (buf: Uint8Array, off: number, value: bigint, size: number): v
   }
 };
 
-/**
- * pack_tables.py Writer: fills a table's bytes from its parsed initializer the way the compiler lays them out
- * (brace elision counted as C counts it), recording the pointer slots and putting strings in the pool.
- */
 const createInitWriter = (env: WriterEnv) => {
   const err = (message: string): never => {
     throw new PackError(`${env.tableName} (${env.header}): ${message}`);
@@ -66,8 +46,7 @@ const createInitWriter = (env: WriterEnv) => {
     if (!dry) env.buf.set(bytes, off);
   };
 
-  /** Initializes aggregate t from items[i:] without braces of its own; returns the next index. */
-  const fill = (t: CType, off: number, items: InitNode[], from: number, dry: boolean): number => {
+  const fill = ({ t, off, items, from, dry }: FillArgs): number => {
     let i = from;
     for (const sub of subobjects(t)) {
       if (i >= items.length) break;
@@ -79,7 +58,7 @@ const createInitWriter = (env: WriterEnv) => {
         string(sub.type, off + sub.offset, it.bytes, dry);
         i += 1;
       } else if (isAggregate(sub.type)) {
-        i = fill(sub.type, off + sub.offset, items, i, dry);
+        i = fill({ t: sub.type, off: off + sub.offset, items, from: i, dry });
       } else {
         scalar(sub.type, off + sub.offset, it, dry);
         i += 1;
@@ -95,9 +74,9 @@ const createInitWriter = (env: WriterEnv) => {
       if (items.length !== 1) err(`a braced scalar with ${items.length} items`);
       return scalar(t, off, items[0] as InitNode, dry);
     }
-    const only = items[0] as InitNode | undefined;
+    const only = items[0];
     if (isCharArray(t) && items.length === 1 && only?.kind === 'str') return string(t, off, only.bytes, dry);
-    const used = fill(t, off, items, 0, dry);
+    const used = fill({ t, off, items, from: 0, dry });
     if (used !== items.length) err(`${items.length - used} excess initializers`);
     return undefined;
   };
@@ -105,28 +84,4 @@ const createInitWriter = (env: WriterEnv) => {
   return { fill, braced };
 };
 
-/** The first dimension an open array `T x[] = {...}` gets: the elements its initializer fills. */
-const countElements = (elem: CType, init: InitNode, name: string): number => {
-  if (init.kind !== 'list') throw new PackError(`${name}: an open array needs a braced initializer`);
-  const dry = createInitWriter({
-    tableName: name,
-    header: '?',
-    buf: new Uint8Array(0),
-    relocs: [],
-    pool: { add: () => 0, bytes: () => new Uint8Array(0) },
-    evalConst: () => 0n,
-  });
-  const items = init.items;
-  let i = 0;
-  let n = 0;
-  while (i < items.length) {
-    const it = items[i] as InitNode;
-    const flat = it.kind === 'list' || !isAggregate(elem) || (it.kind === 'str' && isCharArray(elem));
-    i = flat ? i + 1 : dry.fill(elem, 0, items, i, true);
-    n += 1;
-  }
-  return n;
-};
-
-export { countElements, createInitWriter, isAggregate, isCharArray, subobjects };
-export type { WriterEnv };
+export { createInitWriter };

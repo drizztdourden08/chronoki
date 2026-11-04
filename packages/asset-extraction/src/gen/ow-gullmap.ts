@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { requireBytes } from '../pipeline/work-files';
+import { requireBytes } from '../pipeline/require-bytes';
 import { peek } from './ctgen/peek';
 import { cgramOf } from './ctgen/cgram-of';
 import { recipeState } from './ctgen/recipe-state';

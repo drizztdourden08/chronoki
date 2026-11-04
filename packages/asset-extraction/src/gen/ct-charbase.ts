@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { wramOf } from '../recipes/check-expect';
+import { wramOf } from '../recipes/wram-of';
 import { peekOracleless } from './shared/state-recipe';
 import type { GenFiles } from './oracle-gen-stage.type';
 import { hexByte } from './c-hex-byte';

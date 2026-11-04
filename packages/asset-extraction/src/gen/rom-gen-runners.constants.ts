@@ -1,13 +1,14 @@
 /* @layer shared-asset-extraction @kind constants */
+import { CAPTURE_RUNNERS } from '../captures/capture-runners.constants';
 import type { StageRun } from '../pipeline/stage.type';
-import { writeText, requireBytes } from '../pipeline/work-files';
+import { writeText } from '../pipeline/write-text';
+import { requireBytes } from '../pipeline/require-bytes';
 import { genAnimengPc } from './animeng-pc';
 import { genBattleHudChrome } from './battle-hud-chrome';
 import { genMenuDesc } from './menu-desc';
 import { genMenuEquip } from './menu-equip';
 import { genMenuTechrom } from './menu-techrom';
 import { steamMarginsStage } from '../steam/steam-stage';
-import { CAPTURE_RUNNERS } from '../captures/capture-runners';
 
 const decoder = new TextDecoder();
 const dataFile = (name: string): string => `src/data/${name}`;

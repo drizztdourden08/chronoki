@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import { collect } from './battle-anim/anim-collect';
 import { ANIM_RECIPE } from './battle-anim/anim-consts.constants';
 import { emitBattleAnim } from './battle-anim/anim-emit';

@@ -20,7 +20,6 @@ const roundOf = (t: number, b: number, c: number, d: number): [number, number] =
   return [b ^ c ^ d, 0xca62c1d6];
 };
 
-/** SHA-1 as lower-case hex, in plain TypeScript so the same code runs in Node and in a web worker. */
 const sha1Hex = (data: Uint8Array): string => {
   const view = padded(data);
   const h: [number, number, number, number, number] = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];

@@ -5,10 +5,8 @@ interface ProgressEvent {
   kind: ProgressKind;
   stageId: string;
   label: string;
-  /** setup.py's "progress K/N": K counts the finished stages flagged `step`, N is their total. */
   step: number;
   steps: number;
-  /** 0..1 by stage weight, for a smooth bar (setup.py only counts steps). */
   fraction: number;
   message?: string;
 }

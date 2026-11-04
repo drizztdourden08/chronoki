@@ -2,26 +2,18 @@
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
-import { requireBytes } from '../pipeline/work-files';
+import { requireBytes } from '../pipeline/require-bytes';
 import { buildPack } from '../tables/build-pack';
 import { mergeTablesInto } from '../ctas/table-container';
 import { parseWorkHeaders } from '../tables/pack-headers';
 import { writeTablesStorage } from '../tables/storage/storage-writer';
-import { NATIVE64_ABI, WASM32_ABI } from '../tables/table-abi.constants';
-import type { TableAbi } from '../tables/table-abi.type';
+
 import { createFsWorkStore } from './fs-work-store';
+import { ABIS, USAGE } from './repack-main.constants';
 
-const ABIS: Record<string, TableAbi> = { native64: NATIVE64_ABI, wasm32: WASM32_ABI };
-const USAGE = 'usage: node packages/asset-extraction/src/cli/repack.ts --work <dir> --abi native64|wasm32 --out <dir>';
-
-/** The container before the tables are merged in: setup.py leaves it at the workdir's root (build/ in the importer). */
 const readAssets = async (work: ReturnType<typeof createFsWorkStore>): Promise<Uint8Array> =>
   (await work.readBytes('ct_assets.dat')) ?? requireBytes(work, 'build/ct_assets.dat');
 
-/**
- * pack_tables.py pack + into + headers (tables_storage.c) for one target: the generated headers of a workdir are
- * packed for the ABI and merged into its pre-tables ct_assets.dat; the matching tables_storage.c is written beside.
- */
 const repack = async (argv: string[]): Promise<number> => {
   const { values } = parseArgs({ args: argv, options: { work: { type: 'string' }, abi: { type: 'string' }, out: { type: 'string' } } });
   const abi = ABIS[values.abi ?? ''];

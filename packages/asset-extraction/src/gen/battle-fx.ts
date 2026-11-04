@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import { headText } from './battle-fx/fx-head';
 import { FLASH_FRAME } from './battle-fx/fx-head.constants';
 import { palText } from './battle-fx/fx-pal';

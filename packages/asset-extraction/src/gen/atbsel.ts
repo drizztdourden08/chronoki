@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import { emitMain } from './atbsel/emit';
 import { BTN0, BTN1 } from './atbsel/emit.constants';
 import { diffBbox } from './atbsel/diff-bbox';

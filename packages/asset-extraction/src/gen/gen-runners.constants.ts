@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind constants */
 import type { StageRun } from '../pipeline/stage.type';
-import { writeText } from '../pipeline/work-files';
+import { writeText } from '../pipeline/write-text';
 import { genBattleTrig } from './battle-trig';
 import { genMenuRomdata } from './menu-romdata';
 import { genMenuWingrad } from './menu-wingrad';

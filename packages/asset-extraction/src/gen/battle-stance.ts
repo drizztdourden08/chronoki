@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import { emitStance } from './battle-stance-emit';
 import { BTN } from './battle-stance-emit.constants';
 import type { GenFiles } from './oracle-gen-stage.type';

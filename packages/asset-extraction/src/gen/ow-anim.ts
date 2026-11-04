@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 import { hexRows } from './c-hex-rows';
 import { BASE, SIZE } from './ow-anim.constants';
 

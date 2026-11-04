@@ -1,29 +1,22 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { OracleDriver, OracleRun } from '../oracle/oracle-driver.type';
+import type { OracleRun } from '../oracle/oracle-driver.type';
 import { createLimiter } from '../pipeline/limit';
-import { requireBytes } from '../pipeline/work-files';
-import type { WorkStore } from '../pipeline/work-store.type';
+import { requireBytes } from '../pipeline/require-bytes';
+
 import { sha1Hex } from '../rom/sha1';
 import { checkExpect } from './check-expect';
 import { expandPadScript } from './expand-pad-script';
-import { chainOf, closureOf } from './recipe-chain';
+import { chainOf } from './recipe-chain';
+import { closureOf } from './closure-of';
 import { recipeKey } from './recipe-key';
-import { readCached, sramOf, writeCached } from './recipe-store';
-import type { Recipe, RecipeSet } from './recipe.type';
-
-interface MakerEnv {
-  recipes: RecipeSet;
-  oracle: OracleDriver;
-  work: WorkStore;
-  romSha1: string;
-  /** Recipes replayed side by side (recipes.py --jobs); a chain still builds in order. */
-  jobs: number;
-  log: (message: string) => void;
-}
+import { writeCached } from './write-cached';
+import { readCached } from './read-cached';
+import { sramOf } from './sram-of';
+import type { Recipe } from './recipe.type';
+import type { MakerEnv } from './recipe-maker.type';
 
 const isExecutable = (op: string): boolean => op !== 'sram' && op !== 'sram_file';
 
-/** Builds recipes from power-on in the oracle, each once, caching the state by its chain's key (recipes.py make / make_many). */
 const createRecipeMaker = (env: MakerEnv) => {
   const limit = createLimiter(env.jobs);
   const inflight = new Map<string, Promise<Uint8Array>>();
@@ -86,7 +79,6 @@ const createRecipeMaker = (env: MakerEnv) => {
     return task;
   };
 
-  /** make() every recipe in `names` and the chains under them; `force` rebuilds the named ones only. */
   const makeMany = async (names: string[], force = false): Promise<Map<string, Uint8Array>> => {
     const need = [...closureOf(env.recipes, names)].sort();
     const entries = await Promise.all(need.map(async (n) => [n, await make(n, force && names.includes(n))] as const));
@@ -97,4 +89,3 @@ const createRecipeMaker = (env: MakerEnv) => {
 };
 
 export { createRecipeMaker };
-export type { MakerEnv };

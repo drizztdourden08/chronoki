@@ -2,7 +2,6 @@
 import type { CtInvocation, CtOutcome } from './ct-invocation.type';
 import type { EmscriptenFs, ModuleFactory, ModuleOptions } from './emscripten-module.type';
 
-/** mkdir -p for a MEMFS directory. */
 const ensureDir = (fs: EmscriptenFs, dir: string): void => {
   let at = '';
   for (const part of dir.split('/').filter(Boolean)) {
@@ -11,17 +10,12 @@ const ensureDir = (fs: EmscriptenFs, dir: string): void => {
   }
 };
 
-/** Emscripten's ExitStatus (thrown by exit() under EXIT_RUNTIME=1) carries `status`; anything else is a real error. */
 const statusOf = (error: unknown): number => {
   const status = (error as { status?: unknown } | null)?.status;
   if (typeof status === 'number') return status;
   throw error;
 };
 
-/**
- * One ct.exe invocation: a fresh module instance (each ct.exe run starts from clean statics and an empty file system),
- * the files staged, one `callMain`, the outputs read back. `instantiateWasm` reuses a compiled WebAssembly.Module.
- */
 const runCt = async (
   factory: ModuleFactory,
   invocation: CtInvocation,

@@ -1,50 +1,15 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CType } from '../c-type.type';
-import { makeArray, makePointer, makeStruct } from '../c-types';
+import { makeStruct } from '../make-struct';
+import { makePointer } from '../make-pointer';
 import { PackError } from '../pack-error';
-import type { ConstEval, PackToken } from '../pack.type';
+
 import { SCALAR_TYPES } from '../scalars.constants';
-import type { TableAbi } from '../table-abi.type';
-import type { TokenCursor } from './token-cursor';
+import type { ParseEnv } from './type-spec.type';
+import { SCALAR_WORDS, UNSUPPORTED_WORDS } from './type-spec.constants';
+import { parseDims } from './parse-dims';
+import { isCharScalar } from './is-char-scalar';
 
-/** What the declaration parsers share while one header is parsed. */
-interface ParseEnv {
-  cur: TokenCursor;
-  header: string;
-  abi: TableAbi;
-  typedefs: Map<string, CType>;
-  evalConst: ConstEval;
-}
-
-const SCALAR_WORDS = ['unsigned', 'signed', 'char', 'short', 'int'];
-const UNSUPPORTED_WORDS = ['long', 'float', 'double', '_Bool', 'bool'];
-
-const isCharScalar = (t: CType): boolean => t.tag === 'scalar' && t.kind === 'c8';
-
-/** pack_tables.py dims(): `[expr]` suffixes; an open `[]` is allowed first, when asked (n comes back 0 and open true). */
-const parseDims = (env: ParseEnv, base: CType, allowOpen = false): { type: CType; open: boolean } => {
-  const ns: (number | null)[] = [];
-  while (env.cur.peek() === '[') {
-    env.cur.take('[');
-    const expr: PackToken[] = [];
-    while (env.cur.peek() !== ']') {
-      const { kind, text } = env.cur.take();
-      expr.push({ kind, text });
-    }
-    env.cur.take(']');
-    if (expr.length === 0) {
-      if (!allowOpen || ns.length > 0) throw new PackError(`${env.header}: an open array dimension here`);
-      ns.push(null);
-    } else {
-      ns.push(Number(env.evalConst(expr, env.header)));
-    }
-  }
-  let type = base;
-  for (const n of [...ns].reverse()) type = makeArray(type, n ?? 0);
-  return { type, open: ns[0] === null };
-};
-
-/** pack_tables.py struct_body(): `{ type name[dims], name2; ... }` -> the struct laid out for the target. */
 const parseStructBody = (env: ParseEnv): CType => {
   const { cur } = env;
   cur.take('{');
@@ -73,7 +38,6 @@ const parseStructBody = (env: ParseEnv): CType => {
   return makeStruct(members);
 };
 
-/** pack_tables.py type_spec(): const, an anonymous struct, a typedef name or the integer type words. */
 const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean; anon?: boolean } => {
   const { cur } = env;
   const words: string[] = [];
@@ -108,5 +72,4 @@ const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean; anon?: b
   return { type: SCALAR_TYPES[key] as CType, isConst };
 };
 
-export { isCharScalar, parseDims, parseTypeSpec };
-export type { ParseEnv };
+export { parseTypeSpec };

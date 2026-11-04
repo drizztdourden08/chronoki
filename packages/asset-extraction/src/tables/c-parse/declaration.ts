@@ -1,19 +1,17 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CType } from '../c-type.type';
-import { describeType, makeArray, makePointer } from '../c-types';
-import { countElements } from '../init-writer';
+import { describeType } from '../c-types';
+import { makePointer } from '../make-pointer';
+import { makeArray } from '../make-array';
+import { countElements } from '../count-elements';
 import { PackError } from '../pack-error';
-import type { PackTable } from '../pack.type';
-import { parseInitializer } from './initializer';
-import { isCharScalar, parseDims, parseTypeSpec } from './type-spec';
-import type { ParseEnv } from './type-spec';
 
-/** What a header's declarations add to the shared environment. */
-interface DeclSink {
-  tables: PackTable[];
-  /** (header, name) of the statics that are not tables (the pointer tables). */
-  passthrough: { header: string; name: string }[];
-}
+import { parseInitializer } from './initializer';
+import { parseTypeSpec } from './type-spec';
+import { isCharScalar } from './is-char-scalar';
+import { parseDims } from './parse-dims';
+import type { ParseEnv } from './type-spec.type';
+import type { DeclSink } from './declaration.type';
 
 const parseTypedef = (env: ParseEnv): void => {
   const { cur } = env;
@@ -29,7 +27,6 @@ const parseTypedef = (env: ParseEnv): void => {
   env.typedefs.set(name, t);
 };
 
-/** `(*const name[n])[m] = { other tables };` is skipped; only its name is kept. */
 const skipPointerTable = (env: ParseEnv, code: string, start: number, sink: DeclSink): void => {
   const { cur } = env;
   let depth = 0;
@@ -44,7 +41,6 @@ const skipPointerTable = (env: ParseEnv, code: string, start: number, sink: Decl
   sink.passthrough.push({ header: env.header, name });
 };
 
-/** The element type of a `static const T name[...]` table: T, or the pointer of a `const char* const` one. */
 const tableElement = (env: ParseEnv, base: CType): CType => {
   const { cur } = env;
   if (cur.peek() !== '*') return base;
@@ -68,7 +64,6 @@ const parseTable = (env: ParseEnv, base: CType, anon: boolean, sink: DeclSink): 
   sink.tables.push({ name, ctype, init, header: env.header, anon });
 };
 
-/** pack_tables.py declaration(): a typedef, or a `static const` table (or pointer table). */
 const parseDeclaration = (env: ParseEnv, code: string, sink: DeclSink): void => {
   const { cur } = env;
   const start = cur.nextStart();
@@ -84,4 +79,3 @@ const parseDeclaration = (env: ParseEnv, code: string, sink: DeclSink): void => 
 };
 
 export { parseDeclaration };
-export type { DeclSink };

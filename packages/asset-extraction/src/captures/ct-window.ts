@@ -1,15 +1,12 @@
 /* @layer shared-asset-extraction @kind logic */
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import type { StageRun } from '../pipeline/stage.type';
-import { rgbOfFb } from './capture-io';
+import { rgbOfFb } from './rgb-of-fb';
+import { TOP, LIFT_X, LIFT_Y, PERIOD } from './ct-window.constants';
 
 const H = 80;
-const TOP = 16;
-const LIFT_X: [number, number] = [5, 8];
-const LIFT_Y: [number, number] = [8, 33];
-const PERIOD = 32;
 
-/** gen/ct_window.py: saves/ct_window.bin, the dialogue window bitmap [h u8] + 256*h*3 RGB, with the earlier lift's 41 pixels. */
 const ctWindowStage: StageRun = async (ctx) => {
   const state = await recipeState(ctx, 'name_mom_box');
   const shot = await peekOracle(ctx).peek({ state, script: null, env: { PEEK_ISOBG: '0' }, frames: 1 });

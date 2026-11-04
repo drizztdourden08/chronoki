@@ -1,7 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState, teleportState } from '../oracle/peek-access';
-import { requireBytes } from '../pipeline/work-files';
+import { peekOracle } from '../oracle/peek-access';
+import { teleportState } from '../oracle/teleport-state';
+import { recipeState } from '../oracle/recipe-state';
+import { requireBytes } from '../pipeline/require-bytes';
 import type { GenFiles } from './oracle-gen-stage.type';
 import { rgbOfFb } from './shared/rgb-of-fb';
 import { CELL_X, CELL_Y, CELL_W, CELL_H, FB_OFFSET, DRIVE } from './dlg-cursor.constants';
