@@ -24,6 +24,12 @@ interface Headers {
   tables: PackTable[];
   passthrough: DeclSink['passthrough'];
   evalConst: ConstEval;
+  /** The #defines by name (their tokens), shared by every header parsed so far. */
+  defines: DefineMap;
+  /** The typedefs by name. */
+  typedefs: Map<string, CType>;
+  /** Each header's comment-stripped text, in parse order. */
+  texts: Map<string, string>;
   /** Parses one header's bytes into the shared environment. */
   parseFile: (bytes: Uint8Array, header: string) => void;
   /** pack_tables.py numeric_defines(): every #define with a value, as an integer. */
@@ -38,6 +44,7 @@ const createHeaders = (abi: TableAbi): Headers => {
   const defines: DefineMap = new Map();
   const log: DefineLog = { defines, order: [] };
   const typedefs = new Map<string, CType>();
+  const texts = new Map<string, string>();
   const sink: DeclSink = { tables: [], passthrough: [] };
   const evalConst: ConstEval = (tokens, context) => evaluateExpr(defines, tokens, context);
 
@@ -64,7 +71,14 @@ const createHeaders = (abi: TableAbi): Headers => {
     tables: sink.tables,
     passthrough: sink.passthrough,
     evalConst,
-    parseFile: (bytes, header) => parseText(stripComments(decodeHeader(bytes)), header),
+    defines,
+    typedefs,
+    texts,
+    parseFile: (bytes, header) => {
+      const text = stripComments(decodeHeader(bytes));
+      texts.set(header, text);
+      parseText(text, header);
+    },
     numericDefines,
   };
 };

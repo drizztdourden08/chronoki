@@ -74,7 +74,7 @@ const parseStructBody = (env: ParseEnv): CType => {
 };
 
 /** pack_tables.py type_spec(): const, an anonymous struct, a typedef name or the integer type words. */
-const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean } => {
+const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean; anon?: boolean } => {
   const { cur } = env;
   const words: string[] = [];
   let isConst = false;
@@ -86,7 +86,7 @@ const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean } => {
     } else if (s === 'struct') {
       cur.take();
       if (cur.peek() !== '{') throw new PackError(`${env.header}: struct tags are not supported`);
-      return { type: parseStructBody(env), isConst };
+      return { type: parseStructBody(env), isConst, anon: true };
     } else if (s !== null && SCALAR_WORDS.includes(s)) {
       words.push(cur.take().text);
     } else if (s !== null && UNSUPPORTED_WORDS.includes(s)) {

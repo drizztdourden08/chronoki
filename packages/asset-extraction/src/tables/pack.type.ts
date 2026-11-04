@@ -21,6 +21,8 @@ interface PackTable {
   ctype: CType;
   init: InitNode;
   header: string;
+  /** True for `static const struct { ... } name[]`: the element type has no typedef name. */
+  anon: boolean;
 }
 
 /** A numeric #define the pack carries (header, name, value). */

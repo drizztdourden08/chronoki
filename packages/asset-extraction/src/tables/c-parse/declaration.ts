@@ -55,7 +55,7 @@ const tableElement = (env: ParseEnv, base: CType): CType => {
   return makePointer(env.abi);
 };
 
-const parseTable = (env: ParseEnv, base: CType, sink: DeclSink): void => {
+const parseTable = (env: ParseEnv, base: CType, anon: boolean, sink: DeclSink): void => {
   const { cur } = env;
   const element = tableElement(env, base);
   const name = cur.take().text;
@@ -65,7 +65,7 @@ const parseTable = (env: ParseEnv, base: CType, sink: DeclSink): void => {
   const init = parseInitializer(env);
   cur.take(';');
   const ctype = dims.open ? makeArray(dims.type.elem, countElements(dims.type.elem, init, name)) : dims.type;
-  sink.tables.push({ name, ctype, init, header: env.header });
+  sink.tables.push({ name, ctype, init, header: env.header, anon });
 };
 
 /** pack_tables.py declaration(): a typedef, or a `static const` table (or pointer table). */
@@ -77,10 +77,10 @@ const parseDeclaration = (env: ParseEnv, code: string, sink: DeclSink): void => 
     throw new PackError(`${env.header}: expected a typedef or a static declaration, found ${JSON.stringify(cur.peek())}`);
   }
   cur.take('static');
-  const { type, isConst } = parseTypeSpec(env);
+  const { type, isConst, anon } = parseTypeSpec(env);
   if (!isConst) throw new PackError(`${env.header}: a non-const static`);
   if (cur.peek() === '(') return skipPointerTable(env, code, start, sink);
-  return parseTable(env, type, sink);
+  return parseTable(env, type, anon === true, sink);
 };
 
 export { parseDeclaration };
