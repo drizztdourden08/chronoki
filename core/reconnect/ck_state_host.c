@@ -1,7 +1,7 @@
 /* The HOST section: CtHostState (ck_host_state.h) written field by field from its table, by name and size, never as one
    struct copy, so the bytes do not depend on the struct's padding or order. A load matches each record to a field of the
-   same name and size and leaves any other field as the caller filled it (the live value); the stamp's schema hash, made
-   over the field list, refuses a state whose list differs before it gets here. */
+   same name and size and leaves any other field as the caller filled it (the live value); the HOST section's schema id in
+   the stamp, made over the field list, refuses a state whose list differs before it gets here (ck_state_schema.c). */
 #include "ck_state_internal.h"
 #include <string.h>
 

@@ -17,6 +17,11 @@ uint8_t* ck_box_build(const CkSection* sections, int count, size_t* outLen);   /
 CkSpan ck_box_find(const uint8_t* box, size_t len, const char* tag);          /* {NULL, 0} when absent or malformed */
 int ck_box_has_line(CkSpan stamp, const char* line);                          /* the stamp holds this exact "key=value" line */
 
+/* ck_state_schema.c: the stamp text and the per-section schema check */
+int ck_schema_stamp(char* out, size_t cap, const char* mode, const CkSection* sections, int count, int current);
+                                              /* current: all this build's ids and the past layouts; else those of sections */
+int ck_schema_accepts(const uint8_t* box, size_t len, CkSpan stamp);   /* every section the state carries has this build's id */
+
 /* ck_state_host.c: the HOST section, one record per field: u8 name length, the name, u32 size, the bytes */
 size_t ck_host_encode(uint8_t* out, const void* host, const CkHostField* table, int count);   /* out NULL: the size only */
 int ck_host_decode(void* host, const CkHostField* table, int count, CkSpan section);          /* 0 if malformed */

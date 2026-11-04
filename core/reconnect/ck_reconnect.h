@@ -46,7 +46,7 @@ int  ck_state_request_save(void);      /* 0 if a request is open */
 int  ck_state_request_load(const uint8_t* bytes, long len);   /* 0 if one is open or the container is refused (reason set) */
 uint8_t* ck_state_input(long len);     /* a buffer of len bytes in linear memory for the container to load */
 const uint8_t* ck_state_buffer(long* len);   /* the last container saved */
-const char* ck_state_stamp(void);      /* what this build stamps: pin, core version, schema hash */
+const char* ck_state_stamp(void);      /* what this build stamps: pin, core version, schema, section ids, past layouts */
 int  ck_state_status(void);            /* 0 idle, 1 pending, 2 ok, 3 failed */
 int  ck_state_reason(void);            /* why it failed: 0 none, 1 not a state, 2 schema, 3 mode, 4 not now, 5 corrupt, 6 failed */
 int  ck_state_available(void);         /* the engine is in a mode with a state section and no request is open */

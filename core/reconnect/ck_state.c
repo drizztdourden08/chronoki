@@ -7,7 +7,8 @@
    overworld), held while the mode has none, and given up after CK_HOLD_FRAMES with the reason "not now". The safe point
    does the work in the same pass and reports back with ck_state_save_done / ck_state_load_result.
 
-   The container is CKST v2 (ck_state_box.c). Sections: STMP (the stamp, "key=value" lines), CORE (the 128 KB WRAM then the
+   The container is CKST v2 (ck_state_box.c). Sections: STMP (the stamp, "key=value" lines with the schema id of each
+   section carried, ck_state_schema.c: a state loads when each of its sections has this build's id), CORE (the 128 KB WRAM then the
    8 KB SRAM), SCEN (the scene state, field saves only), HOST (the host mode machine, ck_state_host.c), APU (the sound
    machine state), APUH (the sound's host side: its FIFO, cycle carry and field parity, ck_audio_state.inc; a state without
    it loads with the engine's reset of those). An overworld save (mode 2) has no SCEN and carries WRLD instead (phase 2:
@@ -17,7 +18,6 @@
    (SCEN or WRLD) plus MENU (strict records: mSave, menu.c's and field.c's statics, the caller's stash) and, over a field, MPIC
    (the frozen field frame, run-length coded); its CORE is the menu's own WRAM (ck_menu_load.inc, ck_menu_finish.inc). */
 #include "ck_state_internal.h"
-#include "ck_state_stamp.h"
 #include "ct_vm.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -105,13 +105,9 @@ static const char* modeTag(int mode) {
   return mode == CK_MODE_MENU_WORLD ? "menu-world" : mode == CK_MODE_MENU_FIELD ? "menu-field" : mode == CK_MODE_WORLD ? "world" : "field";
 }
 
-static int stampText(char* out, size_t cap, int mode) {
-  return snprintf(out, cap, "pin=%s\ncore=%s\nschema=%s\nmode=%s\n", CK_STATE_PIN_COMMIT, CK_STATE_CORE_VERSION, CK_STATE_SCHEMA, modeTag(mode));
-}
-
 const char* ck_state_stamp(void) {
-  static char text[256];
-  stampText(text, sizeof text, g_mode);
+  static char text[1024];
+  ck_schema_stamp(text, sizeof text, modeTag(g_mode), NULL, 0, 1);
   return text;
 }
 
@@ -149,8 +145,7 @@ int ck_state_top(int mode, void* wram, const uint8_t* sram) {
 
 void ck_state_save_done(int ok, int withScene, const void* host, const CkHostField* table, int count) {
   if (g_phase != CK_SAVE_TAKEN) return;
-  char stamp[320];
-  int stampLen = stampText(stamp, sizeof stamp, g_takenMode);
+  char stamp[512];
   size_t hostLen = ck_host_encode(NULL, host, table, count);
   uint8_t* hostBytes = (uint8_t*)malloc(hostLen ? hostLen : 1);
   int scene = withScene && g_out[0].buf && g_out[0].size > 0;
@@ -159,8 +154,7 @@ void ck_state_save_done(int ok, int withScene, const void* host, const CkHostFie
   if (ok && g_core && hostBytes && (scene || !withScene) && (!isWorldMode(g_takenMode) || g_worldBytes) && (!isMenuMode(g_takenMode) || g_menuBytes)) {
     ck_host_encode(hostBytes, host, table, count);
     CkSection s[10];
-    int n = 0;
-    s[n++] = (CkSection){ "STMP", (const uint8_t*)stamp, (size_t)stampLen };
+    int n = 1;
     s[n++] = (CkSection){ "CORE", g_core, CK_CORE_BYTES };
     if (scene) s[n++] = (CkSection){ "SCEN", (const uint8_t*)g_out[0].buf, g_out[0].size };
     s[n++] = (CkSection){ "HOST", hostBytes, hostLen };
@@ -169,6 +163,8 @@ void ck_state_save_done(int ok, int withScene, const void* host, const CkHostFie
     if (g_mpicBytes && g_mpicLen) s[n++] = (CkSection){ "MPIC", g_mpicBytes, g_mpicLen };
     s[n++] = (CkSection){ "APU ", (const uint8_t*)g_out[1].buf, g_out[1].size };
     if (g_out[2].buf && g_out[2].size > 0) s[n++] = (CkSection){ "APUH", (const uint8_t*)g_out[2].buf, g_out[2].size };
+    int stampLen = ck_schema_stamp(stamp, sizeof stamp, modeTag(g_takenMode), s + 1, n - 1, 0);
+    s[0] = (CkSection){ "STMP", (const uint8_t*)stamp, (size_t)stampLen };
     box = ck_box_build(s, n, &boxLen);
   }
   free(hostBytes);
@@ -216,9 +212,7 @@ int ck_state_request_load(const uint8_t* p, long len) {
   if (!p || len < 12 || memcmp(p, "CKST", 4) || ck_get32(p + 4) != 2) return refuse(CK_REASON_NOT_A_STATE);
   CkSpan stamp = ck_box_find(p, (size_t)len, "STMP");
   if (!stamp.data) return refuse(CK_REASON_CORRUPT);
-  char schema[96];
-  snprintf(schema, sizeof schema, "schema=%s", CK_STATE_SCHEMA);
-  if (!ck_box_has_line(stamp, "legacy=1") && !ck_box_has_line(stamp, schema)) return refuse(CK_REASON_SCHEMA);
+  if (!ck_schema_accepts(p, (size_t)len, stamp)) return refuse(CK_REASON_SCHEMA);
   int world = ck_box_has_line(stamp, "mode=world") || ck_box_has_line(stamp, "mode=menu-world");
   int menu = ck_box_has_line(stamp, "mode=menu-world") || ck_box_has_line(stamp, "mode=menu-field");
   if (world ? !ck_box_find(p, (size_t)len, "WRLD").data : !ck_box_find(p, (size_t)len, "SCEN").data) return refuse(CK_REASON_MODE);
