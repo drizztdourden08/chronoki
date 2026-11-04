@@ -22,9 +22,9 @@ describe('CKST sectioned container', { tags: ['critical'] }, () => {
     if (!verdict.ok) expect(verdict.message).toContain('0.0.9');
   });
 
-  it('refuses an overworld state and a non-state', () => {
+  it('loads an overworld state of the same format and refuses a non-state', () => {
     const world = checkLoadable(stamped('pin=x\ncore=0.1.0\nschema=aaaa\nmode=world\n'), current);
-    expect(world.ok ? null : world.reason).toBe('unsupported-mode');
+    expect(world.ok).toBe(true);
     expect(checkLoadable(new Uint8Array([1, 2, 3]), current).ok).toBe(false);
   });
 

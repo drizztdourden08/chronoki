@@ -10,10 +10,16 @@
 //    mode the loop is in, copies the locals into CtHostState for a save and back after a load (host-fields.mjs checks the
 //    list against main()'s declarations before patching). The debug keys F5 / F9 are switched off, so the old file-based
 //    save, its "[debug] F5" print and the F9 door walk never run; save and load happen only at the safe point.
+//  * the overworld section (phase 2): field.c's function-local `static int owIdle` becomes file-scope (WORLD_FIELD_PATCHES,
+//    a list of its own) and world.c is copied with reconnect/ck_world_state.inc appended, which hands out the addresses of
+//    its cross-frame statics. world-fields.mjs and world-statics.mjs check the World struct, CtWorldStream and both files'
+//    statics against the lists in core/reconnect/ck_world_*.h before patching.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { checkHostFields } from './host-fields.mjs';
 import { LOOP_HEAD, MAIN_HEAD } from './main-locals.mjs';
+import { checkWorldFields } from './world-fields.mjs';
+import { checkWorldStatics } from './world-statics.mjs';
 
 const PREFIX = '#include <stdio.h>\n#include "ck_reconnect.h"\n#define fopen ck_fopen\n';
 
@@ -34,6 +40,15 @@ const FIELD_PATCHES = [
     1,
   ],
 ];
+
+// phase 2 (the overworld section), a list of its own so the field patches above merge without it: owIdle, the era placard's
+// idle counter, is a function-local static the safe point cannot reach; ck_world_state.h (included before main()) declares
+// it at file scope instead.
+const WORLD_FIELD_PATCHES = [
+  ['      static int owIdle = 0;\n', '', 1],
+];
+// world.c gets reconnect/ck_world_state.inc appended: it hands out the addresses of the statics the section keeps.
+const WORLD_SUFFIX = '\n#include "ck_world_state.inc"\n';
 
 // audio.c: the engine's two state functions become static and ck_audio_state.inc (appended) wraps them with the host
 // side of the sound (the FIFO, the cycle carry, the field parity), which the engine's load resets.
@@ -73,7 +88,15 @@ const prefixed = (belthasar, name) => {
 const patchedField = (belthasar, root) => {
   const text = readFileSync(join(belthasar, 'src', 'field.c'), 'utf8').replace(/\r\n/g, '\n');
   checkHostFields(text, root);
-  return applyPatches('field.c', `#include "ck_reconnect.h"\n${text}`, FIELD_PATCHES);
+  checkWorldFields(text, belthasar, root);
+  const patched = applyPatches('field.c', `#include "ck_reconnect.h"\n${text}`, FIELD_PATCHES);
+  return applyPatches('field.c', patched, WORLD_FIELD_PATCHES);
+};
+
+const patchedWorld = (belthasar, root) => {
+  const text = readFileSync(join(belthasar, 'src', 'world.c'), 'utf8').replace(/\r\n/g, '\n');
+  checkWorldStatics(text, root);
+  return text + WORLD_SUFFIX;
 };
 
 // returns { files: [absolute paths of the patched copies], replaced: [src-relative names they stand in for] }
@@ -84,6 +107,7 @@ const writeStatePatches = (genDir, belthasar, root) => {
     'ct_vm.c': prefixed(belthasar, 'ct_vm.c'),
     'audio.c': applyPatches('audio.c', prefixed(belthasar, 'audio.c'), AUDIO_PATCHES) + AUDIO_SUFFIX,
     'field.c': patchedField(belthasar, root),
+    'world.c': patchedWorld(belthasar, root),
   };
   for (const [name, text] of Object.entries(out)) writeFileSync(join(dir, name), text);
   return { files: Object.keys(out).map((n) => join(dir, n)), replaced: Object.keys(out).map((n) => `src/${n}`) };

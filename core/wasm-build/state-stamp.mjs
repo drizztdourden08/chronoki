@@ -9,10 +9,11 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { hostFieldList } from './host-fields.mjs';
+import { worldFieldListText } from './world-fields.mjs';
 
-const CORE_VERSION = '0.2.1';
+const CORE_VERSION = '0.3.0';
 const CONTAINER_VERSION = 2;
-const SECTIONS = { STMP: 1, CORE: 1, HOST: 1, APU: 1, APUH: 1 };
+const SECTIONS = { STMP: 1, CORE: 1, HOST: 1, WRLD: 1, APU: 1, APUH: 1 };
 const WRAM_BYTES = 0x20000;
 const SRAM_BYTES = 0x2000;
 
@@ -26,7 +27,7 @@ const sceneStateVersion = (belthasar) => {
 const schemaText = (belthasar, root) => {
   const sections = Object.entries({ ...SECTIONS, SCEN: sceneStateVersion(belthasar) }).map(([tag, v]) => `${tag}.${v}`);
   const host = hostFieldList(root).map((h) => `${h.name}:${h.type}${h.dims}`).join(',');
-  return `CKST.${CONTAINER_VERSION};${sections.join(',')};wram=${WRAM_BYTES};sram=${SRAM_BYTES};host=${host}`;
+  return `CKST.${CONTAINER_VERSION};${sections.join(',')};wram=${WRAM_BYTES};sram=${SRAM_BYTES};host=${host};wrld=${worldFieldListText(root)}`;
 };
 
 const writeStampHeader = (genDir, belthasar, root) => {

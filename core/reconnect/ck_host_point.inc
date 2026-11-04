@@ -2,32 +2,43 @@
    includes this file as the first statement of field.c's main loop, inside main(), where only main()'s frame is live and
    every pre-loop local is in scope by its own name. ck_state_top says whether a request is serviced on this pass:
    - save: the host locals are copied into CtHostState (ck_host_fields.h), the scene and the sound machine write
-     themselves to "mem:scene" / "mem:apu" (ck_fopen), and ck_state.c assembles the container with a HOST section;
+     themselves to "mem:scene" / "mem:apu" (ck_fopen), and ck_state.c assembles the container with a HOST section; in the
+     overworld there is no scene: ck_world_save.inc writes the WRLD section instead (phase 2);
    - load: a state from another location (or from the overworld) first enters that location from the state's WRAM image
      the way a door commit does (fieldLoad, then the location entry's own steps), with no fade and no door walk; then the
      scene, the WRAM and the sound machine are restored and the HOST section is written back over the locals. A state
-     with no HOST section (a converted v1 one) takes the player position the scene state carries.
+     with no HOST section (a converted v1 one) takes the player position the scene state carries. A state with a WRLD
+     section is the overworld's: ck_world_load.inc enters the world from its WRAM image and overlays WRLD and HOST.
+   The overworld is a save point only when nothing of it is mid-flight: no fade or pending transition (as for the field), no
+   inline-JSL pass suspension (owPassHold / owPassResume), no time-gauge or world-map sequence (owGaugePh / owMapPh), no exit
+   wait and not the new-game pan. Those are unsafe windows: the request is held until they end (ck_state_top).
    The _Static_asserts stop the build when upstream changes the type of a local the host section copies. */
 {
 #define CK_HOST(t, n, d) _Static_assert(__builtin_types_compatible_p(__typeof__(n), t d), "field.c changed the type of main()'s " #n);
 #include "ck_host_fields.h"
 #undef CK_HOST
   static CtHostState ckHost;
+  int ckOwSafe = haveWorld && wd.vram && wd.wram && !ngIntro && !owPassHold && !owPassResume && !owGaugePh && !owMapPh && !owExitWait;
   int ckMode = (!selftest && f.vm && !battlePhase && !menuPhase && !inWorld && !gameOver && !fade && !pendKind) ? 1
-             : (!selftest && !f.vm && inWorld && !battlePhase && !menuPhase && !fade && !pendKind) ? 2 : 0;
+             : (!selftest && !f.vm && inWorld && !battlePhase && !menuPhase && !fade && !pendKind && ckOwSafe) ? 2 : 0;
   int ckOp = ck_state_top(ckMode, fieldWram(), fieldSram());
   if (ckOp != CK_OP_NONE) {
 #define CK_HOST(t, n, d) memcpy(&ckHost.n, &n, sizeof ckHost.n);
 #include "ck_host_fields.h"
 #undef CK_HOST
   }
-  if (ckOp == CK_OP_SAVE) {
+  if (ckOp == CK_OP_SAVE && !f.vm) {
+#include "ck_world_save.inc"
+  } else if (ckOp == CK_OP_SAVE) {
     double ckPlr[4] = { px, py, (double)pz, (double)pfac };
     int ckScene = f.vm ? CtSceneSaveState(f.vm, "mem:scene", ckPlr) : 0;
     if (g_fieldAudio) CtAudioSaveState(g_fieldAudio, "mem:apu");
     ck_state_save_done(f.vm ? ckScene : 1, ckScene, &ckHost, ckHostFields, CK_HOST_COUNT);
   } else if (ckOp == CK_OP_LOAD) {
-    int ckLoc = CtSceneStateLoc("mem:scene", NULL), ckR = 0;
+    int ckLoc = ck_state_load_has_world() ? -1 : CtSceneStateLoc("mem:scene", NULL), ckR = 0;
+    if (ck_state_load_has_world()) {
+#include "ck_world_load.inc"
+    }
     if (ckLoc >= 0 && (ckLoc != scene || !f.vm)) {
       const uint8_t* ckCore = ck_state_load_core();
       if (ckCore) memcpy(CtWramSys(fieldWram()), ckCore, CK_STATE_WRAM_BYTES);
