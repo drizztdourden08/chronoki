@@ -33,8 +33,8 @@ const BindingRow = ({ actionLabel, middleLabel, middleIconId, binding, icon, dev
           {!isNone && <InputGlyph binding={binding} icon={icon} showLabel={false} />}
         </Box>
         {!isNone && deviceIconSrc && (
-          <Box className="binding-row__icon-slot">
-            <Image src={deviceIconSrc} alt="" className="binding-row__device-icon" />
+          <Box className="binding-row__device-icon-slot">
+            <Image src={deviceIconSrc} alt="" className="binding-row__device-icon-img" />
           </Box>
         )}
         <Text className={`binding-row__binding-label ${isNone ? 'binding-row__binding-label--none' : ''}`}>

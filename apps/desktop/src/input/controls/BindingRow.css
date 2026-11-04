@@ -96,11 +96,20 @@
   opacity: 1;
 }
 
-.binding-row__device-icon {
-  width: var(--size-20);
-  height: var(--size-20);
+.binding-row__device-icon-slot {
+  width: var(--space-lg);
+  height: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+.binding-row__device-icon-img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  opacity: 0.8;
 }
 
 .binding-row--reserved {
