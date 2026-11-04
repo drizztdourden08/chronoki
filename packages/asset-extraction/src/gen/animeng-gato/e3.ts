@@ -1,9 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { hex } from '../c-text';
-
-const E3_BASE = (0xe3 - 0xc0) << 16;
-const STRIDE = 0x78;
-const N_REC = 0x20;
+import { E3_BASE, STRIDE, N_REC } from './e3.constants';
 
 const sext = (b: number): number => (b >= 0x80 ? b - 256 : b);
 

@@ -1,8 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { hex } from '../c-text';
-
-const SHEET_N = 0x160;
-const WRAM_SIZE = 0x20000;
+import { SHEET_N, WRAM_SIZE } from './sheet.constants';
 
 const wramOf = (state: Uint8Array): Uint8Array => {
   if (state.length === WRAM_SIZE) return state;
