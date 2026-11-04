@@ -1,0 +1,18 @@
+/* @layer shared-storage @kind logic */
+import type { FileStore } from '@drizztdourden08/brock-core';
+import type { Profile } from '@app/profiles/types';
+import { readJson } from '@drizztdourden08/brock-core';
+import { PROFILES_DIR } from './profiles.constants';
+import { profileFile } from './profile-file';
+
+const listProfiles = async (files: FileStore): Promise<Profile[]> => {
+  const ids = await files.list(PROFILES_DIR);
+  const profiles: Profile[] = [];
+  for (const id of ids) {
+    const profile = await readJson<Profile | null>(files, profileFile(id), null);
+    if (profile) profiles.push(profile);
+  }
+  return profiles.sort((a, b) => b.lastPlayed - a.lastPlayed);
+};
+
+export { listProfiles };

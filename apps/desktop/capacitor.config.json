@@ -1,0 +1,9 @@
+{
+  "appId": "com.drizztdourden08.chronoki",
+  "appName": "ChronoKi",
+  "webDir": "dist/web",
+  "android": {
+    "path": "mobile/android",
+    "allowMixedContent": false
+  }
+}
