@@ -1,5 +1,5 @@
 /* @layer renderer-appshell @kind logic */
-import { probeInputPresses } from '@app/launch-flags/is-probe-input';
+import { probeInputPresses } from '@app/launch-flags/probe-input-presses';
 import {
   INPUT_PROBE_BOOT_FRAMES, INPUT_PROBE_BUTTONS, INPUT_PROBE_GAP_FRAMES, INPUT_PROBE_HASH_FRAME, INPUT_PROBE_HOLD_FRAMES,
 } from '../GameSession.constants';

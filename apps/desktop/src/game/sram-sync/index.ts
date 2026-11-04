@@ -2,8 +2,8 @@
 export { flushSramSync } from './flush-sram-sync';
 export { pauseSramSync } from './pause-sram-sync';
 export { removeProfileSram } from './remove-profile-sram';
-export { restoreSramBackup } from './restore-sram-backup';
+export { restoreBackupToSram } from './restore-backup-to-sram';
 export { resumeSramSync } from './resume-sram-sync';
-export { sramBackupPathOf } from './sram-paths';
+export { sramBackupPathOf } from './sram-backup-path-of';
 export { startSramSync } from './start-sram-sync';
 export { stopSramSync } from './stop-sram-sync';

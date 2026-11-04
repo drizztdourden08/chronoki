@@ -1,6 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { FileStore } from '@drizztdourden08/brock-core';
-import { sramPathOf } from './sram-paths';
+import { sramPathOf } from './sram-path-of';
 
 const removeProfileSram = async (files: FileStore, profileId: string): Promise<void> => {
   const path = sramPathOf(profileId);

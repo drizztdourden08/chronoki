@@ -1,8 +1,7 @@
 /* @layer renderer-appshell @kind logic */
 import { chronokiCore } from '@app/game/lifecycle';
 import { SET_INPUT_CALL } from '@app/input/input.constants';
-
-type MaskObserver = { masks: () => number[]; stop: () => void };
+import type { MaskObserver } from './observe-input-mask.type';
 
 const observeInputMask = (): MaskObserver => {
   const mod = chronokiCore.module();
@@ -24,4 +23,3 @@ const observeInputMask = (): MaskObserver => {
 };
 
 export { observeInputMask };
-export type { MaskObserver };
