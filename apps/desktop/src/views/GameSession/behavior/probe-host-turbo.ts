@@ -14,14 +14,14 @@ const keyEvent = (type: 'keydown' | 'keyup', code: string | null): void => {
 };
 
 const fastForwardCode = (): string | null => {
-  const mapping = getInputManager().getFunctionMappings().find((entry) => entry.action === 'fast-forward');
+  const mapping = getInputManager().getFunctionMappings().find((entry) => entry.action === 'turbo');
   return mapping?.binding.type === 'keyboard' ? mapping.binding.code : null;
 };
 
 const probeHostTurbo = async (errors: string[]): Promise<HostProbeEntry['turbo']> => {
   const expected = hostGate('turbo');
   const code = fastForwardCode();
-  if (code === null) errors.push('no key bound to fast-forward');
+  if (code === null) errors.push('no key bound to turbo');
   const before = turboState.extraFrames;
   keyEvent('keydown', code);
   await waitForFrames(presentedFrames() + HOST_PROBE_TURBO_FRAMES);

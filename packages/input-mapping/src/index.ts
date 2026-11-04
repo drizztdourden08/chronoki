@@ -16,7 +16,8 @@ export type {
   KeyboardBinding,
 } from './bindings/bindings.type';
 export { DEFAULT_FUNCTION_MAPPINGS, FUNCTION_ACTIONS, FUNCTION_ACTION_LABELS } from './functions/function-actions.constants';
-export type { FunctionAction, FunctionMapping } from './functions/function-mapping.type';
+export type { FunctionAction, FunctionMapping, SlotFunctionAction, SlotNumber } from './functions/function-mapping.type';
+export { LOAD_SLOT_ACTIONS, SAVE_SLOT_ACTIONS, SLOT_NUMBERS } from './functions/function-slots.constants';
 export type { AssignedDevice, DetectedDevice, DevicePreset, InputProfile } from './profiles/profiles.type';
 export { INPUT_PROFILES_FILE } from './profiles/profiles.constants';
 export { parseInputProfiles } from './profiles/parse-input-profiles';

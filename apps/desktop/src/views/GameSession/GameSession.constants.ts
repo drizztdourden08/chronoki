@@ -1,4 +1,5 @@
 /* @layer renderer-appshell @kind constants */
+import { LOAD_SLOT_ACTIONS, SAVE_SLOT_ACTIONS } from '@chronoki/input-mapping';
 import type { FunctionAction } from '@chronoki/input-mapping';
 
 const FUNCTION_ACTION_GATES: Partial<Record<FunctionAction, string>> = {
@@ -6,7 +7,8 @@ const FUNCTION_ACTION_GATES: Partial<Record<FunctionAction, string>> = {
   'load-state': 'saveStates',
   'slot-next': 'saveStates',
   'slot-prev': 'saveStates',
-  'fast-forward': 'turbo',
+  turbo: 'turbo',
+  ...Object.fromEntries([...SAVE_SLOT_ACTIONS, ...LOAD_SLOT_ACTIONS].map((action) => [action, 'saveStates'])),
 };
 
 const SAVE_STATES_GATE = 'saveStates';

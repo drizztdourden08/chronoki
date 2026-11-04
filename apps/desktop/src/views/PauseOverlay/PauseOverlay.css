@@ -33,6 +33,20 @@
   background: var(--c-border-strong);
 }
 
+.pause-overlay__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  color: var(--c-text-dim);
+  text-align: left;
+}
+
+.pause-overlay__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
 .pause-overlay__card {
   display: flex;
   flex-direction: column;

@@ -5,6 +5,7 @@ import { GameLayer } from '@app/views/GameLayer';
 import { useGameSession } from '@app/views/GameSession';
 import { PauseOverlay } from '@app/views/PauseOverlay';
 import { ProfileSwitcherOverlay } from '@app/views/ProfileSwitcherOverlay';
+import { DebugFloatingControls } from '@app/compounds/DebugFloatingControls';
 import { SaveStateOverlay } from '@app/views/SaveStateOverlay';
 import './GameView.css';
 
@@ -15,6 +16,7 @@ const GameView = () => {
     <Box className="game-view">
       <GameLayer />
       {running && <SaveStateOverlay />}
+      <DebugFloatingControls profileId={launch?.profileId ?? null} gameRunning={running} />
       {running && <PauseOverlay />}
       {running && <ProfileSwitcherOverlay />}
       {launch === null && (
