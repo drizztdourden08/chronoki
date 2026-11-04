@@ -2,10 +2,9 @@
 import { BUTTON_INDEX, buildDisplayContext, resolveAxisLabel, resolveButtonIcon, resolveButtonLabel } from '@drizztdourden08/brock-input';
 import { resolveAxisConsoleDefault, resolveConsoleDefault } from './console-defaults';
 import type { DisplayContext } from '@drizztdourden08/brock-input';
-import { SDL_AXIS } from '@drizztdourden08/brock-input';
 import type { SdlButtonName, SdlGamepadType } from '@drizztdourden08/brock-input';
 import { axisEndLabel } from './axis-end-label';
-import { AXIS_DIRECTIONS, AXIS_POSITIONS } from './build-console-defaults.constants';
+import { AXIS_DIRECTIONS, AXIS_INDEX, AXIS_POSITIONS } from './build-console-defaults.constants';
 import type { ButtonMapping } from './bindings/bindings.type';
 
 const axisMappings = (ctx: DisplayContext): ButtonMapping[] => {
@@ -21,7 +20,7 @@ const axisMappings = (ctx: DisplayContext): ButtonMapping[] => {
       const label = axisEndLabel(axisLabel, direction);
       mappings.push({
         snesButton,
-        binding: { type: 'gamepad-axis', axisIndex: SDL_AXIS[position], direction, label },
+        binding: { type: 'gamepad-axis', axisIndex: AXIS_INDEX[position], direction, label },
         icon: null,
       });
     }

@@ -25,8 +25,8 @@ const BUTTONS_WITHOUT_DPAD = {
 const STANDARD_BUTTONS = { ...BUTTONS_WITHOUT_DPAD, ...DPAD_BUTTONS } as const;
 
 const LEFT_STICK_AXES = {
-  LEFTX: { '-': 'Left', '+': 'Right' },
-  LEFTY: { '-': 'Up', '+': 'Down' },
+  LEFT_X: { '-': 'Left', '+': 'Right' },
+  LEFT_Y: { '-': 'Up', '+': 'Down' },
 } as const;
 
 const GENERIC_DEFAULTS: SnesConsoleDefaults = {
