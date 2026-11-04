@@ -24,5 +24,11 @@ Research read for understanding only, no code or data taken: ChronoRET (ThisIsAk
 ct_disassembly (dscotton, CC0), the Chrono Compendium and Temporal Flux community documentation.
 See `docs/port-research.md`.
 
+The randomizer world (`packages/game-core/src/randomizer/world`) is ChronoKi's own code. Its key-item
+spot list, the access rules between eras and the option names follow the published rules of Jets of
+Time ([github.com/Pseudoarc/jetsoftime](https://github.com/Pseudoarc/jetsoftime), wiki.ctjot.com),
+used as reference only: no Jets of Time code or data file is included. The fill, sweep and collection
+state come from `@drizztdourden08/brock-randomizer`, which carries its own Archipelago (MIT) notice.
+
 The full licence text of each piece is in its own package or repository. The exact versions are in
 `pnpm-lock.yaml`.
