@@ -1,8 +1,8 @@
 /* @layer renderer-app @kind logic */
 import type { AppSettings } from '@app/settings.type';
 import { ALWAYS_ON_GATES, NEW_DEFAULT_GATES } from './normalise-settings.constants';
+import type { RawSettings } from './normalise-settings.type';
 
-type RawSettings = Partial<AppSettings> & { original?: boolean };
 
 const withIds = (gates: readonly string[], ids: readonly string[]): string[] => [...gates, ...ids.filter((id) => !gates.includes(id))];
 
