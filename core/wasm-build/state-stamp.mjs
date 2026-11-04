@@ -9,13 +9,15 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { hostFieldList } from './host-fields.mjs';
+import { menuFieldListText } from './menu-fields.mjs';
 import { worldFieldListText } from './world-fields.mjs';
 
-const CORE_VERSION = '0.3.0';
+const CORE_VERSION = '0.4.0';
 const CONTAINER_VERSION = 2;
-const SECTIONS = { STMP: 1, CORE: 1, HOST: 1, WRLD: 1, APU: 1, APUH: 1 };
+const SECTIONS = { STMP: 1, CORE: 1, HOST: 1, WRLD: 1, MENU: 1, MPIC: 1, APU: 1, APUH: 1 };
 const WRAM_BYTES = 0x20000;
 const SRAM_BYTES = 0x2000;
+const MENU_STASH_BYTES = 0x60F8;
 
 const sceneStateVersion = (belthasar) => {
   const text = readFileSync(join(belthasar, 'src', 'ct_vm.c'), 'utf8');
@@ -27,7 +29,7 @@ const sceneStateVersion = (belthasar) => {
 const schemaText = (belthasar, root) => {
   const sections = Object.entries({ ...SECTIONS, SCEN: sceneStateVersion(belthasar) }).map(([tag, v]) => `${tag}.${v}`);
   const host = hostFieldList(root).map((h) => `${h.name}:${h.type}${h.dims}`).join(',');
-  return `CKST.${CONTAINER_VERSION};${sections.join(',')};wram=${WRAM_BYTES};sram=${SRAM_BYTES};host=${host};wrld=${worldFieldListText(root)}`;
+  return `CKST.${CONTAINER_VERSION};${sections.join(',')};wram=${WRAM_BYTES};sram=${SRAM_BYTES};host=${host};wrld=${worldFieldListText(root)};menu=${menuFieldListText(root)};menustash=${MENU_STASH_BYTES};menupic=rle3`;
 };
 
 const writeStampHeader = (genDir, belthasar, root) => {

@@ -5,5 +5,8 @@
 #include "ck_world_table.inc"
   ck_state_save_world(ckWt, ckWn);
 }
+if (menuPhase) {
+#include "ck_menu_save.inc"
+}
 if (g_fieldAudio) CtAudioSaveState(g_fieldAudio, "mem:apu");
 ck_state_save_done(1, 0, &ckHost, ckHostFields, CK_HOST_COUNT);
