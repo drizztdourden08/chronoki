@@ -8,6 +8,7 @@ const setTurboHeld = (held: boolean): void => {
   const next = held && hostGate(TURBO_GATE);
   if (next === turboState.held) return;
   turboState.held = next;
+  turboState.fraction = 0;
   turboState.muted = next;
   activeGameHolder.current?.session.audio.setVolume(next ? 0 : turboState.volume);
 };

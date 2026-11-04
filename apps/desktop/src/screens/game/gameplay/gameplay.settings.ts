@@ -10,7 +10,6 @@ const meta: ScreenMeta = {
 };
 
 const asCount = (value: number): string => String(value);
-const asMultiplier = (value: number): string => `${value}x`;
 
 const sections: Section[] = [
   {
@@ -48,10 +47,9 @@ const sections: Section[] = [
           {
             key: 'turboSpeed',
             label: 'Turbo Speed',
-            description: 'How much faster the game runs while the shortcut is held, from 2x up to 10x.',
+            description: 'How much faster the game runs while the shortcut is held, from 1.25x up to 10x.',
             hint: 'Needs Turbo on.',
             keywords: 'turbo speed fast forward multiplier',
-            control: { kind: 'range', min: 2, max: 10, step: 1, format: asMultiplier },
           },
         ],
       },

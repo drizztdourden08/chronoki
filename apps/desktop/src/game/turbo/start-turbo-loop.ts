@@ -10,7 +10,10 @@ const runExtraFrames = (): void => {
   const runFrame = chronokiCore.definition.core.exports.runFrame;
   const calls = chronokiCore.calls();
   if (!runFrame || !calls || chronokiCore.state().status !== 'running') return;
-  for (let i = 0; i < turboConfig.speed - 1; i += 1) {
+  turboState.fraction += turboConfig.speed - 1;
+  const extra = Math.floor(turboState.fraction);
+  turboState.fraction -= extra;
+  for (let i = 0; i < extra; i += 1) {
     calls.call(runFrame);
     turboState.extraFrames += 1;
   }
