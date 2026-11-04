@@ -5,17 +5,16 @@ import type { ItemListCreate, ItemListRowState } from '@drizztdourden08/tessera/
 import type { NamedSaveEntry } from '@drizztdourden08/brock-port-kit';
 import { SaveRowActions } from '@app/compounds/SaveRowActions';
 import { useArmedRow } from '../behavior/useArmedRow';
-import { useNormalSaves } from '../behavior/useNormalSaves';
 import { saveRowParts } from '../behavior/save-row-parts';
 import { NO_GAME_REASON } from '../HomeTab.constants';
-import type { HomeSectionProps } from '../HomeTab.type';
+import type { NormalSavesSectionProps } from '../HomeTab.type';
 import { CreateSaveForm } from './CreateSaveForm';
 
 const idOf = (save: NamedSaveEntry) => save.id;
 const nameOf = (save: NamedSaveEntry) => save.name;
 
-const NormalSavesSection = ({ profileId, running }: HomeSectionProps) => {
-  const { saves, screenshots, busyId, create, load, overwrite, remove, rename } = useNormalSaves(profileId, running);
+const NormalSavesSection = ({ normal, running }: NormalSavesSectionProps) => {
+  const { saves, screenshots, busyId, create, load, overwrite, remove, rename } = normal;
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { armedOf, reportArmed } = useArmedRow();
 

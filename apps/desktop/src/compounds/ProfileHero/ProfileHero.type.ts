@@ -6,4 +6,12 @@ interface HeroToolsProps {
   onImportSram: () => void;
 }
 
-export type { HeroToolsProps };
+interface HeroLastSave {
+  name: string;
+  timestamp: number;
+  screenshotUrl: string | null;
+  busy: boolean;
+  onLoad: () => void;
+}
+
+export type { HeroLastSave, HeroToolsProps };

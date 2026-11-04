@@ -2,6 +2,7 @@
 import type { NamedSaveEntry } from '@drizztdourden08/brock-port-kit';
 import type { ArmedAction } from '@app/compounds/ArmedActionButton';
 import type { useHomeSramImport } from './behavior/useHomeSramImport';
+import type { useNormalSaves } from './behavior/useNormalSaves';
 
 interface SramDialogState {
   type: 'import-sram' | 'import-sram-invalid' | null;
@@ -44,6 +45,17 @@ interface CreateSaveFormProps {
   onCancel: () => void;
 }
 
+type NormalSaves = ReturnType<typeof useNormalSaves>;
+
+interface NormalSavesSectionProps {
+  normal: NormalSaves;
+  running: boolean;
+}
+
+interface HomeTabProps extends HomeSectionProps {
+  normal: NormalSaves;
+}
+
 interface SlotInfo {
   slot: number;
   savedAt: number | null;
@@ -56,6 +68,6 @@ interface HomeSectionProps {
 }
 
 export type {
-  ArmedRow, CreateSaveFormProps, HomeDialogsProps, HomeSectionProps, HomeSramImport, NamedSavesData, ProfileFactsInput,
-  SaveRowPartsInput, SlotInfo, SramDialogState,
+  ArmedRow, CreateSaveFormProps, HomeDialogsProps, HomeSectionProps, HomeSramImport, HomeTabProps, NamedSavesData,
+  NormalSaves, NormalSavesSectionProps, ProfileFactsInput, SaveRowPartsInput, SlotInfo, SramDialogState,
 };
