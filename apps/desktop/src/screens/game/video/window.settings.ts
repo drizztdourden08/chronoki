@@ -1,8 +1,7 @@
 /* @layer renderer-app @kind config */
 import type { ScreenMeta, Section } from '@drizztdourden08/brock-react';
-import { gateItem } from '@app/settings-controls/gate-items';
 
-const meta: ScreenMeta = { title: 'Window', icon: 'app-window', order: 2, keywords: ['window', 'fullscreen', 'stretch', 'viewport', 'letterbox', 'pixel perfect', 'filtering'] };
+const meta: ScreenMeta = { title: 'Window', icon: 'app-window', order: 4, keywords: ['window', 'fullscreen', 'stretch', 'viewport', 'letterbox', 'pixel perfect'] };
 
 const viewportModes = [
   { value: 'none', label: 'Letterbox', hint: 'Keeps the game ratio and fills the rest of the window with black bars.' },
@@ -24,7 +23,6 @@ const sections: Section[] = [
         key: 'viewportConstraint',
         label: 'Viewport',
         description: 'Controls how the game canvas relates to the window',
-        hint: 'Original Mode always uses Letterbox.',
         keywords: 'ratio aspect black bars stretch fill fit letterbox viewport',
         control: { kind: 'choice', options: viewportModes },
       },
@@ -35,7 +33,6 @@ const sections: Section[] = [
         hint: 'Needs the Letterbox viewport.',
         keywords: 'pixel perfect integer scale scaling sharp crisp nearest',
       },
-      gateItem('linearFiltering'),
     ],
   },
 ];
