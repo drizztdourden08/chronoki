@@ -31,17 +31,29 @@ struct SndCoro {
 
 void _emscripten_stack_restore(uintptr_t sp);   /* compiler-rt stack_ops.S: __stack_pointer = sp */
 
-/* Module.ckCoros: per coroutine, toCoro (wakes the suspended coroutine), toCaller / fail (wake or fail its resumer). */
+/* Module.ckCoros: per coroutine, toCoro (wakes the suspended coroutine), toCaller / fail (wake or fail its resumer),
+   dead (the error that ended the coroutine's stack, kept so the next resume throws it instead of waiting forever).
+   A yield's JS runs, and wakes the resumer, before V8 knows whether the suspension is allowed; when it is not (a JS
+   frame between ck_coro_entry and the yield) the coroutine's promise rejects with nobody left to fail, hence dead. */
 EM_ASYNC_JS(void, ck_coro_js_resume, (SndCoro* c), {
   const all = Module.ckCoros || (Module.ckCoros = new Map());
   let s = all.get(c);
-  if (!s) { s = { started: false, toCoro: null, toCaller: null, fail: null }; all.set(c, s); }
+  if (!s) { s = { started: false, toCoro: null, toCaller: null, fail: null, dead: null, switches: 0 }; all.set(c, s); }
+  if (s.dead) throw s.dead;
   const back = new Promise((resolve, reject) => { s.toCaller = resolve; s.fail = reject; });
+  s.switches++;
   if (!s.started) {
     s.started = true;
-    Module._ck_coro_entry(c).catch((e) => { const f = s.fail; s.toCaller = null; s.fail = null; if (f) f(e); });
+    Module._ck_coro_entry(c).catch((e) => {
+      s.dead = e;
+      const f = s.fail; s.toCaller = null; s.fail = null; s.toCoro = null;
+      err("[coro] the sound coroutine stack ended with an error: " + (e && e.stack ? e.stack : e));
+      if (f) f(e);
+    });
   } else {
-    const w = s.toCoro; s.toCoro = null; w();
+    const w = s.toCoro; s.toCoro = null;
+    if (!w) throw new Error('[coro] resumed a coroutine that is not suspended');
+    w();
   }
   await back;
 });
