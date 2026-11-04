@@ -49,6 +49,6 @@ The `extract-assets` packers (24 `compile-*` calls inside extract_assets.build) 
 | pack_tileset12, pack_tileset3, pack_maps | `extract/pack-tileset12.ts`, `pack-tileset3.ts`, `pack-maps.ts` | ported |
 | pack_strings, pack_dialogue (text.py) | `extract/pack-strings.ts`, `pack-dialogue.ts`, `text-*.ts`, `dialogue-scan.ts` | ported |
 | pack_portraits, pack_namesprites, pack_menufont | `extract/pack-portraits.ts`, `pack-namesprites.ts`, `pack-menufont.ts` | ported |
-| build() prelude (used sprites, static_max via script.py) | `extract/scan-sprite-usage.ts` (`scanSpriteUsage`) | second half |
-| pack_actors, pack_collision, pack_exits, pack_sprite_anims, pack_font, pack_mover | `extract/pack-<name>.ts` | second half |
-| pack_sprites, pack_scripts, pack_world, pack_sound, pack_lz, pack_tables | `extract/pack-<name>.ts` | second half |
+| build() prelude (used sprites, static_max via script.py) | `extract/scan-sprite-usage.ts` (`scanSpriteUsage`), VM in `extract/script/*`, readers in `extract/lib/*` | ported, unverified (no run) |
+| pack_actors, pack_collision, pack_exits, pack_sprite_anims, pack_font, pack_mover | `extract/pack-<name>.ts` | ported, unverified (no run) |
+| pack_sprites, pack_scripts, pack_world, pack_sound, pack_lz, pack_tables | `extract/pack-<name>.ts`; pack_tables closures in `extract/closure/*` (needs saves/anim_oplen.bin, optional saves/lz_pack.skipped) | ported, unverified (no run) |
