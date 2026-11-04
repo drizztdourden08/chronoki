@@ -1,25 +1,12 @@
 /* @layer bridge-wasm @kind logic */
-import { hostGate } from '@chronoki/game-core';
-import { appLog } from '@app/log/app-log';
-import { activeGameHolder } from '../lifecycle/active-game-holder';
-import { chronokiCore } from '../lifecycle/chronoki-core';
 import { autoSaveConfig } from './auto-save-config';
-import { AUTO_SAVE_GATE } from './auto-save.constants';
-import { contextOfGame } from './context-of-game';
-import { writeAutoState } from './write-auto-state';
-
-const saveIfDue = async (): Promise<void> => {
-  const game = activeGameHolder.current;
-  if (!game || !hostGate(AUTO_SAVE_GATE) || chronokiCore.state().status !== 'running') return;
-  const result = await writeAutoState(contextOfGame(game), 'Auto');
-  appLog.info(`[auto-save] ${result.ok ? 'ok' : result.reason}`);
-};
+import { autoSaveTick } from './auto-save-tick';
 
 const startAutoSave = (): (() => void) => {
   let timer = 0;
   const schedule = (): void => {
     timer = window.setTimeout(() => {
-      void saveIfDue().finally(schedule);
+      void autoSaveTick().finally(schedule);
     }, autoSaveConfig.intervalSeconds * 1000);
   };
   schedule();

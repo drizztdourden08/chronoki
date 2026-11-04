@@ -33,6 +33,15 @@ type SramProbeEntry = {
   errors: string[];
 };
 
-type EventLogEntry = FramesProbeEntry | StateProbeEntry | InputProbeEntry | SramProbeEntry;
+type HostProbeEntry = {
+  probe: 'host';
+  ok: boolean;
+  turbo: { expected: boolean; extraFrames: number; mutedDuring: boolean; restored: boolean };
+  autoSave: { expected: boolean; created: number };
+  saveOnQuit: { expected: boolean; created: number };
+  errors: string[];
+};
 
-export type { EventLogEntry, FramesProbeEntry, InputProbeEntry, SramProbeEntry, StateProbeEntry };
+type EventLogEntry = FramesProbeEntry | StateProbeEntry | InputProbeEntry | SramProbeEntry | HostProbeEntry;
+
+export type { EventLogEntry, FramesProbeEntry, HostProbeEntry, InputProbeEntry, SramProbeEntry, StateProbeEntry };
