@@ -6,6 +6,7 @@ import { saveOverlayStore } from './save-overlay-store';
 
 const armIdleClose = (): void => {
   clearIdleClose();
+  if (saveOverlayStore.get().slot === null) return;
   idleTimer.id = setTimeout(() => saveOverlayStore.set({ open: false, holdProgress: 0 }), IDLE_CLOSE_MS);
 };
 
