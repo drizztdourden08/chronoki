@@ -9,6 +9,7 @@ interface StageArgs {
   python: string;
   label: string;
   needs?: StageNeed[];
+  after?: string[];
 }
 
 export type { StageArgs };

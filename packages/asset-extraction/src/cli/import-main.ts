@@ -14,6 +14,7 @@ import { errLine } from './err-line';
 import { DEFAULT_WORK_DIR, EXIT_INCOMPLETE, EXIT_USAGE, GLUE_RELATIVE_PATH, IMPORT_USAGE } from './import-main.constants';
 import { loadOracleFactory } from './load-oracle-factory';
 import { outLine } from './out-line';
+import { selectStages } from './select-stages';
 import { ABIS } from './repack-main.constants';
 
 const OPTIONS = {
@@ -24,6 +25,8 @@ const OPTIONS = {
   work: { type: 'string' },
   jobs: { type: 'string' },
   glue: { type: 'string' },
+  only: { type: 'string' },
+  from: { type: 'string' },
 } as const;
 
 const importRom = async (argv: string[]): Promise<number> => {
@@ -44,11 +47,17 @@ const importRom = async (argv: string[]): Promise<number> => {
     ...(values.jobs === undefined ? {} : { jobs: Number(values.jobs) }),
   };
   const ctx = createImportContext(new Uint8Array(await readFile(values.rom)), overrides);
-  const result = await runPipeline(ctx, createProgressLogger(STAGES));
+  const selected = selectStages(STAGES, values.only, values.from);
+  const partial = selected.length !== STAGES.length;
+  const result = await runPipeline(ctx, createProgressLogger(STAGES), selected);
   if (result.failed.length > 0) {
     const first = result.failed[0];
     errLine(`import failed at ${first?.stageId ?? '?'}: ${first?.message ?? ''}`);
     return 1;
+  }
+  if (partial) {
+    outLine(`import ${abi.name}: ${result.done.length} done, ${result.skipped.length} skipped (partial run, nothing copied)`);
+    return 0;
   }
   const copied = await copyPackFiles(work, ctx.outDir, values.out);
   outLine(`import ${abi.name}: ${result.done.length} done, ${result.skipped.length} skipped; wrote ${copied.join(', ') || 'nothing'} -> ${values.out}`);

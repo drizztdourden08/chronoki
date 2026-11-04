@@ -2,7 +2,7 @@
 import type { StageDef } from './stage.type';
 import type { StageArgs } from './stage-def.type';
 
-const stage = ({ id, group, weight, status, python, label, needs = [] }: StageArgs): StageDef => ({
+const stage = ({ id, group, weight, status, python, label, needs = [], after = [] }: StageArgs): StageDef => ({
   id,
   label,
   python,
@@ -11,6 +11,7 @@ const stage = ({ id, group, weight, status, python, label, needs = [] }: StageAr
   status,
   step: true,
   needs,
+  after,
 });
 
 export { stage };
