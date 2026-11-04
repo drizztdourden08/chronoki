@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "@chronoki/features": "workspace:*",
-    "@drizztdourden08/brock-port-kit": "^0.117.1"
+    "@drizztdourden08/brock-port-kit": "^0.119.0"
   }
 }
