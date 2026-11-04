@@ -5,7 +5,7 @@
    The field VRAM image and its companions (g_fieldVram, g_fieldCgram, g_bg3Plane, g_fieldVramFillPending): the menu close
    (field.c, the RTL: fieldMapHeaderStage, then fieldEntryTilemapFill) rebuilds the tilemaps from this image, which also holds the
    chips scripts uploaded by DMA (fieldVramSink, the tile-DMA records) after the location load; a fieldLoad rebuilds only the base
-   tiles, so without them the picture after the close shows the wrong chips (stray tile strips, missing curtains). */
+   tiles. (The stray tile strips and missing curtains after a close were the stale bake, not these: ck_host_point.inc.) */
 CK_MFSTAT(g_strN) CK_MFSTAT(g_strRun) CK_MFSTAT(g_strKind) CK_MFSTAT(g_strX) CK_MFSTAT(g_strPer) CK_MFSTAT(g_cfgPhase)
 CK_MFSTAT(g_cfgNameN) CK_MFSTAT(g_cfgValN)
 CK_MFSTAT(g_fieldVram) CK_MFSTAT(g_fieldCgram) CK_MFSTAT(g_bg3Plane) CK_MFSTAT(g_fieldVramFillPending)

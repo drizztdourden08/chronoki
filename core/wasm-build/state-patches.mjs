@@ -15,8 +15,8 @@
 //    its cross-frame statics. world-fields.mjs and world-statics.mjs check the World struct, CtWorldStream and both files'
 //    statics against the lists in core/reconnect/ck_world_*.h before patching.
 //  * the menu section (phase 3): menu.c is copied with reconnect/ck_menu_state.inc appended (its cross-frame statics and the
-//    char-select pointer), field.c needs no text patch for it (MENU_FIELD_PATCHES, a list of its own, is empty: mSave, menuStash,
-//    menuFb and the g_str* / g_cfg* statics are all in scope at the safe point). menu-fields.mjs and menu-statics.mjs check
+//    char-select pointer); mSave, menuStash, menuFb and the g_str* / g_cfg* statics are all in scope at the safe point, so
+//    field.c's one patch for it (MENU_FIELD_PATCHES, a list of its own) is the close's re-bake. menu-fields.mjs and menu-statics.mjs check
 //    mSave, the field.c and menu.c statics and the stash sizes against core/reconnect/ck_menu_*.h before patching.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -56,9 +56,22 @@ const WORLD_FIELD_PATCHES = [
 // world.c gets reconnect/ck_world_state.inc appended: it hands out the addresses of the statics the section keeps.
 const WORLD_SUFFIX = '\n#include "ck_world_state.inc"\n';
 
-// phase 3 (the menu section), a list of its own so the field and overworld patches above merge without it. Empty on purpose: the
-// menu's state is reachable from the safe point as it stands (see the header). A patch added here counts like the others.
-const MENU_FIELD_PATCHES = [];
+// phase 3 (the menu section), a list of its own so the field and overworld patches above merge without it. The menu's state is
+// reachable from the safe point as it stands (see the header); the one patch is the close's picture: C0/0A73 uploads the
+// tilemaps built from the WRAM map, and fieldEntryTilemapFill rebuilds the layers from it (releasing every held chip), but
+// upstream bakes nothing after it, so the field resumed on whatever picture it held before the menu. After a menu state's load
+// that picture is not the room's (ck_host_point.inc), so the close bakes the rebuilt layers, as the cartridge shows them.
+const MENU_FIELD_PATCHES = [
+  [
+    '            fieldPassObjSlots();                         // C0/2872 JSR C0/6F79\n'
+      + '            CtSceneMenuReloadObjects(f.vm);',
+    '            if (f.sd) { int ckW = 0, ckH = 0; uint8_t* ckPrio = NULL; uint8_t* ckBase = CtFieldSceneBake(f.sd, &ckW, &ckH, &ckPrio);\n'
+      + '              if (ckBase) { free(f.base); free(f.prio); f.base = ckBase; f.prio = ckPrio; f.W = ckW; f.H = ckH; } else free(ckPrio); }\n'
+      + '            fieldPassObjSlots();                         // C0/2872 JSR C0/6F79\n'
+      + '            CtSceneMenuReloadObjects(f.vm);',
+    1,
+  ],
+];
 // menu.c gets reconnect/ck_menu_state.inc appended: it hands out the addresses of the statics the section keeps.
 const MENU_SUFFIX = '\n#include "ck_menu_state.inc"\n';
 

@@ -16,6 +16,11 @@
    state then also carries MENU (mSave, the menu statics, the caller's stash) and, over a field, MPIC (the frozen frame). The
    load enters the underlying mode from the CORE with the stash put back (ck_menu_load.inc), then overlays the menu
    (ck_menu_finish.inc). A MENU state that does not match this build exactly is refused before anything is touched.
+   The picture after such an entry is baked once more, right after the entry fill: fieldLoad bakes the location's asset map
+   before the object init, and the fill then rebuilds the layers from the WRAM map with obj0's slot-1 tile copies on it (loc
+   002's curtains). A door's fade-in re-bakes through the colour page every frame; a load has no fade, the menu's close re-bakes
+   nothing, and fieldMapFromWram below re-bakes only what the state's WRAM changes, so without it the field shows the asset map
+   (stray tile strips, no curtains) from the first field frame on.
    The _Static_asserts stop the build when upstream changes the type of a local the host section copies. */
 {
 #define CK_HOST(t, n, d) _Static_assert(__builtin_types_compatible_p(__typeof__(n), t d), "field.c changed the type of main()'s " #n);
@@ -76,6 +81,11 @@
         fieldPaletteText(CtWramSys(fieldWram()));
         fieldChestPrebumpWram(CtWramSys(fieldWram()), CtWramGlb(fieldWram()), scene, f.C.cw, f.C.ch);
         fieldEntryTilemapFill(&f, scene);
+        if (f.sd) {
+          int ckW = 0, ckH = 0; uint8_t* ckPrio = NULL;
+          uint8_t* ckBase = CtFieldSceneBake(f.sd, &ckW, &ckH, &ckPrio);
+          if (ckBase) { free(f.base); free(f.prio); f.base = ckBase; f.prio = ckPrio; f.W = ckW; f.H = ckH; } else free(ckPrio);
+        }
         fieldPassObjSlots();
         fieldArrivalTileMode(&f.C, px, py, f.vm);
       } else if (!inWorld && !fieldLoad(&assets, &f, scene, NULL)) running = 0;
