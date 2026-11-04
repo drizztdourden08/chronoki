@@ -16,6 +16,12 @@ export default defineBrockConfig({
     dataDirs: ['assets', 'roms', 'profiles', 'config', 'input'],
     icons: { brand: 'chronoki' },
   },
+  packaging: {
+    extraResources: [
+      { from: 'node_modules/@drizztdourden08/tessera/fonts/chronotype/LICENSE.txt', to: 'fonts/chronotype/license.txt' },
+      { from: 'node_modules/@drizztdourden08/tessera/fonts/chronotype/README.txt', to: 'fonts/chronotype/readme.txt' },
+    ],
+  },
   targets: ['desktop', 'android', 'web'],
   modules: ['display', 'port-kit', 'input'],
   workflows: {
