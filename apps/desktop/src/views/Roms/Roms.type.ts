@@ -1,14 +1,14 @@
 /* @layer renderer-components @kind types */
-interface LibraryRom {
+interface RomEntry {
   romFile: string;
   label: string;
   ready: boolean;
   assetBytes: number | null;
 }
 
-interface LibraryImportResult {
+interface RomStatusMessage {
   success: boolean;
   message: string;
 }
 
-export type { LibraryImportResult, LibraryRom };
+export type { RomEntry, RomStatusMessage };
