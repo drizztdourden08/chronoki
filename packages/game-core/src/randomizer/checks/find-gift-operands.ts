@@ -1,10 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import { OBJECT_FUNCTIONS, OBJECT_HEADER_BYTES, OP_ADD_ITEM } from './gift-ops.constants';
 import { measureOpLength } from './measure-op-length';
+import type { FunctionStart, WalkRange } from './find-gift-operands.type';
 import type { GiftOperand } from './read-pack-entries.type';
-
-type FunctionStart = { from: number; object: number };
-type WalkRange = { from: number; to: number; object: number };
 
 const functionStarts = (raw: Uint8Array, header: number, bodyLength: number): FunctionStart[] => {
   const starts = new Map<number, number>();
