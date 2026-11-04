@@ -19,10 +19,14 @@ ChronoKi is an unofficial fan project. It is not affiliated with or endorsed by 
 
 ## Status
 
-Planning. The port approach is still open (no SNES decompilation of *Chrono Trigger* is known);
-see `docs/`.
+Planning. Several fan decompilations and reimplementations of *Chrono Trigger* appeared in 2026;
+which game core ChronoKi builds on is the open decision (`docs/port-approach.md`).
 
 | Doc | What it holds |
 |---|---|
 | `docs/handover-from-chrono.md` | How the project was named, and the state it started from |
 | `docs/naming-candidates.md` | The other names considered, and why |
+| `docs/name-collision-check.md` | The name check for ChronoKi |
+| `docs/recent-fan-ports.md` | The Chrono Trigger fan ports of 2026 |
+| `docs/port-approach.md` | The options, the recommendation and the toolchain |
+| `docs/port-research.md`, `docs/decomp-tools.md` | The research behind it |

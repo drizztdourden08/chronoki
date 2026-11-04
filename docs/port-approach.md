@@ -52,3 +52,24 @@ build of BelthasarProject with a legally obtained ROM on the owner's machine (th
 of the repo), to confirm its claims and its licence before we vendor it.
 
 The decision is on the board as a question on I-2.
+
+## Toolchain (I-5, details in `decomp-tools.md`)
+
+snesrev's zelda3 method, still the reference: rewrite routine by routine in C using an existing
+disassembly for names, run the original code beside it in an embedded emulator and compare RAM
+every frame, PPU and DSP from LakeSnes. No asm-to-C helper tool of his is documented. What ChronoKi
+uses, whichever core is chosen:
+
+| Piece | Tool | Licence | Why |
+|---|---|---|---|
+| PPU and DSP | zelda3-lineage LakeSnes code | MIT | Frame-exact, already what RotP runs, safe to vendor |
+| SPC700 | ares core (as ct-recomp vendors it); run the game's own sound driver | ISC | Exact music without reimplementing the driver |
+| Names and structure | ChronoRET (matching asar disassembly) + dscotton/ct_disassembly labels | MIT, CC0 | Every routine already found and named |
+| Verification | per-frame RAM compare against the oracle, input-movie regression | ours | The zelda3/smw method; catches every divergence |
+| Debugging | MesenCE trace debugger, external only | GPL-3, never vendored | Best 65816 traces and CDL |
+| Routine work | Claude Code per routine, gated by the oracle | n/a | How Belthasar and zdiemer got this far this fast |
+| Fallback | ct-recomp output or an interpreter for routines not yet in C | MIT | Always playable while the C grows |
+
+Not usable as a base: snesrecomp and fariasheron's decomp (PolyForm Noncommercial), zdiemer's
+code (no licence), DiztinGUIsh and Mesen inside the app (GPL-3). Ghidra's 65816 module is
+archived; Binary Ninja has none; 2026 LLM-decomp research is all MIPS/PS1.
