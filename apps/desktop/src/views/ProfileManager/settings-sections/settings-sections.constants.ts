@@ -43,7 +43,7 @@ const AUDIO_SECTION: SettingsSection = {
 const GAMEPLAY_SECTION: SettingsSection = {
   title: 'Gameplay',
   keys: [
-    { key: 'original', label: 'Original Mode' },
+    { key: 'vanillaSafe', label: 'Vanilla Safe' },
     { key: 'autoSaveIntervalSeconds', label: 'Auto-Save Interval', format: seconds },
     { key: 'autoSaveMaxEntries', label: 'Max Auto-Save Entries' },
     { key: 'turboSpeed', label: 'Turbo Speed', format: turbo },

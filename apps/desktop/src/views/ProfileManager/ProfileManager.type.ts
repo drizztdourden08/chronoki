@@ -1,6 +1,6 @@
 /* @layer renderer-components @kind types */
 import type { Profile } from '@drizztdourden08/brock-core';
-import type { ProfileMode } from '@app/profiles/types';
+import type { ProfilePresetId } from '@app/profiles/presets';
 
 interface ReadyRom {
   romFile: string;
@@ -38,7 +38,7 @@ interface ProfileCreateWizardProps {
 interface ProfileWizardValues {
   name: string;
   rom: string;
-  mode: ProfileMode;
+  preset: ProfilePresetId;
 }
 
 export type { ProfileCreateWizardProps, ProfileDetailPanelProps, ProfileListPaneProps, ProfileManagerProps, ProfileWizardValues, ReadyRom };

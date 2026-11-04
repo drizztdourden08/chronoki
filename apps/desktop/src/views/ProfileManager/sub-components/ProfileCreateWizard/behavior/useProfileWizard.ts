@@ -4,7 +4,7 @@ import { useProfiles } from '@drizztdourden08/brock-react';
 import type { Profile } from '@drizztdourden08/brock-core';
 import { useWizard } from '@drizztdourden08/tessera/composites';
 import type { CreateOutcome } from '@drizztdourden08/tessera/composites';
-import { DEFAULT_PROFILE_MODE } from '@app/profiles/storage/profiles.constants';
+import { DEFAULT_PROFILE_PRESET, applyProfilePreset } from '@app/profiles/presets';
 import type { ProfileWizardValues } from '../../../ProfileManager.type';
 import { profileWizardSteps } from './profile-wizard-steps';
 
@@ -13,11 +13,11 @@ const errorMessage = (failure: unknown): string => (failure instanceof Error ? f
 const useProfileWizard = (onCreated: (profile: Profile) => void) => {
   const { create } = useProfiles();
   const created = useRef<Profile | null>(null);
-  const [initialValues] = useState<ProfileWizardValues>({ name: '', rom: '', mode: DEFAULT_PROFILE_MODE });
+  const [initialValues] = useState<ProfileWizardValues>({ name: '', rom: '', preset: DEFAULT_PROFILE_PRESET });
 
-  const handleFinish = useCallback(async ({ name, rom, mode }: ProfileWizardValues): Promise<CreateOutcome> => {
+  const handleFinish = useCallback(async ({ name, rom, preset }: ProfileWizardValues): Promise<CreateOutcome> => {
     try {
-      const profile = await create({ name: name.trim(), romFile: rom, mode });
+      const profile = await create({ name: name.trim(), romFile: rom, initialConfig: applyProfilePreset(preset) });
       created.current = profile;
       return { success: true, id: profile.id };
     } catch (failure) {
