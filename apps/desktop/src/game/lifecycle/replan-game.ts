@@ -25,7 +25,7 @@ const replanGame = async ({ from, to, volume }: ReplanRequest): Promise<ReplanOu
     await haltGame(game);
     const outcome = await rebootInto(game, { from, to }, captured.state);
     replanStore.set(false);
-    if (outcome.kind === 'lost') return outcome;
+    if (outcome.kind === 'lost' || outcome.kind === 'deferred') return outcome;
     applyLiveVolume(volume);
     await resumeMsuAfterReboot(packName, outcome.kind === 'rescued' ? null : music);
     if (outcome.kind !== 'rescued') stateLoadedSignal.emit();

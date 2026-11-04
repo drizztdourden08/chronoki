@@ -4,11 +4,10 @@ import { provideChronokiGameInfo } from '../game-info';
 import { activeGameHolder } from './active-game-holder';
 import type { ActiveGame } from './active-game.type';
 import { bootGameModule } from './boot-game-module';
+import type { Booted } from './boot-with-state.type';
 import { chronokiCore } from './chronoki-core';
 import type { RunningPlan } from './replan-game.type';
 import { startSessionServices } from './start-session-services';
-
-type Booted = { game: ActiveGame; loaded: boolean } | null;
 
 const bootWithState = async (base: ActiveGame, plan: RunningPlan, state: Uint8Array): Promise<Booted> => {
   const { canvas, files, romFile, profileId, store } = base;
