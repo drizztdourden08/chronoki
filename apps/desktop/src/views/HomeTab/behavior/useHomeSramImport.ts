@@ -1,5 +1,6 @@
 /* @layer renderer-components @kind hook */
 import { useCallback, useState } from 'react';
+import { SRAM_SLOT_COUNT, validSramSlots } from '@chronoki/game-core';
 import { usePlatform } from '@drizztdourden08/brock-react';
 import { toast } from '@drizztdourden08/tessera/composites';
 import { writeProfileSram } from '@app/game/sram-sync';
@@ -25,9 +26,13 @@ const useHomeSramImport = (profileId: string | null) => {
       setDialog({ type: 'import-sram-invalid', targetName: picked.name, detail });
       return;
     }
+    const verified = validSramSlots(picked.bytes).length;
+    const type = verified === 0 ? 'import-sram-unverified' : 'import-sram';
     setConfirmText('');
-    setDialog({ type: 'import-sram', targetName: picked.name, pendingBytes: picked.bytes });
+    setDialog({ type, targetName: picked.name, pendingBytes: picked.bytes, verified });
   }, [filePicker]);
+
+  const acceptUnverified = useCallback(() => setDialog((current) => ({ ...current, type: 'import-sram' })), []);
 
   const confirm = useCallback(async () => {
     const { pendingBytes, targetName } = dialog;
@@ -38,7 +43,7 @@ const useHomeSramImport = (profileId: string | null) => {
     toast({ message: `Save imported from "${targetName}"`, variant: 'success', duration: TOAST_DURATION_MS });
   }, [dialog, profileId, close]);
 
-  return { dialog, confirmText, setConfirmText, pick, confirm, close };
+  return { dialog, confirmText, setConfirmText, pick, confirm, close, acceptUnverified, slotCount: SRAM_SLOT_COUNT };
 };
 
 export { useHomeSramImport };

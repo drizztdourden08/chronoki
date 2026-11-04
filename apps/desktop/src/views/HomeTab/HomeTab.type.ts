@@ -5,7 +5,8 @@ import type { useHomeSramImport } from './behavior/useHomeSramImport';
 import type { useNormalSaves } from './behavior/useNormalSaves';
 
 interface SramDialogState {
-  type: 'import-sram' | 'import-sram-invalid' | null;
+  type: 'import-sram' | 'import-sram-invalid' | 'import-sram-unverified' | null;
+  verified?: number;
   targetName?: string;
   pendingBytes?: Uint8Array;
   detail?: string;

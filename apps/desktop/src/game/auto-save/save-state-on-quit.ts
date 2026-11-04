@@ -9,7 +9,7 @@ import { writeAutoState } from './write-auto-state';
 
 const saveStateOnQuit = async (game: ActiveGame): Promise<void> => {
   if (!hostGate(SAVE_ON_QUIT_GATE) || chronokiCore.state().status !== 'running') return;
-  const result = await writeAutoState(contextOfGame(game), 'Quit');
+  const result = await writeAutoState(contextOfGame(game), 'quit');
   appLog.info(`[save-on-quit] ${result.ok ? 'ok' : result.reason}`);
 };
 
