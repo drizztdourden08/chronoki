@@ -1,0 +1,47 @@
+/* @layer renderer-components @kind style */
+.pause-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-scrim-game);
+  backdrop-filter: blur(var(--size-2));
+  z-index: var(--z-panel);
+  animation: pause-overlay-in 0.25s ease-out;
+}
+
+@keyframes pause-overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.pause-overlay__bars {
+  display: flex;
+  gap: var(--space-xl);
+}
+
+.pause-overlay__bar {
+  width: calc(36 * var(--size-1));
+  height: calc(120 * var(--size-1));
+  border-radius: var(--radius-md);
+  background: var(--c-border-strong);
+}
+
+.pause-overlay__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  max-width: calc(360 * var(--size-1));
+  padding: var(--space-xl);
+  text-align: center;
+  background: var(--c-scrim);
+  border: var(--border-width-thin) solid var(--c-border);
+  border-radius: var(--radius-lg);
+}

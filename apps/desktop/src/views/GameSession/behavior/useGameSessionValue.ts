@@ -1,7 +1,8 @@
 /* @layer renderer-appshell @kind hook */
 import { useCallback, useMemo, useState } from 'react';
 import { useCoreState } from '@drizztdourden08/brock-port-kit/renderer';
-import { activeGameHolder, chronokiCore, setGamePaused } from '@app/game/lifecycle';
+import { activeGameHolder, chronokiCore } from '@app/game/lifecycle';
+import { getInputManager } from '@app/input/input-manager/get-input-manager';
 import { NOTICE_NO_PROFILE, NOTICE_NO_ROM } from '../GameSession.constants';
 import type { GameLaunch, GameSessionValue } from '../GameSession.type';
 import { attachAudioFrameCounter } from './attach-audio-frame-counter';
@@ -13,6 +14,7 @@ import { useCoreSettings } from './useCoreSettings';
 import { useGameProfile } from './useGameProfile';
 import { useHostFeatures } from './useHostFeatures';
 import { useLaunchProbes } from './useLaunchProbes';
+import { useSyncCorePause } from './useSyncCorePause';
 
 const useGameSessionValue = (): GameSessionValue => {
   const { profile, loaded } = useGameProfile();
@@ -42,7 +44,7 @@ const useGameSessionValue = (): GameSessionValue => {
 
   const reset = play;
 
-  const togglePause = useCallback(() => setGamePaused(!paused), [paused]);
+  const togglePause = useCallback(() => getInputManager().togglePause(), []);
 
   const onStarted = useCallback(() => {
     const game = activeGameHolder.current;
@@ -57,6 +59,7 @@ const useGameSessionValue = (): GameSessionValue => {
 
   useAutoLaunch(loaded && profile !== null, play);
   useLaunchProbes(launch);
+  useSyncCorePause(running);
 
   return useMemo(
     () => ({ launch, notice, running, paused, ...core, play, stop, reset, togglePause, onStarted, onFunctionAction, onFunctionRelease }),

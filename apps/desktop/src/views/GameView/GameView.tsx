@@ -3,6 +3,7 @@ import { useProduct } from '@drizztdourden08/brock-react';
 import { Box, Image, Text } from '@drizztdourden08/tessera/primitives';
 import { GameLayer } from '@app/views/GameLayer';
 import { useGameSession } from '@app/views/GameSession';
+import { PauseOverlay } from '@app/views/PauseOverlay';
 import { SaveStateOverlay } from '@app/views/SaveStateOverlay';
 import './GameView.css';
 
