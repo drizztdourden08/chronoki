@@ -42,8 +42,8 @@ Designed 2026-11-04 (plan agent A-42). Lead decisions are at the end.
 | T4 | Game lifecycle, SRAM sync, save states | apps/desktop/src/game/{lifecycle, sram-sync, save-states}/* | T2, T1 names |
 | T5 | Input wiring and Controls screen | apps/desktop/src/input/*, screens/game/gameplay/controls.custom.tsx | T3 |
 | T6 | Import and Library | apps/desktop/src/storage/*, game/extract-assets-worker.ts, views/Library/* | T2, T1 names |
-| T7 | GameView, automation, workspace | GameView/*, GameLayer/*, electron/automation/*, launch flags, index.html CSP, brock.workspace.mjs | T2, T4 |
-| T8 | Capacitor parity | capacitor.config.ts, android/, platform-gate.ts | T4 |
+| T7 | GameView, automation, workspace | GameView/*, GameLayer/*, electron/automation/*, launch-flags/*, src/index.html CSP, brock.workspace.mjs | T2, T4 |
+| T8 | Capacitor parity | apps/desktop/capacitor.config.json, apps/desktop/mobile/android/, game/lifecycle/platform-gate.ts | T4 |
 
 T1 details:
 - `CkSaveState(slot)` and `CkLoadState(slot)` queue a synthetic F5/F9 edge.
@@ -65,7 +65,7 @@ npx brock-thread launch main game --prod --auto-start --screenshot=title --probe
 ```
 
 The first launch of the main checkout provisions `.user-data` (profile, then the ROM and the pack from `test-roms/`, via
-the `provision` steps in `brock.workspace.mjs`), but only if `.user-data` does not exist yet. If an earlier launch already
+the `provision` steps in `brock.workspace.mjs`; the pack is staged by `snes.copyAssetBlob({ asset: 'ct_assets.dat' })`, Brock 0.120.0), but only if `.user-data` does not exist yet. If an earlier launch already
 created it empty (Data tab shows "No ROM added yet"), delete the git-ignored `.user-data` folder once, then launch again.
 
 It passes when:
@@ -76,8 +76,8 @@ It passes when:
 Second launch: `--probe-state --screenshot=state` (quick save and load in the field; the screenshot flag makes the app quit when the probe ends). Input launch: `npx brock-thread launch main game --prod --auto-start --probe-input --screenshot=input --event-log=.user-data/Data/logs/input.jsonl`
 (real key events through the input manager and `CkSetInput`; logs `{"probe":"input"}` with the masks seen and the frame hash before and after).
 SRAM launch: the same with `--probe-sram --screenshot=sram` and `sram.jsonl` (writes a test pattern into the core's SRAM file, flushes through the
-SRAM sync, reads the profile's saved file back, restores the original; logs `{"probe":"sram"}`). Third launch: `--probe-import` (expected to fail until
-P4 is verified).
+SRAM sync, reads the profile's saved file back, restores the original; logs `{"probe":"sram"}`). Import is not a launch probe (there is no `--probe-import` flag); the importer is run through the CLI (`node --experimental-wasm-jspi packages/asset-extraction/src/cli/import.ts --rom ... --belthasar ... --abi native64|wasm32 --out ... --work ... [--only ids] [--from id]`), expected to fail until
+P4 is verified.
 
 The pack staged in test-roms/data is git-ignored and never committed.
 
