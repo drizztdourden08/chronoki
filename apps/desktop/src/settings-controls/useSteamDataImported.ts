@@ -11,7 +11,12 @@ const useSteamDataImported = (): boolean => {
       void refreshSteamFlag().then(setImported);
     };
     sync();
-    return onSteamDataChanged(sync);
+    window.addEventListener('focus', sync);
+    const off = onSteamDataChanged(sync);
+    return () => {
+      window.removeEventListener('focus', sync);
+      off();
+    };
   }, []);
   return imported;
 };
