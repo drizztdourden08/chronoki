@@ -38,7 +38,7 @@ describe('CKST sectioned container', { tags: ['critical'] }, () => {
         ...extra.map((s) => ({ ...s, version: 1 })),
       ]);
     const field = menu('menu-field', [{ tag: 'MPIC', bytes: new Uint8Array([1, 9, 9, 9]) }]);
-    expect(readCkStamp('pin=x\ncore=0.1.0\nschema=aaaa\nmode=menu-field\n').mode).toBe('menu-field');
+    expect(readCkStamp('pin=x\ncore=0.1.0\nschema=aaaa\nmode=menu-field\n')?.mode).toBe('menu-field');
     expect(checkLoadable(field, current).ok).toBe(true);
     expect(checkLoadable(menu('menu-world', []), current).ok).toBe(true);
     expect(decodeSectionedState(field)?.sections.map((s) => s.tag)).toEqual(['STMP', 'SCEN', 'MENU', 'MPIC']);
