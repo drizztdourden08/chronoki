@@ -14,10 +14,16 @@
 //    a list of its own) and world.c is copied with reconnect/ck_world_state.inc appended, which hands out the addresses of
 //    its cross-frame statics. world-fields.mjs and world-statics.mjs check the World struct, CtWorldStream and both files'
 //    statics against the lists in core/reconnect/ck_world_*.h before patching.
+//  * the menu section (phase 3): menu.c is copied with reconnect/ck_menu_state.inc appended (its cross-frame statics and the
+//    char-select pointer), field.c needs no text patch for it (MENU_FIELD_PATCHES, a list of its own, is empty: mSave, menuStash,
+//    menuFb and the g_str* / g_cfg* statics are all in scope at the safe point). menu-fields.mjs and menu-statics.mjs check
+//    mSave, the field.c and menu.c statics and the stash sizes against core/reconnect/ck_menu_*.h before patching.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { checkHostFields } from './host-fields.mjs';
 import { LOOP_HEAD, MAIN_HEAD } from './main-locals.mjs';
+import { checkMenuFields } from './menu-fields.mjs';
+import { checkMenuStatics } from './menu-statics.mjs';
 import { checkWorldFields } from './world-fields.mjs';
 import { checkWorldStatics } from './world-statics.mjs';
 
@@ -49,6 +55,12 @@ const WORLD_FIELD_PATCHES = [
 ];
 // world.c gets reconnect/ck_world_state.inc appended: it hands out the addresses of the statics the section keeps.
 const WORLD_SUFFIX = '\n#include "ck_world_state.inc"\n';
+
+// phase 3 (the menu section), a list of its own so the field and overworld patches above merge without it. Empty on purpose: the
+// menu's state is reachable from the safe point as it stands (see the header). A patch added here counts like the others.
+const MENU_FIELD_PATCHES = [];
+// menu.c gets reconnect/ck_menu_state.inc appended: it hands out the addresses of the statics the section keeps.
+const MENU_SUFFIX = '\n#include "ck_menu_state.inc"\n';
 
 // audio.c: the engine's two state functions become static and ck_audio_state.inc (appended) wraps them with the host
 // side of the sound (the FIFO, the cycle carry, the field parity), which the engine's load resets.
@@ -90,13 +102,20 @@ const patchedField = (belthasar, root) => {
   checkHostFields(text, root);
   checkWorldFields(text, belthasar, root);
   const patched = applyPatches('field.c', `#include "ck_reconnect.h"\n${text}`, FIELD_PATCHES);
-  return applyPatches('field.c', patched, WORLD_FIELD_PATCHES);
+  checkMenuFields(text, root);
+  return applyPatches('field.c', applyPatches('field.c', patched, WORLD_FIELD_PATCHES), MENU_FIELD_PATCHES);
 };
 
 const patchedWorld = (belthasar, root) => {
   const text = readFileSync(join(belthasar, 'src', 'world.c'), 'utf8').replace(/\r\n/g, '\n');
   checkWorldStatics(text, root);
   return text + WORLD_SUFFIX;
+};
+
+const patchedMenu = (belthasar, root) => {
+  const text = readFileSync(join(belthasar, 'src', 'menu.c'), 'utf8').replace(/\r\n/g, '\n');
+  checkMenuStatics(text, root);
+  return text + MENU_SUFFIX;
 };
 
 // returns { files: [absolute paths of the patched copies], replaced: [src-relative names they stand in for] }
@@ -108,6 +127,7 @@ const writeStatePatches = (genDir, belthasar, root) => {
     'audio.c': applyPatches('audio.c', prefixed(belthasar, 'audio.c'), AUDIO_PATCHES) + AUDIO_SUFFIX,
     'field.c': patchedField(belthasar, root),
     'world.c': patchedWorld(belthasar, root),
+    'menu.c': patchedMenu(belthasar, root),
   };
   for (const [name, text] of Object.entries(out)) writeFileSync(join(dir, name), text);
   return { files: Object.keys(out).map((n) => join(dir, n)), replaced: Object.keys(out).map((n) => `src/${n}`) };

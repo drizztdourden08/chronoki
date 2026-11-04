@@ -9,7 +9,7 @@
    World.pal, the sprite atlases, the pristine object snapshots and the 1999 A.D. extension come from worldInit. */
 {
   int ckOk = 0;
-  const uint8_t* ckCore = ck_state_load_core();
+  const uint8_t* ckCore = ckEntry ? ckEntry : ck_state_load_core();
   {
     /* (wd.vram may be NULL or stale here: this pass reads names and sizes only) */
 #include "ck_world_table.inc"

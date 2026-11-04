@@ -12,7 +12,10 @@
    machine state), APUH (the sound's host side: its FIFO, cycle carry and field parity, ck_audio_state.inc; a state without
    it loads with the engine's reset of those). An overworld save (mode 2) has no SCEN and carries WRLD instead (phase 2:
    World's dynamic fields, world.c's and field.c's cross-frame statics and the 64 KB VRAM, as name/size records over live
-   objects, ck_state_host.c); the loader enters the world from the CORE image, then overlays WRLD (ck_world_point.inc). */
+   objects, ck_state_host.c); the loader enters the world from the CORE image, then overlays WRLD (ck_world_point.inc).
+   A state taken with the menu open (modes 3 and 4, stamp mode=menu-field / menu-world) carries its underlying mode's section
+   (SCEN or WRLD) plus MENU (strict records: mSave, menu.c's and field.c's statics, the caller's stash) and, over a field, MPIC
+   (the frozen field frame, run-length coded); its CORE is the menu's own WRAM (ck_menu_load.inc, ck_menu_finish.inc). */
 #include "ck_state_internal.h"
 #include "ck_state_stamp.h"
 #include "ct_vm.h"
@@ -25,7 +28,7 @@
 #define CK_CORE_BYTES (CK_STATE_WRAM_BYTES + CK_SRAM_BYTES)
 
 enum { CK_IDLE, CK_WAIT_SAVE, CK_WAIT_LOAD, CK_SAVE_TAKEN, CK_LOAD_TAKEN };
-enum { CK_MODE_NONE, CK_MODE_FIELD, CK_MODE_WORLD };
+enum { CK_MODE_NONE, CK_MODE_FIELD, CK_MODE_WORLD, CK_MODE_MENU_FIELD, CK_MODE_MENU_WORLD };
 enum { CK_REASON_NONE, CK_REASON_NOT_A_STATE, CK_REASON_SCHEMA, CK_REASON_MODE, CK_REASON_NOT_NOW, CK_REASON_CORRUPT, CK_REASON_FAILED };
 
 typedef struct { char* buf; size_t size; } OutChan;
@@ -34,7 +37,11 @@ typedef struct { char* buf; size_t size; } OutChan;
 static const char* const g_chanPath[CK_CHANNELS] = { "mem:scene", "mem:apu", "mem:apuh" };
 static OutChan g_out[CK_CHANNELS];       /* 0 scene, 1 apu, 2 the sound's host side: what the engine just wrote */
 static CkSpan g_in[CK_CHANNELS];         /* what the engine reads back on a load */
-static CkSpan g_inCore, g_inHost, g_inWorld;   /* the staged state's CORE, HOST and WRLD sections */
+static CkSpan g_inCore, g_inHost, g_inWorld, g_inMenu, g_inMpic;   /* the staged state's CORE, HOST, WRLD, MENU and MPIC sections */
+static uint8_t* g_menuBytes = NULL;      /* the MENU section staged by ck_state_save_menu, until save_done */
+static size_t g_menuLen = 0;
+static uint8_t* g_mpicBytes = NULL;      /* ...and its MPIC (the frozen field frame, run-length coded) */
+static size_t g_mpicLen = 0;
 static uint8_t* g_worldBytes = NULL;     /* the WRLD section staged by ck_state_save_world, until save_done */
 static size_t g_worldLen = 0;
 static uint8_t* g_loadCopy = NULL;       /* the staged container the spans point into */
@@ -67,6 +74,8 @@ FILE* ck_fopen(const char* path, const char* mode) {
 static void clearOut(void) {
   for (int i = 0; i < CK_CHANNELS; i++) { free(g_out[i].buf); g_out[i].buf = NULL; g_out[i].size = 0; }
   free(g_worldBytes); g_worldBytes = NULL; g_worldLen = 0;
+  free(g_menuBytes); g_menuBytes = NULL; g_menuLen = 0;
+  free(g_mpicBytes); g_mpicBytes = NULL; g_mpicLen = 0;
 }
 
 void ck_state_save_world(const CkPtrField* table, int count) {
@@ -76,7 +85,25 @@ void ck_state_save_world(const CkPtrField* table, int count) {
   if (g_worldBytes) ck_fields_encode(g_worldBytes, table, count); else g_worldLen = 0;
 }
 
-static const char* modeTag(int mode) { return mode == CK_MODE_WORLD ? "world" : "field"; }
+void ck_state_save_menu(const CkPtrField* table, int count, const uint8_t* fb, size_t npx) {
+  free(g_menuBytes); free(g_mpicBytes);
+  g_mpicBytes = NULL; g_mpicLen = 0;
+  g_menuLen = ck_fields_encode(NULL, table, count);
+  g_menuBytes = (uint8_t*)malloc(g_menuLen ? g_menuLen : 1);
+  if (g_menuBytes) ck_fields_encode(g_menuBytes, table, count); else g_menuLen = 0;
+  if (fb && npx) {
+    size_t n = ck_rle_pack(NULL, fb, npx);
+    g_mpicBytes = (uint8_t*)malloc(n);
+    if (g_mpicBytes) { ck_rle_pack(g_mpicBytes, fb, npx); g_mpicLen = n; }
+  }
+}
+
+static int isMenuMode(int mode) { return mode == CK_MODE_MENU_FIELD || mode == CK_MODE_MENU_WORLD; }
+static int isWorldMode(int mode) { return mode == CK_MODE_WORLD || mode == CK_MODE_MENU_WORLD; }
+
+static const char* modeTag(int mode) {
+  return mode == CK_MODE_MENU_WORLD ? "menu-world" : mode == CK_MODE_MENU_FIELD ? "menu-field" : mode == CK_MODE_WORLD ? "world" : "field";
+}
 
 static int stampText(char* out, size_t cap, int mode) {
   return snprintf(out, cap, "pin=%s\ncore=%s\nschema=%s\nmode=%s\n", CK_STATE_PIN_COMMIT, CK_STATE_CORE_VERSION, CK_STATE_SCHEMA, modeTag(mode));
@@ -129,15 +156,17 @@ void ck_state_save_done(int ok, int withScene, const void* host, const CkHostFie
   int scene = withScene && g_out[0].buf && g_out[0].size > 0;
   uint8_t* box = NULL;
   size_t boxLen = 0;
-  if (ok && g_core && hostBytes && (scene || !withScene) && (g_takenMode != CK_MODE_WORLD || g_worldBytes)) {
+  if (ok && g_core && hostBytes && (scene || !withScene) && (!isWorldMode(g_takenMode) || g_worldBytes) && (!isMenuMode(g_takenMode) || g_menuBytes)) {
     ck_host_encode(hostBytes, host, table, count);
-    CkSection s[8];
+    CkSection s[10];
     int n = 0;
     s[n++] = (CkSection){ "STMP", (const uint8_t*)stamp, (size_t)stampLen };
     s[n++] = (CkSection){ "CORE", g_core, CK_CORE_BYTES };
     if (scene) s[n++] = (CkSection){ "SCEN", (const uint8_t*)g_out[0].buf, g_out[0].size };
     s[n++] = (CkSection){ "HOST", hostBytes, hostLen };
-    if (g_takenMode == CK_MODE_WORLD) s[n++] = (CkSection){ "WRLD", g_worldBytes, g_worldLen };
+    if (isWorldMode(g_takenMode)) s[n++] = (CkSection){ "WRLD", g_worldBytes, g_worldLen };
+    if (isMenuMode(g_takenMode)) s[n++] = (CkSection){ "MENU", g_menuBytes, g_menuLen };
+    if (g_mpicBytes && g_mpicLen) s[n++] = (CkSection){ "MPIC", g_mpicBytes, g_mpicLen };
     s[n++] = (CkSection){ "APU ", (const uint8_t*)g_out[1].buf, g_out[1].size };
     if (g_out[2].buf && g_out[2].size > 0) s[n++] = (CkSection){ "APUH", (const uint8_t*)g_out[2].buf, g_out[2].size };
     box = ck_box_build(s, n, &boxLen);
@@ -160,6 +189,15 @@ int ck_state_load_has_world(void) { return g_inWorld.data != NULL; }
 int ck_state_load_world_check(const CkPtrField* table, int count) { return g_inWorld.data && ck_fields_check(table, count, g_inWorld); }
 int ck_state_load_world(const CkPtrField* table, int count) { return g_inWorld.data && ck_fields_decode(table, count, g_inWorld); }
 
+int ck_state_load_has_menu(void) { return g_inMenu.data != NULL; }
+int ck_state_load_menu_check(const CkPtrField* table, int count) { return g_inMenu.data && ck_fields_check(table, count, g_inMenu); }
+int ck_state_load_menu_get(const char* name, void* dst, uint32_t size) { return g_inMenu.data && ck_fields_get(g_inMenu, name, dst, size); }
+int ck_state_load_menu(const CkPtrField* table, int count, uint8_t* fb, size_t npx) {
+  if (!g_inMenu.data || !ck_fields_decode(table, count, g_inMenu)) return 0;
+  if (fb && g_inMpic.data && !ck_rle_unpack(fb, npx, g_inMpic)) return 0;
+  return 1;
+}
+
 void ck_state_load_result(int r) {
   if (g_phase != CK_LOAD_TAKEN) return;
   finish(r != 0, CK_REASON_FAILED);
@@ -181,7 +219,10 @@ int ck_state_request_load(const uint8_t* p, long len) {
   char schema[96];
   snprintf(schema, sizeof schema, "schema=%s", CK_STATE_SCHEMA);
   if (!ck_box_has_line(stamp, "legacy=1") && !ck_box_has_line(stamp, schema)) return refuse(CK_REASON_SCHEMA);
-  if (ck_box_has_line(stamp, "mode=world") ? !ck_box_find(p, (size_t)len, "WRLD").data : !ck_box_find(p, (size_t)len, "SCEN").data) return refuse(CK_REASON_MODE);
+  int world = ck_box_has_line(stamp, "mode=world") || ck_box_has_line(stamp, "mode=menu-world");
+  int menu = ck_box_has_line(stamp, "mode=menu-world") || ck_box_has_line(stamp, "mode=menu-field");
+  if (world ? !ck_box_find(p, (size_t)len, "WRLD").data : !ck_box_find(p, (size_t)len, "SCEN").data) return refuse(CK_REASON_MODE);
+  if (menu && !ck_box_find(p, (size_t)len, "MENU").data) return refuse(CK_REASON_MODE);
   free(g_loadCopy);
   g_loadCopy = (uint8_t*)malloc((size_t)len);
   if (!g_loadCopy) return refuse(CK_REASON_FAILED);
@@ -192,6 +233,8 @@ int ck_state_request_load(const uint8_t* p, long len) {
   g_inCore = ck_box_find(g_loadCopy, (size_t)len, "CORE");
   g_inHost = ck_box_find(g_loadCopy, (size_t)len, "HOST");
   g_inWorld = ck_box_find(g_loadCopy, (size_t)len, "WRLD");
+  g_inMenu = ck_box_find(g_loadCopy, (size_t)len, "MENU");
+  g_inMpic = ck_box_find(g_loadCopy, (size_t)len, "MPIC");
   g_phase = CK_WAIT_LOAD; g_status = 1; g_reason = CK_REASON_NONE; g_waited = 0;
   return 1;
 }
