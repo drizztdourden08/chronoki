@@ -3,7 +3,11 @@ import { describe, expect, it, vi } from 'vitest';
 import { randomizerReviewSection } from '@app/views/ProfileManager/sub-components/ProfileCreateWizard/behavior/randomizer-review-section';
 import type { ProfileWizardValues } from '@app/views/ProfileManager/ProfileManager.type';
 
-vi.mock('@drizztdourden08/brock-randomizer/renderer', () => ({ randomizerRenderer: { profileWizardSteps: [] } }));
+vi.mock('@drizztdourden08/brock-randomizer/renderer', () => ({
+  randomizerRenderer: { profileWizardSteps: [] },
+  RANDOMIZER_SLICE: 'randomizer',
+  RANDOMIZER_STEP_ID: 'randomizer',
+}));
 
 const valuesOf = (form?: unknown): ProfileWizardValues => ({ name: '', rom: '', preset: 'vanilla', randomizer: form });
 
