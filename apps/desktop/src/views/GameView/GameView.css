@@ -1,0 +1,16 @@
+/* @layer renderer-components @kind style */
+.game-view {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.game-view__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}

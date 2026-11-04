@@ -1,6 +1,12 @@
 /* @layer root-config @kind config */
+import { join } from 'node:path';
 import { defineWorkspace, electronTarget, brockProfile } from '@drizztdourden08/brock-thread';
-import { plugin as snesPlugin } from '@drizztdourden08/brock-plugin-snes';
+import { plugin as snesPlugin, snes as snesVerb } from '@drizztdourden08/brock-plugin-snes';
+
+const assetBlobStep = {
+  name: 'asset-blob',
+  run: (worktree) => snesVerb.copyAssetBlob({ realDataDir: join(worktree.main, 'test-roms', 'data') }).run(worktree),
+};
 
 export default defineWorkspace({
   name: 'chronoki',
@@ -8,7 +14,7 @@ export default defineWorkspace({
   targets: {
     app: electronTarget({ app: 'apps/desktop' }),
   },
-  provision: [brockProfile()],
+  provision: [brockProfile(), assetBlobStep],
   plugins: [snesPlugin],
   snes: {
     wasm: {
@@ -16,7 +22,7 @@ export default defineWorkspace({
       sourceDirs: ['core/reconnect', 'core/wasm-build'],
       sourceExtensions: ['.c', '.h', '.mjs'],
     },
-    // TODO: the ROM SHA-1 table is filled by @chronoki/game-data once the supported dumps are confirmed.
-    roms: { sha1: {} },
+    roms: { sha1: { DE5822F4F2F7A55ACB8926D4C0EAA63D5D989312: 'ct-usa' } },
+    states: { launchFlags: { game: ['--auto-start'], save: ['--auto-state={state}'] } },
   },
 });

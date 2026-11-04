@@ -1,0 +1,36 @@
+/* @layer renderer-components @kind style */
+.game-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+.game-layer__stage {
+  aspect-ratio: 256 / 224;
+  max-width: 100%;
+  max-height: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.game-layer__stage canvas {
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+.game-layer__stage--idle {
+  visibility: hidden;
+  position: absolute;
+}
+
+.game-layer__error {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--space-3);
+  text-align: center;
+}
