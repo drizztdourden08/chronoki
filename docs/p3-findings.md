@@ -37,6 +37,20 @@ synchronously (`ccall`, no await) and then reads the frame. A JSPI-suspended cal
   between `main` and the yield (none known) would trap. Fallback: Asyncify with `emscripten_fiber_swap`, same
   `ck_yield_to_host` seam.
 
+**The sound coroutine (decided: a JSPI stack, `core/reconnect/coro_wasm.c`).** `src/sound/coro.c` (ucontext) does not
+link: emscripten has no `getcontext`/`makecontext`/`swapcontext`. Its users: one coroutine per `SndMachine`, the
+sound driver program (`SndDrvProgram`, 1 MiB stack), resumed by `SndMachineRun` on the main stack and yielding at each
+instruction boundary; no nesting, and it never reaches `CtPresentSwap`. It switches often: a few times a frame, about
+10,000 times a song upload (one per port handshake). emsdk 5.0.7's fibers are Asyncify only (`emscripten_fiber_swap`
+calls `asyncify_start_unwind`), and Asyncify excludes JSPI; moving the module to Asyncify would instrument nearly
+every function (indirect calls everywhere) and unwind main's whole stack per switch. The reference SPC
+(`CT_AUDIO_SPC_DEFAULT=0`) needs no coroutine but drops the game's own sound machine. So `coro_wasm.c` implements
+`coro.h` on JSPI: `ck_coro_entry` is a second JSPI export, a resume or yield is a suspending import that resolves the
+other side's promise (O(1) a switch, two microtask hops), and each side restores its own `__stack_pointer` on waking
+(the coroutine runs on its own 1 MiB block). `sources.mjs` drops `coro.c`. Risks: nested JSPI (a promising export
+entered from inside a suspending import's JS) and the per-switch promise cost during uploads, both unmeasured;
+`-sSTACK_OVERFLOW_CHECK=2` must stay off (the limits are not swapped).
+
 ## Unknown 2: the 32-bit table layout (hypothesis: the 64-bit reference pack does not load in wasm32)
 
 `datapack.c` checks the pack header's pointer size against `sizeof(void*)` (8 against 4: refused), then per table the

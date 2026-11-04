@@ -85,13 +85,14 @@ const gameArgs = (gen) => [
   ...reconnectSources,
   ...hostSources,
   '-o', join(outDir, 'chronoki-core.js'),
-  // JSPI: field.c's blocking main() suspends at each present (ck_loop.c)
-  '-sJSPI', '-sJSPI_EXPORTS=main',
+  // JSPI: field.c's blocking main() suspends at each present (ck_loop.c); the sound program's coroutine is a JSPI
+  // stack of its own, entered through ck_coro_entry (reconnect/coro_wasm.c)
+  '-sJSPI', '-sJSPI_EXPORTS=main,ck_coro_entry',
   '-sINVOKE_RUN=0',            // the shell fills the file system first, then calls callMain
   '-sMODULARIZE=1', '-sEXPORT_NAME=ChronoKiCore', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
-  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkSaveState,_CkLoadState,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkSaveState,_CkLoadState,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,callMain,FS,ENV,HEAPU8,HEAP16,HEAP32',
   '-lm',
 ];
