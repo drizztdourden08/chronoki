@@ -25,5 +25,5 @@ export default defineScreens({
     },
   ],
   home: 'game',
-  settings: { bucket: 'game', page: 'general' },
+  settings: { bucket: 'game', page: 'picture' },
 });
