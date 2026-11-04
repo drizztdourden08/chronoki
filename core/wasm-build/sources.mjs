@@ -75,7 +75,7 @@ const ctSources = () => {
 const reconnectSources = [
   'sdl_clock.c', 'sdl_events.c', 'sdl_window.c', 'sdl_audio.c', 'sdl_gamecontroller.c',
   'present_reconnect.c', 'settings_reconnect.c', 'touchpad_reconnect.c', 'launcher_reconnect.c', 'coro_wasm.c', 'ck_state.c',
-  'ck_state_box.c', 'ck_state_host.c', 'music_tap.c',
+  'ck_state_box.c', 'ck_state_host.c', 'ck_state_schema.c', 'music_tap.c',
 ].map((f) => join(root, 'core', 'reconnect', f));
 
 const hostSources = ['ck_api.c', 'ck_loop.c', 'ck_info.c'].map((f) => join(here, f));
