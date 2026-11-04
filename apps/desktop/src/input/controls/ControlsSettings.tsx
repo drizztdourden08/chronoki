@@ -4,7 +4,6 @@ import { Box, ScrollArea, Tabs } from '@drizztdourden08/tessera/primitives';
 import { Dialog } from '@drizztdourden08/tessera/composites';
 import { SearchAnchor } from '@drizztdourden08/brock-react';
 import type { InputProfile } from '@chronoki/input-mapping';
-import type { DevicePreset } from '../profile-edit/profile-edit.type';
 import { BindingListener } from './BindingListener';
 import { DevicesPanel } from './DevicesPanel';
 import { FunctionBindingsTab } from './FunctionBindingsTab';
@@ -14,6 +13,7 @@ import { CONTROLS_TABS } from './controls.constants';
 import { listeningLabel } from './listening-label';
 import { useCapture } from './useCapture';
 import { useControlsState } from './useControlsState';
+import { usePresetConfirm } from './usePresetConfirm';
 import type { ControlsProps, ControlsTab } from './controls.type';
 import './ControlsSettings.css';
 
@@ -22,7 +22,7 @@ const ControlsSettings = ({ profileId }: ControlsProps) => {
   const { listeningFor, setListeningFor, handleCapture, cancel } = useCapture(ctrl);
   const [tab, setTab] = useState<ControlsTab>('controls');
   const [deleteTarget, setDeleteTarget] = useState<InputProfile | null>(null);
-  const [presetTarget, setPresetTarget] = useState<DevicePreset | null>(null);
+  const { presetTarget, setPresetTarget, cancelPreset, confirmPreset } = usePresetConfirm(ctrl);
 
   const handleTabChange = useCallback((id: string) => setTab(id === 'shortcuts' ? 'shortcuts' : 'controls'), []);
   const cancelDelete = useCallback(() => setDeleteTarget(null), []);
@@ -30,12 +30,6 @@ const ControlsSettings = ({ profileId }: ControlsProps) => {
     if (deleteTarget) ctrl.remove(deleteTarget);
     setDeleteTarget(null);
   }, [ctrl, deleteTarget]);
-
-  const cancelPreset = useCallback(() => setPresetTarget(null), []);
-  const confirmPreset = useCallback(() => {
-    if (presetTarget) ctrl.applyToActive(presetTarget);
-    setPresetTarget(null);
-  }, [ctrl, presetTarget]);
 
   return (
     <Box className="controls-settings">
