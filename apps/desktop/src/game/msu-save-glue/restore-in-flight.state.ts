@@ -1,4 +1,4 @@
 /* @layer bridge-wasm @kind logic */
-const restoreInFlight: Set<string> = new Set();
+const restoreInFlight = new Set<string>();
 
 export { restoreInFlight };
