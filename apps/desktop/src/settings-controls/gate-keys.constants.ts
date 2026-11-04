@@ -7,6 +7,7 @@ const OPTION_KEY_FEATURE: Record<string, string> = {
   autoSaveIntervalSeconds: 'autoSave',
   autoSaveMaxEntries: 'autoSave',
   turboSpeed: 'turbo',
+  saveHoldDuration: 'enhancedSaveSlotShortcut',
 };
 
 export { GATE_KEY_PREFIX, OPTION_KEY_FEATURE };

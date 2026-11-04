@@ -18,6 +18,7 @@ interface AppSettings extends BaseSettings {
   pixelPerfect: boolean;
   autoSaveMaxEntries: number;
   turboSpeed: number;
+  saveHoldDuration: number;
 }
 
 export type { AppSettings, ViewportMode };
