@@ -1,6 +1,6 @@
 /* @layer tests @kind test */
 import { describe, expect, it, vi } from 'vitest';
-import type { FileStore } from '@drizztdourden08/brock-core';
+import { memoryFiles } from './support/memory-files';
 import { steamSatisfied } from '@app/settings-controls/steam-satisfied';
 import { normaliseSettings } from '@app/settings-effects/normalise-settings';
 import { DEFAULT_SETTINGS } from '@app/settings.constants';
@@ -13,31 +13,6 @@ import { readWideHeader } from '@app/storage/steam-store/read-wide-header';
 import { removeSteamData } from '@app/storage/steam-store/remove-steam-data';
 import { STEAM_MARKER_FILE, STEAM_WIDE_FILE } from '@app/storage/steam-store/steam-store.constants';
 import { writeSteamWide } from '@app/storage/steam-store/write-steam-wide';
-
-const memoryFiles = (): FileStore => {
-  const data = new Map<string, Uint8Array>();
-  const encoder = new TextEncoder();
-  return {
-    readBytes: async (path) => data.get(path) ?? null,
-    readText: async (path) => {
-      const bytes = data.get(path);
-      return bytes ? new TextDecoder().decode(bytes) : null;
-    },
-    writeBytes: async (path, bytes) => {
-      data.set(path, bytes);
-    },
-    writeText: async (path, text) => {
-      data.set(path, encoder.encode(text));
-    },
-    list: async () => [...data.keys()],
-    remove: async (path) => {
-      data.delete(path);
-    },
-    exists: async (path) => data.has(path),
-    mkdir: async () => undefined,
-    stat: async () => null,
-  };
-};
 
 const syntheticWide = (margins: number): Uint8Array => {
   const bytes = new Uint8Array(24);

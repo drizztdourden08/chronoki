@@ -1,33 +1,9 @@
 /* @layer tests @kind test */
 import { describe, expect, it } from 'vitest';
-import type { FileStore } from '@drizztdourden08/brock-core';
+import { memoryFiles } from './support/memory-files';
 import { DEFAULT_CK_SETTINGS } from '@chronoki/game-core';
 import { steamBootFiles } from '@app/game/lifecycle/steam-boot-files';
 import { writeSteamWide } from '@app/storage/steam-store/write-steam-wide';
-
-const memoryFiles = (): FileStore => {
-  const data = new Map<string, Uint8Array>();
-  return {
-    readBytes: async (path) => data.get(path) ?? null,
-    readText: async (path) => {
-      const bytes = data.get(path);
-      return bytes ? new TextDecoder().decode(bytes) : null;
-    },
-    writeBytes: async (path, bytes) => {
-      data.set(path, bytes);
-    },
-    writeText: async (path, text) => {
-      data.set(path, new TextEncoder().encode(text));
-    },
-    list: async () => [...data.keys()],
-    remove: async (path) => {
-      data.delete(path);
-    },
-    exists: async (path) => data.has(path),
-    mkdir: async () => undefined,
-    stat: async () => null,
-  };
-};
 
 describe('steamBootFiles', { tags: ['critical'] }, () => {
   it('gives nothing when the margins gate is off, even with data stored', async () => {

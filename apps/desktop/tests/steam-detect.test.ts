@@ -9,28 +9,28 @@ import { parseRegistryValue } from '../electron/steam-detect/parse-registry-valu
 import type { DirItem, ScanFs } from '../electron/steam-detect/steam-detect.type';
 import { walkDrive } from '../electron/steam-detect/walk-drive';
 
-type Tree = { [name: string]: Tree | string | { link: true } };
+type Tree = { [name: string]: Tree | string | { symlinkTo: string } };
 
-const nodeAt = (tree: Tree, path: string): Tree | string | { link: true } | undefined => {
+const nodeAt = (tree: Tree, path: string): Tree | string | { symlinkTo: string } | undefined => {
   const parts = path.split('\\').filter((part) => part !== '' && !/^[A-Z]:$/.test(part));
-  let node: Tree | string | { link: true } | undefined = tree;
+  let node: Tree | string | { symlinkTo: string } | undefined = tree;
   for (const part of parts) {
-    if (typeof node !== 'object' || 'link' in node) return undefined;
+    if (typeof node !== 'object' || 'symlinkTo' in node) return undefined;
     node = node[part];
   }
   return node;
 };
 
 const fsOf = (tree: Tree): ScanFs => ({
-  readDir: async (dir) => {
+  readDir: (dir) => {
     const node = nodeAt(tree, dir);
-    if (typeof node !== 'object' || 'link' in node) throw new Error('not a folder');
-    return Object.entries(node).map(([name, child]): DirItem => ({ name, isDirectory: typeof child === 'object', isLink: typeof child === 'object' && 'link' in child }));
+    if (typeof node !== 'object' || 'symlinkTo' in node) return Promise.reject(new Error('not a folder'));
+    return Promise.resolve(Object.entries(node).map(([name, child]): DirItem => ({ name, isDirectory: typeof child === 'object', isLink: typeof child === 'object' && 'symlinkTo' in child })));
   },
-  isFile: async (path) => typeof nodeAt(tree, path) === 'string',
-  readText: async (path) => {
+  isFile: (path) => Promise.resolve(typeof nodeAt(tree, path) === 'string'),
+  readText: (path) => {
     const node = nodeAt(tree, path);
-    return typeof node === 'string' ? node : null;
+    return Promise.resolve(typeof node === 'string' ? node : null);
   },
 });
 
@@ -68,25 +68,25 @@ describe('steam detection, pure parts', { tags: ['critical'] }, () => {
   it('recognises a Steam root by name or by steamapps', () => {
     expect(isSteamRoot('Steam', [])).toBe(true);
     expect(isSteamRoot('SteamLibrary', [])).toBe(true);
-    expect(isSteamRoot('Stuff', [{ name: 'SteamApps', isDirectory: true, isLink: false }])).toBe(true);
-    expect(isSteamRoot('Stuff', [])).toBe(false);
+    expect(isSteamRoot('Documents', [{ name: 'SteamApps', isDirectory: true, isLink: false }])).toBe(true);
+    expect(isSteamRoot('Documents', [])).toBe(false);
   });
 });
 
 describe('steam detection, walking a synthetic drive', { tags: ['critical'] }, () => {
   it('finds a library at any depth', async () => {
-    const tree: Tree = { Games: { Deep: { More: { Stuff: { Library: GAME } } } } };
+    const tree: Tree = { Games: { Deep: { More: { Archive: { Library: GAME } } } } };
     const control = { visits: 0, cancelled: false, limit: 1000 };
-    expect(await walkDrive('D:\\', fsOf({ Games: { Deep: { More: { Stuff: { SteamLibrary: GAME } } } } }), control)).toBe(
-      'D:\\Games\\Deep\\More\\Stuff\\SteamLibrary\\steamapps\\common\\Chrono Trigger\\resources.bin',
+    expect(await walkDrive('D:\\', fsOf({ Games: { Deep: { More: { Archive: { SteamLibrary: GAME } } } } }), control)).toBe(
+      'D:\\Games\\Deep\\More\\Archive\\SteamLibrary\\steamapps\\common\\Chrono Trigger\\resources.bin',
     );
     expect(await walkDrive('D:\\', fsOf(tree), { visits: 0, cancelled: false, limit: 1000 })).toBe(
-      'D:\\Games\\Deep\\More\\Stuff\\Library\\steamapps\\common\\Chrono Trigger\\resources.bin',
+      'D:\\Games\\Deep\\More\\Archive\\Library\\steamapps\\common\\Chrono Trigger\\resources.bin',
     );
   });
 
   it('does not enter skipped folders or links', async () => {
-    const tree: Tree = { Windows: { Steam: GAME }, node_modules: { Steam: GAME }, '.hidden': { Steam: GAME }, Linked: { link: true } };
+    const tree: Tree = { Windows: { Steam: GAME }, node_modules: { Steam: GAME }, '.hidden': { Steam: GAME }, Linked: { symlinkTo: 'D:\\Elsewhere' } };
     expect(await walkDrive('D:\\', fsOf(tree), { visits: 0, cancelled: false, limit: 1000 })).toBeNull();
   });
 
@@ -107,7 +107,7 @@ describe('steam detection, walking a synthetic drive', { tags: ['critical'] }, (
     };
     const fs = fsOf(tree);
     const control = { visits: 0, cancelled: false, limit: 1000 };
-    const found = await detectSteamArchive(['C:\\Steam'], [], { ...fs, isFile: async (path) => path.startsWith('E:\\Lib') ? fs.isFile(path.replace('E:\\Lib', 'Lib')) : fs.isFile(path) }, control);
+    const found = await detectSteamArchive(['C:\\Steam'], [], { ...fs, isFile: (path) => path.startsWith('E:\\Lib') ? fs.isFile(path.replace('E:\\Lib', 'Lib')) : fs.isFile(path) }, control);
     expect(found).toBe('E:\\Lib\\steamapps\\common\\Chrono Trigger\\resources.bin');
     expect(control.visits).toBe(0);
   });

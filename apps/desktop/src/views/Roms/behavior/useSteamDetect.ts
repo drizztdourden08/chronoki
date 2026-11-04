@@ -2,10 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { SteamDetectStatus } from '@app/ipc';
 import { steamDetectApi } from './steam-detect-api';
-
-const POLL_MS = 500;
-
-const IDLE: SteamDetectStatus = { state: 'idle', visited: 0 };
+import { IDLE, POLL_MS } from './useSteamDetect.constants';
 
 const useSteamDetect = (enabled: boolean) => {
   const [status, setStatus] = useState<SteamDetectStatus>(IDLE);

@@ -11,11 +11,12 @@ const wasSeen = (): boolean => {
   }
 };
 
-const markSeen = (): void => {
+const markSeen = (): boolean => {
   try {
     localStorage.setItem(STEAM_PROMPT_SEEN_KEY, '1');
+    return true;
   } catch {
-    return;
+    return false;
   }
 };
 
@@ -23,7 +24,7 @@ export default defineStartupPrompt({
   order: 90,
   run: async ({ confirmAction, nav }) => {
     if (wasSeen() || (await hasSteamData())) return;
-    markSeen();
+    if (!markSeen()) return;
     const open = await confirmAction({ title: STEAM_PROMPT_TEXT.title, message: STEAM_PROMPT_TEXT.message, confirmLabel: STEAM_PROMPT_TEXT.open, cancelLabel: STEAM_PROMPT_TEXT.later });
     if (open) nav.open(STEAM_PROMPT_ROUTE);
   },
