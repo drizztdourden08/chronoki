@@ -7,6 +7,6 @@ export {
   CK_EXPORT_WRAM_PTR,
 } from './game-info-exports.constants';
 export type {
-  GameInfoClock, GameInfoItem, GameInfoLocation, GameInfoParty, GameInfoSheet, GameInfoSnapshot, GameInfoStory,
+  GameInfoClock, GameInfoEpoch, GameInfoItem, GameInfoLocation, GameInfoParty, GameInfoSheet, GameInfoSnapshot, GameInfoStory,
   GameInfoTechs,
 } from './game-info.type';

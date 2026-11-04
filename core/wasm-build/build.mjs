@@ -26,6 +26,7 @@ const argValue = (name) => {
 };
 const only = argValue('--only');
 const debug = process.argv.includes('--debug');
+const allowMissingTables = process.argv.includes('--allow-missing-tables');
 const outApp = resolve(argValue('--out-app') ?? join(here, '..', '..', 'apps', 'desktop', 'public', 'wasm'));
 const kitBelthasar = resolve(argValue('--belthasar') ?? 'X:/chronoki-ref/belthasar');
 const trace = process.argv.includes('--trace');   // CK_TRACE: stderr lines at each park, resume and coroutine switch
@@ -174,7 +175,14 @@ const main = () => {
   mkdirSync(oracleDir, { recursive: true });
   const gen = writeShapes(outDir);
   gen.gains = writeMixerGains(gen.dir, belthasar);   // the S-DSP's voice-group gains (patches/mixer-gains.mjs)
-  if (!gen.tables32) console.log('note: no out/tables32/tables_storage.c; the imported 64-bit table storage is used (docs/p3-findings.md)');
+  if (!gen.tables32) {
+    const missing = join(outDir, 'tables32', 'tables_storage.c');
+    if (!allowMissingTables) {
+      console.error(`BUILD STOPPED: ${missing} is missing. Without it the imported 64-bit table storage is used and the game renders noise (docs/p3-findings.md). Run the asset import to generate it, or pass --allow-missing-tables to build anyway.`);
+      process.exit(1);
+    }
+    console.warn(`warning: no ${missing}; building with the imported 64-bit table storage (--allow-missing-tables)`);
+  }
   const jobs = [];
   if (only !== 'oracle') jobs.push(['game', gameArgs(gen)]);
   if (only !== 'game') jobs.push(['oracle', oracleArgs(gen)]);

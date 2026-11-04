@@ -73,6 +73,32 @@ describe('readGameInfo', () => {
     expect(bits?.slice(0, 4)).toEqual([true, false, true, false]);
   });
 
+  it('reads no learned techs as all-false rows', { tags: ['critical'] }, () => {
+    const techs = readGameInfo(makeHeap(), PTR)?.techs;
+    expect(techs?.single.every((row) => row.every((bit) => !bit))).toBe(true);
+    expect(techs?.multiLearned).toBe(0);
+  });
+
+  it('reads the lead position from the object tables in pixels', { tags: ['critical'] }, () => {
+    const heap = makeHeap();
+    put(heap, 0x1800, 0x00, 0x08);
+    put(heap, 0x1880, 0x40, 0x04);
+    expect(readGameInfo(heap, PTR)?.location).toMatchObject({ leadX: 0x80, leadY: 0x44 });
+  });
+
+  it('reports an unused lead object as unknown', { tags: ['critical'] }, () => {
+    const heap = makeHeap();
+    put(heap, 0x1800, 0x00, 0xff);
+    expect(readGameInfo(heap, PTR)?.location.leadX).toBeNull();
+  });
+
+  it('hides the Epoch until it is set or boarded', { tags: ['critical'] }, () => {
+    const heap = makeHeap();
+    expect(readGameInfo(heap, PTR)?.location.epoch).toBeNull();
+    put(heap, 0x0290, 0x10, 0x00, 0x20, 0x00, 1);
+    expect(readGameInfo(heap, PTR)?.location.epoch).toEqual({ x: 0x10, y: 0x20, boarded: true });
+  });
+
   it('counts story chest bits and reads the counter', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x10000, 0x6c, 0x03, 0x80);
