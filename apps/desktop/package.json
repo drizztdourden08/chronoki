@@ -17,6 +17,7 @@
     "start:headless": "brock start -- --no-focus --muted",
     "sync": "brock sync",
     "ensure-wasm": "port-kit-ensure-wasm",
+    "mobile:build": "port-kit-ensure-wasm && brock mobile build",
     "typecheck": "tsc --noEmit",
     "lint": "pnpm typecheck && eslint . && stylelint \"src/**/*.css\" && brock prose && jscpd .",
     "lint:md": "markdownlint-cli2",
