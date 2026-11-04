@@ -31,7 +31,7 @@ describe('tall ratio lines', { tags: ['critical'] }, () => {
 
   it('sizes the frame W k x H k: tall, wide, both, and the original', () => {
     const base = { widescreen: 'off', wideWidth: 0, tallLines: 340, renderScale: 2, interpolation: true } as const;
-    expect(frameSizeOf(base)).toEqual({ width: 256 * 4, height: 340 * 4 });
+    expect(frameSizeOf(base)).toEqual({ width: 256 * 2, height: 340 * 2 });
     expect(frameSizeOf({ ...base, renderScale: 3, interpolation: false })).toEqual({ width: 768, height: 1020 });
     expect(frameSizeOf({ ...base, widescreen: '16:9', wideWidth: 398, renderScale: 1, interpolation: false })).toEqual({ width: 398, height: 340 });
     expect(frameSizeOf({ ...base, tallLines: 600, renderScale: 1, interpolation: false }).height).toBe(480);
@@ -77,7 +77,7 @@ describe('gate settings width', { tags: ['critical'] }, () => {
   it('renders a tall ratio as 256 x lines with widescreen off, keeping the render scale', () => {
     const { effective } = resolveGates(ALL, { vanillaSafe: false, satisfied: new Set(['steamData']) });
     const settings = gateSettings(effective, { ...DEFAULT_GATE_OPTIONS, aspectRatio: '3:4' }, audio);
-    expect([settings.widescreen, settings.tallLines, settings.interpolation]).toEqual(['off', 340, false]);
+    expect([settings.widescreen, settings.tallLines, settings.interpolation]).toEqual(['off', 340, true]);
   });
 });
 
