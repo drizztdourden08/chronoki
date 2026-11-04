@@ -2,7 +2,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { armIdleClose, closeSaveOverlay } from '@app/game/save-overlay';
 import { loadFromSlot, saveToSlot } from '@app/views/GameSession';
-import { emptySlots, fetchQuickSlots } from '@app/views/HomeTab/behavior/fetch-quick-slots';
+import { emptySlots } from '@app/views/HomeTab/behavior/empty-slots';
+import { fetchQuickSlots } from '@app/views/HomeTab/behavior/fetch-quick-slots';
 import type { SlotInfo } from '@app/views/HomeTab/HomeTab.type';
 
 const useOverlaySlots = (open: boolean, profileId: string | null) => {
