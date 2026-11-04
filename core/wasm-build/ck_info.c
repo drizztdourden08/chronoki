@@ -7,6 +7,7 @@
 #include <emscripten.h>
 #include "ct_vm.h"
 #include "menu.h"
+#include "battle.h"
 
 CtWram* __real_CtWramCreate(void);
 
@@ -35,3 +36,19 @@ EMSCRIPTEN_KEEPALIVE int CkEraName(int locId) { return keep(CtMenuLoaderEra(locI
 EMSCRIPTEN_KEEPALIVE int CkChapterName(int story) { return keep(CtMenuLoaderChapter(story, 1)); }
 /* char* (ASCII, the player-entered name) for char id 0-7: CtGetName (ct_vm.c). */
 EMSCRIPTEN_KEEPALIVE int CkCharName(int id) { return keep(CtGetName(id)); }
+/* char* (ASCII, ROM item name, "" without a ROM) for an item id: CtMenuItemName on the cached ROM (CtBattleRom). */
+EMSCRIPTEN_KEEPALIVE int CkItemName(int id) {
+  char out[32] = "";
+  long len = 0;
+  const uint8_t* rom = CtBattleRom(&len);
+  if (rom) CtMenuItemName(rom, len, id, out, (int)sizeof out);
+  return keep(out);
+}
+/* char* (ASCII, ROM tech name, "" without a ROM) for a tech id (1 = Cyclone): CtMenuTechName on the cached ROM. */
+EMSCRIPTEN_KEEPALIVE int CkTechName(int id) {
+  char out[32] = "";
+  long len = 0;
+  const uint8_t* rom = CtBattleRom(&len);
+  if (rom) CtMenuTechName(rom, len, id, out, (int)sizeof out);
+  return keep(out);
+}
