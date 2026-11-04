@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   steamDataImported: false,
   autoSaveIntervalSeconds: 300,
   masterMuted: false,
+  showFps: false,
 };
 
 export { DEFAULT_SETTINGS };

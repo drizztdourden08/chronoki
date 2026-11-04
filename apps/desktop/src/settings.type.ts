@@ -10,6 +10,7 @@ interface AppSettings extends BaseSettings {
   steamDataImported: boolean;
   autoSaveIntervalSeconds: number;
   masterMuted: boolean;
+  showFps: boolean;
 }
 
 export type { AppSettings };
