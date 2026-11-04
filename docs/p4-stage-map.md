@@ -35,7 +35,8 @@ counted in setup.py's "progress K/N". Ported 10, pending 55. Python paths are re
 | menu_equip, menu_techrom, animeng_pc, battle_hud_chrome | gen/<name>.py | generate | ported (`gen/menu-equip.ts`, `menu-techrom.ts`, `animeng-pc.ts`, `battle-hud-chrome.ts`; registered in `gen/rom-gen-runners.ts`) |
 | animeng_gato, atbsel, battle_anim, battle_anim_add, battle_dissolve, battle_fx, battle_gato_atkfaces, battle_gato_faces, battle_hetake, battle_hud, battle_hud_sub, battle_marleatk, battle_settle, battle_stance, ct_charbase, ct_ng_pan, dlg_cursor, menu_arrow, menu_chrome | gen/<name>.py | generate | ported (`gen/<name>.ts`, registered in `gen/oracle-runners-a.ts`; need the oracle `PeekOracle` driver, `oracle/peek.type.ts`; --verify paths not ported) |
 | menu_configgrid, menu_icons, menu_itemdetail, menu_itemoverlay, menu_itemuse, menu_loader, menu_opt0, menu_saveform, menu_shop, menu_tech, ow_era_placard, ow_gullmap, seq_credits, title_intro | gen/<name>.py | generate | ported (`gen/<name>.ts`, runners in `gen/oracle-gen-runners-b.ts`; oracle calls beyond runRecipe go through `gen/ctgen/oracle-tools.type.ts`) |
-| still pending: the xlat_all stages (gwarp_fd, hdma_fd, ...) and battle_hud_chrome | gen/xlat_all.py, gen/<name>.py | generate | pending |
+| seq_c3, wipe_c3, owwin_c6, gwarp_fd, hdma_fd | gen/xlat_all.py (+ gen/xlat.py, disasm65816.py) | generate | ported (`gen/xlat/`, runners in `gen/xlat-runners.ts`; need `PeekOracle` plus `CpuTraceOracle.cpuTrace` from `gen/xlat/cpu-trace.type.ts`, ct.exe --cputrace with CPUTRACE_UNIQUE=1; writes `src/xlat/<name>.c`) |
+| still pending: battle_hud_chrome | gen/<name>.py | generate | pending |
 | pack-tables | gen/pack_tables.py pack | tail | ported (`tables/pack-tables-stage.ts`; layout width from `ctx.abi`) |
 | steam-margins | steam_wide.py | tail | ported (`steam/`; off without `ctx.steam`, find_steam is host work) |
 | write-player-assets | gen/pack_tables.py into | tail | ported |
