@@ -1,7 +1,9 @@
 /* @layer renderer-components @kind types */
 interface LibraryRom {
   romFile: string;
-  bytes?: number;
+  label: string;
+  ready: boolean;
+  assetBytes: number | null;
 }
 
 interface LibraryImportResult {

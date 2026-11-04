@@ -1,17 +1,40 @@
 /* @layer renderer-components @kind hook */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { listRomsWithStatus } from '@app/storage/roms-store';
 import type { LibraryImportResult, LibraryRom } from '../Library.type';
+import { LIBRARY_TEXT } from '../Library.constants';
 import { importRom } from './import-rom';
 
-const useLibrary = () => {
-  const [roms] = useState<LibraryRom[]>([]);
-  const [status, setStatus] = useState<LibraryImportResult | null>(null);
+const readRoms = async (): Promise<LibraryRom[]> =>
+  (await listRomsWithStatus()).map(({ romFile, label, hasAssets, assetSize }) => ({
+    romFile,
+    label,
+    ready: hasAssets,
+    assetBytes: assetSize,
+  }));
 
-  const handleDrop = useCallback(async (files: File[]) => {
-    setStatus(await importRom(files));
+const useLibrary = () => {
+  const [roms, setRoms] = useState<LibraryRom[]>([]);
+  const [status, setStatus] = useState<LibraryImportResult | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const refresh = useCallback(async () => {
+    setRoms(await readRoms());
   }, []);
 
-  return { roms, status, handleDrop };
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+
+  const handleDrop = useCallback(async (files: File[]) => {
+    setBusy(true);
+    setStatus({ success: true, message: LIBRARY_TEXT.working });
+    setStatus(await importRom(files));
+    await refresh();
+    setBusy(false);
+  }, [refresh]);
+
+  return { roms, status, busy, handleDrop };
 };
 
 export { useLibrary };

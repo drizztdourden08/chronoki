@@ -1,8 +1,17 @@
 /* @layer renderer-components @kind logic */
+import { extractAssets } from '@app/storage/assets-store';
+import { importFile } from '@app/storage/roms-store';
 import type { LibraryImportResult } from '../Library.type';
 import { LIBRARY_TEXT } from '../Library.constants';
 
-const importRom = (files: File[]): Promise<LibraryImportResult> =>
-  Promise.resolve({ success: false, message: files.length === 0 ? LIBRARY_TEXT.empty : LIBRARY_TEXT.pending });
+const importRom = async (files: File[]): Promise<LibraryImportResult> => {
+  const file = files[0];
+  if (!file) return { success: false, message: LIBRARY_TEXT.empty };
+  const imported = await importFile(file);
+  if (!imported.success) return { success: false, message: imported.error ?? 'Import failed' };
+  const extracted = await extractAssets(imported.romFile);
+  if (!extracted.success) return { success: false, message: extracted.error ?? 'Building the assets failed' };
+  return { success: true, message: LIBRARY_TEXT.imported };
+};
 
 export { importRom };
