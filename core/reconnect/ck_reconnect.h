@@ -16,6 +16,9 @@ const uint8_t* ck_frame_rgba(void);
 long ck_frame_count(void);
 void ck_credit(int n);                 /* wasm-build/ck_loop.c: let the engine run n more frames */
 void ck_stop(void);
+int  ck_state_request(int save);       /* sdl_events.c: queue a synthetic F5 (save) or F9 (load) edge; 0 if one is pending */
+int  ck_state_status(void);            /* sdl_events.c: 0 idle, 1 pending, 2 ok, 3 failed */
+int  ck_state_available(void);         /* sdl_events.c: a save would be taken now */
 #ifdef __cplusplus
 }
 #endif

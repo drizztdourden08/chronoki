@@ -4,9 +4,8 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -23,13 +22,13 @@ const argValue = (name, fallback) => {
 const rom = argValue('--rom', 'X:/chronoki/test-roms/Chrono Trigger (USA).sfc');
 const counts = argValue('--frames', '60,300,600').split(',').map(Number);
 
-const glue = join(here, '..', 'out', 'chronoki-oracle.js');
+const glue = join(here, '..', 'out', 'oracle', 'chronoki-oracle.js');
 if (!existsSync(glue)) {
   console.error('not built: node core/wasm-build/build.mjs');
   process.exit(1);
 }
 const romBytes = readFileSync(rom);
-const factory = createRequire(import.meta.url)(glue);
+const factory = (await import(pathToFileURL(glue).href)).default;
 
 const replay = async (label, extra, n) => {
   const opts = {
