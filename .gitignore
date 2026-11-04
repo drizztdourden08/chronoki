@@ -1,0 +1,32 @@
+# AI config — managed in the private ai-config repo, never committed here
+.ai-config.json
+.claude/
+CLAUDE.md
+.claude/settings.json
+.ai/
+AGENTS.md
+.codex/config.toml
+.github/copilot-instructions.md
+.mcp.json
+
+# Game data: the player brings their own ROM; nothing ROM-derived is ever committed
+*.sfc
+*.smc
+*.swc
+*.fig
+*.rom
+*.srm
+*.state
+*.ss[0-9]
+/roms/
+/test-roms/
+/assets/
+**/extracted/
+
+# Build output and dependencies
+node_modules/
+dist/
+out/
+target/
+.turbo/
+*.log
