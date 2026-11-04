@@ -1,0 +1,17 @@
+/* @layer renderer-components @kind component */
+import { Box, Text } from '@drizztdourden08/tessera/primitives';
+import type { BindingListHeaderProps } from './controls.type';
+
+const BindingListHeader = ({ middleLabel = '' }: BindingListHeaderProps) => (
+  <Box className="binding-row binding-row--header">
+    <Text className="binding-row__action-label">Action</Text>
+    <Box className="binding-row__rest">
+      <Box className="binding-row__icon-slot" />
+      <Text className="binding-row__snes-label">{middleLabel}</Text>
+      <Box className="binding-row__icon-slot" />
+      <Text className="binding-row__binding-label">Binding</Text>
+    </Box>
+  </Box>
+);
+
+export { BindingListHeader };

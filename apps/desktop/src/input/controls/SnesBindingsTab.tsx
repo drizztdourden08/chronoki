@@ -2,18 +2,23 @@
 import { useMemo } from 'react';
 import { Box } from '@drizztdourden08/tessera/primitives';
 import { SNES_BUTTON_LABELS } from '@chronoki/input-mapping';
+import { BindingListHeader } from './BindingListHeader';
 import { BindingRow } from './BindingRow';
 import { buildDisplayMappings } from './build-display-mappings';
+import { SNES_ICON_IDS } from './controls.constants';
 import type { SnesBindingsTabProps } from './SnesBindingsTab.type';
 
 const SnesBindingsTab = ({ ctrl, onRebind }: SnesBindingsTabProps) => {
   const mappings = useMemo(() => buildDisplayMappings(ctrl.activeProfile), [ctrl.activeProfile]);
   return (
-    <Box className="controls-settings__bindings">
+    <Box className="controls-settings__binding-list">
+      <BindingListHeader middleLabel="SNES" />
       {mappings.map((mapping) => (
         <BindingRow
           key={`${mapping.button}-${mapping.mappingIndex}`}
           actionLabel={SNES_BUTTON_LABELS[mapping.button]}
+          middleLabel={mapping.button}
+          middleIconId={SNES_ICON_IDS[mapping.button]}
           binding={mapping.binding}
           icon={mapping.icon}
           onRebind={() => onRebind(mapping.button)}
