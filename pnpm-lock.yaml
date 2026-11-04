@@ -333,6 +333,9 @@ importers:
 
   packages/input-mapping:
     dependencies:
+      '@drizztdourden08/brock-core':
+        specifier: file:C:/Users/drizz/.coord/localpkg/tgz/brock-core-0.118.0-afd2d109.tgz
+        version: file:C:/Users/drizz/.coord/localpkg/tgz/brock-core-0.118.0-afd2d109.tgz
       '@drizztdourden08/brock-input':
         specifier: file:C:/Users/drizz/.coord/localpkg/tgz/brock-input-0.118.0-03312bfd.tgz
         version: file:C:/Users/drizz/.coord/localpkg/tgz/brock-input-0.118.0-03312bfd.tgz(@types/react@19.3.0)(electron@42.11.18)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)(zustand@5.0.16(@types/react@19.3.0)(react@19.3.1))

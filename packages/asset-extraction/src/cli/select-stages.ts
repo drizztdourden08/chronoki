@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportStage } from '../pipeline/stage.type';
+import { ALWAYS_RUN } from './select-stages.constants';
 
 const selectStages = (all: ImportStage[], only: string | undefined, from: string | undefined): ImportStage[] => {
   const known = new Set(all.map((s) => s.id));
@@ -8,7 +9,9 @@ const selectStages = (all: ImportStage[], only: string | undefined, from: string
     if (!known.has(id)) throw new Error(`unknown stage id: ${id}`);
   }
   const start = from === undefined ? 0 : all.findIndex((s) => s.id === from);
-  return all.filter((s, i) => i >= start && (wanted === null || wanted.includes(s.id)));
+  return all.filter(
+    (s, i) => ALWAYS_RUN.includes(s.id) || (i >= start && (wanted === null || wanted.includes(s.id))),
+  );
 };
 
 export { selectStages };
