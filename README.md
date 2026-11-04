@@ -1,7 +1,7 @@
 # ChronoKi
 
 A desktop PC port of *Chrono Trigger* (SNES, 1995), built the way
-[Relic of the Past](../relic-of-the-past) ports *A Link to the Past*: a Brock app, drawn with
+*Relic of the Past* (RotP) ports *A Link to the Past*: a Brock app, drawn with
 Tessera, the game's own code in its own packages.
 
 **Ki** (機 / き, "kee") is the occasion or impetus that makes something happen, the right moment:
