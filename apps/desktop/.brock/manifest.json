@@ -1,21 +1,21 @@
 {
-  "brock": "0.120.0",
-  "generatedAt": "2026-11-04T08:38:05.989Z",
+  "brock": "0.120.1",
+  "generatedAt": "2026-11-04T10:16:51.248Z",
   "modules": [
     {
       "id": "display",
       "package": "@drizztdourden08/brock-display",
-      "version": "0.120.0"
+      "version": "0.120.1"
     },
     {
       "id": "port-kit",
       "package": "@drizztdourden08/brock-port-kit",
-      "version": "0.120.0"
+      "version": "0.120.1"
     },
     {
       "id": "input",
       "package": "@drizztdourden08/brock-input",
-      "version": "0.120.0"
+      "version": "0.120.1"
     }
   ]
 }
