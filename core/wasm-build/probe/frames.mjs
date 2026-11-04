@@ -15,7 +15,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 
 // JSPI is behind a flag in Node 24's V8: re-run this file with it
 if (!process.execArgv.includes('--experimental-wasm-jspi')) {
-  const r = spawnSync(process.execPath, ['--experimental-wasm-jspi', fileURLToPath(import.meta.url), ...process.argv.slice(2)], { stdio: 'inherit' });
+  const r = spawnSync(process.execPath, ['--experimental-wasm-jspi', fileURLToPath(import.meta.url), ...process.argv.slice(2)], { stdio: 'inherit', windowsHide: true });
   process.exit(r.status ?? 1);
 }
 

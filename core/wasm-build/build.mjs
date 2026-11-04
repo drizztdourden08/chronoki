@@ -75,7 +75,7 @@ const emcc = (args, env) => {
   writeFileSync(rsp, `${args.map((a) => escapeArg(a.replace(/\\/g, '/'))).join('\n')}\n`);
   const cmd = isWin ? process.env.COMSPEC || 'cmd.exe' : 'emcc';
   const spawnArgs = isWin ? ['/c', 'emcc', `@${rsp}`] : [`@${rsp}`];
-  const result = spawnSync(cmd, spawnArgs, { stdio: 'inherit', env });
+  const result = spawnSync(cmd, spawnArgs, { stdio: 'inherit', env, windowsHide: true });
   rmSync(rspDir, { recursive: true, force: true });
   return result.status ?? 1;
 };
@@ -146,7 +146,7 @@ const deliverToApp = () => {
     console.warn(`warning: ${kitBelthasar} is missing, ck_kit.json not emitted (--belthasar <dir>)`);
     return;
   }
-  const kit = spawnSync(process.execPath, ['packages/asset-extraction/src/cli/kit-json.ts', '--belthasar', kitBelthasar, '--out', join(outApp, 'ck_kit.json')], { stdio: 'inherit', cwd: root });
+  const kit = spawnSync(process.execPath, ['packages/asset-extraction/src/cli/kit-json.ts', '--belthasar', kitBelthasar, '--out', join(outApp, 'ck_kit.json')], { stdio: 'inherit', cwd: root, windowsHide: true });
   if (kit.status !== 0) console.warn(`warning: kit-json exited with ${kit.status}, ck_kit.json not emitted`);
 };
 
@@ -156,7 +156,7 @@ const main = () => {
     process.exit(1);
   }
   const emsdk = findEmsdk();
-  const haveEmccOnPath = !emsdk && spawnSync(isWin ? 'where' : 'which', ['emcc'], { stdio: 'ignore' }).status === 0;
+  const haveEmccOnPath = !emsdk && spawnSync(isWin ? 'where' : 'which', ['emcc'], { stdio: 'ignore', windowsHide: true }).status === 0;
   if (!emsdk && !haveEmccOnPath) {
     console.error('emcc not found: pass --emsdk <dir> (or set CHRONOKI_EMSDK), or put emcc on PATH');
     process.exit(1);
