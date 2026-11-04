@@ -15,6 +15,7 @@ const belthasar = belthasarCandidates.find((d) => existsSync(join(d, 'CMakeLists
 const replaced = new Set([
   'src/present.c', 'src/present_vk.c', 'src/settings.c', 'src/touchpad.c', 'src/launcher.c', 'src/launcher_ui_stub.c',
   'src/launcher_ui.cpp', 'src/overlay.cpp', 'src/android.c', 'src/viewer.c',
+  'src/sound/coro.c', // ucontext coroutines: coro_wasm.c, on JSPI (docs/p3-findings.md, unknown 1)
 ]);
 
 const cmake = () => readFileSync(join(belthasar, 'CMakeLists.txt'), 'utf8');
@@ -64,7 +65,7 @@ const oracleSources = () => {
 
 const reconnectSources = [
   'sdl_clock.c', 'sdl_events.c', 'sdl_window.c', 'sdl_audio.c', 'sdl_gamecontroller.c',
-  'present_reconnect.c', 'settings_reconnect.c', 'touchpad_reconnect.c', 'launcher_reconnect.c',
+  'present_reconnect.c', 'settings_reconnect.c', 'touchpad_reconnect.c', 'launcher_reconnect.c', 'coro_wasm.c',
 ].map((f) => join(root, 'core', 'reconnect', f));
 
 const hostSources = ['ck_api.c', 'ck_loop.c'].map((f) => join(here, f));
