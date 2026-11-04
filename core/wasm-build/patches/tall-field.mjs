@@ -97,7 +97,7 @@ const TALL_PATCHES = [
    'static const uint8_t* ckTallWrap(const uint8_t* pic, int w, int* h);   /* ChronoKi tall (ck_tall_host.inc) */\n'
    + 'static void hostUpload(CtPresenter* pr, const uint8_t* pic, int w, int h) {\n  pic = ckTallWrap(pic, w, &h);\n  CtPresentSetPicSize(pr, w, h);', 1],
   ['static void hostUploadPictureAt(CtPresenter* pr, const uint8_t* fb, int w, int t, int interp) {\n',
-   '#include "ck_tall_host.inc"\n'
+   '#include "ck_tall_host.inc"\n#include "ck_tall_ow.inc"\n'
    + 'static void hostUploadPictureAt(CtPresenter* pr, const uint8_t* fb, int w, int t, int interp) {\n  g_ckUpT = t;   /* ChronoKi tall */\n', 1],
   ['static void hostPresentMot(CtPresenter* pr, const uint8_t* fb, int w, int motion) {\n  static int frameNo = INT_MIN;\n',
    'static void hostPresentMot(CtPresenter* pr, const uint8_t* fb, int w, int motion) {\n  static int frameNo = INT_MIN;\n  ckTallPresentBegin();   /* ChronoKi tall */\n', 1],
@@ -136,10 +136,22 @@ const TALL_PATCHES = [
   ['free(front); free(pmask);', 'free(ckFront0); free(ckPmask0);', 1],
   // T3: the battle
   [BATTLE, BATTLE + BATTLE_TALL, 1],
+  // T2: the overworld
+  [OW_PROTO, `static int g_owBandDy = 0, g_owY0 = 0, g_owY1 = CAMH;   /* ChronoKi tall: a band compose (ck_tall_ow.inc) */\n${OW_PROTO}`, 1],
+  [OW_ROW, OW_ROW.replace('y - P->y', 'y + g_owBandDy - P->y'), 1],
+  [OW_LATCH, `${OW_LATCH}  if (g_owBandDy) hdmaEn = 0;   /* ChronoKi tall: HDMA's tables cover the 224 lines */\n`, 1],
+  [OW_LOOP_BG, OW_LOOP_BG.replace('(int y = 0; y < CAMH; y++) {', OW_LOOP), 1],
+  [OW_LOOP_OBJ, OW_LOOP_OBJ.replace('(int y = 0; y < CAMH; y++) {', OW_LOOP).replace('if (X0 > 0) worldObjLinePieces(', 'if (X0 > 0 || g_owBandDy) worldObjLinePieces('), 1],
+  [OW_LOOP_CLOUD, OW_LOOP_CLOUD.replace('(int y = 0; y < CAMH; y++) {', OW_LOOP), 1],
+  [OW_LOOP_FIX, OW_LOOP_FIX.replace('(int y = 0; y < CAMH; y++) {', OW_LOOP), 1],
+  [OW_WIN1, '  if (!g_owBandDy) owWindow1Pass(w, fb, owSubFb, W, X0);\n}', 1],
+  [OW_MOT, OW_BANDS + OW_MOT, 1],
+  [OW_PRESENT, `        if (ckOwBands) { ckTallWipe(); ckBandEnd(owBri); }   /* ChronoKi tall */\n${OW_PRESENT}`, 1],
 ];
 
 // world.c: the overworld's uncut OBJ pieces kept up to the band rows (they are what the band composes draw)
 const WORLD_PATCHES = [
+  ['wy >= -15 && wy <= 223 && g_owWideN', 'wy >= -15 - ck_tall_rows() && wy <= 223 + ck_tall_rows() && g_owWideN', 1],
 ];
 
 const occurrences = (text, find) => (find ? text.split(find).length - 1 : 0);
