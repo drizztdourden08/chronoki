@@ -1,9 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import { inflate } from './steam-archive';
 import type { Rgba } from './steam-image.type';
-
-const PNG_MAGIC = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
-const CHANNELS: Record<number, number> = { 0: 1, 2: 3, 3: 1, 6: 4 };
+import { PNG_MAGIC, CHANNELS } from './steam-image.constants';
 
 const unfilter = (raw: Uint8Array, w: number, h: number, ch: number): Uint8Array[] => {
   const stride = w * ch;

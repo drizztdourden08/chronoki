@@ -3,9 +3,7 @@ import { PackError } from '../pack-error';
 import type { PackToken } from '../pack.type';
 import { unescape } from './unescape';
 import type { DefineMap } from './expr.type';
-
-const PREC: string[][] = [['|'], ['^'], ['&'], ['<<', '>>'], ['+', '-'], ['*', '/', '%']];
-const MAX_DEPTH = 50;
+import { PREC, MAX_DEPTH } from './expr.constants';
 
 const applyOp = (op: string, v: bigint, r: bigint): bigint => {
   if (op === '|') return v | r;

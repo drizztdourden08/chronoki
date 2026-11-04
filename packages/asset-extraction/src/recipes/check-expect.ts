@@ -1,9 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { RecipeExpect } from './recipe.type';
-
-const WRAM_BYTES = 0x20000;
-const WRAM_AT_IN_PAYLOAD = 69;
-const CTLS_WRAP_BYTES = 16;
+import { WRAM_BYTES, WRAM_AT_IN_PAYLOAD, CTLS_WRAP_BYTES } from './check-expect.constants';
 
 const hex = (v: number, digits: number): string => v.toString(16).toUpperCase().padStart(digits, '0');
 

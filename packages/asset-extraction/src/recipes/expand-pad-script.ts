@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-const GROUP = /\(([^()]*)\)\*(\d+)/;
+import { GROUP } from './expand-pad-script.constants';
 
 const expandPadScript = (script: string): string => {
   let out = script;

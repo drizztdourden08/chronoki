@@ -2,9 +2,7 @@
 import { PackError } from '../pack-error';
 import type { PackToken } from '../pack.type';
 import type { LexToken } from './lex-token.type';
-
-const TOKEN =
-  /(?<ws>\s+)|(?<num>0[xX][0-9A-Fa-f]+[uUlL]*|\d+[uUlL]*)|(?<id>[A-Za-z_]\w*)|(?<str>"(?:[^"\\\n]|\\.)*")|(?<chr>'(?:[^'\\\n]|\\.)+')|(?<op><<|>>|[{}[\]();,=*+\-/%&|^~!?:.<>])/y;
+import { TOKEN } from './lexer.constants';
 
 const matchAt = (text: string, at: number): { kind: string; text: string } | null => {
   TOKEN.lastIndex = at;

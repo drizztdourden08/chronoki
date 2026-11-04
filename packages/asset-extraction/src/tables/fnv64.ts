@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-const FNV_OFFSET = 0xcbf29ce484222325n;
-const FNV_PRIME = 0x100000001b3n;
+import { FNV_OFFSET, FNV_PRIME } from './fnv64.constants';
+
 const encoder = new TextEncoder();
 
 const fnv64 = (text: string): bigint => {

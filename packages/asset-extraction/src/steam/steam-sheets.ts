@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import { readEntry } from './steam-archive';
 import type { SteamArchive, SteamFiles } from './steam-archive.type';
+import { MULTI_PAGES } from './steam-sheets.constants';
 
 const chipSet = async (archive: SteamArchive, files: SteamFiles, s: number): Promise<Uint8Array | null> => {
   const e = files.get(`Game/field/map_bin/cg${s}.bin`);
@@ -31,8 +32,6 @@ const pixelSheet = async (archive: SteamArchive, files: SteamFiles, name: string
   const ok = d.length >= 8 && dv.getUint32(0, true) === 256 && dv.getUint32(4, true) === 256 && d.length >= 8 + 65536;
   return ok ? d.slice(8, 8 + 65536) : null;
 };
-
-const MULTI_PAGES: Record<number, number> = { 0x6b: 3, 0xa5: 2, 0x1db: 2 };
 
 const sheetPages = (loc: number): [number, string][] => {
   const count = MULTI_PAGES[loc];

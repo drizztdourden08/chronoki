@@ -1,9 +1,7 @@
 /* @layer shared-placeholder @kind barrel */
 import type { PackagePlaceholder } from './placeholder.type';
+export { PLACEHOLDER } from './index.constants';
 
-const PLACEHOLDER: PackagePlaceholder = { name: '@chronoki/asset-extraction', ready: false };
-
-export { PLACEHOLDER };
 export type { PackagePlaceholder };
 
 export { buildPack } from './tables/build-pack';
@@ -14,7 +12,7 @@ export { NATIVE64_ABI, WASM32_ABI } from './tables/table-abi.constants';
 export { createImportContext } from './pipeline/create-import-context';
 export { createMemWorkStore } from './pipeline/mem-work-store';
 export { runPipeline } from './pipeline/run-pipeline';
-export { STAGES, STEP_TOTAL } from './pipeline/stages';
+export { STAGES, STEP_TOTAL } from './pipeline/stages.constants';
 export { loadRom } from './rom/load-rom';
 export { createWasmOracle } from './oracle/wasm/wasm-oracle';
 export { createWasmInstantiator } from './oracle/wasm/wasm-instantiator';

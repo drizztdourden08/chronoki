@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { createCtasBuilder } from '../ctas/ctas-builder';
-import { ASSETS_PATH } from '../pipeline/setup-runners';
+import { ASSETS_PATH } from '../pipeline/setup-paths.constants';
 import type { StageRun } from '../pipeline/stage.type';
 import { buildPackTables } from './build-pack-tables';
 import { PACKERS } from './packers';

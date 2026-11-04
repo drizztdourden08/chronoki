@@ -3,8 +3,7 @@ import { readEntry } from './steam-archive';
 import type { SteamArchive, SteamFiles } from './steam-archive.type';
 import { sheetPages } from './steam-sheets';
 import type { Metatile, Margin } from './steam-margins.type';
-
-const LOCATIONS = 0x200;
+import { LOCATIONS } from './steam-margins.constants';
 
 const u16s = (b: Uint8Array): Uint16Array => {
   const out = new Uint16Array(b.length >> 1);

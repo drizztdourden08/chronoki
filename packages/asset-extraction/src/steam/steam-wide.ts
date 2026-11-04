@@ -7,8 +7,7 @@ import type { SteamArchive, SteamFiles } from './steam-archive.type';
 import { readMargins } from './steam-margins';
 import type { Margin } from './steam-margins.type';
 import { chipSet, pixelSheet, steamPalette } from './steam-sheets';
-
-const SPECIAL = ['Game/special/into_lavos/40_kokscr_ext.png'];
+import { SPECIAL } from './steam-wide.constants';
 
 const specials = async (archive: SteamArchive, files: SteamFiles) => {
   const out = [];

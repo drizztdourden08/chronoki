@@ -11,9 +11,8 @@ import type { BuiltTable, PackDefine, PackTable } from './pack.type';
 import { createStringPool } from './string-pool';
 import type { TableAbi } from './table-abi.type';
 import type { PackInput } from './build-pack.type';
+import { FORMAT_VERSION, LITTLE_ENDIAN } from './build-pack.constants';
 
-const FORMAT_VERSION = 1;
-const LITTLE_ENDIAN = 1;
 const encoder = new TextEncoder();
 
 const layoutOf = (t: PackTable): string => `${t.name}=${describeType(t.ctype)}`;

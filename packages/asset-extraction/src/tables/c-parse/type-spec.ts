@@ -5,9 +5,7 @@ import { PackError } from '../pack-error';
 import type { PackToken } from '../pack.type';
 import { SCALAR_TYPES } from '../scalars.constants';
 import type { ParseEnv } from './type-spec.type';
-
-const SCALAR_WORDS = ['unsigned', 'signed', 'char', 'short', 'int'];
-const UNSUPPORTED_WORDS = ['long', 'float', 'double', '_Bool', 'bool'];
+import { SCALAR_WORDS, UNSUPPORTED_WORDS } from './type-spec.constants';
 
 const isCharScalar = (t: CType): boolean => t.tag === 'scalar' && t.kind === 'c8';
 

@@ -1,18 +1,11 @@
 /* @layer shared-asset-extraction @kind logic */
 import { u16 } from '../extract/rom-read';
+import { LOC_RECORDS, TILESET_LISTS, MAP_PTRS, ASM_PTRS, ASM3_PTRS, TS_PTRS, SCRIPT_PTRS, SEQ_TABLE } from './closure-locations.constants';
 
 const ptr24 = (rom: Uint8Array, at: number): number | null => {
   const bank = rom[at + 2] as number;
   return bank < 0xc0 ? null : ((bank - 0xc0) << 16) | u16(rom, at);
 };
-
-const LOC_RECORDS = 0x360000;
-const TILESET_LISTS = 0x361c00;
-const MAP_PTRS = 0x361e00;
-const ASM_PTRS = 0x362100;
-const ASM3_PTRS = 0x3621c0;
-const TS_PTRS = 0x362220;
-const SCRIPT_PTRS = 0x3cf9f0;
 
 const locationIndices = (rom: Uint8Array) => {
   const ts = new Set<number>();
@@ -57,8 +50,6 @@ const locationStreams = (rom: Uint8Array): Map<string, Set<number>> => {
     ['location scripts', streamsOf(rom, SCRIPT_PTRS, scripts)],
   ]);
 };
-
-const SEQ_TABLE = 0x3e0000;
 
 const sequenceStreams = (rom: Uint8Array): Map<string, Set<number>> => {
   let first = Infinity;

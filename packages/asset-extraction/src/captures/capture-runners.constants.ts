@@ -1,4 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind constants */
 import type { StageRun } from '../pipeline/stage.type';
 import { ctNameMsgStage, ctNameWinStage } from './ct-name';
 import { ctWindowStage } from './ct-window';

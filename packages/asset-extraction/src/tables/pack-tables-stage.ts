@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { TABLES_PATH } from '../pipeline/setup-runners';
+import { TABLES_PATH } from '../pipeline/setup-paths.constants';
 import type { StageRun } from '../pipeline/stage.type';
 import { buildPack, layoutOf } from './build-pack';
 import { createHeaders } from './c-parse/headers';

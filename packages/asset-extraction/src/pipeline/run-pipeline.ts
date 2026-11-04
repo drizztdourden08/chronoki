@@ -4,7 +4,7 @@ import { createLimiter } from './limit';
 import { planGroups } from './plan-groups';
 import type { ProgressEvent, ProgressKind, ProgressSink } from './progress.type';
 import { GROUP_PLAN } from './stage-groups.constants';
-import { STAGES } from './stages';
+import { STAGES } from './stages.constants';
 import type { ImportStage } from './stage.type';
 import type { PipelineResult } from './run-pipeline.type';
 

@@ -4,11 +4,7 @@ import type { PeekDump } from '../oracle/peek.type';
 import type { StageRun } from '../pipeline/stage.type';
 import { cgramOf, runTool } from './capture-io';
 import { cgramWords, decode16, sprFrames } from './ow-decode16';
-
-const GULL_NAMES = [0x1ca, 0x1cc, 0x1ce];
-const GULL_PAL = (0xba >> 1) & 7;
-const BALLOON_FRAME = 625;
-const EXPL = [0x00, 0x02, 0x04, 0x06, 0x08];
+import { GULL_NAMES, GULL_PAL, BALLOON_FRAME, EXPL } from './ow-sprites.constants';
 
 const key = (px: Uint8Array): string => String.fromCharCode(...px);
 

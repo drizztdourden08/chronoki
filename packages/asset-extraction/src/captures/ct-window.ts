@@ -2,12 +2,9 @@
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import type { StageRun } from '../pipeline/stage.type';
 import { rgbOfFb } from './capture-io';
+import { TOP, LIFT_X, LIFT_Y, PERIOD } from './ct-window.constants';
 
 const H = 80;
-const TOP = 16;
-const LIFT_X: [number, number] = [5, 8];
-const LIFT_Y: [number, number] = [8, 33];
-const PERIOD = 32;
 
 const ctWindowStage: StageRun = async (ctx) => {
   const state = await recipeState(ctx, 'name_mom_box');

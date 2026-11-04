@@ -2,8 +2,7 @@
 import { NATIVE64_ABI } from '../tables/table-abi.constants';
 import type { ImportContext } from './import-context.type';
 import { createMemWorkStore } from './mem-work-store';
-
-const DEFAULT_OUT_DIR = 'build/player';
+import { DEFAULT_OUT_DIR } from './create-import-context.constants';
 
 const createImportContext = (rom: Uint8Array, overrides: Partial<ImportContext> = {}): ImportContext => ({
   rom,
@@ -17,4 +16,4 @@ const createImportContext = (rom: Uint8Array, overrides: Partial<ImportContext> 
   ...overrides,
 });
 
-export { createImportContext, DEFAULT_OUT_DIR };
+export { createImportContext };

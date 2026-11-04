@@ -5,9 +5,7 @@ import { createHeaders } from './c-parse/headers';
 import type { Headers } from './c-parse/headers.type';
 import { PackError } from './pack-error';
 import type { TableAbi } from './table-abi.type';
-
-const SHAPE_MARK = '/* SHAPE of a generated file';
-const BASE_HEADER = 'battle_anim.h';
+import { SHAPE_MARK, BASE_HEADER } from './pack-headers.constants';
 
 const parseOrder = (names: string[]): string[] => [...names].sort().sort((a, b) => Number(a !== BASE_HEADER) - Number(b !== BASE_HEADER));
 

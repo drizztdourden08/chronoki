@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { CAPTURE_RUNNERS } from '../captures/capture-runners';
+import { CAPTURE_RUNNERS } from '../captures/capture-runners.constants';
 import type { StageRun } from '../pipeline/stage.type';
 import { requireBytes, writeText } from '../pipeline/work-files';
 import { genAnimengPc } from './animeng-pc';

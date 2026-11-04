@@ -2,9 +2,7 @@
 import type { OracleResult } from '../oracle/oracle-driver.type';
 import type { WorkStore } from '../pipeline/work-store.type';
 import { readText, writeText } from '../pipeline/work-files';
-
-const RECIPE_DIR = 'build/recipes';
-const SRAM_BYTES = 8192;
+import { RECIPE_DIR, SRAM_BYTES } from './recipe-store.constants';
 
 const statePath = (name: string): string => `${RECIPE_DIR}/${name}.state`;
 const keyPath = (name: string): string => `${RECIPE_DIR}/${name}.key`;
@@ -24,4 +22,4 @@ const writeCached = async (work: WorkStore, name: string, key: string, result: O
   await writeText(work, keyPath(name), key);
 };
 
-export { RECIPE_DIR, readCached, sidecarPath, sramOf, statePath, writeCached };
+export { readCached, sidecarPath, sramOf, statePath, writeCached };
