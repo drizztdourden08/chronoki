@@ -1,13 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
-/** Random access to the player's Steam `resources.bin` (the host opens the file; it can be larger than memory). */
 interface SteamArchive {
   read: (offset: number, length: number) => Promise<Uint8Array>;
 }
 
-/** An entry of the archive's directory: [file offset, stored size]. */
 type SteamFiles = Map<string, [number, number]>;
 
-/** steam_wide.py _keystream_xor: a block XORed with an LCG keystream seeded by the block's file offset. */
 const keystreamXor = (data: Uint8Array, seed: number): Uint8Array => {
   const out = new Uint8Array(data.length);
   let n = (0x19000000 + seed) >>> 0;
@@ -18,13 +15,11 @@ const keystreamXor = (data: Uint8Array, seed: number): Uint8Array => {
   return out;
 };
 
-/** Inflates a gzip (the archive's blocks) or zlib (PNG) stream. */
 const inflate = async (data: Uint8Array, format: 'gzip' | 'deflate'): Promise<Uint8Array> => {
   const stream = new Blob([new Uint8Array(data)]).stream().pipeThrough(new DecompressionStream(format));
   return new Uint8Array(await new Response(stream).arrayBuffer());
 };
 
-/** steam_wide.py _block: the big-endian length, then the gzip, of the XORed block at `off`. */
 const readBlock = async (archive: SteamArchive, off: number, size: number): Promise<Uint8Array> => {
   const d = keystreamXor(await archive.read(off, size), off);
   const length = new DataView(d.buffer, d.byteOffset, 4).getUint32(0, false);
@@ -34,7 +29,6 @@ const readBlock = async (archive: SteamArchive, off: number, size: number): Prom
 const readEntry = (archive: SteamArchive, entry: [number, number]): Promise<Uint8Array> =>
   readBlock(archive, entry[0], entry[1]);
 
-/** steam_wide.py directory(): the ARC1 header, then the gzip block of (name offset, file offset, size) records. */
 const readDirectory = async (archive: SteamArchive): Promise<SteamFiles> => {
   const h = keystreamXor(await archive.read(0, 16), 0);
   if (String.fromCharCode(...h.subarray(0, 4)) !== 'ARC1') {

@@ -6,7 +6,6 @@ interface StageBatch {
   stages: ImportStage[];
 }
 
-/** Consecutive stages of one group become one batch; the group plan says whether the batch runs side by side. */
 const planGroups = (stages: ImportStage[]): StageBatch[] => {
   const batches: StageBatch[] = [];
   for (const s of stages) {

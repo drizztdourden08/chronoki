@@ -2,10 +2,6 @@
 import { stage } from '../stage-def';
 import type { StageDef } from '../stage.type';
 
-/**
- * setup.py "extracting the assets -> ct_assets.dat" (progress 10): assets/extract_assets.py build(), whose 24
- * packers run inside this one stage (`extract/`; the CTAS container writer is in `ctas/`).
- */
 const EXTRACT_STAGES: StageDef[] = [
   stage('extract-assets', 'extract', 30, 'ported', '../assets/extract_assets.py build', 'ct_assets.dat (scenes, sprites, scripts, text)', ['compile']),
 ];

@@ -7,11 +7,6 @@ import type { WasmOracle, WasmOracleOptions } from './wasm-oracle.type';
 
 const DEFAULT_TAG = 'chronoki-oracle-wasm';
 
-/**
- * The oracle driver on the WebAssembly build of Belthasar's main.c: each ct.exe invocation of setup.py is one
- * `callMain` on a fresh module instance, with its files staged in MEMFS and its environment in ENV. The module factory is
- * injected, so Electron main and the browser both supply it; `instantiateWasm` lets them share one compiled module.
- */
 const createWasmOracle = (options: WasmOracleOptions): WasmOracle => {
   let rom: Uint8Array | null = null;
   const ct = createCtRunner({

@@ -3,7 +3,6 @@ import { createLeWriter } from '../buffer/le-writer';
 import type { Margin } from './steam-margins';
 import type { Rgba } from './steam-image';
 
-/** A location whose pages name sheets by their index in the file. */
 type ResolvedMargin = Omit<Margin, 'pages'> & { pages: [number, number][] };
 
 interface CtWide {
@@ -16,7 +15,6 @@ interface CtWide {
 
 const byKey = <T>(m: Map<number, T>): [number, T][] => [...m.entries()].sort((a, b) => a[0] - b[0]);
 
-/** steam_wide.py main(): the bytes of ct_wide.dat (CTWD v3, then SPCL, then PALS), all little-endian. */
 const writeCtWide = ({ margins, sets, sheets, specials, palettes }: CtWide): Uint8Array => {
   const o = createLeWriter();
   o.bytes(new TextEncoder().encode('CTWD'));

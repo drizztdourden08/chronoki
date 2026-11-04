@@ -5,11 +5,9 @@ import { statePath } from '../recipes/recipe-store';
 import type { OracleRun } from './oracle-driver.type';
 import type { PeekOracle } from './peek.type';
 
-/** ctgen.recipe(): the state of a recipe, which the replay-recipes stage cached in the workdir. */
 const recipeState = (ctx: ImportContext, name: string): Promise<Uint8Array> =>
   requireBytes(ctx.work, statePath(name));
 
-/** The oracle as the generators drive it: ct.exe --peek, --peekshots, --monitor. */
 const peekOracle = (ctx: ImportContext): PeekOracle => {
   const driver = ctx.oracle as (typeof ctx.oracle & Partial<PeekOracle>) | null;
   if (!driver) throw new Error('this stage needs the oracle: none was given');
@@ -19,7 +17,6 @@ const peekOracle = (ctx: ImportContext): PeekOracle => {
   return driver as PeekOracle;
 };
 
-/** ct.exe --teleport <scene> <tx> <ty> <facing> --from <state> --frames N --out <state>: the teleport recipe step. */
 const teleportState = async (
   ctx: ImportContext,
   parentState: Uint8Array,

@@ -12,7 +12,6 @@ const readText = async (store: WorkStore, path: string): Promise<string | null> 
   return bytes === null ? null : decoder.decode(bytes);
 };
 
-/** A file a stage needs: a clear stop when the stage that makes it did not run (setup.py's `needs`). */
 const requireBytes = async (store: WorkStore, path: string): Promise<Uint8Array> => {
   const bytes = await store.readBytes(path);
   if (bytes === null) throw new Error(`${path} is missing: the stage that makes it did not run`);

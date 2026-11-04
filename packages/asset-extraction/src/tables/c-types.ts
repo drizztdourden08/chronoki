@@ -22,7 +22,6 @@ const makeArray = (elem: CType, n: number): CArray => ({
 
 const roundUp = (value: number, align: number): number => Math.floor((value + align - 1) / align) * align;
 
-/** Natural alignment layout, as the compiler lays a struct out (padding zeroed in the pack). */
 const makeStruct = (members: { name: string; type: CType }[]): CStruct => {
   const fields: CStructField[] = [];
   let offset = 0;
@@ -36,7 +35,6 @@ const makeStruct = (members: { name: string; type: CType }[]): CStruct => {
   return { tag: 'struct', fields, size: roundUp(offset, align), align };
 };
 
-/** The type spelled out for the layout string (members, types, offsets, counts, sizes) the layout hash covers. */
 const describeType = (t: CType): string => {
   if (t.tag === 'scalar') return t.kind;
   if (t.tag === 'pointer') return 'p';
@@ -44,10 +42,8 @@ const describeType = (t: CType): string => {
   return `{${t.fields.map((f) => `${f.name}:${describeType(f.type)}@${f.offset}`).join(';')}}#${t.size}`;
 };
 
-/** A table's element: its type with every array dimension stripped. */
 const elementOf = (t: CType): CType => (t.tag === 'array' ? elementOf(t.elem) : t);
 
-/** The offsets of every pointer inside type t. */
 const pointerOffsets = (t: CType, base = 0): number[] => {
   if (t.tag === 'pointer') return [base];
   if (t.tag === 'array') {

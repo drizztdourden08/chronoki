@@ -1,5 +1,4 @@
 /* @layer shared-asset-extraction @kind logic */
-/** shapes.py strip_comments(): `//` and block comments removed, string and char literals copied whole. */
 const stripComments = (s: string): string => {
   const out: string[] = [];
   const n = s.length;

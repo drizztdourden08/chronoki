@@ -3,11 +3,6 @@ import { createLeWriter } from '../buffer/le-writer';
 import { CTAS_ASSETS_VERSION, CTAS_DIR_ENTRY_BYTES, CTAS_HEADER_BYTES, CTAS_MAGIC } from './ctas.constants';
 import type { CtasBuilder, CtasEntry } from './ctas.type';
 
-/**
- * The CTAS v3 asset container, laid out as extract_assets.build() does: 'CTAS', version, count, the
- * directory of {type, id, offset, length} u32 records, then the blobs back to back (no padding).
- * Stages add entries in any order; the packers' order is the file order.
- */
 const createCtasBuilder = (version: number = CTAS_ASSETS_VERSION): CtasBuilder => {
   const entries: CtasEntry[] = [];
   const add = (type: number, id: number, blob: Uint8Array): void => {

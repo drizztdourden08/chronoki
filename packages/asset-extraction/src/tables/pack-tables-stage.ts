@@ -9,7 +9,6 @@ import { fnv64 } from './fnv64';
 import { PackError } from './pack-error';
 import { parseOrder, parseWorkHeaders } from './pack-headers';
 
-/** The headers' names: every shape under data/ has the generated header it stands for. */
 const headerNames = (ctx: ImportContext): string[] => {
   if (ctx.kit?.shapes === undefined) throw new PackError('the Belthasar kit shapes are needed');
   return Object.keys(ctx.kit.shapes)
@@ -19,7 +18,6 @@ const headerNames = (ctx: ImportContext): string[] => {
 
 const layoutHashes = (hs: Headers): Map<string, bigint> => new Map(hs.tables.map((t) => [t.name, fnv64(layoutOf(t))]));
 
-/** The pack carries the layouts of the real headers; they must be the shapes' layouts (same target width). */
 const checkAgainstShapes = (ctx: ImportContext, names: string[], have: Headers): void => {
   const shapes = ctx.kit?.shapes ?? {};
   const want = createHeaders(ctx.abi);
@@ -31,7 +29,6 @@ const checkAgainstShapes = (ctx: ImportContext, names: string[], have: Headers):
   if (bad.length > 0) throw new PackError(`the headers' layout differs from the shapes: ${bad.join(', ')}`);
 };
 
-/** gen/pack_tables.py pack: src/data/*.h parsed, laid out for ctx.abi, written as build/ct_tables.dat. */
 const packTablesStage: StageRun = async (ctx) => {
   const names = headerNames(ctx);
   const hs = await parseWorkHeaders(ctx.work, names, ctx.abi);

@@ -14,7 +14,6 @@ const matchAt = (text: string, at: number): { kind: string; text: string } | nul
   return { kind, text: m[0] };
 };
 
-/** pack_tables.py lex(): a #define's value as tokens; anything the lexer does not know is an error. */
 const lex = (text: string): PackToken[] => {
   const out: PackToken[] = [];
   let i = 0;
@@ -27,7 +26,6 @@ const lex = (text: string): PackToken[] => {
   return out;
 };
 
-/** A header's code as tokens with spans; a character no token matches is an error (whitespace always matches). */
 const tokenize = (code: string, header: string): LexToken[] => {
   const out: LexToken[] = [];
   let skipped = '';

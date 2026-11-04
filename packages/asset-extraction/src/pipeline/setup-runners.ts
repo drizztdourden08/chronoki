@@ -12,20 +12,17 @@ import { requireBytes } from './work-files';
 const ASSETS_PATH = 'build/ct_assets.dat';
 const TABLES_PATH = 'build/ct_tables.dat';
 
-/** setup.py: load the ROM (header stripped, SHA-1 checked), keep the verified copy in the workdir. */
 const verifyRomStage: StageRun = async (ctx) => {
   ctx.rom = loadRom(ctx.rom);
   await ctx.work.writeBytes(ROM_WORK_PATH, ctx.rom);
   ctx.log(`ROM verified: ${CT_ROM_NAME}, SHA-1 ${CT_ROM_SHA1}`);
 };
 
-/** setup.py: start the oracle on the verified ROM. */
 const oracleStage: StageRun = async (ctx) => {
   if (ctx.oracle === null) throw new Error('no oracle is available');
   await ctx.oracle.boot(ctx.rom);
 };
 
-/** setup.py: replay, side by side, every recipe the generators need (recipes.py make_many). */
 const replayRecipesStage: StageRun = async (ctx) => {
   if (ctx.oracle === null || ctx.kit === null) throw new Error('the oracle and the Belthasar kit sources are needed');
   const recipes = loadRecipes(ctx.kit.recipeTexts);
@@ -41,7 +38,6 @@ const replayRecipesStage: StageRun = async (ctx) => {
   await maker.makeMany(names);
 };
 
-/** setup.py: the container with the packed tables inside, written where the player's files go. */
 const writePlayerAssetsStage: StageRun = async (ctx) => {
   const assets = await requireBytes(ctx.work, ASSETS_PATH);
   const pack = await requireBytes(ctx.work, TABLES_PATH);

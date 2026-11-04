@@ -1,5 +1,4 @@
 /* @layer shared-asset-extraction @kind types */
-/** The C types a generated table can have (pack_tables.py Scalar / Pointer / Array / Struct). */
 interface CScalar {
   tag: 'scalar';
   kind: string;
@@ -8,7 +7,6 @@ interface CScalar {
   signed: boolean;
 }
 
-/** `const char*`: the only pointer a table holds. Its size is the target's (4 on wasm32, 8 on native64). */
 interface CPointer {
   tag: 'pointer';
   size: number;

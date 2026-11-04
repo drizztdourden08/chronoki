@@ -3,19 +3,14 @@ import { PackError } from '../pack-error';
 import type { LexToken } from './lex-token.type';
 
 interface TokenCursor {
-  /** The text of the token k ahead, or null past the end. */
   peek: (k?: number) => string | null;
-  /** The kind of the next token, or null past the end. */
   peekKind: () => string | null;
   take: (want?: string) => LexToken;
   done: () => boolean;
-  /** The offset in the code where the next token starts. */
   nextStart: () => number;
-  /** The offset in the code where the last taken token ends. */
   lastEnd: () => number;
 }
 
-/** pack_tables.py Headers.peek / take over one header's tokens. */
 const createCursor = (toks: LexToken[], header: string): TokenCursor => {
   let p = 0;
   return {

@@ -20,17 +20,11 @@ const applyOp = (op: string, v: bigint, r: bigint): bigint => {
   return op === '/' ? v / r : v % r;
 };
 
-/** A C integer literal: hex, a leading 0 meaning octal, else decimal; u/l suffixes dropped. */
 const numberValue = (s: string): bigint => {
   const digits = s.replace(/[uUlL]+$/, '');
   return /^0\d+$/.test(digits) ? BigInt(`0o${digits.slice(1)}`) : BigInt(digits);
 };
 
-/**
- * pack_tables.py Expr.value(): an integer constant expression over the headers' object-like #defines
- * (C precedence for | ^ & << >> + - * / % ?: and unary - + ~ !), evaluated exactly (arbitrary precision,
- * division truncating toward zero as C's does).
- */
 const evaluateExpr = (defines: DefineMap, toks: PackToken[], context = '', depth = 0): bigint => {
   let i = 0;
   const peek = (): string | null => (i < toks.length ? (toks[i] as PackToken).text : null);

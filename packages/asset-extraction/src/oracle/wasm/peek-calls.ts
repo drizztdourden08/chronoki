@@ -6,7 +6,6 @@ import { tailOf } from './ct-runner';
 import type { CtRunner } from './ct-runner';
 import { OUT_DIR, RAW_OUT, SRAM_IN, STATE_IN, STATE_OUT } from './wasm-paths.constants';
 
-/** What `peek` accepts: the union of the generators' two request shapes (PeekOracle's and OracleTools'). */
 interface PeekArgs {
   state: Uint8Array;
   script: string | null;
@@ -19,14 +18,12 @@ interface PeekArgs {
 const DUMP_EXT = ['', '.wram', '.vram', '.oam'];
 const dumpPaths = (base: string): string[] => DUMP_EXT.map((e) => `${base}${e}`);
 
-/** The four dumps of a run written at `base` (<base> framebuffer, .wram, .vram, .oam); a stop when any is missing. */
 const readDump = (outcome: CtOutcome, base: string, what: string): PeekDump => {
   const [fb, wram, vram, oam] = dumpPaths(base).map((p) => outcome.files[p]);
   if (!fb || !wram || !vram || !oam) throw new Error(`ct.exe ${what} wrote nothing (exit ${outcome.status})\n${tailOf(outcome)}`);
   return { fb, wram, vram, oam };
 };
 
-/** `ct.exe ROM --peek state raw [--btnscript S] [--frames N]` (ctgen.peek); PEEK_SAVE when the state of the last frame is wanted. */
 const peekCall = async (ct: CtRunner, req: PeekArgs): Promise<PeekDump> => {
   const args = ['--peek', STATE_IN, RAW_OUT];
   if (req.script !== null) args.push('--btnscript', req.script);
@@ -43,7 +40,6 @@ const peekCall = async (ct: CtRunner, req: PeekArgs): Promise<PeekDump> => {
   return req.save && state ? { ...dump, state } : dump;
 };
 
-/** peekshots.cut(): the button script cut (or padded with no buttons) to exactly n frames. */
 const cutScript = (script: string, n: number): string => {
   const out: string[] = [];
   let left = n;
@@ -58,7 +54,6 @@ const cutScript = (script: string, n: number): string => {
   return out.join(',');
 };
 
-/** ctlib/peekshots.shots: one `--peek` cut to the last wanted frame, PEEK_SHOTS writing <prefix>_f<n>.raw (+ sidecars) after each. */
 const peekShotsCall = async (ct: CtRunner, req: PeekShotsRequest): Promise<Map<number, PeekDump>> => {
   const at = [...new Set(req.at)].sort((a, b) => a - b);
   const last = at.at(-1) ?? 0;
@@ -74,7 +69,6 @@ const peekShotsCall = async (ct: CtRunner, req: PeekShotsRequest): Promise<Map<n
   return new Map(at.map((n) => [n, readDump(outcome, `${prefix}_f${n}.raw`, `--peek (PEEK_SHOTS frame ${n})`)]));
 };
 
-/** `ct.exe ROM --monitor REGS --from state [--btnscript S] [--frames N]`: the printed lines (the rule only when asked, as the generators ran it). */
 const monitorCall = async (ct: CtRunner, req: MonitorRequest): Promise<string[]> => {
   const args = ['--monitor', req.regions, '--from', STATE_IN];
   if (req.script) args.push('--btnscript', req.script);
@@ -83,7 +77,6 @@ const monitorCall = async (ct: CtRunner, req: MonitorRequest): Promise<string[]>
   return outcome.stdout;
 };
 
-/** `ct.exe ROM --fb raw --frames N` from power-on, PEEK_SAVE for the state, the battery as CT_ORACLE_SRAM. */
 const powerOnCall = async (ct: CtRunner, req: BootRequest): Promise<BootResult> => {
   const outcome = await ct({
     args: ['--fb', RAW_OUT, '--frames', String(req.frames)],

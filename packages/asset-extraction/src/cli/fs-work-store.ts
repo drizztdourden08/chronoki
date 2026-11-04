@@ -5,7 +5,6 @@ import type { WorkStore } from '../pipeline/work-store.type';
 
 const isMissing = (e: unknown): boolean => (e as NodeJS.ErrnoException).code === 'ENOENT';
 
-/** A WorkStore over a folder on disk (paths are relative to it), for the command-line tools. */
 const createFsWorkStore = (root: string): WorkStore => ({
   readBytes: async (path) => {
     try {

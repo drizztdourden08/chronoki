@@ -2,10 +2,6 @@
 import { stage } from '../stage-def';
 import type { StageDef } from '../stage.type';
 
-/**
- * The remaining generators, in setup.py's order (manifest.json, manifest_battle.json, manifest_menu.json): progress
- * 11 to 59. Weight 1 reads only the ROM; weight 6 replays an oracle state. The ported ones are in gen/gen-runners.ts.
- */
 const GENERATE_STAGES: StageDef[] = [
   stage('battle_trig', 'generate', 1, 'ported', 'gen/battle_trig.py', 'battle_trig.h'),
   stage('menu_desc', 'generate', 1, 'ported', 'gen/menu_desc.py', 'menu_desc.h'),

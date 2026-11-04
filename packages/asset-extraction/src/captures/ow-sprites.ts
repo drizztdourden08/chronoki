@@ -12,7 +12,6 @@ const EXPL = [0x00, 0x02, 0x04, 0x06, 0x08];
 
 const key = (px: Uint8Array): string => String.fromCharCode(...px);
 
-/** The gull frames of the --owbirds atlas that are a tile of the gull flap sequence, in the atlas's order, renumbered. */
 const gulls = (birds: Uint8Array, w0Peek: PeekDump): Uint8Array => {
   const cg = cgramWords(cgramOf(w0Peek));
   const tiles = new Map(GULL_NAMES.map((nm) => [key(decode16(w0Peek.vram, cg, nm, GULL_PAL)), nm]));
@@ -25,7 +24,6 @@ const gulls = (birds: Uint8Array, w0Peek: PeekDump): Uint8Array => {
   return Uint8Array.from([keep.length, ...parts.flatMap((p) => [...p])]);
 };
 
-/** The Leene's Square fair sprites: the explosion puffs (palette 1) and the rising bunches (char 0A, palettes 1-3). */
 const balloons = (vram: Uint8Array, cg: number[], base = 0): Uint8Array => {
   const frames: [number, number][] = [...EXPL.map((ch): [number, number] => [ch, 1]), [0x0a, 1], [0x0a, 2], [0x0a, 3]];
   const out: number[] = [frames.length];
@@ -33,7 +31,6 @@ const balloons = (vram: Uint8Array, cg: number[], base = 0): Uint8Array => {
   return Uint8Array.from(out);
 };
 
-/** gen/ow_sprites.py: ow_crono, ow_boat, ow_gulls and ow_balloons (.spr) under saves/, all from the plain oracle. */
 const owSpritesStage: StageRun = async (ctx) => {
   const w0 = await recipeState(ctx, 'ow_nav_w0');
   const tool = async (mode: string, name: string): Promise<Uint8Array> =>

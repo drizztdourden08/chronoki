@@ -18,7 +18,6 @@ interface WriterEnv {
 const isCharArray = (t: CType): boolean => t.tag === 'array' && t.elem.tag === 'scalar' && CHAR_KINDS.includes(t.elem.kind);
 const isAggregate = (t: CType): boolean => t.tag === 'array' || t.tag === 'struct';
 
-/** The sub-objects of an aggregate in initializer order, with their offsets. */
 const subobjects = (t: CType): { type: CType; offset: number }[] => {
   if (t.tag === 'array') return Array.from({ length: t.n }, (_, k) => ({ type: t.elem, offset: k * t.elem.size }));
   if (t.tag === 'struct') return t.fields.map((f) => ({ type: f.type, offset: f.offset }));
@@ -33,10 +32,6 @@ const writeUint = (buf: Uint8Array, off: number, value: bigint, size: number): v
   }
 };
 
-/**
- * pack_tables.py Writer: fills a table's bytes from its parsed initializer the way the compiler lays them out
- * (brace elision counted as C counts it), recording the pointer slots and putting strings in the pool.
- */
 const createInitWriter = (env: WriterEnv) => {
   const err = (message: string): never => {
     throw new PackError(`${env.tableName} (${env.header}): ${message}`);
@@ -66,7 +61,6 @@ const createInitWriter = (env: WriterEnv) => {
     if (!dry) env.buf.set(bytes, off);
   };
 
-  /** Initializes aggregate t from items[i:] without braces of its own; returns the next index. */
   const fill = (t: CType, off: number, items: InitNode[], from: number, dry: boolean): number => {
     let i = from;
     for (const sub of subobjects(t)) {
@@ -105,7 +99,6 @@ const createInitWriter = (env: WriterEnv) => {
   return { fill, braced };
 };
 
-/** The first dimension an open array `T x[] = {...}` gets: the elements its initializer fills. */
 const countElements = (elem: CType, init: InitNode, name: string): number => {
   if (init.kind !== 'list') throw new PackError(`${name}: an open array needs a braced initializer`);
   const dry = createInitWriter({

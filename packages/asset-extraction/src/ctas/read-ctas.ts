@@ -21,7 +21,6 @@ const readDirectory = (data: Uint8Array): CtasDirEntry[] => {
   return dir;
 };
 
-/** pack_tables.py read_pack(): every entry of a CTAS container as (type, id, blob). */
 const readCtas = (data: Uint8Array): CtasEntry[] =>
   readDirectory(data).map((e) => ({ type: e.type, id: e.id, blob: data.slice(e.offset, e.offset + e.length) }));
 

@@ -1,13 +1,11 @@
 /* @layer shared-asset-extraction @kind logic */
 interface StringPool {
-  /** The offset of the string in the pool, added (NUL-terminated) the first time. */
   add: (text: Uint8Array) => number;
   bytes: () => Uint8Array;
 }
 
 const keyOf = (text: Uint8Array): string => Array.from(text, (b) => b.toString(16).padStart(2, '0')).join('');
 
-/** pack_tables.py Pool: each distinct string once, NUL-terminated, addressed by its offset. */
 const createStringPool = (): StringPool => {
   const data: number[] = [];
   const at = new Map<string, number>();

@@ -2,11 +2,9 @@
 
 const c5 = (x: number): number => (x << 3) | (x >> 2);
 
-/** gen/ow_sprites.py words(): the 256 little-endian colour words of a 512-byte CGRAM. */
 const cgramWords = (cg: Uint8Array): number[] =>
   Array.from({ length: 256 }, (_, i) => (cg[i * 2] as number) | ((cg[i * 2 + 1] as number) << 8));
 
-/** gen/ow_sprites.py decode16: a 16x16 OBJ (rows of 16 names, OBSEL name base `base` bytes, second table at +0x2000) -> RGBA. */
 const decode16 = (vram: Uint8Array, cg: number[], name: number, pal: number, base = 0): Uint8Array => {
   const px = new Uint8Array(16 * 16 * 4);
   const v8 = (i: number): number => vram[i] as number;
@@ -29,7 +27,6 @@ const decode16 = (vram: Uint8Array, cg: number[], name: number, pal: number, bas
   return px;
 };
 
-/** gen/ow_sprites.py spr_frames: the atlas's frames as [7-byte header, RGBA pixels]. */
 const sprFrames = (data: Uint8Array): { head: Uint8Array; px: Uint8Array }[] => {
   const out: { head: Uint8Array; px: Uint8Array }[] = [];
   let o = 1;

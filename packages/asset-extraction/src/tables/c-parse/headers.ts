@@ -13,7 +13,6 @@ import type { DefineLog } from './preprocess';
 import { stripComments } from './strip-comments';
 import { createCursor } from './token-cursor';
 
-/** A header's bytes as text: Latin-1 (comments may hold cp1252; literals are checked) with C newlines. */
 const decodeHeader = (bytes: Uint8Array): string => {
   let text = '';
   for (let i = 0; i < bytes.length; i += 4096) text += String.fromCharCode(...bytes.subarray(i, i + 4096));
@@ -24,22 +23,13 @@ interface Headers {
   tables: PackTable[];
   passthrough: DeclSink['passthrough'];
   evalConst: ConstEval;
-  /** The #defines by name (their tokens), shared by every header parsed so far. */
   defines: DefineMap;
-  /** The typedefs by name. */
   typedefs: Map<string, CType>;
-  /** Each header's comment-stripped text, in parse order. */
   texts: Map<string, string>;
-  /** Parses one header's bytes into the shared environment. */
   parseFile: (bytes: Uint8Array, header: string) => void;
-  /** pack_tables.py numeric_defines(): every #define with a value, as an integer. */
   numericDefines: () => PackDefine[];
 }
 
-/**
- * pack_tables.py Headers: every generated header parsed into one environment (the headers share types and
- * #defines: battle_marleatk.h uses battle_anim.h's CtAnimObj). Pointers are laid out for the given target.
- */
 const createHeaders = (abi: TableAbi): Headers => {
   const defines: DefineMap = new Map();
   const log: DefineLog = { defines, order: [] };

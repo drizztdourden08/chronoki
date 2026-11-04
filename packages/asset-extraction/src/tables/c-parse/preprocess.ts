@@ -6,7 +6,6 @@ import { lex } from './lexer';
 
 interface DefineLog {
   defines: DefineMap;
-  /** (header, name) of every #define, in the order the headers met them. */
   order: { header: string; name: string }[];
 }
 
@@ -26,10 +25,6 @@ const recordDefine = (line: string, header: string, log: DefineLog): boolean => 
   return true;
 };
 
-/**
- * The preprocessor lines (a line starting with #, continued by backslash) are recorded and blanked, so the
- * C tokens keep their offsets. Only #define and the guard/include lines are understood.
- */
 const blankDirectives = (text: string, header: string, log: DefineLog): string => {
   const body = text.split('');
   for (const m of text.matchAll(/^[ \t]*#(?:[^\n]*\\\n)*[^\n]*/gm)) {

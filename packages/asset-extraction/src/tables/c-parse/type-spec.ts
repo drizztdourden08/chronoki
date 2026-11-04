@@ -7,7 +7,6 @@ import { SCALAR_TYPES } from '../scalars.constants';
 import type { TableAbi } from '../table-abi.type';
 import type { TokenCursor } from './token-cursor';
 
-/** What the declaration parsers share while one header is parsed. */
 interface ParseEnv {
   cur: TokenCursor;
   header: string;
@@ -21,7 +20,6 @@ const UNSUPPORTED_WORDS = ['long', 'float', 'double', '_Bool', 'bool'];
 
 const isCharScalar = (t: CType): boolean => t.tag === 'scalar' && t.kind === 'c8';
 
-/** pack_tables.py dims(): `[expr]` suffixes; an open `[]` is allowed first, when asked (n comes back 0 and open true). */
 const parseDims = (env: ParseEnv, base: CType, allowOpen = false): { type: CType; open: boolean } => {
   const ns: (number | null)[] = [];
   while (env.cur.peek() === '[') {
@@ -44,7 +42,6 @@ const parseDims = (env: ParseEnv, base: CType, allowOpen = false): { type: CType
   return { type, open: ns[0] === null };
 };
 
-/** pack_tables.py struct_body(): `{ type name[dims], name2; ... }` -> the struct laid out for the target. */
 const parseStructBody = (env: ParseEnv): CType => {
   const { cur } = env;
   cur.take('{');
@@ -73,7 +70,6 @@ const parseStructBody = (env: ParseEnv): CType => {
   return makeStruct(members);
 };
 
-/** pack_tables.py type_spec(): const, an anonymous struct, a typedef name or the integer type words. */
 const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean; anon?: boolean } => {
   const { cur } = env;
   const words: string[] = [];

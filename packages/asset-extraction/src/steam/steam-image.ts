@@ -40,7 +40,6 @@ const unfilter = (raw: Uint8Array, w: number, h: number, ch: number): Uint8Array
   return rows;
 };
 
-/** steam_wide.py _png_rgba: an 8-bit PNG (palette with tRNS, grey, RGB or RGBA; no interlace) as RGBA, or null. */
 const pngRgba = async (data: Uint8Array): Promise<Rgba | null> => {
   if (PNG_MAGIC.some((m, i) => data[i] !== m)) return null;
   const dv = new DataView(data.buffer, data.byteOffset, data.byteLength);
@@ -84,7 +83,6 @@ const pngRgba = async (data: Uint8Array): Promise<Rgba | null> => {
   return { w, h, px };
 };
 
-/** steam_wide.py _halve: back to the SNES's pixels, each 2 x 2 block's most common opaque colour (see-through when most of it is). */
 const halve = ({ w, h, px }: Rgba): Rgba => {
   const out: number[] = [];
   for (let y = 0; y < h - 1; y += 2) {

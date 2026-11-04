@@ -15,7 +15,6 @@ const FORMAT_VERSION = 1;
 const LITTLE_ENDIAN = 1;
 const encoder = new TextEncoder();
 
-/** pack_tables.py Table.layout(): the name and its type spelled out; the loader refuses a pack whose hash differs. */
 const layoutOf = (t: PackTable): string => `${t.name}=${describeType(t.ctype)}`;
 
 const entryHeader = (built: BuiltTable[], defines: PackDefine[], abi: TableAbi): CtasEntry => {
@@ -30,7 +29,6 @@ const entryHeader = (built: BuiltTable[], defines: PackDefine[], abi: TableAbi):
   return { type: T_TABLE_HEADER, id: 0, blob: w.toBytes() };
 };
 
-/** [name len u8][name][pad to 4][size u32][layout hash u64][reloc count u32][reloc offsets u32 x n][the bytes]. */
 const entryTable = (b: BuiltTable, id: number): CtasEntry => {
   const name = encoder.encode(b.table.name);
   const w = createLeWriter();
@@ -64,7 +62,6 @@ interface PackInput {
   abi: TableAbi;
 }
 
-/** Writes one table's bytes; a pointer the initializer left out is NULL (all ones, pointer-wide). */
 const buildTable = (t: PackTable, input: PackInput, pool: ReturnType<typeof createStringPool>): BuiltTable => {
   const buf = new Uint8Array(t.ctype.size);
   const relocs: number[] = [];
@@ -75,7 +72,6 @@ const buildTable = (t: PackTable, input: PackInput, pool: ReturnType<typeof crea
   return { table: t, data: buf, relocs: pointerOffsets(t.ctype) };
 };
 
-/** pack_tables.py build_pack(): the table pack (a CTAS container of the four table entry types). */
 const buildPack = (input: PackInput): { pack: Uint8Array; built: BuiltTable[] } => {
   const pool = createStringPool();
   const sorted = [...input.tables].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));

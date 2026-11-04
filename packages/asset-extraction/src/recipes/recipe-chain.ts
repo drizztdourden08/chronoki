@@ -1,7 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { Recipe, RecipeSet } from './recipe.type';
 
-/** recipes.py chain(): the recipes from the root to `name`. */
 const chainOf = (recipes: RecipeSet, name: string): Recipe[] => {
   const seq: Recipe[] = [];
   const seen = new Set<string>();
@@ -17,7 +16,6 @@ const chainOf = (recipes: RecipeSet, name: string): Recipe[] => {
   return seq.reverse();
 };
 
-/** recipes.py deps_of(): the recipes `name` needs built first, its parent and the recipes its `sram` steps boot from. */
 const depsOf = (recipes: RecipeSet, name: string): string[] => {
   const r = recipes.get(name);
   if (!r) throw new Error(`recipes: no recipe ${name}`);
@@ -25,7 +23,6 @@ const depsOf = (recipes: RecipeSet, name: string): string[] => {
   return [...(r.from ? [r.from] : []), ...sram];
 };
 
-/** The names to build for `names`: each and every recipe under them (make_many's `need`). */
 const closureOf = (recipes: RecipeSet, names: string[]): Set<string> => {
   const need = new Set<string>();
   const todo = [...names];

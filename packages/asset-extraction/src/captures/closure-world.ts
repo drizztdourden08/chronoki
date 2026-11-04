@@ -8,13 +8,11 @@ const C6 = 0x060000;
 const FF = 0x3f0000;
 const D1 = 0x110000;
 const CD = 0x0d0000;
-/** The sprite records: the PCs' and NPCs' (5 bytes) and the enemies' (10 bytes), as [base, stride, count]. */
 const SPRITE_RECS: [number, number, number][] = [
   [E4 + 0xf000, 5, Math.floor((0xf600 - 0xf000) / 5)],
   [E4 + 0xf600, 10, Math.floor((0xffe0 - 0xf600) / 10)],
 ];
 
-/** rom_closure.py sprite_streams: every gfx pointer the sprite records name (through the meta at $E4:FFE0). */
 const spriteStreams = (rom: Uint8Array): Map<string, Set<number>> => {
   const gfxTable = E4 + u16(rom, E4 + 0xffe0);
   const gfx = new Set<number>();
@@ -27,13 +25,11 @@ const spriteStreams = (rom: Uint8Array): Map<string, Set<number>> => {
   return new Map([['sprite sheets ($E4:FFE0 gfx table)', out]]);
 };
 
-/** rom_closure.py menu_streams: the exchange's BG3 characters. */
 const menuStreams = (): Map<string, Set<number>> => new Map([['menu LZ streams', new Set([FF + 0xe8dc])]]);
 
 const WORLD_PACKET_TABLES = [0xfdf0, 0xfe20, 0xfea0, 0xff00, 0xff20, 0xff40, 0xff80, 0xffa0, 0xffc0, 0xffe0, 0x10000];
 const GAUGE_PACKETS: [number, number][] = [[0, 0xc3], [1, 0xc6], [2, 0xc6]];
 
-/** rom_closure.py world_streams: every world packet the ten pointer tables name, and the time gauge's three. */
 const worldStreams = (rom: Uint8Array): Map<string, Set<number>> => {
   const packets = new Set<number>();
   for (let k = 0; k + 1 < WORLD_PACKET_TABLES.length; k += 1) {
@@ -51,7 +47,6 @@ const worldStreams = (rom: Uint8Array): Map<string, Set<number>> => {
   ]);
 };
 
-/** rom_closure_battle.py stage_cfgs: the $987E index of every anim config a battle action can stage, with the word table it reads. */
 const effectFrameStreams = (rom: Uint8Array): Set<number> => {
   const out = new Set<number>();
   const add = (t1: number, idx: number): void => void out.add(D1 + u16(rom, t1 + 2 * idx));
@@ -67,7 +62,6 @@ const effectFrameStreams = (rom: Uint8Array): Set<number> => {
   return out;
 };
 
-/** rom_closure_battle.py stage_streams. */
 const stageStreams = (rom: Uint8Array): Map<string, Set<number>> =>
   new Map([['battle effect frames ($D1 words, C1/486A)', effectFrameStreams(rom)]]);
 

@@ -7,7 +7,6 @@ import { owSpritesStage } from './ow-sprites';
 import { owWorldStage } from './ow-world';
 import { animOpLenStage, sndTimingStage } from './simple-tools';
 
-/** The runners of the capture stages of the second half of P4 (captures.stages.ts). */
 const CAPTURE_RUNNERS: Record<string, StageRun> = {
   snd_timing: sndTimingStage,
   anim_oplen: animOpLenStage,

@@ -4,7 +4,6 @@ import { locationStreams, sequenceStreams } from './closure-locations';
 import { menuStreams, spriteStreams, stageStreams, worldStreams } from './closure-world';
 import { runTool } from './capture-io';
 
-/** gen/lz_pack.py SOURCES: each a closure over the ROM's own pointer tables, {what: stream offsets}. */
 const sources = (rom: Uint8Array): Map<string, Set<number>>[] => [
   locationStreams(rom),
   sequenceStreams(rom),
@@ -14,7 +13,6 @@ const sources = (rom: Uint8Array): Map<string, Set<number>>[] => [
   stageStreams(rom),
 ];
 
-/** build/lz_pack.list: the comment line and every offset, sorted and unique, as %06X lines. */
 const lzList = (rom: Uint8Array): string => {
   const per: string[] = [];
   const offs = new Set<number>();
@@ -28,7 +26,6 @@ const lzList = (rom: Uint8Array): string => {
   return `# tools/gen/lz_pack.py: ${per.join(', ')}\n${lines.join('')}`;
 };
 
-/** saves/lz_pack.bin (and .skipped): the LZ streams the game decompresses at run time (ct.exe --lzpack). */
 const lzPackStage: StageRun = async (ctx) => {
   const list = new TextEncoder().encode(lzList(ctx.rom));
   await ctx.work.writeBytes('build/lz_pack.list', list);

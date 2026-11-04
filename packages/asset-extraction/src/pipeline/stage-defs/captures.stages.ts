@@ -2,7 +2,6 @@
 import { stage } from '../stage-def';
 import type { StageDef } from '../stage.type';
 
-/** The generators marked "stage": "assets": the captures ct_assets.dat packs (progress 2 to 9). */
 const CAPTURE_STAGES: StageDef[] = [
   stage('snd_timing', 'captures', 6, 'ported', 'gen/snd_timing.py', 'snd_timing.bin', ['oracle']),
   stage('anim_oplen', 'captures', 1, 'ported', 'gen/anim_oplen.py', 'anim_oplen.bin', ['oracle']),

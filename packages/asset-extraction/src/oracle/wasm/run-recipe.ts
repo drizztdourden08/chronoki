@@ -7,10 +7,6 @@ import { RAW_OUT, SRAM_IN, STATE_IN, STATE_OUT } from './wasm-paths.constants';
 
 const SIDECARS = ['wram', 'vram', 'oam'] as const;
 
-/**
- * recipes.py _build: the steps one after the other, each its own ct.exe run from the previous state, the battery
- * (CT_ORACLE_SRAM) for every step. Returns the last step's state and sidecars.
- */
 const runRecipeSteps = async (ct: CtRunner, run: OracleRun): Promise<OracleResult> => {
   let current = run.parentState;
   let result: OracleResult | null = null;

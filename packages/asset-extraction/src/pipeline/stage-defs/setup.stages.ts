@@ -2,7 +2,6 @@
 import { quietStage, stage } from '../stage-def';
 import type { StageDef } from '../stage.type';
 
-/** setup.py main(): the ROM check, the shapes, the oracle (progress 1) and the recipes it replays. */
 const SETUP_STAGES: StageDef[] = [
   quietStage(stage('verify-rom', 'setup', 1, 'ported', 'setup.py main; ctlib/rom.py load, verify', 'ROM verified (Chrono Trigger USA, SHA-1)')),
   quietStage(stage('shapes-install', 'setup', 1, 'ported', 'gen/shapes.py install', 'zeroed shapes for the bootstrap build')),

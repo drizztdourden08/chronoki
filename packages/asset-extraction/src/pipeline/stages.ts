@@ -32,7 +32,6 @@ const checkUnique = (stages: ImportStage[]): void => {
   }
 };
 
-/** Every stage of setup.py, in its order: the registry the runner walks. */
 const STAGES: ImportStage[] = [
   ...SETUP_STAGES,
   ...CAPTURE_STAGES,
@@ -42,7 +41,6 @@ const STAGES: ImportStage[] = [
 ].map(bind);
 checkUnique(STAGES);
 
-/** setup.py's "progress K/N" total. */
 const STEP_TOTAL = STAGES.filter((s) => s.step).length;
 
 export { STAGES, STEP_TOTAL };

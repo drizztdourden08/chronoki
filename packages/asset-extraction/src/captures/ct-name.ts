@@ -2,7 +2,6 @@
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import type { StageRun } from '../pipeline/stage.type';
 
-/** The w x h RGB crop at (x0, y0) of a 512x480 [pad,B,G,R] framebuffer dump (2x doubled), after a header of u16 LE words. */
 const cropRgb = (fb: Uint8Array, head: number[], x0: number, y0: number, w: number, h: number): Uint8Array => {
   const out = new Uint8Array(head.length * 2 + w * h * 3);
   head.forEach((v, i) => {
@@ -20,7 +19,6 @@ const cropRgb = (fb: Uint8Array, head: number[], x0: number, y0: number, w: numb
   return out;
 };
 
-/** gen/ct_namewin.py: saves/ct_namewin.bin, the naming screen's BG2 alone (PEEK_ISOBG=1), [w u16][h u16] + 256x224 RGB. */
 const ctNameWinStage: StageRun = async (ctx) => {
   const state = await recipeState(ctx, 'name_lucca');
   const shot = await peekOracle(ctx).peek({ state, script: null, env: { PEEK_ISOBG: '1' }, frames: 1 });
@@ -32,7 +30,6 @@ const Y0 = 104;
 const W = 224;
 const H = 48;
 
-/** gen/ct_namemsg.py: saves/ct_namemsg.bin, the "Enter a name" prompt box, [x0,y0,w,h u16] + RGB, 20 frames in. */
 const ctNameMsgStage: StageRun = async (ctx) => {
   const state = await recipeState(ctx, 'name_crono');
   const shot = await peekOracle(ctx).peek({ state, script: null, frames: 20 });

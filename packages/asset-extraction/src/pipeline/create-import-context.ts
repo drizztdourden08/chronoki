@@ -5,7 +5,6 @@ import { createMemWorkStore } from './mem-work-store';
 
 const DEFAULT_OUT_DIR = 'build/player';
 
-/** A context with setup.py's defaults: an in-memory workdir, the native64 table layout, no oracle yet. */
 const createImportContext = (rom: Uint8Array, overrides: Partial<ImportContext> = {}): ImportContext => ({
   rom,
   work: createMemWorkStore(),

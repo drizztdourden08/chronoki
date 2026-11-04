@@ -6,7 +6,6 @@ import { tailOf } from './ct-runner';
 import type { CtRunner } from './ct-runner';
 import { OUT_DIR, STATE_IN, STATE_OUT } from './wasm-paths.constants';
 
-/** `ct.exe ROM --teleport scene tx ty facing --from state --frames N --out state` under the rule: the state it writes. */
 const teleportCall = async (ct: CtRunner, req: TeleportRequest): Promise<Uint8Array> => {
   const outcome = await ct({
     args: [
@@ -22,7 +21,6 @@ const teleportCall = async (ct: CtRunner, req: TeleportRequest): Promise<Uint8Ar
   return state;
 };
 
-/** `ct.exe ROM --owforce state world out` (the plain oracle): the state it writes at `out` (ow_world.owforce checked the exit code too). */
 const owforceCall = async (ct: CtRunner, state: Uint8Array, world: number): Promise<Uint8Array> => {
   const outcome = await ct({
     args: ['--owforce', STATE_IN, String(world), STATE_OUT],
@@ -35,7 +33,6 @@ const owforceCall = async (ct: CtRunner, state: Uint8Array, world: number): Prom
   return got;
 };
 
-/** `ct.exe ROM --cputrace state frames out` under the rule; CPUTRACE_UNIQUE / _FROM / _BTN and PEEK_POKE come in `env`. */
 const cpuTraceCall = async (ct: CtRunner, req: CpuTraceRequest): Promise<string> => {
   const out = `${OUT_DIR}/cputrace.txt`;
   const outcome = await ct({
@@ -50,14 +47,12 @@ const cpuTraceCall = async (ct: CtRunner, req: CpuTraceRequest): Promise<string>
   return new TextDecoder().decode(text);
 };
 
-/** `{state}` -> the staged state, `{in:NAME}` -> the staged input NAME, `{out:NAME}` -> a path in the scratch directory. */
 const substitute = (arg: string, hasState: boolean, inputs: string[]): string =>
   arg
     .replaceAll('{state}', hasState ? STATE_IN : '{state}')
     .replace(/\{in:([^}]+)\}/g, (m, name: string) => (inputs.includes(name) ? `/in/${name}` : m))
     .replace(/\{out:([^}]+)\}/g, (_m, name: string) => `${OUT_DIR}/${name}`);
 
-/** The tool modes (--sndtiming, --animoplen, --lzpack, --owforce, --owsprite, --owboat, --owbirds) on the plain oracle; the outputs that exist. */
 const toolCall = async (ct: CtRunner, req: ToolRequest): Promise<Record<string, Uint8Array>> => {
   const names = Object.keys(req.inputs);
   const outcome = await ct({

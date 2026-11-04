@@ -1,7 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 const GROUP = /\(([^()]*)\)\*(\d+)/;
 
-/** recipes.py expand(): `(a:n,b:m)*K` becomes the group K times (nestable); spaces are dropped. */
 const expandPadScript = (script: string): string => {
   let out = script;
   while (out.includes('(')) {

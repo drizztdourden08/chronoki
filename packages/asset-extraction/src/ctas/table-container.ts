@@ -13,7 +13,6 @@ import { isCtas, readCtas } from './read-ctas';
 
 const alignPad = (at: number): number => (8 - (at % 8)) % 8;
 
-/** pack_tables.py container(): the table pack (ct_tables.dat), every blob 8-aligned in the file. */
 const tableContainer = (entries: CtasEntry[]): Uint8Array => {
   const head = createLeWriter();
   head.bytes(Uint8Array.from(CTAS_MAGIC));
@@ -33,10 +32,6 @@ const tableContainer = (entries: CtasEntry[]): Uint8Array => {
   return head.toBytes();
 };
 
-/**
- * pack_tables.py merge_into(): the asset container as it is (version and blobs; any old table entries dropped)
- * with the table entries of the pack appended, each 8-aligned. This is "the tables inside ct_assets.dat".
- */
 const mergeTablesInto = (assets: Uint8Array, pack: Uint8Array): Uint8Array => {
   if (!isCtas(assets)) throw new Error('the assets are not a CTAS container');
   const isTable = (e: CtasEntry): boolean => TABLE_ENTRY_TYPES.includes(e.type);

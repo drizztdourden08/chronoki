@@ -8,7 +8,6 @@ import { STAGES } from './stages';
 import type { ImportStage } from './stage.type';
 
 interface PipelineResult {
-  /** True when every stage ran: nothing skipped and nothing failed. */
   complete: boolean;
   done: string[];
   skipped: string[];
@@ -21,7 +20,6 @@ const skipReason = (s: ImportStage, ctx: ImportContext): string | null => {
   return null;
 };
 
-/** Runs the registry in order (setup.py main): serial or side-by-side per group, progress events like RotP's. */
 const runPipeline = async (
   ctx: ImportContext,
   onProgress: ProgressSink = () => undefined,

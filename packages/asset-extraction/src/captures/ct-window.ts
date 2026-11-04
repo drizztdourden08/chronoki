@@ -9,7 +9,6 @@ const LIFT_X: [number, number] = [5, 8];
 const LIFT_Y: [number, number] = [8, 33];
 const PERIOD = 32;
 
-/** gen/ct_window.py: saves/ct_window.bin, the dialogue window bitmap [h u8] + 256*h*3 RGB, with the earlier lift's 41 pixels. */
 const ctWindowStage: StageRun = async (ctx) => {
   const state = await recipeState(ctx, 'name_mom_box');
   const shot = await peekOracle(ctx).peek({ state, script: null, env: { PEEK_ISOBG: '0' }, frames: 1 });

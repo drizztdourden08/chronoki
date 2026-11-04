@@ -2,7 +2,6 @@
 import { readEntry } from './steam-archive';
 import type { SteamArchive, SteamFiles } from './steam-archive';
 
-/** steam_wide.py chip_set: a Steam chip set (4-byte header, 4bpp nibbles, a 128-px-wide sheet, 16 chips a row) as 128 chips of 8x8 indices. */
 const chipSet = async (archive: SteamArchive, files: SteamFiles, s: number): Promise<Uint8Array | null> => {
   const e = files.get(`Game/field/map_bin/cg${s}.bin`);
   if (!e) return null;
@@ -24,7 +23,6 @@ const chipSet = async (archive: SteamArchive, files: SteamFiles, s: number): Pro
   return out;
 };
 
-/** steam_wide.py sheet: a Steam pixel sheet (cgext*, cg_bg): u32 w, u32 h, then one CGRAM index a pixel; 256 x 256 or null. */
 const pixelSheet = async (archive: SteamArchive, files: SteamFiles, name: string): Promise<Uint8Array | null> => {
   const e = files.get(`Game/field/map_bin/${name}`);
   if (!e) return null;
@@ -36,7 +34,6 @@ const pixelSheet = async (archive: SteamArchive, files: SteamFiles, name: string
 
 const MULTI_PAGES: Record<number, number> = { 0x6b: 3, 0xa5: 2, 0x1db: 2 };
 
-/** steam_wide.py sheet_pages: the pages past the room's own that the Steam release loads for a location, later entries replacing earlier ones. */
 const sheetPages = (loc: number): [number, string][] => {
   const count = MULTI_PAGES[loc];
   const pages: [number, string][] =
@@ -48,7 +45,6 @@ const sheetPages = (loc: number): [number, string][] => {
   return pages;
 };
 
-/** steam_wide.py steam_palette: the Steam palette of a location, its BG half (128 LE BGR555 = 256 bytes), or null. */
 const steamPalette = async (archive: SteamArchive, files: SteamFiles, loc: number): Promise<Uint8Array | null> => {
   const info = files.get(`Game/field/Mapinfo/mapinfo_${loc}.dat`);
   if (!info) return null;

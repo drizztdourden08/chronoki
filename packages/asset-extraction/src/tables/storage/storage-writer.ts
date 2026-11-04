@@ -26,11 +26,6 @@ const defineLines = (hs: Headers): string[] => {
   return [DEFINES_DOC, 'const CtTableDefine ctTableDefines[] = {', ...lines, '};'];
 };
 
-/**
- * pack_tables.py make_headers(), the tables_storage.c part: every table defined once (zeroed; the pack fills it),
- * the layout model asserted against the compiler, the registry. The sizes, offsets, hashes and pointer offsets
- * come from the layout the headers were parsed with, so the pointer width is the headers' target (8 or 4 bytes).
- */
 const writeTablesStorage = (hs: Headers): string => {
   const order = [...hs.texts.keys()].sort((a, b) => Number(a !== BASE_HEADER) - Number(b !== BASE_HEADER));
   const lines = [

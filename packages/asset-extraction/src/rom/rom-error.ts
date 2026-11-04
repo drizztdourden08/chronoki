@@ -1,7 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 type RomErrorCode = 'wrong-size' | 'unknown-rom';
 
-/** A ROM that is not the supported dump (ctlib/rom.py RomError). */
 class RomError extends Error {
   readonly code: RomErrorCode;
   readonly sha1: string;

@@ -1,7 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { u16 } from '../extract/rom-read';
 
-/** rom_closure.py ptr24: a 3-byte HiROM pointer -> its file offset, or null outside the ROM. */
 const ptr24 = (rom: Uint8Array, at: number): number | null => {
   const bank = rom[at + 2] as number;
   return bank < 0xc0 ? null : ((bank - 0xc0) << 16) | u16(rom, at);
@@ -15,7 +14,6 @@ const ASM3_PTRS = 0x3621c0;
 const TS_PTRS = 0x362220;
 const SCRIPT_PTRS = 0x3cf9f0;
 
-/** rom_closure.py location_indices: the indices every location reaches (tilesets, BG3 tilesets, list entries, maps, scripts). */
 const locationIndices = (rom: Uint8Array) => {
   const ts = new Set<number>();
   const b3s = new Set<number>();
@@ -49,7 +47,6 @@ const streamsOf = (rom: Uint8Array, table: number, ids: Iterable<number>): Set<n
   return out;
 };
 
-/** rom_closure.py location_streams: {what: stream file offsets} every location's load decompresses. */
 const locationStreams = (rom: Uint8Array): Map<string, Set<number>> => {
   const { ts, b3s, idxs, maps, scripts } = locationIndices(rom);
   return new Map([
@@ -63,7 +60,6 @@ const locationStreams = (rom: Uint8Array): Map<string, Set<number>> => {
 
 const SEQ_TABLE = 0x3e0000;
 
-/** rom_closure.py sequence_streams: every pointer of the $FE:0000 packet table that lands in the ROM's banks. */
 const sequenceStreams = (rom: Uint8Array): Map<string, Set<number>> => {
   let first = Infinity;
   for (let x = 0; x < 0x100; x += 3) {

@@ -4,7 +4,6 @@ import type { ToolOracle } from '../oracle/oracle-capture.type';
 import type { PeekDump } from '../oracle/peek.type';
 import type { ImportContext } from '../pipeline/import-context.type';
 
-/** The oracle with ct.exe's tool modes; a stop with a clear message when the driver lacks them. */
 const toolOracle = (ctx: ImportContext): ToolOracle => {
   const o = ctx.oracle as (OracleDriver & Partial<ToolOracle>) | null;
   if (o === null || typeof o.tool !== 'function') {
@@ -13,7 +12,6 @@ const toolOracle = (ctx: ImportContext): ToolOracle => {
   return o as ToolOracle;
 };
 
-/** Runs one tool mode and returns its outputs; a stop naming the stage when the first output was not written. */
 const runTool = async (
   ctx: ImportContext,
   name: string,
@@ -27,7 +25,6 @@ const runTool = async (
   return got;
 };
 
-/** ctgen.rgb_of_fb(): the 256x240 RGB picture of a 512x480 [pad,B,G,R] framebuffer dump (2x doubled). */
 const rgbOfFb = (d: Uint8Array): Uint8Array => {
   const out = new Uint8Array(256 * 240 * 3);
   for (let y = 0; y < 240; y += 1) {
@@ -42,7 +39,6 @@ const rgbOfFb = (d: Uint8Array): Uint8Array => {
   return out;
 };
 
-/** ctgen.cgram_of(): the 512-byte CGRAM of a peek (its oam dump at 1056). */
 const cgramOf = (peek: PeekDump): Uint8Array => peek.oam.slice(1056, 1056 + 512);
 
 export { cgramOf, rgbOfFb, runTool, toolOracle };

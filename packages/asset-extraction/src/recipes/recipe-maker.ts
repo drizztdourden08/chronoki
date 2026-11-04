@@ -16,14 +16,12 @@ interface MakerEnv {
   oracle: OracleDriver;
   work: WorkStore;
   romSha1: string;
-  /** Recipes replayed side by side (recipes.py --jobs); a chain still builds in order. */
   jobs: number;
   log: (message: string) => void;
 }
 
 const isExecutable = (op: string): boolean => op !== 'sram' && op !== 'sram_file';
 
-/** Builds recipes from power-on in the oracle, each once, caching the state by its chain's key (recipes.py make / make_many). */
 const createRecipeMaker = (env: MakerEnv) => {
   const limit = createLimiter(env.jobs);
   const inflight = new Map<string, Promise<Uint8Array>>();
@@ -86,7 +84,6 @@ const createRecipeMaker = (env: MakerEnv) => {
     return task;
   };
 
-  /** make() every recipe in `names` and the chains under them; `force` rebuilds the named ones only. */
   const makeMany = async (names: string[], force = false): Promise<Map<string, Uint8Array>> => {
     const need = [...closureOf(env.recipes, names)].sort();
     const entries = await Promise.all(need.map(async (n) => [n, await make(n, force && names.includes(n))] as const));

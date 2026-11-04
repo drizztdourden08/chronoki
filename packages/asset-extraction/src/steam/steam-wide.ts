@@ -8,7 +8,6 @@ import { readMargins } from './steam-margins';
 import type { Margin } from './steam-margins';
 import { chipSet, pixelSheet, steamPalette } from './steam-sheets';
 
-/** The special scenes' extension art the port draws, halved to the SNES's pixels (the Epoch's cockpit walls, sequence entry 6). */
 const SPECIAL = ['Game/special/into_lavos/40_kokscr_ext.png'];
 
 const specials = async (archive: SteamArchive, files: SteamFiles) => {
@@ -22,7 +21,6 @@ const specials = async (archive: SteamArchive, files: SteamFiles) => {
   return out;
 };
 
-/** The chip sets the margins' slots name, each once; a set the archive lacks is dropped. */
 const chipSets = async (archive: SteamArchive, files: SteamFiles, margins: Map<number, Margin>) => {
   const sets = new Map<number, Uint8Array>();
   const seen = new Set<number>();
@@ -37,7 +35,6 @@ const chipSets = async (archive: SteamArchive, files: SteamFiles, margins: Map<n
   return sets;
 };
 
-/** Each pixel sheet once; a location names its pages by sheet index, a later entry for a page replacing an earlier one. */
 const resolvePages = async (archive: SteamArchive, files: SteamFiles, margins: Map<number, Margin>) => {
   const sheets: Uint8Array[] = [];
   const index = new Map<string, number | null>();
@@ -58,7 +55,6 @@ const resolvePages = async (archive: SteamArchive, files: SteamFiles, margins: M
   return { sheets, resolved };
 };
 
-/** tools/steam_wide.py: the Steam release's widescreen margins, read from the player's own copy, as the bytes of ct_wide.dat. */
 const buildCtWide = async (archive: SteamArchive): Promise<Uint8Array> => {
   const files = await readDirectory(archive);
   const margins = await readMargins(archive, files);

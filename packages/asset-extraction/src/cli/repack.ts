@@ -1,6 +1,4 @@
 /* @layer shared-asset-extraction @kind logic */
-// The importer's sources import each other without file extensions (a bundler resolves them); Node's type stripping
-// does not. This launcher installs a resolver for relative extensionless specifiers, then runs the CLI.
 import { existsSync } from 'node:fs';
 import { registerHooks } from 'node:module';
 import { fileURLToPath } from 'node:url';

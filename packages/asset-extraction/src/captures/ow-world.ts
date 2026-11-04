@@ -3,7 +3,6 @@ import { peekOracle, recipeState } from '../oracle/peek-access';
 import type { StageRun } from '../pipeline/stage.type';
 import { runTool } from './capture-io';
 
-/** gen/ow_world.py: the overworld captures pack_world packs as T_WORLD and T_WORLDINTROSEED, under saves/. */
 const owWorldStage: StageRun = async (ctx) => {
   const oracle = peekOracle(ctx);
   const pan = await recipeState(ctx, 'ow_intro_pan');
