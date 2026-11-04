@@ -24,7 +24,7 @@ counted in setup.py's "progress K/N". Ported 10, pending 55. Python paths are re
 | oracle | setup.py main (ct.exe) | setup | ported (needs the oracle driver) |
 | replay-recipes | recipes.py make_many | setup | ported (needs the oracle driver) |
 | snd_timing, anim_oplen, lz_pack, ow_world, ow_sprites, ct_window, ct_namewin, ct_namemsg | gen/<name>.py | captures | pending (oracle) |
-| extract-assets | ../assets/extract_assets.py build | extract | pending (24 compile-* packers) |
+| extract-assets | ../assets/extract_assets.py build | extract | ported (`extract/extract-assets.ts`, shell over the 24 packers; first 12 ported, last 12 per the table below) |
 | battle_trig | gen/battle_trig.py | generate | ported (`gen/battle-trig.ts`) |
 | menu_romdata | gen/menu_romdata.py | generate | ported (`gen/menu-romdata.ts`) |
 | menu_wingrad | gen/menu_wingrad.py | generate | ported (`gen/menu-wingrad.ts`) |
@@ -38,5 +38,15 @@ counted in setup.py's "progress K/N". Ported 10, pending 55. Python paths are re
 | steam-margins | steam_wide.py | tail | pending |
 | write-player-assets | gen/pack_tables.py into | tail | ported |
 
-The `extract-assets` packers (24 `compile-*` calls inside extract_assets.build) are second-half work and are not listed
-as stages of their own.
+The `extract-assets` packers (24 `compile-*` calls inside extract_assets.build) are not stages of their own; they live in
+`extract/pack-<name>.ts`, listed in `extract/packers.ts` in build() order.
+
+| Packer (extract_assets.py) | TS file | Status |
+|---|---|---|
+| pack_scene_palettes, pack_sprite_palettes, pack_scene_headers, pack_pal_anims | `extract/pack-scene-palettes.ts`, `pack-sprite-palettes.ts`, `pack-scene-headers.ts`, `pack-pal-anims.ts` | ported |
+| pack_tileset12, pack_tileset3, pack_maps | `extract/pack-tileset12.ts`, `pack-tileset3.ts`, `pack-maps.ts` | ported |
+| pack_strings, pack_dialogue (text.py) | `extract/pack-strings.ts`, `pack-dialogue.ts`, `text-*.ts`, `dialogue-scan.ts` | ported |
+| pack_portraits, pack_namesprites, pack_menufont | `extract/pack-portraits.ts`, `pack-namesprites.ts`, `pack-menufont.ts` | ported |
+| build() prelude (used sprites, static_max via script.py) | `extract/scan-sprite-usage.ts` (`scanSpriteUsage`) | second half |
+| pack_actors, pack_collision, pack_exits, pack_sprite_anims, pack_font, pack_mover | `extract/pack-<name>.ts` | second half |
+| pack_sprites, pack_scripts, pack_world, pack_sound, pack_lz, pack_tables | `extract/pack-<name>.ts` | second half |
