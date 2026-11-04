@@ -29,7 +29,7 @@ const refuse = (msg: string): Error => new Error(`REFUSING: ${msg}`);
 
 /** Power-on with that battery for 1 frame, run to the title, press START, let the load screen build. */
 const captureLoader = async (ctx: ImportContext): Promise<LoaderCapture> => {
-  const boot = await requireTools(ctx).boot({ frames: 1, sram: await batteryOf(ctx) });
+  const boot = await requireTools(ctx).powerOn({ frames: 1, sram: await batteryOf(ctx) });
   // 1600f = the title screen settled; START (LakeSnes serial bit 0x08) then 150f for the build.
   const out = await peek(ctx, boot.state, '0:1600,8:6,0:150');
   const { vram, wram } = out;

@@ -102,3 +102,22 @@ snapshot (fragile under JSPI). A save-state container must record the option set
 - `CT_ROM` is not set; the checker should confirm the data-free engine boots from the assets alone (hypothesis: it does).
 - emcc comes from the emsdk RotP uses (`X:/relic-of-the-past/third_party/emsdk`; `--emsdk`, `CHRONOKI_EMSDK` or
   `third_party/emsdk` override). A port-kit `portKit.wasm` entry in `apps/desktop/package.json` is not part of P3.
+
+## The WASM oracle driver (I-13)
+
+`packages/asset-extraction/src/oracle/wasm/` (`createWasmOracle`, exported from the package) implements OracleDriver,
+OracleTools, PeekOracle, ToolOracle and CpuTraceOracle on `chronoki-oracle.{js,wasm}`. Each ct.exe invocation is one
+`callMain` on a fresh module (the ROM, state, battery and inputs staged in MEMFS; env set in `preRun`, since libc reads
+it once; outputs read back from `/out`). The module factory is injected (`createModule(options)`); `createWasmInstantiator`
+compiles the `.wasm` once and hands every instance the same `WebAssembly.Module` through `instantiateWasm`.
+To resolve the `boot` clash (OracleDriver.boot(rom) vs the power-on capture), `OracleTools.boot` is now `powerOn` and
+`OracleTools.monitor` is `monitorText` (PeekOracle keeps `monitor`).
+
+**Modes the oracle build lacks.** `build.mjs` compiles `main.c` with `-DCT_ORACLE_ONLY`: only `--peek`, `--monitor`, `--fb`
+(and `--serve`) run. Every other mode exits 97 (`ct_oracle: not an oracle mode`), and the driver turns that into a stop. So
+these ported stages cannot run on the current `chronoki-oracle.wasm`: `--teleport` (teleport recipe steps, `teleport`),
+`--owforce`, `--owsprite`, `--owboat`, `--owbirds`, `--cputrace` (xlat_all), and `--lzpack`, `--animoplen`, `--sndtiming`
+(inside `#ifndef CT_ORACLE_ONLY`, they also need the assets and audio sources). Fixing it needs a second, fuller WASM build
+of `main.c` (the `ct.exe` source list, without `CT_ORACLE_ONLY`) for these modes. Unverified: the driver was never run
+against the built module (no tests allowed here); `--animoplen` opens `Chrono_Trigger_USA_SNES.sfc` by name, so the ROM is
+staged under that name in `/`.
