@@ -7,6 +7,7 @@ import { genCtRegroup } from './ct-regroup';
 import { genMenuRomdata } from './menu-romdata';
 import { genMenuWingrad } from './menu-wingrad';
 import { ORACLE_RUNNERS_A } from './oracle-runners-a';
+import { ORACLE_GEN_RUNNERS_B } from './oracle-gen-runners-b';
 import { genOwAnim } from './ow-anim';
 
 /** A generator that reads only the ROM and writes src/data/<name>.h into the workdir (the file the C build would include). */
@@ -25,6 +26,7 @@ const GEN_RUNNERS: Record<string, StageRun> = {
   ow_anim: textGenStage('ow_anim', genOwAnim),
   ct_regroup: textGenStage('ct_regroup', genCtRegroup),
   ...ORACLE_RUNNERS_A,
+  ...ORACLE_GEN_RUNNERS_B,
 };
 
 export { GEN_RUNNERS, textGenStage };
