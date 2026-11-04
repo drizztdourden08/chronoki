@@ -91,3 +91,48 @@ static int walkFields(const CkPtrField* table, int count, CkSpan section, int ap
 
 int ck_fields_check(const CkPtrField* table, int count, CkSpan section) { return walkFields(table, count, section, 0); }
 int ck_fields_decode(const CkPtrField* table, int count, CkSpan section) { return walkFields(table, count, section, 1); }
+
+/* One record of a section by name, copied out without touching any live object (the menu load reads the caller's stash this
+   way, before the underlying mode is entered). 0 if the record is absent or its size differs. */
+int ck_fields_get(CkSpan section, const char* name, void* dst, uint32_t size) {
+  size_t want = strlen(name), at = 0;
+  while (at < section.len) {
+    size_t n = section.data[at];
+    if (at + 5 + n > section.len) return 0;
+    uint32_t rec = ck_get32(section.data + at + 1 + n);
+    if (rec > section.len - at - 5 - n) return 0;
+    if (n == want && !memcmp(section.data + at + 1, name, n)) {
+      if (rec != size) return 0;
+      memcpy(dst, section.data + at + 5 + n, size);
+      return 1;
+    }
+    at += 5 + n + rec;
+  }
+  return 0;
+}
+
+/* The MPIC section: the frozen field frame (3 bytes a pixel) run-length coded as [count 1..255][r g b] records. */
+size_t ck_rle_pack(uint8_t* out, const uint8_t* px, size_t npx) {
+  size_t at = 0;
+  for (size_t i = 0; i < npx;) {
+    size_t run = 1;
+    while (i + run < npx && run < 255 && !memcmp(px + 3 * i, px + 3 * (i + run), 3)) run++;
+    if (out) { out[at] = (uint8_t)run; memcpy(out + at + 1, px + 3 * i, 3); }
+    at += 4;
+    i += run;
+  }
+  return at;
+}
+
+int ck_rle_unpack(uint8_t* px, size_t npx, CkSpan section) {
+  size_t at = 0, i = 0;
+  if (section.len % 4) return 0;
+  while (at < section.len) {
+    size_t run = section.data[at];
+    if (!run || i + run > npx) return 0;
+    for (size_t k = 0; k < run; k++) memcpy(px + 3 * (i + k), section.data + at + 1, 3);
+    i += run;
+    at += 4;
+  }
+  return i == npx;
+}

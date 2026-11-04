@@ -88,4 +88,4 @@ const worldFieldListText = (root) =>
   [['ck_world_fields.h', 'CK_WORLD'], ['ck_world_fstat.h', 'CK_FSTAT'], ['ck_world_statics.h', 'CK_WSTAT']]
     .map(([f, m]) => macroList(root, f, m).map((a) => a.join('.')).join(',')).join('|');
 
-export { checkWorldFields, worldFieldListText, macroList }
+export { checkWorldFields, worldFieldListText, macroList, memberNames, stripComments }

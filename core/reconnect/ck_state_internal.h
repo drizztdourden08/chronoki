@@ -25,4 +25,9 @@ int ck_host_decode(void* host, const CkHostField* table, int count, CkSpan secti
 size_t ck_fields_encode(uint8_t* out, const CkPtrField* table, int count);   /* out NULL: the size only */
 int ck_fields_check(const CkPtrField* table, int count, CkSpan section);     /* 1 if the section holds exactly the table's records */
 int ck_fields_decode(const CkPtrField* table, int count, CkSpan section);    /* check, then write; 0 if not matching */
+int ck_fields_get(CkSpan section, const char* name, void* dst, uint32_t size);   /* one record out by name and size, no live object touched */
+
+/* ck_state_host.c: the MPIC section (the frozen field frame, run-length coded) */
+size_t ck_rle_pack(uint8_t* out, const uint8_t* px, size_t npx);              /* out NULL: the size only */
+int ck_rle_unpack(uint8_t* px, size_t npx, CkSpan section);                  /* 0 if malformed or not exactly npx pixels */
 #endif

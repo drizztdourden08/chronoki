@@ -12,6 +12,10 @@
    The overworld is a save point only when nothing of it is mid-flight: no fade or pending transition (as for the field), no
    inline-JSL pass suspension (owPassHold / owPassResume), no time-gauge or world-map sequence (owGaugePh / owMapPh), no exit
    wait and not the new-game pan. Those are unsafe windows: the request is held until they end (ck_state_top).
+   The menu (phase 3) is mode 3 over a field and 4 over the overworld, but only on its settled screen (ckMenuSafe below): the
+   state then also carries MENU (mSave, the menu statics, the caller's stash) and, over a field, MPIC (the frozen frame). The
+   load enters the underlying mode from the CORE with the stash put back (ck_menu_load.inc), then overlays the menu
+   (ck_menu_finish.inc). A MENU state that does not match this build exactly is refused before anything is touched.
    The _Static_asserts stop the build when upstream changes the type of a local the host section copies. */
 {
 #define CK_HOST(t, n, d) _Static_assert(__builtin_types_compatible_p(__typeof__(n), t d), "field.c changed the type of main()'s " #n);
@@ -19,8 +23,22 @@
 #undef CK_HOST
   static CtHostState ckHost;
   int ckOwSafe = haveWorld && wd.vram && wd.wram && !ngIntro && !owPassHold && !owPassResume && !owGaugePh && !owMapPh && !owExitWait;
+  /* the menu is a save point only on its settled screen (phase 2, the entry fade up to full brightness) and only when none
+     of its own multi-frame sequences is running: a screen or tab change being built, the Equip and Item slides and list
+     climbs, the member slide, the Save screen's write and its holds, the exit and name fade-outs. The save-point, the
+     load-list and the shop's build and quantity sub-states are unsafe too (a transaction or a reboot is in flight) and so
+     are the exchange's and the naming screen's transitional sub-states: the request is held until they end. */
+  int ckMenuSafe = menuPhase == 2 && !fade && !pendKind && menuBri == 15 && !menuFadeLive && menuOwStashT < 0
+    && !menuEnterPending && !menuNameOut && !menuSavePtOn && !menuLoaderOn && menuRibbonWait <= 0 && menuMemSlide <= 0
+    && menuEqSlide < 0 && menuEqExit < 0 && menuEqListRise < 0 && !menuEqListFall && !menuEqRowsHold && !menuEqListFresh
+    && !menuEqA45D && !menuEqLRYield && !menuEqSlideStep && !menuItemSlideStep && !menuItemAAFF && !menuSaveDoWrite
+    && !menuSaveRowsHold && !menuSavePanelHold && !menuSavePromptHold
+    && (!menuShopOn || (menuShop.sub >= 1 && menuShop.sub <= 3))
+    && (!menuExchOn || menuExch68 == 1 || menuExch68 == 2) && (!menuNameOn || menuName68 == 1 || menuName68 == 2);
   int ckMode = (!selftest && f.vm && !battlePhase && !menuPhase && !inWorld && !gameOver && !fade && !pendKind) ? 1
-             : (!selftest && !f.vm && inWorld && !battlePhase && !menuPhase && !fade && !pendKind && ckOwSafe) ? 2 : 0;
+             : (!selftest && !f.vm && inWorld && !battlePhase && !menuPhase && !fade && !pendKind && ckOwSafe) ? 2
+             : (!selftest && f.vm && !battlePhase && !inWorld && !gameOver && ckMenuSafe && menuStashOw == 0) ? 3
+             : (!selftest && !f.vm && inWorld && !battlePhase && ckOwSafe && ckMenuSafe && menuStashOw == 1) ? 4 : 0;
   int ckOp = ck_state_top(ckMode, fieldWram(), fieldSram());
   if (ckOp != CK_OP_NONE) {
 #define CK_HOST(t, n, d) memcpy(&ckHost.n, &n, sizeof ckHost.n);
@@ -33,14 +51,21 @@
     double ckPlr[4] = { px, py, (double)pz, (double)pfac };
     int ckScene = f.vm ? CtSceneSaveState(f.vm, "mem:scene", ckPlr) : 0;
     if (g_fieldAudio) CtAudioSaveState(g_fieldAudio, "mem:apu");
+    if (menuPhase) {
+#include "ck_menu_save.inc"
+    }
     ck_state_save_done(f.vm ? ckScene : 1, ckScene, &ckHost, ckHostFields, CK_HOST_COUNT);
   } else if (ckOp == CK_OP_LOAD) {
-    int ckLoc = ck_state_load_has_world() ? -1 : CtSceneStateLoc("mem:scene", NULL), ckR = 0;
-    if (ck_state_load_has_world()) {
+    int ckMenuOk = 1, ckR = 0;
+    const uint8_t* ckEntry = NULL;
+    static uint8_t ckEntryBuf[CK_STATE_WRAM_BYTES], ckStashBuf[CK_M_STASH_BYTES];
+#include "ck_menu_load.inc"
+    int ckLoc = (ck_state_load_has_world() || !ckMenuOk) ? -1 : CtSceneStateLoc("mem:scene", NULL);
+    if (ck_state_load_has_world() && ckMenuOk) {
 #include "ck_world_load.inc"
     }
-    if (ckLoc >= 0 && (ckLoc != scene || !f.vm)) {
-      const uint8_t* ckCore = ck_state_load_core();
+    if (ckLoc >= 0 && (ckLoc != scene || !f.vm || menuPhase || ck_state_load_has_menu())) {
+      const uint8_t* ckCore = ckEntry ? ckEntry : ck_state_load_core();
       if (ckCore) memcpy(CtWramSys(fieldWram()), ckCore, CK_STATE_WRAM_BYTES);
       fieldFree(&f);
       g_ctLzSpriteCycles = 0; g_arrivalFromSpawn = 1;
@@ -76,6 +101,7 @@
         px = ckAx; py = ckAy; pfac = ckFa; pz = CtSceneMem7E(f.vm)[0x0155] & 3;
       }
     }
+#include "ck_menu_finish.inc"
     ck_state_load_result(ckR);
   }
 }
