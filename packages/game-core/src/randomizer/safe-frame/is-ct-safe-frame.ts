@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { MemoryView } from '@drizztdourden08/brock-randomizer/session';
+import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import { CT_WRAM_REGION } from '../memory/ct-memory.constants';
 import { SAFE_FRAME_BUSY_BYTES } from './safe-frame.constants';
 

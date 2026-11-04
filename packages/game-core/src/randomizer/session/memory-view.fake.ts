@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind test */
-import type { MemoryView } from '@drizztdourden08/brock-randomizer/session';
+import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 
 const fakeView = (bytes: Record<number, number>): MemoryView => {
   const byte = (_region: string, offset: number): number => bytes[offset] ?? 0;

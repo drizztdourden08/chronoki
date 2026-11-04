@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { MemoryView } from '@drizztdourden08/brock-randomizer/session';
+import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import { playSecondsOf } from './play-seconds-of';
 import { SAVE_LOAD_JUMP_SECONDS } from './session.constants';
 import type { SaveLoadWatch } from './watch.type';

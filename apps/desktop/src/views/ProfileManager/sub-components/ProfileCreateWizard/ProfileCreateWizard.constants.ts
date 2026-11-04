@@ -8,6 +8,5 @@ const FINISH_LABEL = 'Create profile';
 const CREATING_HINT = 'Creating the profile';
 const NO_NAME_ERROR = 'Give the profile a name.';
 const NO_ROM_ERROR = 'Pick a ROM.';
-const NO_PACK_ERROR = 'The game pack for this ROM is missing, so no seed can be rolled. Open the ROM once, then try again.';
 
-export { CREATING_HINT, FINISH_LABEL, NO_NAME_ERROR, NO_PACK_ERROR, NO_ROM_ERROR, STEP_IDS, STEP_LABELS, WIZARD_TITLE };
+export { CREATING_HINT, FINISH_LABEL, NO_NAME_ERROR, NO_ROM_ERROR, STEP_IDS, STEP_LABELS, WIZARD_TITLE };

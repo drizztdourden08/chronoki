@@ -9,6 +9,9 @@ type CtOptionDef = {
   default: RuleOptionValue;
   choices?: readonly RuleOptionValue[];
   frozen?: boolean;
+  section: string;
+  hint?: string;
+  choiceLabels?: Readonly<Record<string, string>>;
 };
 
 export type { CtOptionDef };

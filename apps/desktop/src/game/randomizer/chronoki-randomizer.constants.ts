@@ -24,9 +24,11 @@ const BOOT_REFUSALS = {
 
 const NOT_APPLIED_REFUSAL = 'the seed was not written to the game pack at boot';
 const NOT_APPLIED_RESULT: ApplyResult<unknown> = { ok: false, refusal: NOT_APPLIED_REFUSAL };
-const NO_CHECKS_ROLL = 'the checks are not loaded: pick the ROM again and retry';
+const NO_CHECKS_ROLL = 'the game pack has no checks the randomizer can read';
+const NO_PACK_ROLL = 'The game pack for this ROM is missing, so no seed can be rolled. Open the ROM once, then try again.';
 
 export {
-  BOOT_REFUSALS, CHRONOKI_RANDOMIZER_LABELS, LOCAL_MODE, NOT_APPLIED_REFUSAL, NOT_APPLIED_RESULT, NO_CHECKS_ROLL, RANDOMIZER_GATE,
+  BOOT_REFUSALS, CHRONOKI_RANDOMIZER_LABELS, LOCAL_MODE, NOT_APPLIED_REFUSAL, NOT_APPLIED_RESULT, NO_CHECKS_ROLL, NO_PACK_ROLL,
+  RANDOMIZER_GATE,
   REFUSAL_TOAST_MS, REFUSED_SAMPLE, SEED_DIGITS, SEED_RADIX,
 };

@@ -8,7 +8,7 @@ import type { AppSettings } from '@app/settings.type';
 
 vi.mock('@app/launch-flags/is-packaged', () => ({ isPackaged: () => false }));
 
-const sourceValues = { view: 'full', refreshHz: 4 } as unknown as AppSettings;
+const sourceValues: AppSettings = Object.assign({} as AppSettings, { view: 'full', refreshHz: 4 });
 
 describe('settings rows backed by a value source (widget prefs, no gates key)', { tags: ['critical'] }, () => {
   it('does not read gates for a key that is not a feature key', () => {
@@ -16,7 +16,11 @@ describe('settings rows backed by a value source (widget prefs, no gates key)', 
   });
 
   it('reports a plain widget pref as enabled without throwing', () => {
-    expect(isSettingDisabled('refreshHz', sourceValues)).toBe(false);
+    expect(isSettingDisabled('refreshHz', sourceValues, null)).toBe(false);
+  });
+
+  it('disables a row whose lock cause is set (randomizer-frozen keys included)', () => {
+    expect(isSettingDisabled('refreshHz', sourceValues, 'randomizer')).toBe(true);
   });
 
   it('tolerates a settings object with no gates list', () => {

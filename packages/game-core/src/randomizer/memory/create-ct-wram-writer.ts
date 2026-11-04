@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { MemoryBridge } from '@drizztdourden08/brock-randomizer/session';
+import type { MemoryBridge } from '@drizztdourden08/brock-randomizer/memory';
 import { isCtSafeFrame } from '../safe-frame/is-ct-safe-frame';
 import { CT_WRAM_BYTES } from './ct-memory.constants';
 import type { CtMemoryOptions } from './ct-memory-options.type';

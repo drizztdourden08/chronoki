@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { MemoryView } from '@drizztdourden08/brock-randomizer/session';
+import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import { INVENTORY_COUNTS, INVENTORY_IDS, INVENTORY_SLOTS } from '../../game-info/wram-map.constants';
 import { CT_WRAM_REGION } from '../memory/ct-memory.constants';
 

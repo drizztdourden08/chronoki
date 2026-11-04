@@ -6,7 +6,6 @@ import { useWizard } from '@drizztdourden08/tessera/composites';
 import type { CreateOutcome } from '@drizztdourden08/tessera/composites';
 import { DEFAULT_PROFILE_PRESET, applyProfilePreset } from '@app/profiles/presets';
 import type { ProfileWizardValues } from '../../../ProfileManager.type';
-import { primeRandomizerChecks } from './prime-randomizer-checks';
 import { profileWizardSteps } from './profile-wizard-steps';
 import { useModuleProfileSteps } from './useModuleProfileSteps';
 
@@ -25,7 +24,6 @@ const useProfileWizard = (onCreated: (profile: Profile) => void) => {
     const { name, rom, preset } = values;
     try {
       const extra = wizardCreateOptions(moduleSteps, values);
-      await primeRandomizerChecks(extra.randomizer, rom);
       const profile = await create({ ...extra, name: name.trim(), romFile: rom, initialConfig: applyProfilePreset(preset) });
       created.current = profile;
       return { success: true, id: profile.id };

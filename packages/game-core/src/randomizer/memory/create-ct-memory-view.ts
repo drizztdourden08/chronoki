@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { MemoryView } from '@drizztdourden08/brock-randomizer/session';
+import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import { CT_WRAM_BYTES, CT_WRAM_REGION } from './ct-memory.constants';
 
 const createCtMemoryView = (heap: Uint8Array, ptr: number): MemoryView => {
