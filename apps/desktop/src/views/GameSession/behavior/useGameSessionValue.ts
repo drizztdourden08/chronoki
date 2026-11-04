@@ -14,6 +14,7 @@ import { useCoreSettings } from './useCoreSettings';
 import { useGameProfile } from './useGameProfile';
 import { useHostFeatures } from './useHostFeatures';
 import { useLaunchProbes } from './useLaunchProbes';
+import { useRestartWarning } from './useRestartWarning';
 import { useSessionRecorder } from './useSessionRecorder';
 import { useSyncCorePause } from './useSyncCorePause';
 
@@ -63,6 +64,7 @@ const useGameSessionValue = (): GameSessionValue => {
   useLaunchProbes(launch);
   useSessionRecorder(launch?.profileId ?? null, running);
   useSyncCorePause(running);
+  useRestartWarning(running, launch?.id ?? null);
 
   return useMemo(
     () => ({ launch, notice, running, paused, ...core, play, stop, reset, togglePause, onStarted, onFunctionAction, onFunctionRelease }),
