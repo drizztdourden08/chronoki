@@ -22,7 +22,7 @@ const SnesBindingsTab = ({ ctrl, onRebind }: SnesBindingsTabProps) => {
           middleIconId={SNES_ICON_IDS[mapping.button]}
           binding={mapping.binding}
           icon={mapping.icon}
-          deviceIconSrc={bindingDeviceIcon(mapping.binding, mapping.sourceVid, mapping.sourcePid, ctrl.devices, ctrl.activeProfile)}
+          deviceIconSrc={bindingDeviceIcon(mapping,ctrl.devices, ctrl.activeProfile)}
           onRebind={() => onRebind(mapping.button)}
           onClear={() => ctrl.clearSnes(mapping.button, mapping.mappingIndex)}
         />

@@ -1,13 +1,12 @@
 /* @layer renderer-components @kind logic */
 import { allowedDevices } from '@chronoki/input-mapping';
-import type { DetectedDevice, InputBinding, InputProfile } from '@chronoki/input-mapping';
+import type { DetectedDevice, InputProfile } from '@chronoki/input-mapping';
+import type { DisplayMapping } from './controls.type';
 import { GENERIC_DEVICE_ICON } from './controls.constants';
 import { deviceIconUrl } from './device-icon-url';
 
 const bindingDeviceIcon = (
-  binding: InputBinding,
-  vendorId: string | null | undefined,
-  productId: string | null | undefined,
+  { binding, sourceVid: vendorId, sourcePid: productId }: Pick<DisplayMapping, 'binding' | 'sourceVid' | 'sourcePid'>,
   devices: readonly DetectedDevice[],
   profile: InputProfile | null,
 ): string | undefined => {
