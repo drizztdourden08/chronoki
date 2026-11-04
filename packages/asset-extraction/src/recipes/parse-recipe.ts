@@ -12,6 +12,16 @@ const asNumber = (v: Json, what: string): number => {
   return v;
 };
 
+const parseTeleport = ([a, b, c, d, e, f]: Json[]): RecipeStep => ({
+  op: 'teleport',
+  scene: asNumber(a, 'teleport scene'),
+  tx: asNumber(b, 'teleport x'),
+  ty: asNumber(c, 'teleport y'),
+  facing: asNumber(d, 'teleport facing'),
+  frames: asNumber(e, 'teleport frames'),
+  method: f === undefined ? 'jmp' : asString(f, 'teleport method'),
+});
+
 const parseStep = (raw: Json, recipe: string): RecipeStep => {
   if (!Array.isArray(raw) || typeof raw[0] !== 'string') throw new Error(`recipe ${recipe}: a step is [op, args...]`);
   const [op, a, b, c, d, e, f] = raw as Json[];
@@ -25,15 +35,7 @@ const parseStep = (raw: Json, recipe: string): RecipeStep => {
     case 'poke':
       return { op, pokes: asString(a, 'poke list') };
     case 'teleport':
-      return {
-        op,
-        scene: asNumber(a, 'teleport scene'),
-        tx: asNumber(b, 'teleport x'),
-        ty: asNumber(c, 'teleport y'),
-        facing: asNumber(d, 'teleport facing'),
-        frames: asNumber(e, 'teleport frames'),
-        method: f === undefined ? 'jmp' : asString(f, 'teleport method'),
-      };
+      return parseTeleport([a, b, c, d, e, f]);
     case 'sram':
       return { op, recipe: asString(a, 'sram recipe') };
     case 'sram_file':

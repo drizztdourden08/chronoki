@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 
-import { OPCODE_TABLE, FIXED_LENGTH } from './cpu65816.constants';
+import { FIXED_LENGTH } from './cpu65816.constants';
 
 
 const operandLength = (mode: string, m: number, x: number): number => {

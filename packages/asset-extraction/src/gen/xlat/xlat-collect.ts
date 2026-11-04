@@ -15,7 +15,8 @@ const parseBytes = (raw: string, len: number, adr: number): number[] => {
   return bytes;
 };
 
-const merge = (s: Site, op: number, len: number, bytes: number[], adr: number): void => {
+const merge = (s: Site, seen: { op: number; len: number; bytes: number[]; adr: number }): void => {
+  const { op, len, bytes, adr } = seen;
   if (s.op !== op) {
     throw new Error(`xlat: REFUSING -- ${hx(adr, 6)} executed two different opcodes (${hx(s.op, 2)}, ${hx(op, 2)})`);
   }
@@ -36,7 +37,7 @@ const record = (sites: Sites, adr: number, mo: RegExpExecArray, image: string): 
   if (s === undefined) {
     sites.set(adr, { op, bytes, len, m, x, traced: true, smc: false, variants: new Set([bytes.join(',')]), image });
   } else {
-    merge(s, op, len, bytes, adr);
+    merge(s, { op, len, bytes, adr });
   }
 };
 

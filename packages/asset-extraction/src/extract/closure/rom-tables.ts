@@ -16,6 +16,12 @@ import { worldTables } from './closure-world';
 import type { RomTable } from './closure.type';
 import type { ClosureInputs } from './rom-tables.type';
 
+const tileAnimSizes = (fc: number): [number, number] => {
+  if (fc === 2) return [2, 4];
+  if (fc === 4) return [4, 8];
+  return [8, 16];
+};
+
 const fdTileAnimEnd = (rom: Uint8Array): number => {
   let mx = 0;
   for (let loc = 0; loc < 512; loc += 1) {
@@ -29,11 +35,11 @@ const fdTileAnimEnd = (rom: Uint8Array): number => {
       if (fc === 0x80) continue;
       mx = Math.max(mx, 0x3df310 + x + 1);
       x += 2;
-      const [first, second] = fc === 2 ? [2, 4] : fc === 4 ? [4, 8] : [8, 16];
-      mx = Math.max(mx, 0x3df310 + x + (first as number) - 1);
-      x += first as number;
-      mx = Math.max(mx, 0x3df310 + x + (second as number) - 1);
-      x += second as number;
+      const [first, second] = tileAnimSizes(fc);
+      mx = Math.max(mx, 0x3df310 + x + first - 1);
+      x += first;
+      mx = Math.max(mx, 0x3df310 + x + second - 1);
+      x += second;
     }
   }
   return mx + 1;

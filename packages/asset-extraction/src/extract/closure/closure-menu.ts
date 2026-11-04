@@ -22,7 +22,7 @@ const stringTables = (rom: Uint8Array, out: RomTable[]): void => {
   for (const p of ss) {
     if (!seen.has(FF + p)) {
       seen.add(FF + p);
-      caps.push(...menuString(rom, FF + p, seen, out));
+      caps.push(...menuString(rom, FF + p, { seen, out }));
     }
   }
   t('stat caps ($FF:CF33)', FF + 0xcf33, FF + 0xcf33 + Math.max(...caps, 7) + 1);

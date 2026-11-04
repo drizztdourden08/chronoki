@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 
-import { LOC, GLB, PARTY } from './script-mem.constants';
+import { PARTY } from './script-mem.constants';
 import type { ScriptMem } from './script-mem.type';
 
 

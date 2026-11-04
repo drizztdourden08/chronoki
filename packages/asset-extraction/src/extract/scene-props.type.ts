@@ -9,4 +9,6 @@ interface SceneProps {
   mover: number[];
 }
 
-export type { SceneProps };
+type Planes = Pick<SceneProps, 'coll' | 'zplane' | 'zflags' | 'mover'>;
+
+export type { SceneProps, Planes };

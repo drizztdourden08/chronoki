@@ -14,7 +14,7 @@ const unfilter = (raw: Uint8Array, w: number, h: number, ch: number): Uint8Array
       const a = i >= ch ? (line[i - ch] as number) : 0;
       const b = prev[i] as number;
       const c = i >= ch ? (prev[i - ch] as number) : 0;
-      line[i] = unfilterByte(f, line[i] as number, a, b, c);
+      line[i] = unfilterByte(f, line[i] as number, { a, b, c });
     }
     rows.push(line);
     prev = line;

@@ -54,7 +54,13 @@ const assembleFrames = (rom: Uint8Array, asmPtrs: number[], h: SpriteHeader, mf:
   return { frames: frames.length > 255 ? frames.slice(0, 255) : frames, maxsrc };
 };
 
-const writeSprite = (h: SpriteHeader, pal: [number, number, number][], tiles: Uint8Array[], frames: AssemblyFrame[], maxsrc: number): Uint8Array => {
+const writeSprite = (
+  h: SpriteHeader,
+  pal: [number, number, number][],
+  tiles: Uint8Array[],
+  asm: { frames: AssemblyFrame[]; maxsrc: number },
+): Uint8Array => {
+  const { frames, maxsrc } = asm;
   const ntiles = Math.min(tiles.length, maxsrc + 1);
   const w = createBlobWriter();
   w.u8(h.size & 3);
@@ -77,8 +83,8 @@ const spriteBlob = (rom: Uint8Array, si: number, staticMax: number | undefined):
   const h = readHeader(rom, si);
   const tiles = decodeTiles(readSpriteGraphics(rom, gfxPtrs, h.bitmap), 4);
   const pal = readSpritePalette(rom, palPtrs, h.palette);
-  const { frames, maxsrc } = assembleFrames(rom, asmPtrs, h, frameLimit(rom, si, staticMax));
-  return writeSprite(h, pal, tiles, frames, maxsrc);
+  const asm = assembleFrames(rom, asmPtrs, h, frameLimit(rom, si, staticMax));
+  return writeSprite(h, pal, tiles, asm);
 };
 
 const packSprites: Packer = ({ rom, tables }) => {

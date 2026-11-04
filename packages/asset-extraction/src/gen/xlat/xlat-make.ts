@@ -4,7 +4,7 @@ import { peekOracle } from '../../oracle/peek-access';
 import { recipeState } from '../../oracle/recipe-state';
 import type { CpuTraceOracle } from './cpu-trace.type';
 import { familyTrace } from './xlat-family';
-import { XLAT_PROGRAMS } from './xlat-programs';
+import { XLAT_PROGRAMS } from './xlat-programs.constants';
 import type { XlatProgram } from './xlat-program.type';
 import { translate } from './xlat-translate';
 

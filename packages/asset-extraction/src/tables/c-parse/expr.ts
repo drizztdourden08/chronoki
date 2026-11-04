@@ -59,7 +59,8 @@ const evaluateExpr = (defines: DefineMap, toks: PackToken[], context = '', depth
     const v = unary();
     if (op === '-') return -v;
     if (op === '+') return v;
-    return op === '~' ? ~v : v === 0n ? 1n : 0n;
+    if (op === '~') return ~v;
+    return v === 0n ? 1n : 0n;
   };
 
   const binary = (level: number): bigint => {

@@ -7,6 +7,13 @@ import type { LocationIndices } from './closure-location.type';
 
 const maxOf = (values: Iterable<number>): number => Math.max(...values);
 
+const addTilesetIdxs = (rom: Uint8Array, t: number, idxs: Set<number>): void => {
+  for (let i = 0; i < 8; i += 1) {
+    const ix = byteAt(rom, TILESET_LISTS + t * 8 + i);
+    if (ix !== 0xff) idxs.add(ix);
+  }
+};
+
 const locationIndices = (rom: Uint8Array): LocationIndices => {
   const r: LocationIndices = { ts: new Set(), b3s: new Set(), idxs: new Set(), maps: new Set(), scripts: new Set() };
   for (let loc = 0; loc < 512; loc += 1) {
@@ -15,10 +22,7 @@ const locationIndices = (rom: Uint8Array): LocationIndices => {
     const b3 = byteAt(rom, o + 2);
     if (t !== 0xff) {
       r.ts.add(t);
-      for (let i = 0; i < 8; i += 1) {
-        const ix = byteAt(rom, TILESET_LISTS + t * 8 + i);
-        if (ix !== 0xff) r.idxs.add(ix);
-      }
+      addTilesetIdxs(rom, t, r.idxs);
     }
     if (b3 !== 0xff) r.b3s.add(b3);
     r.maps.add(wordAt(rom, o + 4));

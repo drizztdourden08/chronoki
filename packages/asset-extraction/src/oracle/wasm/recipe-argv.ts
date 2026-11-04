@@ -27,6 +27,8 @@ const stepCall = (step: RecipeStep): StepCall => {
         env: {},
         needsState: true,
       };
+    case 'sram_file':
+    case 'sram':
     default:
       throw new Error(`recipe step ${step.op} is not executable (the replay code resolves it)`);
   }

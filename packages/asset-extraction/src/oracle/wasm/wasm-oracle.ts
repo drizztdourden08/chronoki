@@ -24,11 +24,13 @@ const createWasmOracle = (options: WasmOracleOptions): WasmOracle => {
   });
   return {
     tag: options.tag ?? DEFAULT_TAG,
-    boot: async (bytes) => {
+    boot: (bytes) => {
       rom = bytes;
+      return Promise.resolve();
     },
-    dispose: async () => {
+    dispose: () => {
       rom = null;
+      return Promise.resolve();
     },
     runRecipe: (run) => runRecipeSteps(ct, run),
     peek: (request) => peekCall(ct, request),
