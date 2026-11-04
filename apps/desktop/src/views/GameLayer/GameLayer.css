@@ -26,6 +26,7 @@
   max-width: none;
   max-height: none;
   object-fit: fill;
+  clip-path: inset(var(--canvas-clip-y, 0) var(--canvas-clip-x, 0));
   background: var(--c-bg);
   outline: none;
   image-rendering: pixelated;

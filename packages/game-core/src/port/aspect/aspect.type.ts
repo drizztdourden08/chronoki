@@ -17,6 +17,19 @@ interface CkCoverFrame {
   scale: number;
 }
 
+interface CkFrameAxis {
+  fixed: number;
+  boxFixed: number;
+  boxFree: number;
+  min: number;
+  max: number;
+}
+
+interface CkAxisPlan {
+  free: number;
+  scale: number;
+}
+
 interface CkResolvedFrame {
   width: number;
   lines: number;
@@ -24,4 +37,4 @@ interface CkResolvedFrame {
 
 type CkPresentMode = 'stretch' | 'fit' | 'whole';
 
-export type { CkArea, CkCoverFrame, CkFrameRanges, CkPresentMode, CkResolvedFrame };
+export type { CkArea, CkAxisPlan, CkCoverFrame, CkFrameAxis, CkFrameRanges, CkPresentMode, CkResolvedFrame };

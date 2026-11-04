@@ -1,7 +1,11 @@
 /* @layer renderer-components @kind style */
+/* The --game-bleed-* insets (useDockBleed) take the view over the dock's border so the game runs edge to edge. */
 .game-view {
   position: absolute;
-  inset: 0;
+  top: calc(var(--game-bleed-top, 0px) * -1);
+  right: calc(var(--game-bleed-right, 0px) * -1);
+  bottom: calc(var(--game-bleed-bottom, 0px) * -1);
+  left: calc(var(--game-bleed-left, 0px) * -1);
   overflow: hidden;
 }
 

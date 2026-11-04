@@ -24,13 +24,14 @@ const useCoreSettings = (stageArea: CkArea | null): CoreSettings => {
   const muted = app.masterMuted || startupFlag('muted') === true;
   const volume = Math.round(app.masterVolume);
   const { vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration } = app;
-  const { screenRatio, pixelArea } = displayInputsOf(app, stageArea);
-  const areaW = pixelArea?.width ?? 0;
-  const areaH = pixelArea?.height ?? 0;
+  const { screenRatio, stageArea: planned, wholePixels } = displayInputsOf(app, stageArea);
+  const areaW = planned?.width ?? 0;
+  const areaH = planned?.height ?? 0;
   return useMemo(() => {
     const satisfied = steamSatisfied(steamData);
     const { effective } = resolveGates(gates, { vanillaSafe, packaged: isPackaged(), satisfied });
-    const options = { aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, pixelArea: areaW > 0 ? { width: areaW, height: areaH } : undefined };
+    const stage = areaW > 0 ? { width: areaW, height: areaH } : undefined;
+    const options = { aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, stageArea: stage, wholePixels };
     const settings = gateSettings(effective, options, { volume, mute: muted });
     return {
       settings,
@@ -43,7 +44,7 @@ const useCoreSettings = (stageArea: CkArea | null): CoreSettings => {
       turboSpeed,
       saveHoldDuration,
     };
-  }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, areaW, areaH, steamData, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration]);
+  }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, areaW, areaH, wholePixels, steamData, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration]);
 };
 
 export { useCoreSettings };

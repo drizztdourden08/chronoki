@@ -18,11 +18,12 @@ const detectedRatio = (app: AppSettings, area: CkArea): number => {
   return aspectRatioValue('screen', { customW: app.customAspectW, customH: app.customAspectH, limits: ASPECT_LIMITS });
 };
 
+/* The stage plans the frame unless the picture is stretched (Fill), and whole pixels only apply with no viewport constraint. */
 const displayInputsOf = (app: AppSettings, stageArea: CkArea | null): DisplayInputs => {
   const area = stageArea ?? windowArea();
-  const pixelPerfect = app.pixelPerfect && app.viewportConstraint === 'none';
-  const pixelArea: PixelArea | undefined = pixelPerfect ? area : undefined;
-  return { screenRatio: detectedRatio(app, area), pixelArea };
+  const planned: PixelArea | undefined = app.viewportConstraint === 'fill' ? undefined : area;
+  const wholePixels = app.pixelPerfect && app.viewportConstraint === 'none';
+  return { screenRatio: detectedRatio(app, area), stageArea: planned, wholePixels };
 };
 
 export { displayInputsOf };

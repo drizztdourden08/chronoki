@@ -9,9 +9,10 @@ import { ORIGINAL_FRAME } from './resolve-frame.constants';
 import { ratioToLines } from './ratio-to-lines';
 import { ratioToWidth } from './ratio-to-width';
 
+/* With the measured stage, the frame is planned to fill it (whole pixels under pixel perfect); without, it follows the ratio. */
 const plannedFrame = (options: GateOptions, ratio: number, tall: boolean): CkResolvedFrame | null => {
-  if (!options.pixelArea) return null;
-  const cover = coverFrame(options.pixelArea, ratio, tall ? CT_TALL_RANGES : CT_WIDE_RANGES);
+  if (!options.stageArea) return null;
+  const cover = coverFrame(options.stageArea, ratio, tall ? CT_TALL_RANGES : CT_WIDE_RANGES, options.wholePixels === true);
   return { width: cover.width, lines: cover.height };
 };
 

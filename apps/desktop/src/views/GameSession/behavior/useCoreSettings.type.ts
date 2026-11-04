@@ -16,7 +16,8 @@ interface CoreSettings {
 
 interface DisplayInputs {
   screenRatio: number;
-  pixelArea: PixelArea | undefined;
+  stageArea: PixelArea | undefined;
+  wholePixels: boolean;
 }
 
 export type { CoreSettings, DisplayInputs };

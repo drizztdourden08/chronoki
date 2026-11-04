@@ -14,7 +14,8 @@ interface GateOptions {
   customAspectH: number;
   renderScale: RenderScaleFactor;
   screenRatio?: number;
-  pixelArea?: PixelArea;
+  stageArea?: PixelArea;
+  wholePixels?: boolean;
 }
 
 export type { AspectRatioChoice, GateOptions, PixelArea, RenderScaleFactor };
