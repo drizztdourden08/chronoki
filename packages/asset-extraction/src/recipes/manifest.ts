@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { Generator, ManifestFile } from './manifest.type';
+import { stageOf } from './stage-of';
 
 const baseName = (path: string): string => path.slice(Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\')) + 1);
 
@@ -12,8 +13,4 @@ const orderedGenerators = (files: ManifestFile[]): Generator[] =>
     })
     .flatMap((f) => (JSON.parse(f.text) as { generators: Generator[] }).generators);
 
-const stageOf = (g: Generator): string => g.stage ?? 'data';
-
-const recipesNeeded = (gens: Generator[]): string[] => [...new Set(gens.flatMap((g) => g.recipes ?? []))].sort();
-
-export { orderedGenerators, recipesNeeded, stageOf };
+export { orderedGenerators };

@@ -2,7 +2,7 @@
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
-import { requireBytes } from '../pipeline/work-files';
+import { requireBytes } from '../pipeline/require-bytes';
 import { buildPack } from '../tables/build-pack';
 import { mergeTablesInto } from '../ctas/table-container';
 import { parseWorkHeaders } from '../tables/pack-headers';

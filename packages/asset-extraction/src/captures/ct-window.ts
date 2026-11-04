@@ -1,7 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import type { StageRun } from '../pipeline/stage.type';
-import { rgbOfFb } from './capture-io';
+import { rgbOfFb } from './rgb-of-fb';
 import { TOP, LIFT_X, LIFT_Y, PERIOD } from './ct-window.constants';
 
 const H = 80;

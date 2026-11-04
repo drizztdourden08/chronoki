@@ -1,11 +1,14 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CType } from '../c-type.type';
-import { describeType, makeArray, makePointer } from '../c-types';
-import { countElements } from '../init-writer';
+import { describeType } from '../c-types';
+import { makePointer } from '../make-pointer';
+import { makeArray } from '../make-array';
+import { countElements } from '../count-elements';
 import { PackError } from '../pack-error';
 
 import { parseInitializer } from './initializer';
-import { isCharScalar, parseDims, parseTypeSpec } from './type-spec';
+import { isCharScalar, parseTypeSpec } from './type-spec';
+import { parseDims } from './parse-dims';
 import type { ParseEnv } from './type-spec.type';
 import type { DeclSink } from './declaration.type';
 

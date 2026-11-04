@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import { readEntry } from './steam-archive';
 import type { SteamArchive, SteamFiles } from './steam-archive.type';
-import { sheetPages } from './steam-sheets';
+import { sheetPages } from './sheet-pages';
 import type { Metatile, Margin } from './steam-margins.type';
 import { LOCATIONS } from './steam-margins.constants';
 

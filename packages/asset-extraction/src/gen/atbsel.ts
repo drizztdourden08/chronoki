@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import { BTN0, BTN1, emitMain } from './atbsel/emit';
 import { buildPalette, diffBbox, loadFb, toIdx } from './atbsel/frames';
 import { emitTypewriter, penRows, TEXT_X } from './atbsel/typewriter';

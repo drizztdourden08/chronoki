@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import { orderedGenerators, recipesNeeded } from '../recipes/manifest';
+import { orderedGenerators } from '../recipes/manifest';
+import { recipesNeeded } from '../recipes/recipes-needed';
 import { loadRecipes } from '../recipes/load-recipes';
 import { createRecipeMaker } from '../recipes/recipe-maker';
 import { sha1Hex } from '../rom/sha1';

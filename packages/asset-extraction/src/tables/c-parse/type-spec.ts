@@ -1,35 +1,15 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CType } from '../c-type.type';
-import { makeArray, makePointer, makeStruct } from '../c-types';
+import { makeStruct } from '../c-types';
+import { makePointer } from '../make-pointer';
 import { PackError } from '../pack-error';
-import type { PackToken } from '../pack.type';
+
 import { SCALAR_TYPES } from '../scalars.constants';
 import type { ParseEnv } from './type-spec.type';
 import { SCALAR_WORDS, UNSUPPORTED_WORDS } from './type-spec.constants';
+import { parseDims } from './parse-dims';
 
 const isCharScalar = (t: CType): boolean => t.tag === 'scalar' && t.kind === 'c8';
-
-const parseDims = (env: ParseEnv, base: CType, allowOpen = false): { type: CType; open: boolean } => {
-  const ns: (number | null)[] = [];
-  while (env.cur.peek() === '[') {
-    env.cur.take('[');
-    const expr: PackToken[] = [];
-    while (env.cur.peek() !== ']') {
-      const { kind, text } = env.cur.take();
-      expr.push({ kind, text });
-    }
-    env.cur.take(']');
-    if (expr.length === 0) {
-      if (!allowOpen || ns.length > 0) throw new PackError(`${env.header}: an open array dimension here`);
-      ns.push(null);
-    } else {
-      ns.push(Number(env.evalConst(expr, env.header)));
-    }
-  }
-  let type = base;
-  for (const n of [...ns].reverse()) type = makeArray(type, n ?? 0);
-  return { type, open: ns[0] === null };
-};
 
 const parseStructBody = (env: ParseEnv): CType => {
   const { cur } = env;
@@ -93,4 +73,4 @@ const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean; anon?: b
   return { type: SCALAR_TYPES[key] as CType, isConst };
 };
 
-export { isCharScalar, parseDims, parseTypeSpec };
+export { isCharScalar, parseTypeSpec };

@@ -13,12 +13,7 @@ import type { DefineLog } from './preprocess.type';
 import { stripComments } from './strip-comments';
 import { createCursor } from './token-cursor';
 import type { Headers } from './headers.type';
-
-const decodeHeader = (bytes: Uint8Array): string => {
-  let text = '';
-  for (let i = 0; i < bytes.length; i += 4096) text += String.fromCharCode(...bytes.subarray(i, i + 4096));
-  return text.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
-};
+import { decodeHeader } from './decode-header';
 
 const createHeaders = (abi: TableAbi): Headers => {
   const defines: DefineMap = new Map();
@@ -63,4 +58,4 @@ const createHeaders = (abi: TableAbi): Headers => {
   };
 };
 
-export { createHeaders, decodeHeader };
+export { createHeaders };

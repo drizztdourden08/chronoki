@@ -2,7 +2,7 @@
 import type { StageRun } from '../pipeline/stage.type';
 import { ctNameMsgStage, ctNameWinStage } from './ct-name';
 import { ctWindowStage } from './ct-window';
-import { lzPackStage } from './lz-pack';
+import { lzPackStage } from './lz-pack-stage';
 import { owSpritesStage } from './ow-sprites';
 import { owWorldStage } from './ow-world';
 import { animOpLenStage, sndTimingStage } from './simple-tools';

@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { requireBytes } from '../pipeline/work-files';
+import { requireBytes } from '../pipeline/require-bytes';
 import { cgramOf, peek, recipeState } from './ctgen/require-tools';
 import { hx } from './ctgen/text-file';
 import { decode16, sprFrames } from './ow-sprite-decode';

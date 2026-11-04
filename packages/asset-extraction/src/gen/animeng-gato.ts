@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { recipeState } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import { writeE3 } from './animeng-gato/e3';
 import { writeE4 } from './animeng-gato/e4';
 import { writeSheet } from './animeng-gato/sheet';

@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { recipeState } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import { ANIM_RECIPE } from './battle-anim/anim-consts';
 import { bakeGroup, CRONO_IDLE_KEYS, GATO_SWIPE_KEYS } from './battle-anim-add/add-bake';
 import { emitAdd } from './battle-anim-add/add-emit';

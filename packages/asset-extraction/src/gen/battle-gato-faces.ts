@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import type { PeekDump } from '../oracle/peek.type';
 import { hex } from './c-text';
 import type { GenFiles } from './oracle-gen-stage';

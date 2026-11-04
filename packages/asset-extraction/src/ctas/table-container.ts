@@ -9,7 +9,8 @@ import {
   T_TABLE_HEADER,
 } from './ctas.constants';
 import type { CtasEntry } from './ctas.type';
-import { isCtas, readCtas } from './read-ctas';
+import { readCtas } from './read-ctas';
+import { isCtas } from './is-ctas';
 
 const alignPad = (at: number): number => (8 - (at % 8)) % 8;
 

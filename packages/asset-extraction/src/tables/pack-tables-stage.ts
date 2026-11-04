@@ -2,7 +2,8 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { TABLES_PATH } from '../pipeline/setup-paths.constants';
 import type { StageRun } from '../pipeline/stage.type';
-import { buildPack, layoutOf } from './build-pack';
+import { buildPack } from './build-pack';
+import { layoutOf } from './layout-of';
 import { createHeaders } from './c-parse/headers';
 import type { Headers } from './c-parse/headers.type';
 import { fnv64 } from './fnv64';

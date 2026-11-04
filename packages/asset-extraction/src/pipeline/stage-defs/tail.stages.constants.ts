@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind constants */
-import { quietStage, stage } from '../stage-def';
+import { stage } from '../stage-def';
+import { quietStage } from '../quiet-stage';
 import type { StageDef } from '../stage.type';
 
 const TAIL_STAGES: StageDef[] = [

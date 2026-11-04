@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 import { hexRows } from './c-text';
 
 /** The flat file offset of $C3:E000, and the 8 KB to $C3:FFFF. */

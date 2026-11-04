@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 import { hex } from './c-text';
 import { ANIMENG_E4_PC } from './animeng-pc-e4';
 

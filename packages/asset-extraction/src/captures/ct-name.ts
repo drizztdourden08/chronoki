@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import type { StageRun } from '../pipeline/stage.type';
 
 const cropRgb = (fb: Uint8Array, head: number[], x0: number, y0: number, w: number, h: number): Uint8Array => {

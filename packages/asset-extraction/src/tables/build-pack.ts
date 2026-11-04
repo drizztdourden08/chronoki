@@ -3,7 +3,7 @@ import { createLeWriter } from '../buffer/le-writer';
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_TABLE, T_TABLE_DEFINES, T_TABLE_HEADER, T_TABLE_POOL } from '../ctas/ctas.constants';
 import { tableContainer } from '../ctas/table-container';
-import { describeType, pointerOffsets } from './c-types';
+import { pointerOffsets } from './c-types';
 import { fnv64 } from './fnv64';
 import { createInitWriter } from './init-writer';
 import { PackError } from './pack-error';
@@ -12,10 +12,9 @@ import { createStringPool } from './string-pool';
 import type { TableAbi } from './table-abi.type';
 import type { PackInput } from './build-pack.type';
 import { FORMAT_VERSION, LITTLE_ENDIAN } from './build-pack.constants';
+import { layoutOf } from './layout-of';
 
 const encoder = new TextEncoder();
-
-const layoutOf = (t: PackTable): string => `${t.name}=${describeType(t.ctype)}`;
 
 const entryHeader = (built: BuiltTable[], defines: PackDefine[], abi: TableAbi): CtasEntry => {
   const w = createLeWriter();
@@ -77,4 +76,4 @@ const buildPack = (input: PackInput): { pack: Uint8Array; built: BuiltTable[] } 
   return { pack: tableContainer(entries), built };
 };
 
-export { buildPack, layoutOf };
+export { buildPack };

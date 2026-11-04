@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import { bakeMap, bg1Index, bg1Palette, cgramPalettes } from './battle-hud-bake';
 import { emitHud } from './battle-hud-emit';
 import { bakeBg1 } from './battle-hud-strip';

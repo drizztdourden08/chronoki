@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../oracle/peek-access';
+import { peekOracle } from '../oracle/peek-access';
+import { recipeState } from '../oracle/recipe-state';
 import { chromeText } from './menu-chrome/chrome-text';
 import type { GenFiles } from './oracle-gen-stage';
 import { cgramOf } from './shared/fb-decode';

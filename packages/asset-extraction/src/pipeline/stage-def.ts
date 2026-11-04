@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { StageDef, StageGroupId, StageNeed, StageStatus } from './stage.type';
+import { quietStage } from './quiet-stage';
 
 const stage = (
   id: string,
@@ -11,6 +12,4 @@ const stage = (
   needs: StageNeed[] = [],
 ): StageDef => ({ id, label, python, group, weight, status, step: true, needs });
 
-const quietStage = (def: StageDef): StageDef => ({ ...def, step: false });
-
-export { quietStage, stage };
+export { stage };

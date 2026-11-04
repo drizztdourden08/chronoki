@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 
 /** battle_hud_chrome.py chrome(): C1/1C3A + C1/081E, the $0B40 tilemap image for the enqueued seats `queue` (3 booleans). */
 const chromeImage = (rom: Uint8Array, queue: boolean[]): Uint8Array => {

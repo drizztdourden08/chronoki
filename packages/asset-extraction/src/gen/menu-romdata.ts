@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 import { cArray, hex } from './c-text';
 
 const CC: [number, number] = [0x0c0b5e, 0x0c257b];

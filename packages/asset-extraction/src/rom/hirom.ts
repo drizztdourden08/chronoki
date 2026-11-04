@@ -1,4 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
+import { romRegion } from './rom-region';
+
 const hiromOffset = (addr: number, romSize: number): number | null => {
   const bank = (addr >> 16) & 0xff;
   const low = addr & 0xffff;
@@ -7,8 +9,4 @@ const hiromOffset = (addr: number, romSize: number): number | null => {
   return null;
 };
 
-const offsetToSnes = (offset: number): [number, number] => [0xc0 + (offset >> 16), offset & 0xffff];
-
-const romRegion = (rom: Uint8Array, lo: number, hi: number): Uint8Array => rom.slice(lo, hi);
-
-export { hiromOffset, offsetToSnes, romRegion };
+export { hiromOffset };

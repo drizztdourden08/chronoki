@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind constants */
 import type { CScalar } from './c-type.type';
-import { makeScalar } from './c-types';
+import { makeScalar } from './make-scalar';
 
 const U8 = makeScalar('u8', 1, false);
 const I8 = makeScalar('i8', 1, true);

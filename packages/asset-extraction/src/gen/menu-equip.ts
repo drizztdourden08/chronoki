@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 import { cArray, hex } from './c-text';
 
 const r8 = (rom: Uint8Array, a: number): number => rom[a] as number;

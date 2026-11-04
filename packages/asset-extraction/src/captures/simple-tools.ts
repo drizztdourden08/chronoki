@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { StageRun } from '../pipeline/stage.type';
-import { runTool } from './capture-io';
+import { runTool } from './run-tool';
 
 const toolFileStage =
   (name: string, mode: string, file: string): StageRun =>

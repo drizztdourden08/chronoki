@@ -1,14 +1,16 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { OracleRun } from '../oracle/oracle-driver.type';
 import { createLimiter } from '../pipeline/limit';
-import { requireBytes } from '../pipeline/work-files';
+import { requireBytes } from '../pipeline/require-bytes';
 
 import { sha1Hex } from '../rom/sha1';
 import { checkExpect } from './check-expect';
 import { expandPadScript } from './expand-pad-script';
-import { chainOf, closureOf } from './recipe-chain';
+import { chainOf } from './recipe-chain';
+import { closureOf } from './closure-of';
 import { recipeKey } from './recipe-key';
-import { readCached, sramOf, writeCached } from './recipe-store';
+import { readCached, writeCached } from './recipe-store';
+import { sramOf } from './sram-of';
 import type { Recipe } from './recipe.type';
 import type { MakerEnv } from './recipe-maker.type';
 

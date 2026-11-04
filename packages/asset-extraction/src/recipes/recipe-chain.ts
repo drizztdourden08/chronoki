@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { Recipe, RecipeSet } from './recipe.type';
+import { depsOf } from './deps-of';
 
 const chainOf = (recipes: RecipeSet, name: string): Recipe[] => {
   const seq: Recipe[] = [];
@@ -16,24 +17,4 @@ const chainOf = (recipes: RecipeSet, name: string): Recipe[] => {
   return seq.reverse();
 };
 
-const depsOf = (recipes: RecipeSet, name: string): string[] => {
-  const r = recipes.get(name);
-  if (!r) throw new Error(`recipes: no recipe ${name}`);
-  const sram = r.steps.flatMap((s) => (s.op === 'sram' ? [s.recipe] : []));
-  return [...(r.from ? [r.from] : []), ...sram];
-};
-
-const closureOf = (recipes: RecipeSet, names: string[]): Set<string> => {
-  const need = new Set<string>();
-  const todo = [...names];
-  while (todo.length > 0) {
-    const n = todo.pop() as string;
-    if (!need.has(n)) {
-      need.add(n);
-      todo.push(...depsOf(recipes, n));
-    }
-  }
-  return need;
-};
-
-export { chainOf, closureOf, depsOf };
+export { chainOf };

@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 import { hexByte } from './c-text';
 
 const RETURN_HEAD = [0xe3, 0x00, 0x89, 0x40, 0x0d, 0x00, 0x0e, 0x02, 0xae, 0x95, 0x00, 0x0e, 0x00, 0x71, 0xff];

@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import { u16 } from '../extract/rom-read';
-import { LOC_RECORDS, TILESET_LISTS, MAP_PTRS, ASM_PTRS, ASM3_PTRS, TS_PTRS, SCRIPT_PTRS, SEQ_TABLE } from './closure-locations.constants';
+import { LOC_RECORDS, TILESET_LISTS, MAP_PTRS, ASM_PTRS, ASM3_PTRS, TS_PTRS, SCRIPT_PTRS } from './closure-locations.constants';
+import { sequenceStreams } from './sequence-streams';
 
 const ptr24 = (rom: Uint8Array, at: number): number | null => {
   const bank = rom[at + 2] as number;
@@ -51,17 +52,4 @@ const locationStreams = (rom: Uint8Array): Map<string, Set<number>> => {
   ]);
 };
 
-const sequenceStreams = (rom: Uint8Array): Map<string, Set<number>> => {
-  let first = Infinity;
-  for (let x = 0; x < 0x100; x += 3) {
-    if (rom[SEQ_TABLE + x + 2] === 0xfe) first = Math.min(first, u16(rom, SEQ_TABLE + x));
-  }
-  const offs = new Set<number>();
-  for (let x = 0; x < first - 2; x += 3) {
-    const o = ptr24(rom, SEQ_TABLE + x);
-    if (o !== null) offs.add(o);
-  }
-  return new Map([['sequence packets ($FE:0000 table)', offs]]);
-};
-
-export { ptr24, locationStreams, sequenceStreams };
+export { ptr24, locationStreams };

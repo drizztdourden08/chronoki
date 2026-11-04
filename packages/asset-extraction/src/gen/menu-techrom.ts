@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from '../rom/hirom';
+import { romRegion } from '../rom/rom-region';
 import { decodeString, loadDict } from '../extract/text-tokens';
 import { cArray } from './c-text';
 

@@ -1,8 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { StageRun } from '../pipeline/stage.type';
-import { locationStreams, sequenceStreams } from './closure-locations';
-import { menuStreams, spriteStreams, stageStreams, worldStreams } from './closure-world';
-import { runTool } from './capture-io';
+import { locationStreams } from './closure-locations';
+import { sequenceStreams } from './sequence-streams';
+import { spriteStreams, stageStreams } from './closure-world';
+import { worldStreams } from './world-streams';
+import { menuStreams } from './menu-streams';
+import { lzPackStage } from './lz-pack-stage';
 
 const sources = (rom: Uint8Array): Map<string, Set<number>>[] => [
   locationStreams(rom),
@@ -26,13 +28,4 @@ const lzList = (rom: Uint8Array): string => {
   return `# tools/gen/lz_pack.py: ${per.join(', ')}\n${lines.join('')}`;
 };
 
-const lzPackStage: StageRun = async (ctx) => {
-  const list = new TextEncoder().encode(lzList(ctx.rom));
-  await ctx.work.writeBytes('build/lz_pack.list', list);
-  const args = ['--lzpack', '{in:list}', '{out:lz_pack.bin}', '{out:lz_pack.skipped}'];
-  const got = await runTool(ctx, 'lz_pack', args, ['lz_pack.bin', 'lz_pack.skipped'], null, { list });
-  await ctx.work.writeBytes('saves/lz_pack.bin', got['lz_pack.bin'] as Uint8Array);
-  if (got['lz_pack.skipped']) await ctx.work.writeBytes('saves/lz_pack.skipped', got['lz_pack.skipped']);
-};
-
-export { lzList, lzPackStage };
+export { lzList };

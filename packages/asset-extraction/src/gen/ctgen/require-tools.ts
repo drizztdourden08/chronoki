@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../../pipeline/import-context.type';
-import { requireBytes } from '../../pipeline/work-files';
+import { requireBytes } from '../../pipeline/require-bytes';
 import { expandPadScript } from '../../recipes/expand-pad-script';
 import { statePath } from '../../recipes/recipe-store';
 import type { OracleTools, PeekResult } from './oracle-tools.type';

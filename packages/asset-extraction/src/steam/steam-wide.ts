@@ -1,12 +1,16 @@
 /* @layer shared-asset-extraction @kind logic */
 import { writeCtWide } from './ct-wide-writer';
 import type { ResolvedMargin } from './ct-wide-writer.type';
-import { halve, pngRgba } from './steam-image';
-import { readDirectory, readEntry } from './steam-archive';
+import { pngRgba } from './steam-image';
+import { halve } from './halve';
+import { readEntry } from './steam-archive';
+import { readDirectory } from './read-directory';
 import type { SteamArchive, SteamFiles } from './steam-archive.type';
 import { readMargins } from './steam-margins';
 import type { Margin } from './steam-margins.type';
-import { chipSet, pixelSheet, steamPalette } from './steam-sheets';
+import { chipSet } from './steam-sheets';
+import { steamPalette } from './steam-palette';
+import { pixelSheet } from './pixel-sheet';
 import { SPECIAL } from './steam-wide.constants';
 
 const specials = async (archive: SteamArchive, files: SteamFiles) => {

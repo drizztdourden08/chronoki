@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../../pipeline/import-context.type';
-import { peekOracle, recipeState } from '../../oracle/peek-access';
+import { peekOracle } from '../../oracle/peek-access';
+import { recipeState } from '../../oracle/recipe-state';
 import type { CpuTraceOracle } from './cpu-trace.type';
 import { familyTrace } from './xlat-family';
 import { XLAT_PROGRAMS } from './xlat-programs';
