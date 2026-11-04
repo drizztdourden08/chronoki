@@ -89,14 +89,14 @@ describe('readGameInfo party and economy', () => {
 describe('readGameInfo world state', () => {
   it('reads the lead position from the object tables in pixels', { tags: ['critical'] }, () => {
     const heap = makeHeap();
-    put(heap, 0x1800, 0x00, 0x08);
-    put(heap, 0x1880, 0x40, 0x04);
+    put(heap, 0x1802, 0x00, 0x08);
+    put(heap, 0x1882, 0x40, 0x04);
     expect(readGameInfo(heap, PTR)?.location).toMatchObject({ leadX: 0x80, leadY: 0x44 });
   });
 
   it('reports an unused lead object as unknown', { tags: ['critical'] }, () => {
     const heap = makeHeap();
-    put(heap, 0x1800, 0x00, 0xff);
+    put(heap, 0x1802, 0x00, 0xff);
     expect(readGameInfo(heap, PTR)?.location.leadX).toBeNull();
   });
 

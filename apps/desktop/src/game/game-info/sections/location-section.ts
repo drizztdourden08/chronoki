@@ -1,7 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { Block, GameInfoSection } from '@drizztdourden08/brock-game-info';
 import { formatMap } from '../format-map';
-import { formatEpoch } from '../format-epoch';
 import { formatPoint } from '../format-point';
 import type { ChronokiInfoSnapshot } from '../game-info.type';
 
@@ -20,7 +19,6 @@ const detailBlock = ({ location }: ChronokiInfoSnapshot): Block => ({
   rows: [
     { label: 'Previous map', value: formatMap(location.returnId), mono: true },
     { label: 'Lead position', value: formatPoint(location.leadX, location.leadY), mono: true },
-    { label: 'Epoch', value: formatEpoch(location.epoch), mono: true },
   ],
 });
 
