@@ -61,8 +61,12 @@ Save states (T4):
 ## Hidden-launch test (the lead runs it)
 
 ```
-chronoki launch main game --prod --screenshot=title --probe-frames=600 --event-log=.user-data/Data/logs/p5.jsonl
+npx brock-thread launch main game --prod --auto-start --screenshot=title --probe-frames=600 --event-log=.user-data/Data/logs/p5.jsonl
 ```
+
+The first launch of the main checkout provisions `.user-data` (profile, then the ROM and the pack from `test-roms/`, via
+the `provision` steps in `brock.workspace.mjs`), but only if `.user-data` does not exist yet. If an earlier launch already
+created it empty (Data tab shows "No ROM added yet"), delete the git-ignored `.user-data` folder once, then launch again.
 
 It passes when:
 - p5.jsonl shows `presented >= 600` at 256×224, about 800 audio frames per presented frame, `coreStatus: running` and no
