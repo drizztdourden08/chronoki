@@ -1,5 +1,6 @@
 /* @layer renderer-components @kind hook */
 import { useCallback, useEffect, useState } from 'react';
+import { useDialogStore } from '@drizztdourden08/brock-react';
 import { deleteRom, listRomsWithStatus } from '@app/storage/roms-store';
 import type { RomEntry, RomStatusMessage } from '../Roms.type';
 import { ROMS_TEXT } from '../Roms.constants';
@@ -43,11 +44,22 @@ const useRoms = () => {
   const handleDrop = useCallback((files: File[]) => run(ROMS_TEXT.working, () => importRom(files)), [run]);
   const handleRebuild = useCallback((romFile: string) => run(ROMS_TEXT.rebuilding, () => rebuildRomAssets(romFile)), [run]);
 
-  const handleDelete = useCallback(async (romFile: string) => {
+  const removeRom = useCallback(async (romFile: string) => {
     await deleteRom(romFile);
     if (selected === romFile) setSelected(null);
     await refresh();
   }, [refresh, selected]);
+
+  const handleDelete = useCallback((romFile: string) => {
+    const { show, dismiss } = useDialogStore.getState();
+    show({
+      title: ROMS_TEXT.deleteTitle,
+      message: `${ROMS_TEXT.deleteMessage} ${romFile}`,
+      confirmLabel: ROMS_TEXT.deleteLabel,
+      variant: 'danger',
+      onConfirm: () => { dismiss(); void removeRom(romFile); },
+    });
+  }, [removeRom]);
 
   return { roms, selected, setSelected, status, busy, detail, loading, handleDrop, handleRebuild, handleDelete };
 };

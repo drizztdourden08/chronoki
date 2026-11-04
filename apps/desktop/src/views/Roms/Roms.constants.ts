@@ -18,6 +18,8 @@ const ROMS_TEXT = {
   ready: 'Ready',
   notBuilt: 'Assets not built',
   deleteLabel: 'Delete',
+  deleteTitle: 'Delete ROM',
+  deleteMessage: 'This removes the imported ROM and its built assets:',
   rebuild: 'Rebuild assets',
   build: 'Build assets',
 };
