@@ -14,6 +14,7 @@ export default defineBrockConfig({
     artifactPrefix: 'chronoki-',
     dataDirs: ['assets', 'roms', 'profiles', 'config', 'input'],
     icons: { brand: 'chronoki' },
+    profilesRoute: 'data/profiles',
   },
   packaging: {
     extraResources: [
