@@ -3,23 +3,8 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { cgWord, x5 } from './ctgen/menugfx';
 import { cgramOf, peek, recipeState } from './ctgen/require-tools';
 import { crlf, hx } from './ctgen/text-file';
-
-const OPEN = '0:10,100:2,0:150';
-const DRIVES: [string, string, number][] = [
-  ['main', OPEN, 162],
-  ['buy', `${OPEN},100:2,0:40`, 204],
-  ['qty', `${OPEN},100:2,0:40,100:2,0:40`, 246],
-];
-const TMW = 32;
-const TMH = 28;
-const BASE = 0x6000;
-const NTILE = 0x88;
-
-interface Capture {
-  map: number[];
-  tiles: Uint8Array;
-  cg: Uint8Array;
-}
+import { DRIVES, TMW, TMH, BASE, NTILE } from './menu-shop.constants';
+import type { Capture } from './menu-shop.type';
 
 const same = (a: ArrayLike<number>, b: ArrayLike<number>): boolean => a.length === b.length && Array.from(a).every((v, i) => v === b[i]);
 
@@ -86,7 +71,6 @@ const render = (tm: number[], tq: number[], tiles: Uint8Array, cg: Uint8Array): 
   return crlf(lines.join('\n'));
 };
 
-/** tools/gen/menu_shop.py: the Shop screen's ($0C) BG2 chrome, narrow-digit tiles and text palettes (recipe menu_shop). */
 const genMenuShop = async (ctx: ImportContext): Promise<string> => {
   const state = await recipeState(ctx, 'menu_shop');
   const caps: Capture[] = [];

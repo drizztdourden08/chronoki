@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hex } from '../c-text';
+import { hex } from '../c-hex';
 import { E4_STAGE2 } from './e4-stage2';
 
 /** Per-facing pose windows: 0=UP 1=DOWN(idle) 2=LEFT 3=RIGHT (ctBattleFaceTab / $96DE). */

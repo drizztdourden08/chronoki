@@ -3,23 +3,11 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { block16, rgb } from './ctgen/menugfx';
 import { cgramOf, peek, recipeState } from './ctgen/require-tools';
 import { hx } from './ctgen/text-file';
+import { HEADER } from './menu-icons.constants';
 
 const icon = (vram: Uint8Array, cg: Uint8Array, t: number): number[] =>
   block16(vram, 0x8000, t, t + 1, t + 16, t + 17).flatMap((i) => (i === 0 ? [0, 0, 0, 0] : [...rgb(cg, 128 + i), 255]));
 
-const HEADER = [
-  '// Menu ribbon icons from the oracle OBJ VRAM (chr $4000/byte $8000, OBJ pal 0). base 004..00E =',
-  '// GREY unselected; highlight 024..02E = the SELECTED icon\'s REAL colors -- CT loads a DIFFERENT OBJ',
-  '// pal0 per selection (each icon\'s own colours), so each highlight tile is decoded with the palette',
-  '// from the state where THAT icon is selected (sel$i.state). See disasm/notes/menu_phase2.md.',
-  '#ifndef CT_MENU_ICONS_H',
-  '#define CT_MENU_ICONS_H',
-  '#include <stdint.h>',
-  '',
-  'static const uint8_t ctMenuIconBase[6][16*16*4] = {',
-];
-
-/** tools/gen/menu_icons.py: the X menu's six ribbon icons (recipe menu_open_gato2, Right x i for icon i). */
 const genMenuIcons = async (ctx: ImportContext): Promise<string> => {
   const state = await recipeState(ctx, 'menu_open_gato2');
   let base: number[][] | null = null;

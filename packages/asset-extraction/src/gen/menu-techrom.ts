@@ -1,14 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import { romRegion } from '../rom/hirom';
 import { decodeString, loadDict } from '../extract/text-tokens';
-import { cArray } from './c-text';
+import { cArray } from './c-array';
+import { IDX_LO, IDX_HI, DESC_N, TECH_N } from './menu-techrom.constants';
 
-const IDX_LO = 0x1640;
-const IDX_HI = 0x17fc;
-const DESC_N = 0x7a;
-const TECH_N = 0x75;
-
-/** FF/F8BD..F94B: the per-character MP index table, laid out as $7E:1607 + charId*64 + techId, as one flat region. */
 const mpIndexTable = (rom: Uint8Array): Uint8Array => {
   const idx = new Uint8Array(IDX_HI - IDX_LO);
   const put = (charId: number, techId: number, v: number): void => {
@@ -41,13 +36,12 @@ const mpIndexTable = (rom: Uint8Array): Uint8Array => {
   return idx;
 };
 
-/** The per-tech description: the first line, printable ASCII only, 31 characters at most ("" when the decoder runs off the ROM). */
 const techDescriptions = (rom: Uint8Array): string[] => {
   const subs = loadDict(rom);
   const desc: string[] = [];
   for (let tid = 0; tid < DESC_N; tid += 1) {
     const ptr = (rom[0x0c3a09 + tid * 2] as number) | ((rom[0x0c3a0a + tid * 2] as number) << 8);
-    let t = '';
+    let t: string;
     try {
       t = decodeString(rom, 0x0c0000 + ptr, subs);
     } catch {
@@ -66,7 +60,6 @@ const techDescriptions = (rom: Uint8Array): string[] => {
 
 const emit = (name: string, data: Uint8Array, note: string): string[] => [`// ${note}`, ...cArray('uint8_t', name, data)];
 
-/** The cast tables: $0DC0 amount, $0DBD flags per tech id (C2/B3E6). */
 const castTables = (rom: Uint8Array): { fxb: Uint8Array; nib: Uint8Array } => {
   const fxb = new Uint8Array(TECH_N);
   const nib = new Uint8Array(TECH_N);
@@ -79,7 +72,6 @@ const castTables = (rom: Uint8Array): { fxb: Uint8Array; nib: Uint8Array } => {
   return { fxb, nib };
 };
 
-/** tools/gen/menu_techrom.py: the Tech screen's ROM data as src/data/menu_techrom.h. */
 const genMenuTechrom = (rom: Uint8Array): string => {
   const idx = mpIndexTable(rom);
   const desc = techDescriptions(rom);

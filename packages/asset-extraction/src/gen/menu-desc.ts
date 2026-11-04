@@ -1,15 +1,12 @@
 /* @layer shared-asset-extraction @kind logic */
 import { decodeString, loadDict } from '../extract/text-tokens';
+import { BASE } from './menu-desc.constants';
 
-/** CC/2EB1 as a HiROM file offset: the table of 16-bit local pointers into bank $CC, one per item id. */
-const BASE = 0x0c2eb1;
 const N = 242;
 
-/** The C string literal of one description; the closing quote U+201D is the raw CT code 0xE2 (the `""` ends the hex escape). */
 const cString = (s: string): string =>
   `"${s.replaceAll('\\', '\\\\').replaceAll('"', '\\"').replaceAll('\u201d', '\\xE2""')}"`;
 
-/** tools/gen/menu_desc.py: the item/equipment description strings as src/data/menu_desc.h. */
 const genMenuDesc = (rom: Uint8Array): string => {
   const subs = loadDict(rom);
   const ptrs: number[] = [];

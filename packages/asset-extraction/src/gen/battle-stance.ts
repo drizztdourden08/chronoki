@@ -1,14 +1,12 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
-import { BTN, emitStance } from './battle-stance-emit';
-import type { GenFiles } from './oracle-gen-stage';
+import { emitStance } from './battle-stance-emit';
+import { BTN } from './battle-stance-emit.constants';
+import type { GenFiles } from './oracle-gen-stage.type';
 import { decodeOam, oamBlob, oamCgram } from './shared/oam-decode';
+import { BRACKET_TILE } from './battle-stance.constants';
 
-/** The active-PC bracket corner (own asset), excluded from the bake. */
-const BRACKET_TILE = 0x006;
-
-/** tools/gen/battle_stance.py: the battle entry stance (combatant idle OBJ) as src/data/battle_stance.h. */
 const genBattleStance = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_gato_press_action');
   const dump = await peekOracle(ctx).peek({ state, script: BTN });

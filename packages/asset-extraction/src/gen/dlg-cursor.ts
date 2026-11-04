@@ -2,20 +2,13 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState, teleportState } from '../oracle/peek-access';
 import { requireBytes } from '../pipeline/work-files';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
 import { rgbOfFb } from './shared/fb-decode';
-
-const CELL_X = 16;
-const CELL_Y = 10;
-const CELL_W = 16;
-const CELL_H = 12;
-const FB_OFFSET = 16;
-const DRIVE = '10:8,0:6,100:6,0:180,100:6,0:60,100:6,0:60,100:6,0:120,100:6,0:120';
+import { CELL_X, CELL_Y, CELL_W, CELL_H, FB_OFFSET, DRIVE } from './dlg-cursor.constants';
 
 const sameRgb = (a: Uint8Array, ao: number, b: Uint8Array, bo: number): boolean =>
   a[ao] === b[bo] && a[ao + 1] === b[bo + 1] && a[ao + 2] === b[bo + 2];
 
-/** tools/gen/dlg_cursor.py: the dialogue decision cursor lifted out of an oracle frame, as src/data/dlg_cursor.h. */
 const genDlgCursor = async (ctx: ImportContext): Promise<GenFiles> => {
   const start = await recipeState(ctx, 'truce_market');
   const lab = await teleportState(ctx, start, { scene: 434, tx: 8, ty: 8, facing: 0, frames: 240 });

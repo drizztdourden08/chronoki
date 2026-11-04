@@ -1,12 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import { romRegion } from '../rom/hirom';
-import { hexRows } from './c-text';
+import { hexRows } from './c-hex-rows';
+import { BASE, SIZE } from './ow-anim.constants';
 
-/** The flat file offset of $C3:E000, and the 8 KB to $C3:FFFF. */
-const BASE = 0x03e000;
-const SIZE = 0x2000;
-
-/** tools/gen/ow_anim.py: the overworld anim sub-VM bytecode (ROM bank $C3) as src/data/ow_anim.h. */
 const genOwAnim = (rom: Uint8Array): string => {
   const blob = romRegion(rom, BASE, BASE + SIZE);
   const lines = [

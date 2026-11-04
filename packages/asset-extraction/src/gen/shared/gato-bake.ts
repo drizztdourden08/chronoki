@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hexByte } from '../c-text';
+import { hexByte } from '../c-hex-byte';
 import { md5Hex } from './md5';
 
 /** OBJ tiles 0x00..0x9F of a capture's VRAM are baked per pose. */

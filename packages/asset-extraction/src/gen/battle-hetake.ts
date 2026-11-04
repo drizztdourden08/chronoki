@@ -3,20 +3,11 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import { hetakeText } from './battle-hetake/hetake-emit';
 import type { Cell, Cluster } from './battle-hetake/hetake-emit';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
 import { cgramOf } from './shared/fb-decode';
 import { decodeOam, oamBlob } from './shared/oam-decode';
 import type { Sprite } from './shared/oam-decode';
-
-/** The 16x16-cell tile range [lo,hi) of each slot's Hetake body. */
-const SLOT_TILES: [number, number][] = [[0x40, 0x48], [0x48, 0x50], [0x60, 0x68]];
-const ATK_TILES: [number, number] = [0x40, 0x48];
-
-const CURSOR_SCRIPTS = [
-  '0:6,100:3,0:15',
-  '0:6,100:3,0:15,20:3,0:15',
-  '0:6,100:3,0:15,20:3,0:15,20:3,0:15',
-];
+import { SLOT_TILES, ATK_TILES, CURSOR_SCRIPTS } from './battle-hetake.constants';
 
 const enemyCluster = (sp: Sprite[], lo: number, hi: number): { ax: number; ay: number; g: Sprite[] } | null => {
   const g = sp.filter((s) => s.pal === 1 && s.tile >= lo && s.tile < hi && s.y < 224 && s.x >= 0 && s.x < 256);
@@ -28,7 +19,6 @@ const enemyCluster = (sp: Sprite[], lo: number, hi: number): { ax: number; ay: n
 const cellsRel = (g: Sprite[], ax: number, ay: number): Cell[] =>
   g.map((s) => ({ dx: s.x - ax, dy: s.y - ay, tile: s.tile, hf: s.hflip, vf: s.vflip }));
 
-/** tools/gen/battle_hetake.py: the forest battle's 3 Hetake enemy sprites, attack keyframe and cursors (src/data/battle_hetake.h). */
 const genBattleHetake = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_forest_3hetake');
   const oracle = peekOracle(ctx);

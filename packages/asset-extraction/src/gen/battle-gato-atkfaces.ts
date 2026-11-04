@@ -2,33 +2,22 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import type { PeekDump } from '../oracle/peek.type';
-import { hex } from './c-text';
+import { hex } from './c-hex';
 import { atkFacesText } from './battle-gato-atkfaces/atkfaces-emit';
 import type { Face, Pose } from './battle-gato-atkfaces/atkfaces-emit';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
 import { BRACKET_TILE, bodyMd5, gatoFoot, tileSheet } from './shared/gato-bake';
 import { decodeOam, oamBlob } from './shared/oam-decode';
 import { peekSaved } from './shared/peek-save';
-
-const CRONO_AT: Record<string, [number, number]> = { L: [96, 111], R: [180, 111], U: [136, 55] };
-const GATO_BODY = [0x68, 0x6a, 0x6c, 0x6e, 0x80, 0x82, 0x84, 0x86, 0x88, 0x8a, 0x8c, 0x8e];
-
-type Anchor = [number, number];
-/** (name, facing, strikeAt, rear prefix, rear anchor, strike prefix | null, strike anchor | null) */
-const CAPS: [string, number, number, string, Anchor, string | null, Anchor | null][] = [
-  ['GA0_up', 0, 49, 'U_f185', [110, 27], null, null],
-  ['GA2_left', 2, 20, 'L_f108', [102, 37], 'L_f122', [86, 37]],
-  ['GA3_right', 3, 21, 'R_f153', [128, 37], 'R_f166', [128, 37]],
-];
+import { CRONO_AT, GATO_BODY, CAPS } from './battle-gato-atkfaces.constants';
+import type { Anchor } from './battle-gato-atkfaces.type';
 
 const hex2 = (v: number): string => hex(v, 2);
 const pyAnchor = (a: Anchor): string => `(${a[0]}, ${a[1]})`;
 
-/** tools/gen/battle_gato_atkfaces.py: GATO's directional attack-pose bakes (src/data/battle_gato_atkfaces.h). */
 const genBattleGatoAtkfaces = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_gato_press_action');
   const oracle = peekOracle(ctx);
-  // gato_mid = the GATO fight 400 frames in, made once per run from this run's state
   const mid = await peekSaved(oracle, { state, script: '100:8,0:392' });
   const capture = (prefix: string): Promise<PeekDump> => {
     const [side, n] = prefix.split('_f') as [string, string];

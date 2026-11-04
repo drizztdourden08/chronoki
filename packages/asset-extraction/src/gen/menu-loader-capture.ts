@@ -2,18 +2,8 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { cgramOf, peek, recipeState, requireTools } from './ctgen/require-tools';
 import { hx } from './ctgen/text-file';
+import type { LoaderCapture } from './menu-loader-capture.type';
 
-interface LoaderCapture {
-  /** The 32x64 BG2 tilemap at word 0x6000. */
-  cells: number[];
-  /** The BG2VOFS HDMA bands from $7E:9080: [lines, vofs]. */
-  bands: [number, number][];
-  /** CGRAM, 512 bytes. */
-  cg: Uint8Array;
-  vram: Uint8Array;
-}
-
-/** A battery image with a game the ROM itself saved: the last 8192 bytes of recipe name_saved (cart_handleState). */
 const batteryOf = async (ctx: ImportContext): Promise<Uint8Array> => {
   const srm = (await recipeState(ctx, 'name_saved')).slice(-8192);
   if (srm.length !== 8192) throw new Error(`menu_loader: the battery is ${srm.length} bytes`);
@@ -27,10 +17,8 @@ const batteryOf = async (ctx: ImportContext): Promise<Uint8Array> => {
 
 const refuse = (msg: string): Error => new Error(`REFUSING: ${msg}`);
 
-/** Power-on with that battery for 1 frame, run to the title, press START, let the load screen build. */
 const captureLoader = async (ctx: ImportContext): Promise<LoaderCapture> => {
   const boot = await requireTools(ctx).powerOn({ frames: 1, sram: await batteryOf(ctx) });
-  // 1600f = the title screen settled; START (LakeSnes serial bit 0x08) then 150f for the build.
   const out = await peek(ctx, boot.state, '0:1600,8:6,0:150');
   const { vram, wram } = out;
   const word = (i: number): number => (vram[0x6000 * 2 + i * 2] as number) | ((vram[0x6000 * 2 + i * 2 + 1] as number) << 8);
@@ -52,4 +40,3 @@ const captureLoader = async (ctx: ImportContext): Promise<LoaderCapture> => {
 };
 
 export { captureLoader };
-export type { LoaderCapture };

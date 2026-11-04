@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hex } from '../c-text';
+import { hex } from '../c-hex';
 import { DIGIT_PAL, FLASH_FRAME, FLASH_PAL, RISE_DY } from './fx-head';
 
 const word = (cg: Uint8Array, i: number): number => (cg[i * 2] as number) | ((cg[i * 2 + 1] as number) << 8);

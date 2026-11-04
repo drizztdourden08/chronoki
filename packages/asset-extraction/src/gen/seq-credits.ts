@@ -2,23 +2,11 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peek, requireTools } from './ctgen/require-tools';
 import { chunks, hx } from './ctgen/text-file';
-
-/**
- * A plain boot plays the title to its end and falls into the attract; boot frame 2840 is 82 frames into the credits'
- * first page, and 1700 frames further on is 68 frames into its second.
- */
-const BOOT_FRAMES = 2840;
-const PAGE2_AFTER = 1700;
-const TEXT_BASE = 0x6cc0;
-const TEXT_END = 0x6e42;
-const BG_TABLE = 0x6cac;
-const OAM_TABLE = 0x6cb6;
-const FONT_WORDS = 0x400;
+import { BOOT_FRAMES, PAGE2_AFTER, TEXT_BASE, TEXT_END, BG_TABLE, OAM_TABLE, FONT_WORDS } from './seq-credits.constants';
 
 const die = (msg: string): Error => new Error(`gen_seq_credits: REFUSING -- ${msg}`);
 const w16 = (buf: Uint8Array, a: number): number => (buf[a] as number) | ((buf[a + 1] as number) << 8);
 
-/** Step one stream the way its decoder does; the address just past its $FF. */
 const walk = (wram: Uint8Array, start: number): number => {
   let a = start;
   for (;;) {
@@ -49,7 +37,6 @@ const checkFont = (font: Uint8Array, font2: Uint8Array): void => {
   if (!font.subarray(0, 0x200).some((v) => v !== 0)) throw die('the BG font (VRAM words $0000..$00FF) is empty -- packet $AE did not land');
 };
 
-/** The pointers must land in the block and the streams must tile it end to end. */
 const checkStreams = (wram: Uint8Array, bgp: number[], oamp: number[]): void => {
   for (const p of [...bgp, ...oamp]) {
     if (!(p >= TEXT_BASE && p < TEXT_END)) {
@@ -107,7 +94,6 @@ const render = (font: number[], bgp: number[], oamp: number[], text: number[]): 
   ].join('\n');
 };
 
-/** tools/gen/seq_credits.py: the data sequence-table entry 1 (the staff credits, $7E:6B04) runs on. */
 const genSeqCredits = async (ctx: ImportContext): Promise<string> => {
   const boot = await requireTools(ctx).powerOn({ frames: BOOT_FRAMES, sram: null });
   const p1 = await peek(ctx, boot.state, '0:1', { rule: false });

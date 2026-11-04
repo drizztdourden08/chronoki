@@ -1,25 +1,22 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind constants */
 import type { StageRun } from '../pipeline/stage.type';
 import { writeText } from '../pipeline/work-files';
 import { genBattleTrig } from './battle-trig';
-import { genCollSlope } from './coll-slope';
-import { genCtRegroup } from './ct-regroup';
 import { genMenuRomdata } from './menu-romdata';
 import { genMenuWingrad } from './menu-wingrad';
-import { ORACLE_RUNNERS_A } from './oracle-runners-a';
-import { ORACLE_GEN_RUNNERS_B } from './oracle-gen-runners-b';
+import { genCollSlope } from './coll-slope';
 import { genOwAnim } from './ow-anim';
-import { ROM_GEN_RUNNERS } from './rom-gen-runners';
-import { XLAT_RUNNERS } from './xlat-runners';
+import { genCtRegroup } from './ct-regroup';
+import { ROM_GEN_RUNNERS } from './rom-gen-runners.constants';
+import { ORACLE_RUNNERS_A } from './oracle-runners-a.constants';
+import { ORACLE_GEN_RUNNERS_B } from './oracle-gen-runners-b.constants';
+import { XLAT_RUNNERS } from './xlat-runners.constants';
 
-/** A generator that reads only the ROM and writes src/data/<name>.h into the workdir (the file the C build would include). */
 const textGenStage =
   (file: string, gen: (rom: Uint8Array) => string): StageRun =>
   async (ctx) => {
     await writeText(ctx.work, `src/data/${file}.h`, gen(ctx.rom));
   };
-
-/** Stage id -> runner, for the generators ported so far. Every id here must be 'ported' in generate.stages.ts. */
 const GEN_RUNNERS: Record<string, StageRun> = {
   battle_trig: textGenStage('battle_trig', genBattleTrig),
   menu_romdata: textGenStage('menu_romdata', genMenuRomdata),
@@ -33,4 +30,4 @@ const GEN_RUNNERS: Record<string, StageRun> = {
   ...XLAT_RUNNERS,
 };
 
-export { GEN_RUNNERS, textGenStage };
+export { textGenStage, GEN_RUNNERS };

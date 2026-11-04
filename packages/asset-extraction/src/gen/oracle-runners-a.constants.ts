@@ -1,5 +1,6 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind constants */
 import type { StageRun } from '../pipeline/stage.type';
+import { oracleGenStage } from './oracle-gen-stage';
 import { genAnimengGato } from './animeng-gato';
 import { genAtbsel } from './atbsel';
 import { genBattleAnim } from './battle-anim';
@@ -19,9 +20,7 @@ import { genCtNgPan } from './ct-ng-pan';
 import { genDlgCursor } from './dlg-cursor';
 import { genMenuArrow } from './menu-arrow';
 import { genMenuChrome } from './menu-chrome';
-import { oracleGenStage } from './oracle-gen-stage';
 
-/** The first half (alphabetical by module) of the oracle power-on generators, stage id -> runner. */
 const ORACLE_RUNNERS_A: Record<string, StageRun> = {
   animeng_gato: oracleGenStage(genAnimengGato),
   atbsel: oracleGenStage(genAtbsel),

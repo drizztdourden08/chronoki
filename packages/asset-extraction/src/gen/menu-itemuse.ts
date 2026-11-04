@@ -2,29 +2,16 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { recipeState, wramOfState } from './ctgen/require-tools';
 import { hx } from './ctgen/text-file';
-import { itemFx, N } from './menu-itemuse-fx';
+import { itemFx } from './menu-itemuse-fx';
+import { ITEM_FX_COUNT } from './menu-itemuse-fx.constants';
+import { HEADER } from './menu-itemuse.constants';
 
 const join = (v: number[]): string => v.join(', ');
 const hexList = (v: Uint8Array): string => Array.from(v, (b) => `0x${hx(b, 2)}`).join(', ');
 
-const HEADER = [
-  '// GENERATED (menu_itemuse gen) -- item-menu Use/Organize data, ROM-free bake.',
-  '// ctItemProp = oracle $7E7700 static item-property table (bit1=field-usable, bit3=key-item).',
-  '// ctItemFx*  = ROM effect table $CC:05CC + scope $CC:1BB5 decoded (Tonic oracle-validated).',
-  '#ifndef CT_MENU_ITEMUSE_H',
-  '#define CT_MENU_ITEMUSE_H',
-  '#include <stdint.h>',
-  '',
-  '// $7700[id] for id 0x00..0xF2 (static per-item props). bit1(0x02)=usable, bit3(0x08)=key.',
-  'static const uint8_t ctItemProp[0xF3] = {',
-];
-
-/** tools/gen/menu_itemuse.py: the Item screen's Use / Organize data (ROM and the menu_open_gato2 state's $7E:7700). */
 const genMenuItemuse = async (ctx: ImportContext): Promise<string> => {
   const rom = ctx.rom;
   const prop = wramOfState(await recipeState(ctx, 'menu_open_gato2')).slice(0x7700, 0x7700 + 0xf3);
-  // C2/9969 `LDA $0D34 / BEQ / LDA #02 / TRB $77C8`: the menu was opened off a save point, so the Shelter's field-usable
-  // bit is gone from the capture. Put it back from C2/98B5's own source ($CC:0000 + X & 1E, C2/88AD).
   const x = ((rom[0x3fcf16] as number) | ((rom[0x3fcf17] as number) << 8)) + (0xc8 - 0xbc) * (rom[0x3fcf1c] as number);
   prop[0xc8] = (prop[0xc8] as number) | ((rom[0x0c0000 + x] as number) & 0x02);
   const { kind, amt, allp, pool } = itemFx(rom, prop);
@@ -55,7 +42,7 @@ const genMenuItemuse = async (ctx: ImportContext): Promise<string> => {
     '#endif',
     '',
   );
-  if (kind.length !== N) throw new Error('menu_itemuse: the effect table is not 20 long');
+  if (kind.length !== ITEM_FX_COUNT) throw new Error('menu_itemuse: the effect table is not 20 long');
   return lines.join('\n');
 };
 

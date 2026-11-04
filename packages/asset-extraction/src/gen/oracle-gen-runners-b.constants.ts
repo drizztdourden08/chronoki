@@ -1,4 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind constants */
 import type { StageRun } from '../pipeline/stage.type';
 import { ctxTextStage } from './ctgen/ctx-text-stage';
 import { genMenuConfiggrid } from './menu-configgrid';
@@ -16,7 +16,6 @@ import { genOwGullmap } from './ow-gullmap';
 import { genSeqCredits } from './seq-credits';
 import { genTitleIntro } from './title-intro';
 
-/** The oracle-fed generators of P4b (second half). Each reads recipe states from the work store and the OracleTools. */
 const ORACLE_GEN_RUNNERS_B: Record<string, StageRun> = {
   menu_configgrid: ctxTextStage('menu_configgrid', genMenuConfiggrid),
   menu_icons: ctxTextStage('menu_icons', genMenuIcons),

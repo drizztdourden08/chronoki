@@ -1,16 +1,15 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
-import { bakeMap, bg1Index, bg1Palette, cgramPalettes } from './battle-hud-bake';
+import { bakeMap } from './battle-hud-bake-map';
+import { bg1Index } from './battle-hud-bg1-index';
+import { bg1Palette } from './battle-hud-bg1-palette';
+import { cgramPalettes } from './battle-hud-cgram-palettes';
 import { emitHud } from './battle-hud-emit';
 import { bakeBg1 } from './battle-hud-strip';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
+import { STATE, COMMAND_SCRIPT, ENEMY_SCRIPT } from './battle-hud.constants';
 
-const STATE = 'battle_gato_press_action';
-const COMMAND_SCRIPT = '100:8,0:600';
-const ENEMY_SCRIPT = '100:8,0:360';
-
-/** tools/gen/battle_hud.py: the battle-mode HUD strip (chrome, tilemaps, palettes) as src/data/battle_hud.h. */
 const genBattleHud = async (ctx: ImportContext): Promise<GenFiles> => {
   const oracle = peekOracle(ctx);
   const state = await recipeState(ctx, STATE);

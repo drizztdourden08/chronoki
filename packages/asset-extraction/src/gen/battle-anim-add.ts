@@ -5,9 +5,8 @@ import { ANIM_RECIPE } from './battle-anim/anim-consts';
 import { bakeGroup, CRONO_IDLE_KEYS, GATO_SWIPE_KEYS } from './battle-anim-add/add-bake';
 import { emitAdd } from './battle-anim-add/add-emit';
 import { gatoIdleV2 } from './battle-anim-add/add-idle';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
 
-/** tools/gen/battle_anim_add.py: the Crono idle stream, GATO claw swipe and steady GATO idle as src/data/battle_anim_add.h. */
 const genBattleAnimAdd = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, ANIM_RECIPE);
   const cidle = await bakeGroup(ctx, state, CRONO_IDLE_KEYS);

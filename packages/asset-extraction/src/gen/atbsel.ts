@@ -4,12 +4,9 @@ import { peekOracle, recipeState } from '../oracle/peek-access';
 import { BTN0, BTN1, emitMain } from './atbsel/emit';
 import { buildPalette, diffBbox, loadFb, toIdx } from './atbsel/frames';
 import { emitTypewriter, penRows, TEXT_X } from './atbsel/typewriter';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
+import { BTNE, BTNA } from './atbsel.constants';
 
-const BTNE = '0:6,20:2,0:1';
-const BTNA = `${BTN1},20:2,0:1`;
-
-/** tools/gen/atbsel.py: the new-game ATB battle-mode selector screen as src/data/atbsel.h. */
 const genAtbsel = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'atb_vram');
   const oracle = peekOracle(ctx);

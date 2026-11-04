@@ -1,5 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
-/** The fixed head of battle_hud.h (the generator's literal text, up to and including the box extents). */
+/* @layer shared-asset-extraction @kind constants */
 const HUD_HEAD = `// battle_hud.h - BYTE-EXACT CT battle-mode HUD STRIP, baked from the oracle. NOTHING invented.
 // The strip = ONE 32x32 tilemap at VRAM word 0x7800 rendered as BG1 4bpp CHROME + BG3 2bpp TEXT
 // via the HDMA split (scanlines 160-207, TM/TS 0x05); see disasm/notes/battle_hud_render.md.

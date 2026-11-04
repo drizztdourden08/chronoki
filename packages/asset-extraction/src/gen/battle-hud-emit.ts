@@ -1,9 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
 import { hexN } from './shared/py-format';
-import type { MapCell } from './battle-hud-bake';
-import { HUD_HEAD } from './battle-hud-head-text';
-import type { Rgb3 } from './battle-hud-strip';
-import { STRIP_H } from './battle-hud-strip';
+import type { MapCell } from './battle-hud-bake.type';
+import { HUD_HEAD } from './battle-hud-head-text.constants';
+import type { Rgb3 } from './battle-hud-strip.type';
+import { STRIP_H } from './battle-hud-strip.constants';
+import type { HudBake } from './battle-hud-emit.type';
 
 const trip = (c: Rgb3): string => `{${c[0]},${c[1]},${c[2]}}`;
 
@@ -24,17 +25,6 @@ const carrMap = (name: string, m: MapCell[][]): string =>
 const carrBg1 = (name: string, idx: number[][]): string =>
   [`static const uint8_t ${name}[${STRIP_H}][256] = {\n`, ...idx.map((row) => `  {${row.join(',')}},\n`), '};\n'].join('');
 
-interface HudBake {
-  palE: Rgb3[][];
-  palC: Rgb3[][];
-  mapE: MapCell[][];
-  mapC: MapCell[][];
-  bg1Pal: Rgb3[];
-  bg1IdxE: number[][];
-  bg1IdxC: number[][];
-}
-
-/** The text of battle_hud.h (emit_header). */
 const emitHud = (b: HudBake): string =>
   [
     HUD_HEAD,
@@ -62,6 +52,4 @@ const emitHud = (b: HudBake): string =>
     carrBg1('ctBattleHudBg1Cmd', b.bg1IdxC),
     '#endif\n',
   ].join('');
-
-export type { HudBake };
 export { emitHud };

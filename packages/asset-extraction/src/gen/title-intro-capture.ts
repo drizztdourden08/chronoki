@@ -4,20 +4,11 @@ import { peek, requireTools } from './ctgen/require-tools';
 import { hx } from './ctgen/text-file';
 import { checkSeed } from './title-intro-seed';
 import type { TitleCapture } from './title-intro.type';
-
-const SEED_FRAME = 140;
-const GFX_FRAME = 900;
-const SCRIPT_BASE = 0x5b05;
-const SCRIPT_END = 0x5b99;
-const PKG_BASE = 0x603f;
-const PKG_END = 0x6212;
-const VBASE = 0x4000;
-const VWORDS = 0x3000;
+import { SEED_FRAME, GFX_FRAME, SCRIPT_BASE, SCRIPT_END, PKG_BASE, PKG_END, VBASE, VWORDS } from './title-intro-capture.constants';
 
 const refuse = (msg: string): Error => new Error(`title_intro: REFUSING: ${msg}`);
 const u16 = (b: Uint8Array, a: number): number => (b[a] as number) | ((b[a + 1] as number) << 8);
 
-/** The only VRAM the sequence writes after the boot load is the offset-per-tile table at word $7000. */
 const checkStatic = (a: Uint8Array, b: Uint8Array): void => {
   for (let i = 0; i < 0x10000; i += 2) {
     if (u16(a, i) !== u16(b, i) && !(i >= 0xe000 && i < 0xe080)) {
@@ -67,7 +58,6 @@ const checkWindow = (w: (a: number) => number): void => {
   }
 };
 
-/** The title_intro captures with every refusal check of tools/gen/title_intro.py applied. */
 const captureTitle = async (ctx: ImportContext): Promise<TitleCapture> => {
   const tools = requireTools(ctx);
   const seedBoot = await tools.powerOn({ frames: SEED_FRAME, sram: null });
