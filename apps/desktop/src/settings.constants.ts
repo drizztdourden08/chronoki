@@ -19,6 +19,16 @@ const DEFAULT_SETTINGS: AppSettings = {
   autoSaveMaxEntries: 5,
   turboSpeed: 2,
   saveHoldDuration: 2,
+  musicVolume: 100,
+  musicMuted: false,
+  sfxVolume: 100,
+  sfxMuted: false,
+  msuConfigMode: 'auto',
+  enableMSU: 'false',
+  resumeMSU: true,
+  resetMSUAtTitle: true,
+  msuChipFallback: true,
+  packReplaceSfx: true,
 };
 
 export { DEFAULT_SETTINGS };
