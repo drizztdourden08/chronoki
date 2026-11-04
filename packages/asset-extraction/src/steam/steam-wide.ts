@@ -42,15 +42,18 @@ const resolvePages = async (archive: SteamArchive, files: SteamFiles, margins: M
   const sheets: Uint8Array[] = [];
   const index = new Map<string, number | null>();
   const resolved = new Map<number, ResolvedMargin>();
+  const indexOfSheet = async (name: string): Promise<number | null | undefined> => {
+    if (!index.has(name)) {
+      const px = await pixelSheet(archive, files, name);
+      index.set(name, px ? sheets.length : null);
+      if (px) sheets.push(px);
+    }
+    return index.get(name);
+  };
   for (const [loc, m] of margins) {
     let pages: [number, number][] = [];
     for (const [pg, name] of m.pages) {
-      if (!index.has(name)) {
-        const px = await pixelSheet(archive, files, name);
-        index.set(name, px ? sheets.length : null);
-        if (px) sheets.push(px);
-      }
-      const at = index.get(name);
+      const at = await indexOfSheet(name);
       if (at !== null && at !== undefined) pages = [...pages.filter((p) => p[0] !== pg), [pg, at]];
     }
     resolved.set(loc, { ...m, pages });

@@ -12,7 +12,7 @@ const H = 48;
 const ctNameMsgStage: StageRun = async (ctx) => {
   const state = await recipeState(ctx, 'name_crono');
   const shot = await peekOracle(ctx).peek({ state, script: null, frames: 20 });
-  await ctx.work.writeBytes('saves/ct_namemsg.bin', cropRgb(shot.fb, [X0, Y0, W, H], X0, Y0, W, H));
+  await ctx.work.writeBytes('saves/ct_namemsg.bin', cropRgb(shot.fb, [X0, Y0, W, H], { x0: X0, y0: Y0, w: W, h: H }));
 };
 
 export { ctNameMsgStage };

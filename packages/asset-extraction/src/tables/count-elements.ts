@@ -22,7 +22,7 @@ const countElements = (elem: CType, init: InitNode, name: string): number => {
   while (i < items.length) {
     const it = items[i] as InitNode;
     const flat = it.kind === 'list' || !isAggregate(elem) || (it.kind === 'str' && isCharArray(elem));
-    i = flat ? i + 1 : dry.fill(elem, 0, items, i, true);
+    i = flat ? i + 1 : dry.fill({ t: elem, off: 0, items, from: i, dry: true });
     n += 1;
   }
   return n;

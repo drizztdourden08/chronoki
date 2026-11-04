@@ -18,7 +18,7 @@ const owWorldStage: StageRun = async (ctx) => {
   await put('ow_w0.live.vram', live.vram);
   for (let n = 1; n < 8; n += 1) {
     const args = ['--owforce', '{state}', String(n), `{out:ow_w${n}}`];
-    const got = await runTool(ctx, 'ow_world', args, [`ow_w${n}.wram`, `ow_w${n}.vram`], w0);
+    const got = await runTool(ctx, { name: 'ow_world', args, outputs: [`ow_w${n}.wram`, `ow_w${n}.vram`], state: w0 });
     await put(`ow_w${n}.live.wram`, got[`ow_w${n}.wram`] as Uint8Array);
     await put(`ow_w${n}.live.vram`, got[`ow_w${n}.vram`] as Uint8Array);
   }

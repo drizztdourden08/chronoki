@@ -4,9 +4,9 @@ import { quietStage } from '../quiet-stage';
 import type { StageDef } from '../stage.type';
 
 const TAIL_STAGES: StageDef[] = [
-  stage('pack-tables', 'tail', 5, 'ported', 'gen/pack_tables.py pack', 'ct_tables.dat (the generated tables, packed)'),
-  stage('steam-margins', 'tail', 1, 'ported', 'steam_wide.py', 'ct_wide.dat (optional, from a Steam copy)'),
-  quietStage(stage('write-player-assets', 'tail', 1, 'ported', 'gen/pack_tables.py into', 'ct_assets.dat with the tables inside')),
+  stage({ id: 'pack-tables', group: 'tail', weight: 5, status: 'ported', python: 'gen/pack_tables.py pack', label: 'ct_tables.dat (the generated tables, packed)' }),
+  stage({ id: 'steam-margins', group: 'tail', weight: 1, status: 'ported', python: 'steam_wide.py', label: 'ct_wide.dat (optional, from a Steam copy)' }),
+  quietStage(stage({ id: 'write-player-assets', group: 'tail', weight: 1, status: 'ported', python: 'gen/pack_tables.py into', label: 'ct_assets.dat with the tables inside' })),
 ];
 
 export { TAIL_STAGES };

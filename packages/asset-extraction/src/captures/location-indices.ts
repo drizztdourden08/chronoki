@@ -2,6 +2,13 @@
 import { u16 } from '../extract/rom-read';
 import { LOC_RECORDS, TILESET_LISTS } from './closure-locations.constants';
 
+const addTilesetList = (rom: Uint8Array, tileset: number, idxs: Set<number>): void => {
+  for (let i = 0; i < 8; i += 1) {
+    const ix = rom[TILESET_LISTS + tileset * 8 + i] as number;
+    if (ix !== 0xff) idxs.add(ix);
+  }
+};
+
 const locationIndices = (rom: Uint8Array) => {
   const ts = new Set<number>();
   const b3s = new Set<number>();
@@ -14,10 +21,7 @@ const locationIndices = (rom: Uint8Array) => {
     const b3 = rom[r + 2] as number;
     if (t !== 0xff) {
       ts.add(t);
-      for (let i = 0; i < 8; i += 1) {
-        const ix = rom[TILESET_LISTS + t * 8 + i] as number;
-        if (ix !== 0xff) idxs.add(ix);
-      }
+      addTilesetList(rom, t, idxs);
     }
     if (b3 !== 0xff) b3s.add(b3);
     maps.add(u16(rom, r + 4));

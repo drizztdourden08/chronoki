@@ -34,7 +34,7 @@ const balloons = (vram: Uint8Array, cg: number[], base = 0): Uint8Array => {
 const owSpritesStage: StageRun = async (ctx) => {
   const w0 = await recipeState(ctx, 'ow_nav_w0');
   const tool = async (mode: string, name: string): Promise<Uint8Array> =>
-    (await runTool(ctx, 'ow_sprites', [mode, '{state}', `{out:${name}}`], [`${name}.spr`], w0))[`${name}.spr`] as Uint8Array;
+    (await runTool(ctx, { name: 'ow_sprites', args: [mode, '{state}', `{out:${name}}`], outputs: [`${name}.spr`], state: w0 }))[`${name}.spr`] as Uint8Array;
   await ctx.work.writeBytes('saves/ow_crono.spr', await tool('--owsprite', 'ow_crono'));
   await ctx.work.writeBytes('saves/ow_boat.spr', await tool('--owboat', 'ow_boat'));
   const oracle = peekOracle(ctx);

@@ -1,7 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import { c5 } from './c5';
 
-const decode16 = (vram: Uint8Array, cg: number[], name: number, pal: number, base = 0): Uint8Array => {
+const decode16 = (vram: Uint8Array, cg: number[], ...tile: [name: number, pal: number, base?: number]): Uint8Array => {
+  const [name, pal, base = 0] = tile;
   const px = new Uint8Array(16 * 16 * 4);
   const v8 = (i: number): number => vram[i] as number;
   for (let py = 0; py < 16; py += 1) {

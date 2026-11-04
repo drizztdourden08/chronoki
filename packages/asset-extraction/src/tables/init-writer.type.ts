@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind types */
-import type { ConstEval } from './pack.type';
+import type { CType } from './c-type.type';
+import type { ConstEval, InitNode } from './pack.type';
 import type { StringPool } from './string-pool.type';
 
 interface WriterEnv {
@@ -11,4 +12,12 @@ interface WriterEnv {
   evalConst: ConstEval;
 }
 
-export type { WriterEnv };
+interface FillArgs {
+  t: CType;
+  off: number;
+  items: InitNode[];
+  from: number;
+  dry: boolean;
+}
+
+export type { FillArgs, WriterEnv };

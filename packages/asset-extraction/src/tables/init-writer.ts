@@ -4,7 +4,7 @@ import { describeType } from './c-types';
 
 import { PackError } from './pack-error';
 import type { InitNode } from './pack.type';
-import type { WriterEnv } from './init-writer.type';
+import type { FillArgs, WriterEnv } from './init-writer.type';
 import { isAggregate } from './is-aggregate';
 import { isCharArray } from './is-char-array';
 import { subobjects } from './subobjects';
@@ -46,7 +46,7 @@ const createInitWriter = (env: WriterEnv) => {
     if (!dry) env.buf.set(bytes, off);
   };
 
-  const fill = (t: CType, off: number, items: InitNode[], from: number, dry: boolean): number => {
+  const fill = ({ t, off, items, from, dry }: FillArgs): number => {
     let i = from;
     for (const sub of subobjects(t)) {
       if (i >= items.length) break;
@@ -58,7 +58,7 @@ const createInitWriter = (env: WriterEnv) => {
         string(sub.type, off + sub.offset, it.bytes, dry);
         i += 1;
       } else if (isAggregate(sub.type)) {
-        i = fill(sub.type, off + sub.offset, items, i, dry);
+        i = fill({ t: sub.type, off: off + sub.offset, items, from: i, dry });
       } else {
         scalar(sub.type, off + sub.offset, it, dry);
         i += 1;
@@ -74,9 +74,9 @@ const createInitWriter = (env: WriterEnv) => {
       if (items.length !== 1) err(`a braced scalar with ${items.length} items`);
       return scalar(t, off, items[0] as InitNode, dry);
     }
-    const only = items[0] as InitNode | undefined;
+    const only = items[0];
     if (isCharArray(t) && items.length === 1 && only?.kind === 'str') return string(t, off, only.bytes, dry);
-    const used = fill(t, off, items, 0, dry);
+    const used = fill({ t, off, items, from: 0, dry });
     if (used !== items.length) err(`${items.length - used} excess initializers`);
     return undefined;
   };

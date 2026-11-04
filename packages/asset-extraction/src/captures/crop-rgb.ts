@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
+import type { CropBox } from './crop-rgb.type';
 
-const cropRgb = (fb: Uint8Array, head: number[], x0: number, y0: number, w: number, h: number): Uint8Array => {
+const cropRgb = (fb: Uint8Array, head: number[], { x0, y0, w, h }: CropBox): Uint8Array => {
   const out = new Uint8Array(head.length * 2 + w * h * 3);
   head.forEach((v, i) => {
     out[i * 2] = v & 0xff;
