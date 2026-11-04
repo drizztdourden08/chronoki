@@ -28,7 +28,7 @@ const sections: Section[] = [
             key: 'saveHoldDuration',
             label: 'Hold to Save Duration',
             description: 'How long to hold the key to save (seconds).',
-            hint: 'Needs Enhanced Save Slot Shortcut.',
+            hint: 'Needs Hold Save for Slot Picker.',
             keywords: 'save hold duration time seconds',
             control: { kind: 'range', min: 1, max: 5, step: 0.5, format: asSeconds },
           },

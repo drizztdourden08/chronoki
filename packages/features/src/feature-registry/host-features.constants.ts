@@ -18,7 +18,7 @@ const HOST_FEATURES: FeatureDef[] = [
     group: 'Saves', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: false, live: true,
   },
   {
-    id: 'enhancedSaveSlotShortcut', label: 'Enhanced Save Slot Shortcut',
+    id: 'enhancedSaveSlotShortcut', label: 'Hold Save for Slot Picker',
     description: 'Opens the save slot menu on shortcut press instead of immediately saving.',
     userMessage: 'Opens the save slot menu on shortcut press instead of immediately saving.',
     group: 'Saves', kind: 'host', origin: 'chronoki', default: true, requires: ['saveStates'], affectsVanillaParity: true, live: true,

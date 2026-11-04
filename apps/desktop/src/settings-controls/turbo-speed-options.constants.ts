@@ -1,4 +1,4 @@
-/* @layer renderer-app @kind data */
+/* @layer renderer-app @kind config */
 import { TURBO_SPEEDS } from '@app/game/turbo/turbo.constants';
 
 const TURBO_SPEED_OPTIONS = TURBO_SPEEDS.map((speed) => ({ value: String(speed), label: `${speed}x` }));

@@ -36,7 +36,7 @@ const useDraggablePosition = () => {
     setDragging(false);
   }, []);
 
-  useEffect(() => writeStoredOffset(offset), [offset]);
+  useEffect(() => { writeStoredOffset(offset); }, [offset]);
 
   return { stackRef, dragging, handlers: { onPointerDown, onPointerMove, onPointerUp } };
 };
