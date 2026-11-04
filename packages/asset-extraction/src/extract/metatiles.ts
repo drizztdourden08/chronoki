@@ -11,7 +11,7 @@ const parseMetatiles = (asm: Uint8Array, count: number, palMul: number): Corner[
         corners.push([0, 0, false, false, false]);
         continue;
       }
-      const v = asm[p]! | (asm[p + 1]! << 8);
+      const v = (asm[p] as number) | ((asm[p + 1] as number) << 8);
       p += 2;
       corners.push([v & 0x3ff, ((v >> 10) & 7) * palMul, (v & 0x4000) !== 0, (v & 0x8000) !== 0, (v & 0x2000) !== 0]);
     }

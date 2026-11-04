@@ -25,7 +25,7 @@ const lzDecompress = (data: Uint8Array, start: number): Uint8Array => {
     off &= small ? 0x07ff : 0x0fff;
     for (let i = 0; i < count + 1; i += 1) {
       const from = workPos - off + i;
-      out[workPos + i] = from < 0 ? out[out.length + from]! : out[from]!;
+      out[workPos + i] = from < 0 ? (out[out.length + from] as number) : (out[from] as number);
     }
     workPos += count + 1;
     bytePos += 2;

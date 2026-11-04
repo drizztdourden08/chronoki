@@ -50,7 +50,7 @@ const spriteTables = (rom: Uint8Array, rawOffsets: Set<number>): RomTable[] => {
   const fp = Array.from({ length: nmax + 2 }, (_, i) => wordAt(rom, fpT + 2 * i));
   const dp = Array.from({ length: nmax + 2 }, (_, i) => wordAt(rom, dpT + 2 * i));
   const out: RomTable[] = [
-    ['sprite records: PCs and NPCs ($E4:F000, 5 each)', E4 + 0xf000, E4 + 0xf000 + 5 * (SPRITE_RECS[0] as number[])[2]!],
+    ['sprite records: PCs and NPCs ($E4:F000, 5 each)', E4 + 0xf000, E4 + 0xf000 + 5 * ((SPRITE_RECS[0] as number[])[2] as number)],
     ['sprite records: enemies ($E4:F600, 10 each, the 8-bit id: to $E5:0000)', E4 + 0xf600, E4 + 0xf600 + 10 * 256],
     ['sprite meta ($E4:FFE0)', E4 + 0xffe0, E4 + 0xffe8],
     ['sprite palettes ($E4:0000, 24 each)', E4, E4 + 24 * (maxOf(p) + 1)],

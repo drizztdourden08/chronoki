@@ -23,7 +23,7 @@ const font8Map = buildFont8();
 
 const rstrip = (s: string): string => s.replace(/\s+$/u, '');
 
-const decodeMapped = (data: Uint8Array): string => rstrip(Array.from(data, (b) => font8Map[b]!).join(''));
+const decodeMapped = (data: Uint8Array): string => rstrip(Array.from(data, (b) => (font8Map[b] as string)).join(''));
 
 const itemNames = (rom: Uint8Array): string[] => {
   const data = rom.slice(0xc0b5e, 0xc0b5e + 0xa71);

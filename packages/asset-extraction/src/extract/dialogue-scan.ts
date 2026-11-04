@@ -9,8 +9,8 @@ const readTextboxTable = (rom: Uint8Array, addr: number, subs: string[], opts: D
   const page = addr & 0xff0000;
   const out: string[] = [];
   for (let i = 0; i < MAX_STRINGS; i += 1) {
-    const ptr = rom[addr + i * 2]! | (rom[addr + i * 2 + 1]! << 8);
-    const nxt = rom[addr + i * 2 + 2]! | (rom[addr + i * 2 + 3]! << 8);
+    const ptr = (rom[addr + i * 2] as number) | ((rom[addr + i * 2 + 1] as number) << 8);
+    const nxt = (rom[addr + i * 2 + 2] as number) | ((rom[addr + i * 2 + 3] as number) << 8);
     if (nxt < ptr || nxt - ptr > MAX_LEN) break;
     out.push(decodeString(rom, page + ptr, subs, opts));
   }
@@ -21,7 +21,7 @@ const readDialogueTable = (rom: Uint8Array, addr: number, subs: string[], opts: 
   const page = addr & 0xff0000;
   const out: string[] = [];
   for (let i = 0; i < 256; i += 1) {
-    out.push(decodeString(rom, page + (rom[addr + i * 2]! | (rom[addr + i * 2 + 1]! << 8)), subs, opts));
+    out.push(decodeString(rom, page + ((rom[addr + i * 2] as number) | ((rom[addr + i * 2 + 1] as number) << 8)), subs, opts));
   }
   return out;
 };
@@ -38,7 +38,7 @@ const scanDialogueTables = (rom: Uint8Array, subs: string[], opts: DecodeOptions
     }
     for (let i = 0; i < scr.length - 3; i += 1) {
       if (scr[i] !== 0xb8) continue;
-      const snes = scr[i + 1]! | (scr[i + 2]! << 8) | (scr[i + 3]! << 16);
+      const snes = (scr[i + 1] as number) | ((scr[i + 2] as number) << 8) | ((scr[i + 3] as number) << 16);
       if (snes < 0xc00000 || snes > 0xffffff) continue;
       const addr = snes - 0xc00000;
       if (tables.has(addr) || addr + 512 >= rom.length) continue;

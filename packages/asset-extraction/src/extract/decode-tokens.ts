@@ -43,7 +43,7 @@ const decodeTokens = (
     } else if (v === 0x0c) {
       out.push(pb + ind);
     } else if (length === null && v >= 0x21 && v <= 0x9f) {
-      out.push(subs[v - 0x21]!);
+      out.push(subs[v - 0x21] as string);
     } else if ((length === null && v > 0x9f) || (length !== null && v >= 0x9f)) {
       out.push(namesub && v === 0xe2 ? '”' : parseCharacter(v));
     } else {

@@ -15,11 +15,11 @@ const packTileset3: Packer = ({ rom, tables }) => {
   const out: CtasEntry[] = [];
   for (const ts of distinctHeaderBytes(rom, 2)) {
     if (ts >= tsGfx.length || tsGfx[ts] === 0) continue;
-    const tiles = decodeTiles(lzDecompress(rom, tsGfx[ts]!), 2);
+    const tiles = decodeTiles(lzDecompress(rom, tsGfx[ts] as number), 2);
     let metab: Uint8Array = new Uint8Array(0);
     let hasMetas = 0;
     if (ts < asm3Ptrs.length && asm3Ptrs[ts] !== 0) {
-      const raw3 = parseMetatiles(lzDecompress(rom, asm3Ptrs[ts]!), 256, 4);
+      const raw3 = parseMetatiles(lzDecompress(rom, asm3Ptrs[ts] as number), 256, 4);
       metab = serMetas(
         raw3.map((m) => m.map(([c, b, fx, fy, pr]) => [c ? c : 0xffff, b, fx, fy, pr] as Corner)),
         256,

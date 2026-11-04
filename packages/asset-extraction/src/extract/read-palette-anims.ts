@@ -11,14 +11,14 @@ const readPaletteAnims = (rom: Uint8Array, index: number): PaletteAnim[] => {
   const end = PAL_ANIM + 0x56e;
   const anims: PaletteAnim[] = [];
   while (p < end) {
-    const idb = rom[p]!;
+    const idb = rom[p] as number;
     p += 1;
     if (idb === 0) break;
     const typ = idb & 0xf0;
     if (typ !== 0x80 && typ !== 0x30 && typ !== 0x20 && typ !== 0x10) continue;
-    const ci = rom[p]!;
-    const cc = rom[p + 1]!;
-    const delay = rom[p + 2]!;
+    const ci = rom[p] as number;
+    const cc = rom[p + 1] as number;
+    const delay = rom[p + 2] as number;
     p += 3;
     let frames: number[] = [];
     const colors: Rgb[] = [];
@@ -28,7 +28,7 @@ const readPaletteAnims = (rom: Uint8Array, index: number): PaletteAnim[] => {
       const fc = (idb & 0x0f) + 1;
       if (typ === 0x80) {
         frames = [];
-        for (let i = 0; i < fc; i += 1) frames.push(rom[p + i]!);
+        for (let i = 0; i < fc; i += 1) frames.push(rom[p + i] as number);
         p += fc;
       } else {
         frames = Array.from({ length: fc }, (_, i) => i);

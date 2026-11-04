@@ -7,13 +7,13 @@ const parseChipAnims = (data: Uint8Array): ChipAnim[] => {
   const anims: ChipAnim[] = [];
   let i = 0;
   while (i < data.length) {
-    const fc = data[i]!;
+    const fc = data[i] as number;
     i += 1;
     if (fc === 0 || fc === 0x80) break;
     const dest = Math.floor((u16(data, i) - 0x2000) / 16);
     i += 2;
     const durs: number[] = [];
-    for (let f = 0; f < fc; f += 1) durs.push(CHIP_DUR[data[i + f]! & 0xf0] ?? 0);
+    for (let f = 0; f < fc; f += 1) durs.push(CHIP_DUR[(data[i + f] as number) & 0xf0] ?? 0);
     i += fc;
     const srcs: number[] = [];
     for (let f = 0; f < fc; f += 1) {

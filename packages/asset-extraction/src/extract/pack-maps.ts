@@ -12,13 +12,13 @@ const priorityPlane = (md: Uint8Array, start: number, n: number): Uint8Array => 
   let i = start;
   let cnt = 0;
   while (cnt < n && i + 2 < md.length) {
-    const b0 = md[i]!;
-    const b1 = md[i + 1]!;
-    const b2 = md[i + 2]!;
+    const b0 = md[i] as number;
+    const b1 = md[i + 1] as number;
+    const b2 = md[i + 2] as number;
     i += 3;
     let rep = 1;
     if ((b0 & 0x80) !== 0) {
-      rep = i < md.length ? md[i]! : 0;
+      rep = i < md.length ? (md[i] as number) : 0;
       i += 1;
       rep = rep || 256;
     }
@@ -33,7 +33,7 @@ const priorityPlane = (md: Uint8Array, start: number, n: number): Uint8Array => 
 };
 
 const applyAdd = (layer: number[], w: number, h: number, add: boolean[], sw: number): void => {
-  for (let y = 0; y < h; y += 1) for (let x = 0; x < w; x += 1) if (add[y * sw + x]) layer[y * w + x]! |= 256;
+  for (let y = 0; y < h; y += 1) for (let x = 0; x < w; x += 1) if (add[y * sw + x]) layer[y * w + x] = (layer[y * w + x] as number) | 256;
 };
 
 const packMaps: Packer = ({ rom, tables }) => {
@@ -41,12 +41,12 @@ const packMaps: Packer = ({ rom, tables }) => {
   const seen = new Set<number>();
   for (let s = 0; s < 512; s += 1) {
     const h = sceneHeader(rom, s);
-    const mi = h[4]! | (h[5]! << 8);
+    const mi = (h[4] as number) | ((h[5] as number) << 8);
     if (seen.has(mi) || mi >= tables.mapPtrs.length) continue;
     seen.add(mi);
-    const md = lzDecompress(rom, tables.mapPtrs[mi]!);
-    const size = md[0]!;
-    const bits = md[1]!;
+    const md = lzDecompress(rom, tables.mapPtrs[mi] as number);
+    const size = md[0] as number;
+    const bits = md[1] as number;
     const w1 = (size & 3) * 16 + 16;
     const h1 = ((size >> 2) & 3) * 16 + 16;
     const w2 = ((size >> 4) & 3) * 16 + 16;
@@ -67,10 +67,10 @@ const packMaps: Packer = ({ rom, tables }) => {
     applyAdd(l1, w1, h1, l1add, sw);
     applyAdd(l2, w2, h2, l2add, sw);
     const blob = createLeWriter();
-    blob.bytes(Uint8Array.of(w1, h1, w2, h2, w3, h3, hasL3 ? 1 : 0, md[4]!, md[5]!));
+    blob.bytes(Uint8Array.of(w1, h1, w2, h2, w3, h3, hasL3 ? 1 : 0, md[4] as number, md[5] as number));
     for (const v of [...l1, ...l2, ...l3]) blob.u16(v);
     blob.bytes(priorityPlane(md, p, sw * sh));
-    blob.bytes(Uint8Array.of(md[1]!, md[2]!, md[3]!));
+    blob.bytes(Uint8Array.of(md[1] as number, md[2] as number, md[3] as number));
     out.push({ type: T_MAP, id: mi, blob: blob.toBytes() });
   }
   return out;

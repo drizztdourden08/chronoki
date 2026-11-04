@@ -6,7 +6,7 @@ const serMetas = (metas: Corner[][], count: number): Uint8Array => {
   const b = createLeWriter();
   const blank: Corner = [0, 0, false, false, false];
   for (let t = 0; t < count; t += 1) {
-    const m = t < metas.length ? metas[t]! : [blank, blank, blank, blank];
+    const m = t < metas.length ? (metas[t] as Corner[]) : [blank, blank, blank, blank];
     for (const [chip, base, fx, fy, prio] of m) {
       b.u16(chip & 0xffff);
       b.u8(base & 0xff);

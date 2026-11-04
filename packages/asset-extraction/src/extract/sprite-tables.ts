@@ -4,7 +4,7 @@ import { PTR_TABLE } from './sprite-tables.constants';
 
 const spritePalettePtrs = (rom: Uint8Array): number[] => {
   const ptrs = getEntries2Byte(rom, PTR_TABLE, 7);
-  return getEntries2Byte(rom, ptrs[4]!, 253);
+  return getEntries2Byte(rom, ptrs[4] as number, 253);
 };
 
 export { spritePalettePtrs };

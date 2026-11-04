@@ -15,7 +15,7 @@ const spriteCrop = (rom: Uint8Array, pal: number[][], gfx: number, cx: number, c
       const X = cx + i;
       const Y = cy + j;
       const sub = Math.floor(Y / 8) * 2 + Math.floor(X / 8);
-      out.set(pal[tilePixel4(rom, BANK_FF + gfx + sub * 32, X % 8, Y % 8)]!, at);
+      out.set(pal[tilePixel4(rom, BANK_FF + gfx + sub * 32, X % 8, Y % 8)] as number[], at);
       at += 4;
     }
   }

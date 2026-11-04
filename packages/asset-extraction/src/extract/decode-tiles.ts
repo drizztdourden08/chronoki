@@ -9,8 +9,8 @@ const decodeTiles = (data: Uint8Array, bpp: number): Uint8Array[] => {
     for (let y = 0; y < 8; y += 1) {
       const planes: [number, number][] = [];
       for (let pair = 0; pair < bpp / 2; pair += 1) {
-        planes.push([data[base + pair * 16 + y * 2]!, 2 * pair]);
-        planes.push([data[base + pair * 16 + y * 2 + 1]!, 2 * pair + 1]);
+        planes.push([data[base + pair * 16 + y * 2] as number, 2 * pair]);
+        planes.push([data[base + pair * 16 + y * 2 + 1] as number, 2 * pair + 1]);
       }
       for (let x = 0; x < 8; x += 1) {
         const bit = 7 - x;
