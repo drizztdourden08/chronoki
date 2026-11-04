@@ -3,31 +3,29 @@
 // module only (the oracle keeps the unpatched ones). Every patch is an exact match with an expected count and fails the
 // build loudly when upstream's text moves.
 //  * ct_vm.c and audio.c: fopen is ck_fopen, which routes the two paths "mem:scene" and "mem:apu" to linear memory.
-//  * field.c: a hook at the top of the main loop (ck_state_top: which mode the loop is in), the debug-key block's F5 / F9
-//    edges come from the request flag instead of the keyboard, and its paths are the memory ones.
+//  * field.c: main() includes ck_host_state.h (the CtHostState struct and its field table) and runs ck_host_point.inc as
+//    the first statement of its loop, the one point where every pre-loop local is in scope: it asks ck_state_top which
+//    mode the loop is in, copies the locals into CtHostState for a save and back after a load (host-fields.mjs checks the
+//    list against main()'s declarations before patching). The debug keys F5 / F9 are switched off, so the old file-based
+//    save, its "[debug] F5" print and the F9 door walk never run; save and load happen only at the safe point.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { checkHostFields } from './host-fields.mjs';
+import { LOOP_HEAD, MAIN_HEAD } from './main-locals.mjs';
 
 const PREFIX = '#include <stdio.h>\n#include "ck_reconnect.h"\n#define fopen ck_fopen\n';
 
-const MODE_FIELD = '!selftest && f.vm && !battlePhase && !menuPhase && !inWorld && !gameOver && !fade && !pendKind';
-const MODE_WORLD = '!selftest && !f.vm && inWorld && !battlePhase && !menuPhase && !fade && !pendKind';
-const TOP_HOOK = `ck_state_top(${MODE_FIELD} ? 1 : (${MODE_WORLD} ? 2 : 0), fieldWram(), fieldSram(), g_fieldAudio);`;
+const F5_PRINT = String.raw`        fprintf(stderr, ok ? "[debug] F5: saved %s (+ _frame/_screen.ppm; and ct_debug.state); logged in ct_debug_log.txt\n"`
+  + '\n' + String.raw`                           : "[debug] F5: SAVE FAILED (%s)\n", np);` + '\n';
 
 // [what to find, what to put, how many times it must occur]
 const FIELD_PATCHES = [
-  ['  while (running && !g_shotsExit) {\n', `  while (running && !g_shotsExit) {\n    ${TOP_HOOK}\n`, 1],
-  ['int f5 = dks[SDL_SCANCODE_F5], f9 = dks[SDL_SCANCODE_F9];', 'int f5 = ck_state_take_save(), f9 = ck_state_take_load();', 1],
-  ['int ok = CtSceneSaveState(f.vm, np, plr);', 'int ok = CtSceneSaveState(f.vm, "mem:scene", plr);', 1],
-  ['CtSceneSaveState(f.vm, "ct_debug.state", plr);', '', 1],
-  ['if (ok) { fieldDebugLogCapture(n, "scene", frameNo, CtSceneMem7E(f.vm), px, py); hostDebugPictures(n); }', '', 1],
-  ['CtAudioSaveState(g_fieldAudio, na); CtAudioSaveState(g_fieldAudio, "ct_debug.state.apu");', 'CtAudioSaveState(g_fieldAudio, "mem:apu");', 1],
-  ['CtSceneStateLoc("ct_debug.state", NULL)', 'CtSceneStateLoc("mem:scene", NULL)', 2],
-  ['double plr[4]; int r = CtSceneLoadState(f.vm, "ct_debug.state", plr);',
-    'double plr[4]; int r = CtSceneLoadState(f.vm, "mem:scene", plr); ck_state_load_result(r);', 1],
-  ['CtAudioLoadState(g_fieldAudio, "ct_debug.state.apu")', 'CtAudioLoadState(g_fieldAudio, "mem:apu")', 1],
+  [MAIN_HEAD, `#include "ck_host_state.h"\n${MAIN_HEAD}`, 1],
+  [LOOP_HEAD, `${LOOP_HEAD}#include "ck_host_point.inc"\n`, 1],
+  ['int f5 = dks[SDL_SCANCODE_F5], f9 = dks[SDL_SCANCODE_F9];', 'int f5 = 0, f9 = 0;', 1],
+  [F5_PRINT, '', 1],
   ['int f5b = dks2[SDL_SCANCODE_F5];', 'int f5b = 0;', 1],
-  ['int f9b = dks2[SDL_SCANCODE_F9];', 'int f9b = ck_state_take_load();', 1],
+  ['int f9b = dks2[SDL_SCANCODE_F9];', 'int f9b = 0;', 1],
 ];
 
 const FUNCTION_CHECKS = {
@@ -57,14 +55,20 @@ const prefixed = (belthasar, name) => {
   return PREFIX + text;
 };
 
+const patchedField = (belthasar, root) => {
+  const text = readFileSync(join(belthasar, 'src', 'field.c'), 'utf8').replace(/\r\n/g, '\n');
+  checkHostFields(text, root);
+  return applyPatches('field.c', `#include "ck_reconnect.h"\n${text}`, FIELD_PATCHES);
+};
+
 // returns { files: [absolute paths of the patched copies], replaced: [src-relative names they stand in for] }
-const writeStatePatches = (genDir, belthasar) => {
+const writeStatePatches = (genDir, belthasar, root) => {
   const dir = join(genDir, 'state');
   mkdirSync(dir, { recursive: true });
   const out = {
     'ct_vm.c': prefixed(belthasar, 'ct_vm.c'),
     'audio.c': prefixed(belthasar, 'audio.c'),
-    'field.c': applyPatches('field.c', '#include "ck_reconnect.h"\n' + readFileSync(join(belthasar, 'src', 'field.c'), 'utf8').replace(/\r\n/g, '\n'), FIELD_PATCHES),
+    'field.c': patchedField(belthasar, root),
   };
   for (const [name, text] of Object.entries(out)) writeFileSync(join(dir, name), text);
   return { files: Object.keys(out).map((n) => join(dir, n)), replaced: Object.keys(out).map((n) => `src/${n}`) };

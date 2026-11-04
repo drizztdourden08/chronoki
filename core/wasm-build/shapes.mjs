@@ -58,7 +58,7 @@ const writeShapes = (outDir) => {
   const ts = tableStorage(outDir);
   writeFileSync(join(gen, 'tables_storage.c'), ts.text);
   writeStampHeader(gen, belthasar, root);
-  const state = writeStatePatches(gen, belthasar);
+  const state = writeStatePatches(gen, belthasar, root);
   return { dir: gen, gameFiles: [join(gen, 'datapack.c'), join(gen, 'tables_storage.c')], state, tables32: ts.is32 };
 };
 
