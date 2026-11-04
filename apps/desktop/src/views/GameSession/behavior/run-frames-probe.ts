@@ -1,5 +1,5 @@
 /* @layer renderer-appshell @kind logic */
-import { CT_FRAME_HEIGHT, CT_FRAME_WIDTH } from '@chronoki/game-core';
+import { CHRONOKI_VIDEO } from '@chronoki/game-core';
 import { chronokiCore } from '@app/game/lifecycle';
 import { FRAME_HEIGHT_EXPORT, FRAME_WIDTH_EXPORT } from '../GameSession.constants';
 import { audioFrameTotal } from './audio-frame-total';
@@ -20,7 +20,7 @@ const runFramesProbe = async (target: number): Promise<void> => {
   const errors: string[] = [];
   if (outcome !== 'reached') errors.push(`frames: ${outcome}`);
   if (error) errors.push(error);
-  if (width !== CT_FRAME_WIDTH || height !== CT_FRAME_HEIGHT) errors.push(`frame size ${width}x${height}`);
+  if (width !== CHRONOKI_VIDEO.width || height !== CHRONOKI_VIDEO.height) errors.push(`frame size ${width}x${height}`);
   await logProbe({
     probe: 'frames', presented: presentedFrames(), width, height, audioFrames: audioFrameTotal(), coreStatus: status, errors,
   });
