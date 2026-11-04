@@ -15,18 +15,20 @@ const publishStates = (m: InputManager): void => {
   notifyQuietly(m.stateListeners, m.currentHidStates, m.allPressedKeys);
 };
 
+const handleFocusedInput = (m: InputManager): void => {
+  if (!m.pauseManager.isPaused && !m.inputSuppressed) routeInputFrame(m);
+
+  if (m.rawDispatcher.hasListeners) m.rawDispatcher.emitHidEvents(m.hidStates);
+
+  if (m.setInputFn && !m.inputSuppressed && m.functionActions.hasMappedGamepadButtons) {
+    m.functionActions.checkGamepads(m.hidStates, m.allowed);
+  }
+};
+
 const pollFrame = (m: InputManager): void => {
   if (!m.running) return;
 
-  const windowFocused = inputEligible();
-
-  if (windowFocused && !m.pauseManager.isPaused && !m.inputSuppressed) routeInputFrame(m);
-
-  if (windowFocused && m.rawDispatcher.hasListeners) m.rawDispatcher.emitHidEvents(m.hidStates);
-
-  if (windowFocused && m.setInputFn && !m.inputSuppressed && m.functionActions.hasMappedGamepadButtons) {
-    m.functionActions.checkGamepads(m.hidStates, m.allowed);
-  }
+  if (inputEligible()) handleFocusedInput(m);
 
   publishStates(m);
 

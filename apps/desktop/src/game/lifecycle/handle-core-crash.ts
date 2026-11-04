@@ -1,10 +1,11 @@
 /* @layer bridge-wasm @kind logic */
 import type { CoreCrash } from '@drizztdourden08/brock-port-kit/renderer';
+import { appLog } from '@app/log/app-log';
 import { isCleanExit } from './is-clean-exit';
 
 const handleCoreCrash = ({ error, message }: CoreCrash): void => {
   if (isCleanExit(error)) return;
-  console.error(`[core] ${message}`);
+  appLog.error(`[core] ${message}`);
 };
 
 export { handleCoreCrash };

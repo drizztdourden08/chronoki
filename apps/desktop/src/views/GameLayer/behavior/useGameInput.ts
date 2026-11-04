@@ -7,7 +7,7 @@ import type { StartInputArgs } from '@app/input/start-input.type';
 const useGameInput = (running: boolean, profileId: string | null, onFunctionAction: StartInputArgs['onFunctionAction']): void => {
   useEffect(() => {
     if (!running || profileId === null) return undefined;
-    const handle = startInput({ core: chronokiCore as unknown as StartInputArgs['core'], profileId, onFunctionAction });
+    const handle = startInput({ core: chronokiCore, profileId, onFunctionAction });
     return handle.stop;
   }, [running, profileId, onFunctionAction]);
 };

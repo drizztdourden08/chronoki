@@ -1,4 +1,5 @@
 /* @layer renderer-lib @kind logic */
+import { appLog } from '@app/log/app-log';
 import type { InputManager } from '../input-manager/input-manager';
 import { writeInputProfilesState } from './write-input-profiles-state';
 
@@ -11,7 +12,7 @@ const commitInputState = async (m: InputManager): Promise<void> => {
       functionMappings: m.getFunctionMappings(),
     });
   } catch (error) {
-    console.warn('[input] failed to write input-profiles.json', error);
+    appLog.warn('[input] failed to write input-profiles.json', error);
   }
 };
 

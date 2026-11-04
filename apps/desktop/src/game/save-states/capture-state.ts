@@ -3,11 +3,9 @@ import { CT_STATE_APU_FILE, CT_STATE_FILE, encodeCkState } from '@chronoki/game-
 import { encodeSaveSlot } from '@drizztdourden08/brock-port-kit';
 import { awaitState } from './await-state';
 import { removeDebugFiles } from './remove-debug-files';
-import type { SaveStateContext, StateFailure } from './save-state.type';
-
-type Captured = { ok: true; bytes: Uint8Array } | { ok: false; reason: StateFailure };
-
-const NO_OPTIONS = new Uint8Array(0);
+import { NO_OPTIONS } from './capture-state.constants';
+import type { Captured } from './capture-state.type';
+import type { SaveStateContext } from './save-state.type';
 
 const captureState = async (ctx: SaveStateContext): Promise<Captured> => {
   const { core, romFile } = ctx;

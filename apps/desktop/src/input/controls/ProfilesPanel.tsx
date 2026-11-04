@@ -1,13 +1,7 @@
 /* @layer renderer-components @kind component */
 import { Box, Icon, IconButton, Text } from '@drizztdourden08/tessera/primitives';
-import type { InputProfile } from '@chronoki/input-mapping';
 import { ProfileItem } from './ProfileItem';
-import type { ControlsState } from './controls.type';
-
-interface ProfilesPanelProps {
-  ctrl: ControlsState;
-  onDelete: (profile: InputProfile) => void;
-}
+import type { ProfilesPanelProps } from './ProfilesPanel.type';
 
 const ProfilesPanel = ({ ctrl, onDelete }: ProfilesPanelProps) => (
   <Box className="controls-settings__side">

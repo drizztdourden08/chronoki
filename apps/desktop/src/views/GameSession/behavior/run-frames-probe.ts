@@ -2,7 +2,7 @@
 import { CT_FRAME_HEIGHT, CT_FRAME_WIDTH } from '@chronoki/game-core';
 import { chronokiCore } from '@app/game/lifecycle';
 import { FRAME_HEIGHT_EXPORT, FRAME_WIDTH_EXPORT } from '../GameSession.constants';
-import { audioFrameTotal } from './audio-frame-counter';
+import { audioFrameTotal } from './audio-frame-total';
 import { logProbe } from './log-probe';
 import { presentedFrames } from './presented-frames';
 import { waitForFrames } from './wait-for-frames';

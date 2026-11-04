@@ -4,16 +4,7 @@ import type { ChangeEvent, KeyboardEvent, MouseEvent } from 'react';
 import { Icon, IconButton, TextInput } from '@drizztdourden08/tessera/primitives';
 import { ListItemRow } from '@drizztdourden08/tessera/composites';
 import type { InputProfile } from '@chronoki/input-mapping';
-
-interface ProfileItemProps {
-  profile: InputProfile;
-  active: boolean;
-  startEditing: boolean;
-  canDelete: boolean;
-  onSelect: (profile: InputProfile) => void;
-  onRename: (profile: InputProfile, name: string) => void;
-  onDelete: (profile: InputProfile) => void;
-}
+import type { ProfileItemProps } from './ProfileItem.type';
 
 const ProfileItem = ({ profile, active, startEditing, canDelete, onSelect, onRename, onDelete }: ProfileItemProps) => {
   const [editing, setEditing] = useState(startEditing);

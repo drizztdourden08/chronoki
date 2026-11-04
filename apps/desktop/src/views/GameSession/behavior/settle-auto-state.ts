@@ -2,6 +2,7 @@
 import { loadNamedState, loadState } from '@app/game/save-states';
 import type { StateResult } from '@app/game/save-states';
 import type { TestArgs } from '@app/ipc';
+import { appLog } from '@app/log/app-log';
 import { SETTLE_AFTER_STATE_MS } from '../GameSession.constants';
 import { outcomeOf } from './outcome-of';
 import { stateContext } from './state-context';
@@ -17,7 +18,7 @@ const loadAutoState = async (autoState: number | string): Promise<StateResult> =
 const settleAutoState = async (args: TestArgs): Promise<void> => {
   if (args.autoState === null) return;
   const result = await loadAutoState(args.autoState);
-  console.info(`[auto-state] ${String(args.autoState)}: ${outcomeOf(result)}`);
+  appLog.info(`[auto-state] ${String(args.autoState)}: ${outcomeOf(result)}`);
   await new Promise((resolve) => { setTimeout(resolve, SETTLE_AFTER_STATE_MS); });
 };
 

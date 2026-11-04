@@ -1,10 +1,11 @@
 /* @layer renderer-appshell @kind logic */
-import { requireHostApi } from '@drizztdourden08/brock-react';
+import { requireAppApi } from '@app/ipc/require-app-api';
+import { appLog } from '@app/log/app-log';
 import type { EventLogEntry } from '@app/ipc';
 
 const logProbe = async (entry: EventLogEntry): Promise<void> => {
-  const result = await requireHostApi().appendEventLog(entry);
-  if (!result.success) console.warn(`[probe] event log: ${result.error ?? 'failed'}`);
+  const result = await requireAppApi().appendEventLog(entry);
+  if (!result.success) appLog.warn(`[probe] event log: ${result.error ?? 'failed'}`);
 };
 
 export { logProbe };
