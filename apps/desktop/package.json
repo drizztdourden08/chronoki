@@ -39,12 +39,12 @@
     "@chronoki/game-core": "workspace:*",
     "@chronoki/game-data": "workspace:*",
     "@chronoki/input-mapping": "workspace:*",
-    "@drizztdourden08/brock-core": "^0.119.0",
-    "@drizztdourden08/brock-display": "^0.119.0",
-    "@drizztdourden08/brock-electron": "^0.119.0",
-    "@drizztdourden08/brock-input": "^0.119.0",
-    "@drizztdourden08/brock-port-kit": "^0.119.0",
-    "@drizztdourden08/brock-react": "^0.119.0",
+    "@drizztdourden08/brock-core": "^0.120.0",
+    "@drizztdourden08/brock-display": "^0.120.0",
+    "@drizztdourden08/brock-electron": "^0.120.0",
+    "@drizztdourden08/brock-input": "^0.120.0",
+    "@drizztdourden08/brock-port-kit": "^0.120.0",
+    "@drizztdourden08/brock-react": "^0.120.0",
     "@drizztdourden08/tessera": "catalog:",
     "@electron-toolkit/utils": "catalog:",
     "koffi": "catalog:",
@@ -95,7 +95,7 @@
     }
   },
   "brock": {
-    "version": "0.119.0",
+    "version": "0.120.0",
     "tessera": "0.93.2"
   }
 }

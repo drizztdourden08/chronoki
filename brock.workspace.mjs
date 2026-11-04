@@ -1,31 +1,14 @@
 /* @layer root-config @kind config */
-import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
-import { extname, join } from 'node:path';
+import { join } from 'node:path';
 import { defineWorkspace, electronTarget, brockProfile } from '@drizztdourden08/brock-thread';
 import { plugin as snesPlugin, snes as snesVerb } from '@drizztdourden08/brock-plugin-snes';
 
 const STAGED_DATA = ['test-roms', 'data'];
 const STAGED_PACK = 'ct_assets.dat';
-const PACK_EXTENSION = '.dat';
-
-const stageRepackedPack = (worktree) => {
-  const pack = join(worktree.main, ...STAGED_DATA, 'assets', STAGED_PACK);
-  const romFile = snesVerb.romFileOf(worktree);
-  if (!romFile || !existsSync(pack)) return;
-  const assetsDir = join(worktree.userData, 'Data', 'assets');
-  const asset = `${romFile.slice(0, -extname(romFile).length)}${PACK_EXTENSION}`;
-  if (existsSync(join(assetsDir, asset))) return;
-  mkdirSync(assetsDir, { recursive: true });
-  copyFileSync(pack, join(assetsDir, asset));
-  worktree.log(`Pack staged from ${STAGED_PACK} as ${asset}`);
-};
 
 const assetBlobStep = {
   name: 'asset-blob',
-  run: (worktree) => {
-    snesVerb.copyAssetBlob({ realDataDir: join(worktree.main, ...STAGED_DATA) }).run(worktree);
-    stageRepackedPack(worktree);
-  },
+  run: (worktree) => snesVerb.copyAssetBlob({ realDataDir: join(worktree.main, ...STAGED_DATA), asset: STAGED_PACK }).run(worktree),
 };
 
 export default defineWorkspace({
