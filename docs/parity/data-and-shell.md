@@ -148,7 +148,7 @@ Port: rename to "ROMs", `showHeader`, `fill`, `ListDetailLayout`; detail panel w
 verdict (port-kit), asset state and size, **Rebuild assets**, **Delete**. Archives (.zip/.7z) if
 port-kit's ROM store takes them. Replace RotP's "Second cartridge" lane with CT's own optional lane:
 **Steam data** for Steam margins (plan: "needs the player's Steam copy, as an optional import step";
-`steamDataImported` setting exists but nothing sets it). Drop "Extract sprites" and the URL download
+the flag is derived from the stored Steam data, no setting). Drop "Extract sprites" and the URL download
 (plan keeps it simple; URL import optional).
 
 ### 2.3 Profiles (`data/library/profiles.page.tsx`)
@@ -218,5 +218,5 @@ file associations and `app-sprite` scheme, `showFlags` online gating.
 10. Bug report: a `bugReport` bundle so the title-bar bug button and menu row appear.
 11. FPS / refresh-rate title-bar status items (needs a `showFps` setting).
 12. Shell module `logChannels`; `restoreNavigation={false}`; `developerTools` via `developerToolsFromSettings` like RotP.
-13. Optional Steam-data import lane on the ROMs page (sets `steamDataImported`).
+13. Steam-data lane on the ROMs page and a one-time start-up prompt (done, I-79): auto-detect runs in the main process (`electron/steam-detect`), reading only on the player's click. Data domain `steam` (`steam/ct_wide.dat` + `steam-data.json`, `portable: false`, clearable). The flag is derived from `steam/steam-data.json`; no setting.
 14. Later: CT "Game State" debug widget; updater module per plan.

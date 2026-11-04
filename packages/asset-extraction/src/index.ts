@@ -15,6 +15,8 @@ export { createMemWorkStore } from './pipeline/mem-work-store';
 export { runPipeline } from './pipeline/run-pipeline';
 export { STAGES, STEP_TOTAL } from './pipeline/stages.constants';
 export { loadRom } from './rom/load-rom';
+export { buildCtWide } from './steam/steam-wide';
+export type { SteamArchive } from './steam/steam-archive.type';
 export { createWasmOracle } from './oracle/wasm/wasm-oracle';
 export { createWasmInstantiator } from './oracle/wasm/wasm-instantiator';
 export type { EmscriptenModule, ModuleFactory, ModuleOptions } from './oracle/wasm/emscripten-module.type';

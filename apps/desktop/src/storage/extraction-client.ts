@@ -10,7 +10,7 @@ const runExtractStep = async <Id extends ExtractStepId, Result>({ step, title, s
     id: `${step}:${subject}`,
     title,
     worker: ExtractWorker,
-    workerData: { romBytes },
+    workerData: { romBytes: romBytes ?? new Uint8Array(0) },
     steps: [{ id: step, label: title, input }],
     ...STEP_JOB_OPTIONS[step],
   });

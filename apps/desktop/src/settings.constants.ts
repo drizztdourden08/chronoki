@@ -11,7 +11,6 @@ const DEFAULT_SETTINGS: AppSettings = {
   customAspectW: DEFAULT_GATE_OPTIONS.customAspectW,
   customAspectH: DEFAULT_GATE_OPTIONS.customAspectH,
   renderScale: DEFAULT_GATE_OPTIONS.renderScale,
-  steamDataImported: false,
   autoSaveIntervalSeconds: 300,
   masterVolume: 100,
   masterMuted: false,

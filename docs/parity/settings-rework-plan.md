@@ -58,7 +58,7 @@ plain keys of `AppSettings`.
 | 26 | Enhancements > Sound: Instant Sound Uploads, `gate:instantUploads`, off | none | Audio > Sound, off, VS (audio-breakdown.md, batch AUD). *No counterpart* |
 | 27 | Contributing: Developer Mode, `developerToolsEnabled`, off | Contributing: Developer Mode, off (a feature in RotP, `affectsVanillaParity`) | No change in this rework. The gate model already hides `kind: 'dev'` features in packaged builds; making Developer Mode a feature is a follow-up |
 | 28 | Contributing: Allow Debug Logging, `allowDebugLogging`, off | same, off | No change |
-| 29 | Hidden: `windowMode`, `enableAudio`, `steamDataImported`, `volumeScale?` | RotP: same Brock base keys | No change (`volumeScale` keeps its migration) |
+| 29 | Hidden: `windowMode`, `enableAudio`, `volumeScale?` | RotP: same Brock base keys | Steam flag derived from storage, old key dropped by migration; no change otherwise (`volumeScale` keeps its migration) |
 | 30 | Profile: Mode (Original / Enhanced), `profile.mode`, Original. Decorative: nothing at runtime reads it | none stored; the badge comes from `vanillaSafe` (`modeOf`), and the create wizard has a "Preset" (Vanilla / Enhanced) that only seeds settings | **Removed.** Label derived from `vanillaSafe`; wizard per Q2 |
 
 RotP rows with no CT use are left out: Linear World Tilemap, Ultrawide, Tall Rendering, Extend Play Area, Off-Screen AI, Optimized PPU,
