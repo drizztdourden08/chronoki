@@ -20,4 +20,15 @@ interface ProfileFactsInput {
   created: number | undefined;
 }
 
-export type { HomeDialogsProps, HomeSramImport, ProfileFactsInput, SramDialogState };
+interface SlotInfo {
+  slot: number;
+  savedAt: number | null;
+  screenshot: string | null;
+}
+
+interface HomeSectionProps {
+  profileId: string | null;
+  running: boolean;
+}
+
+export type { HomeDialogsProps, HomeSectionProps, HomeSramImport, ProfileFactsInput, SlotInfo, SramDialogState };

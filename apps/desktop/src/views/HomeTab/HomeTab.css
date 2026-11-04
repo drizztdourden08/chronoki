@@ -1,0 +1,41 @@
+/* @layer renderer-components @kind style */
+.home-tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.home-tab__columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(300 * var(--size-1))), 1fr));
+  gap: var(--space-xl);
+  min-height: 0;
+}
+
+.home-tab__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  min-width: 0;
+}
+
+.home-tab__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.home-tab__section-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semi);
+  color: var(--c-text-dim);
+  text-transform: uppercase;
+  letter-spacing: calc(0.5 * var(--size-1));
+  margin: 0;
+}
+
+.home-tab__save-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(144 * var(--size-1)), 1fr));
+  gap: var(--space-sm);
+}

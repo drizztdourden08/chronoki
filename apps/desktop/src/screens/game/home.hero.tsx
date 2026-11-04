@@ -6,7 +6,7 @@ import { HeroTools } from '@app/compounds/ProfileHero';
 import { HubGameControls } from '@app/compounds/HubGameControls';
 import { useGateMode } from '@app/settings-controls/useGateMode';
 import { useGameSession } from '@app/views/GameSession';
-import { HomeDialogs, MODE_LABELS, buildProfileFacts, romFileOf, useHomeSramImport, useRevealProfileFolder } from '@app/views/HomeTab';
+import { HomeDialogs, HomeTab, MODE_LABELS, buildProfileFacts, romFileOf, useHomeSramImport, useRevealProfileFolder } from '@app/views/HomeTab';
 
 const meta: ScreenMeta = {
   title: 'Home',
@@ -51,6 +51,7 @@ const HomeHero = (props: HeroProps) => {
         <HeroTools canRevealFolder={canReveal} importDisabled={running || profileId === null} onOpenFolder={reveal} onImportSram={() => void sramImport.pick()} />
       </Tools>
       <Facts rows={facts} />
+      <HomeTab profileId={profileId} running={running} />
       <HomeDialogs sramImport={sramImport} />
     </>
   );
