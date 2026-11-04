@@ -6,7 +6,7 @@ const JSPI_FLAG = '--experimental-wasm-jspi';
 
 const DEFAULT_WORK_DIR = '.import-work';
 
-const GLUE_RELATIVE_PATH = '../../../../core/wasm-build/out/chronoki-oracle.js';
+const GLUE_RELATIVE_PATH = '../../../../core/wasm-build/out/oracle/chronoki-oracle.js';
 
 const PACK_FILES = ['ct_assets.dat', 'ct_wide.dat'];
 
