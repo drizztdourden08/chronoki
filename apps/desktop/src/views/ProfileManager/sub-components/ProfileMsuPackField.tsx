@@ -3,11 +3,14 @@ import { Field, Select } from '@drizztdourden08/tessera/primitives';
 import type { Profile } from '@drizztdourden08/brock-core';
 import { updateProfile } from '@app/storage/profile-store';
 import { NO_PACK_LABEL, PACK_FIELD_HINT } from '../ProfileManager.constants';
+import { useMsuFolderImport } from '../behavior/useMsuFolderImport';
 import { useMsuPacks } from '../behavior/useMsuPacks';
 import { useProfileSettings } from '../behavior/useProfileSettings';
+import { MsuFolderImportControl } from './MsuFolderImportControl';
 
 const ProfileMsuPackField = ({ profile }: { profile: Profile }) => {
-  const packs = useMsuPacks();
+  const { packs, refresh } = useMsuPacks();
+  const folderImport = useMsuFolderImport(refresh);
   const locked = useProfileSettings(profile.id)?.vanillaSafe === true;
   const chosen = profile.msuPack ?? '';
   const names = chosen && !packs.includes(chosen) ? [chosen, ...packs] : packs;
@@ -21,6 +24,7 @@ const ProfileMsuPackField = ({ profile }: { profile: Profile }) => {
         options={[{ value: '', label: NO_PACK_LABEL }, ...names.map((name) => ({ value: name, label: name }))]}
         placeholder={NO_PACK_LABEL}
       />
+      <MsuFolderImportControl {...folderImport} />
     </Field>
   );
 };

@@ -41,4 +41,11 @@ interface ProfileWizardValues {
   preset: ProfilePresetId;
 }
 
-export type { ProfileCreateWizardProps, ProfileDetailPanelProps, ProfileListPaneProps, ProfileManagerProps, ProfileWizardValues, ReadyRom };
+interface MsuFolderImport {
+  busy: boolean;
+  percent: number | null;
+  error: string | null;
+  importFiles: (files: File[]) => Promise<void>;
+}
+
+export type { MsuFolderImport, ProfileCreateWizardProps, ProfileDetailPanelProps, ProfileListPaneProps, ProfileManagerProps, ProfileWizardValues, ReadyRom };

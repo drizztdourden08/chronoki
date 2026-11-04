@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import { deleteMsuResume, writeMsuResume } from '@drizztdourden08/brock-msu/packs';
+import { writeMsuResume } from '@drizztdourden08/brock-msu/packs';
 import type { SaveSlotRef } from '@drizztdourden08/brock-port-kit';
 import { appLog } from '@app/log/app-log';
 import { platformFiles } from '@app/storage/platform-files';
@@ -9,12 +9,10 @@ import { ctMsuConfig } from '@chronoki/game-core';
 
 const saveMusicPosition = async (profileId: string, ref: SaveSlotRef): Promise<void> => {
   if (!isMsuSessionActive()) return;
-  const files = platformFiles();
-  const slot = resumeSlotOf(profileId, ref);
+  const state = msuSnapshot();
+  if (!state) return;
   try {
-    const state = msuSnapshot();
-    if (state) await writeMsuResume({ config: ctMsuConfig, files, slot, state });
-    else await deleteMsuResume(ctMsuConfig, files, slot);
+    await writeMsuResume({ config: ctMsuConfig, files: platformFiles(), slot: resumeSlotOf(profileId, ref), state });
   } catch (err) {
     appLog.warn('[MSU] Could not store the music position', err);
   }
