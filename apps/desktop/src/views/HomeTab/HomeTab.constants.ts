@@ -1,6 +1,7 @@
 /* @layer renderer-components @kind constants */
 import { CT_QUICK_SLOTS } from '@chronoki/game-core';
 import type { ArmedAction } from '@app/compounds/ArmedActionButton';
+import type { NamedSavesData } from './HomeTab.type';
 
 const QUICK_SAVE_SLOTS = CT_QUICK_SLOTS;
 
@@ -20,6 +21,14 @@ const IMPORT_CONFIRM_WORD = 'import';
 
 const TOAST_DURATION_MS = 4000;
 
+const DATA_URL_CHUNK = 0x8000;
+
+const EMPTY_NAMED_SAVES: NamedSavesData = { list: [], screenshots: {} };
+
+const AUTO_KIND = 'auto';
+
+const NORMAL_KIND = 'normal';
+
 const MODE_LABELS = { original: 'Original', modified: 'Enhanced' } as const;
 
-export { ARMED_PROMPTS, IMPORT_CONFIRM_WORD, MODE_LABELS, NO_GAME_REASON, QUICK_SAVE_SLOTS, SRAM_BYTES, SRAM_EXTENSIONS, TOAST_DURATION_MS };
+export { ARMED_PROMPTS, AUTO_KIND, DATA_URL_CHUNK, EMPTY_NAMED_SAVES, NORMAL_KIND, IMPORT_CONFIRM_WORD, MODE_LABELS, NO_GAME_REASON, QUICK_SAVE_SLOTS, SRAM_BYTES, SRAM_EXTENSIONS, TOAST_DURATION_MS };

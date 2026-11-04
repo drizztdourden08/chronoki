@@ -51,6 +51,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  height: calc(var(--save-slot-hold, 0) * 100%);
   background: var(--c-primary-soft);
   z-index: var(--z-base);
   pointer-events: none;

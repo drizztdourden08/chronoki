@@ -19,7 +19,7 @@ const saveSizes = async (files: FileStore, profileId: string): Promise<number[]>
   const dir = savesDir(profileId);
   const names = await files.list(dir);
   const stats = await Promise.all(names.map((name) => files.stat(`${dir}/${name}`)));
-  return stats.map((stat) => stat?.size ?? 0);
+  return stats.map((stat) => stat?.bytes ?? 0);
 };
 
 const loadProfileData = async (profileId: string): Promise<ProfileData> => {
@@ -29,7 +29,7 @@ const loadProfileData = async (profileId: string): Promise<ProfileData> => {
     orElse(() => files.stat(sramPathOf(profileId)), null),
     orElse(() => readJson<PlaySession[]>(files, sessionsFile(profileId), []), []),
   ]);
-  return { saveFiles: sizes.length, saveBytes: sizes.reduce((sum, size) => sum + size, 0), sramBytes: sram?.size ?? null, sessions };
+  return { saveFiles: sizes.length, saveBytes: sizes.reduce((sum, size) => sum + size, 0), sramBytes: sram?.bytes ?? null, sessions };
 };
 
 export { loadProfileData };

@@ -2,30 +2,29 @@
 import { useCallback, useState } from 'react';
 import { activeStateContext, loadState, overwriteNamedState, platformSaveStore, saveNamedState } from '@app/game/save-states';
 import { appLog } from '@app/log/app-log';
+import { NORMAL_KIND } from '../HomeTab.constants';
 import { defaultSaveName } from './default-save-name';
 import { useNamedSaveList } from './useNamedSaveList';
 
-const KIND = 'normal';
-
 const useNormalSaves = (profileId: string | null, running: boolean) => {
-  const { list, screenshots, refresh } = useNamedSaveList(profileId, KIND, running);
+  const { list, screenshots, refresh } = useNamedSaveList(profileId, NORMAL_KIND, running);
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const create = useCallback(async (typed: string): Promise<string | null> => {
     const ctx = activeStateContext();
     if (!ctx || !profileId) return null;
     const name = typed.trim() || defaultSaveName();
-    const result = await saveNamedState(ctx, KIND, name);
+    const result = await saveNamedState(ctx, NORMAL_KIND, name);
     if (!result.ok) appLog.warn(`[state] create "${name}" failed: ${result.reason}`);
     await refresh();
-    return result.ok ? (await ctx.store.named.find(profileId, KIND, name))?.id ?? null : null;
+    return result.ok ? (await ctx.store.named.find(profileId, NORMAL_KIND, name))?.id ?? null : null;
   }, [profileId, refresh]);
 
   const load = useCallback(async (id: string) => {
     const ctx = activeStateContext();
     if (!ctx) return;
     setBusyId(id);
-    const result = await loadState(ctx, { kind: KIND, id });
+    const result = await loadState(ctx, { kind: NORMAL_KIND, id });
     if (!result.ok) appLog.warn(`[state] load save ${id} failed: ${result.reason}`);
     setBusyId(null);
   }, []);
@@ -34,7 +33,7 @@ const useNormalSaves = (profileId: string | null, running: boolean) => {
     const ctx = activeStateContext();
     if (!ctx) return;
     setBusyId(id);
-    const result = await overwriteNamedState(ctx, KIND, id);
+    const result = await overwriteNamedState(ctx, NORMAL_KIND, id);
     if (!result.ok) appLog.warn(`[state] overwrite save ${id} failed: ${result.reason}`);
     await refresh();
     setBusyId(null);
@@ -43,14 +42,14 @@ const useNormalSaves = (profileId: string | null, running: boolean) => {
   const remove = useCallback(async (id: string) => {
     if (!profileId) return;
     setBusyId(id);
-    await platformSaveStore().named.remove(profileId, KIND, id);
+    await platformSaveStore().named.remove(profileId, NORMAL_KIND, id);
     await refresh();
     setBusyId(null);
   }, [profileId, refresh]);
 
   const rename = useCallback(async (id: string, name: string) => {
     if (!profileId) return;
-    await platformSaveStore().named.rename(profileId, KIND, id, name);
+    await platformSaveStore().named.rename(profileId, NORMAL_KIND, id, name);
     await refresh();
   }, [profileId, refresh]);
 

@@ -41,8 +41,13 @@ interface SlotActionsProps {
   onLoad: (slot: number) => void;
 }
 
+interface SlotHoldFillProps {
+  progress: number;
+}
+
 export type {
   SaveSlotProps,
+  SlotHoldFillProps,
   SlotActionsProps,
   SlotScreenshotProps,
   SlotTimeProps,

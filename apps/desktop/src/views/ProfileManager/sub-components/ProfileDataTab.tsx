@@ -2,7 +2,8 @@
 import { Card, Spinner, Stack } from '@drizztdourden08/tessera/primitives';
 import { FactsPanel } from '@drizztdourden08/tessera/composites';
 import type { Profile } from '@drizztdourden08/brock-core';
-import { buildPlayFacts, buildSaveFacts } from '../behavior/build-data-facts';
+import { buildPlayFacts } from '../behavior/build-play-facts';
+import { buildSaveFacts } from '../behavior/build-save-facts';
 import { useProfileData } from '../behavior/useProfileData';
 
 const ProfileDataTab = ({ profile }: { profile: Profile }) => {

@@ -3,6 +3,7 @@ import { Box, Text, Spinner } from '@drizztdourden08/tessera/primitives';
 import './SaveSlot.css';
 import { useArmedAction } from '../ArmedActionButton';
 import { SlotActions } from './sub-components/SlotActions';
+import { SlotHoldFill } from './sub-components/SlotHoldFill';
 import { SlotScreenshot } from './sub-components/SlotScreenshot';
 import { SlotTime } from './sub-components/SlotTime';
 import { type SaveSlotProps } from './SaveSlot.type';
@@ -37,7 +38,7 @@ const SaveSlot = (props: SaveSlotProps) => {
       <Box className={cardClass}>
         <SlotScreenshot screenshotUrl={screenshotUrl} isEmpty={isEmpty} slotNumber={slotNumber} />
         {holdProgress != null && holdProgress > 0 && (
-          <Box className="save-slot__fill" style={{ height: `${holdProgress * 100}%` }} />
+          <SlotHoldFill progress={holdProgress} />
         )}
         <Text className="save-slot__num">{slotNumber}</Text>
         {shortcutKey && <Text className="save-slot__key">{shortcutKey}</Text>}
