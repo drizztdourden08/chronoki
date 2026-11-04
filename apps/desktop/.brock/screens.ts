@@ -6,6 +6,7 @@ import { meta as creditsCardMeta } from '../src/screens/credits.card';
 import { meta as dataLibraryLibraryPageMeta } from '../src/screens/data/library/library.page';
 import GameGeneralSettings, { meta as gameGeneralSettingsMeta } from '../src/screens/game/general.settings';
 import { meta as gameGameplayControlsCustomMeta } from '../src/screens/game/gameplay/controls.custom';
+import { meta as gameViewBaseMeta } from '../src/screens/game-view.base';
 import { meta as gameHomeHeroMeta } from '../src/screens/game/home.hero';
 import { meta as gameStoragePageMeta } from '../src/screens/game/storage.page';
 
@@ -16,6 +17,7 @@ const screenTree = buildScreenTree(config, [
   { kind: 'custom', bucket: 'game', group: 'gameplay', id: 'controls', component: lazyComponent(() => import('../src/screens/game/gameplay/controls.custom')), meta: gameGameplayControlsCustomMeta },
   { kind: 'hero', bucket: 'game', id: 'home', component: lazyComponent(() => import('../src/screens/game/home.hero')), meta: gameHomeHeroMeta },
   { kind: 'page', bucket: 'game', id: 'storage', component: lazyComponent(() => import('../src/screens/game/storage.page')), meta: gameStoragePageMeta },
+  { kind: 'base', id: 'game-view', component: lazyComponent(() => import('../src/screens/game-view.base')), meta: gameViewBaseMeta },
 ], searchIndex);
 
 export { screenTree };

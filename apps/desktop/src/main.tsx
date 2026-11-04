@@ -15,6 +15,7 @@ import { appTitleBar } from '../.brock/title-bar';
 import { appStartupPrompts } from '../.brock/startup';
 import { appTours } from '../.brock/tours';
 import { appToolbars } from '../.brock/toolbars';
+import { chronokiShellModule } from './shell/chronoki-shell-module';
 import { SETTINGS } from './main.constants';
 import { product } from './product';
 import type { AppSettings } from './settings.type';
@@ -28,7 +29,7 @@ createRoot(root).render(
       product={product}
       settings={SETTINGS}
       screenTree={screenTree}
-      modules={rendererModules}
+      modules={[...rendererModules, chronokiShellModule]}
       bootTasks={rendererBootTasks}
       widgets={appWidgets}
       widgetLayout={appWidgetLayout}

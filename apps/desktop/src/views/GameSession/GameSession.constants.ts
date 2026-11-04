@@ -1,0 +1,25 @@
+/* @layer renderer-appshell @kind constants */
+const NOTICE_NO_PROFILE = 'Create a profile first.';
+
+const NOTICE_NO_ROM = 'Add a ROM in the Library first.';
+
+const STATE_PROBE_FRAMES = 300;
+
+const STATE_PROBE_SLOT = 1;
+
+const SETTLE_AFTER_STATE_MS = 2000;
+
+const FRAME_WAIT_TIMEOUT_MS = 90_000;
+
+const DEFAULT_SCREENSHOT_FRAMES = 120;
+
+const FRAME_COUNT_EXPORT = 'CkFrameCount';
+
+const FRAME_WIDTH_EXPORT = 'CkFrameWidth';
+
+const FRAME_HEIGHT_EXPORT = 'CkFrameHeight';
+
+export {
+  DEFAULT_SCREENSHOT_FRAMES, FRAME_COUNT_EXPORT, FRAME_HEIGHT_EXPORT, FRAME_WAIT_TIMEOUT_MS, FRAME_WIDTH_EXPORT, NOTICE_NO_PROFILE,
+  NOTICE_NO_ROM, SETTLE_AFTER_STATE_MS, STATE_PROBE_FRAMES, STATE_PROBE_SLOT,
+};

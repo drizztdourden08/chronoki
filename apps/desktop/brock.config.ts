@@ -18,4 +18,14 @@ export default defineBrockConfig({
   },
   targets: ['desktop', 'android', 'web'],
   modules: ['display', 'port-kit', 'input'],
+  workflows: {
+    steps: {
+      ci: {
+        beforeBuild: [
+          { name: 'Set up Emscripten', uses: 'emscripten-core/setup-emsdk@v16', with: { version: '5.0.7' } },
+          { name: 'Build the wasm core', shell: 'bash', run: 'pnpm --filter chronoki-desktop run ensure-wasm' },
+        ],
+      },
+    },
+  },
 });

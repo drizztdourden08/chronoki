@@ -5,6 +5,9 @@
   "description": "ChronoKi, a desktop and mobile port of Chrono Trigger. You bring your own ROM.",
   "license": "MIT",
   "packageManager": "pnpm@10.17.0",
+  "config": {
+    "emsdk": "5.0.7"
+  },
   "engines": {
     "node": ">=24"
   },

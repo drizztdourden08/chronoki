@@ -16,6 +16,7 @@
     "start": "brock start",
     "start:headless": "brock start -- --no-focus --muted",
     "sync": "brock sync",
+    "ensure-wasm": "port-kit-ensure-wasm",
     "typecheck": "tsc --noEmit",
     "lint": "pnpm typecheck && eslint . && stylelint \"src/**/*.css\" && brock prose && jscpd .",
     "lint:md": "markdownlint-cli2",
@@ -72,6 +73,26 @@
     "typescript": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
+  },
+  "portKit": {
+    "wasm": {
+      "sourceDirs": [
+        "../../core/reconnect",
+        "../../core/wasm-build"
+      ],
+      "sourceExtensions": [
+        ".c",
+        ".h",
+        ".mjs"
+      ],
+      "buildScript": "../../core/wasm-build/build.mjs",
+      "output": "public/wasm",
+      "outputExtensions": [
+        ".wasm",
+        ".js"
+      ],
+      "emsdkDir": "../../third_party/emsdk"
+    }
   },
   "brock": {
     "version": "0.116.1",
