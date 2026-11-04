@@ -1,13 +1,15 @@
 /* @layer shared-asset-extraction @kind logic */
 import { createLeWriter } from '../buffer/le-writer';
 import { SCENE_TS, T_TS12 } from './asset-types.constants';
-import { chipAnimData, parseChipAnims } from './chip-anims';
+import { chipAnimData } from './chip-anims';
+import { parseChipAnims } from './parse-chip-anims';
 import { decodeTiles } from './decode-tiles';
 import { lzDecompress } from './lz-decompress';
 import type { CtasEntry } from '../ctas/ctas.type';
 import type { Corner } from './metatiles';
-import { parseMetatiles, serMetas } from './metatiles';
-import { distinctHeaderBytes } from './scene-header';
+import { parseMetatiles } from './metatiles';
+import { serMetas } from './ser-metas';
+import { distinctHeaderBytes } from './distinct-header-bytes';
 import type { PackTables, Packer } from './extract.type';
 
 const readChips = (rom: Uint8Array, chipsets: Uint8Array, tsGfx: number[]): [Uint8Array, Uint8Array] => {

@@ -1,19 +1,8 @@
 /* @layer shared-asset-extraction @kind logic @source Python script.load_script */
 import { byteAt } from '../bytes/byte-reader';
 import { lzDecompress } from '../lz-decompress';
-import { getEntries3Byte } from '../rom-read';
-import { SCRIPT_PTRS } from './script-load.constants';
 import type { LoadedScript } from './script-load.type';
-
-const pointerCache = new WeakMap<Uint8Array, number[]>();
-
-const scriptPointers = (rom: Uint8Array): number[] => {
-  const hit = pointerCache.get(rom);
-  if (hit) return hit;
-  const ptrs = getEntries3Byte(rom, SCRIPT_PTRS, 513);
-  pointerCache.set(rom, ptrs);
-  return ptrs;
-};
+import { scriptPointers } from './script-pointers';
 
 const loadScript = (rom: Uint8Array, scriptIndex: number): LoadedScript => {
   const ptrs = scriptPointers(rom);
@@ -32,5 +21,5 @@ const loadScript = (rom: Uint8Array, scriptIndex: number): LoadedScript => {
   return { objs, body: raw.slice(1 + headerSize) };
 };
 
-export { loadScript, scriptPointers };
+export { loadScript };
 export type { LoadedScript };

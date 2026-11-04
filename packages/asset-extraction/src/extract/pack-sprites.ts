@@ -3,9 +3,16 @@ import type { CtasEntry } from '../ctas/ctas.type';
 import { T_SPRITE } from './asset-types.constants';
 import { decodeTiles } from './decode-tiles';
 import { createBlobWriter } from './bytes/blob-writer';
-import { animSetIndex, assemblyFrame, buildAnim, nextAnimPointer, spriteAnimTables } from './sprite-anims';
+import { animSetIndex } from './anim-set-index';
+import { assemblyFrame } from './assembly-frame';
+import { buildAnim } from './sprite-anims';
+import { nextAnimPointer } from './next-anim-pointer';
+import { spriteAnimTables } from './sprite-anim-tables';
 import type { AssemblyFrame } from './sprite-anims';
-import { parseTables, readHeader, readSpriteGraphics, readSpritePalette } from './sprite-records';
+import { parseTables } from './sprite-records';
+import { readHeader } from './read-sprite-header';
+import { readSpriteGraphics } from './read-sprite-graphics';
+import { readSpritePalette } from './read-sprite-palette';
 import type { Packer } from './extract.type';
 
 const animBound = (rom: Uint8Array, si: number): number => {

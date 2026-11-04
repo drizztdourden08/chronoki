@@ -2,7 +2,8 @@
 import type { CtasEntry } from '../ctas/ctas.type';
 import type { WorkStore } from '../pipeline/work-store.type';
 import { T_NAMEMSG, T_NAMEWIN, T_WINDOW, T_WORLD, T_WORLDINTROSEED, T_WORLDSPR } from './asset-types.constants';
-import { byteAt, wordAt } from './bytes/byte-reader';
+import { byteAt } from './bytes/byte-reader';
+import { wordAt } from './bytes/word-at';
 import { createBlobWriter } from './bytes/blob-writer';
 import type { Packer } from './extract.type';
 import { SPRITE_FILES } from './pack-world.constants';

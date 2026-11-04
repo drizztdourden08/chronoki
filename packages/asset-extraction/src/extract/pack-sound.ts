@@ -10,8 +10,10 @@ import {
   T_SND_SONG,
   T_SND_TIMING,
 } from './asset-types.constants';
-import { byteAt, wordAt } from './bytes/byte-reader';
-import { concatBytes, createBlobWriter } from './bytes/blob-writer';
+import { byteAt } from './bytes/byte-reader';
+import { wordAt } from './bytes/word-at';
+import { concatBytes } from './bytes/concat-bytes';
+import { createBlobWriter } from './bytes/blob-writer';
 import type { Packer } from './extract.type';
 import { FD } from './pack-sound.constants';
 

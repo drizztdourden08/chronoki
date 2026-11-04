@@ -1,11 +1,11 @@
 /* @layer shared-asset-extraction @kind logic @source Python extract_assets._hdr, maps.scene_props */
-import { byteAt, itemAt } from './bytes/byte-reader';
+import { byteAt } from './bytes/byte-reader';
+import { itemAt } from './bytes/item-at';
 import { lzDecompress } from './lz-decompress';
 import { getEntries3Byte } from './rom-read';
-import { SCENE_HDR, MAP_PTRS } from './scene-props.constants';
+import { MAP_PTRS } from './scene-props.constants';
 import type { SceneProps } from './scene-props.type';
-
-const sceneHeader = (rom: Uint8Array, s: number): Uint8Array => rom.slice(SCENE_HDR + s * 14, SCENE_HDR + s * 14 + 14);
+import { sceneHeader } from './scene-props-header';
 
 const sceneProps = (rom: Uint8Array, scene: number): SceneProps => {
   const h = sceneHeader(rom, scene);
@@ -59,5 +59,5 @@ const sceneProps = (rom: Uint8Array, scene: number): SceneProps => {
   return { w: sw, h: sh, coll, zplane, zflags, mover };
 };
 
-export { sceneHeader, sceneProps };
+export { sceneProps };
 export type { SceneProps };

@@ -2,8 +2,8 @@
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_SCRIPT } from './asset-types.constants';
 import { lzDecompress } from './lz-decompress';
-import { sceneHeader } from './scene-props';
-import { scriptPointers } from './script/script-load';
+import { sceneHeader } from './scene-props-header';
+import { scriptPointers } from './script/script-pointers';
 import type { Packer } from './extract.type';
 
 const packScripts: Packer = ({ rom }) => {

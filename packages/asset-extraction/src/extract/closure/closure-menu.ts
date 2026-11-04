@@ -1,6 +1,11 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure.menu_tables */
-import { byteAt, wordAt } from '../bytes/byte-reader';
-import { hdmaRuns, menuString, until0, windowProgram, wordTable } from './menu-lib';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
+import { hdmaRuns } from './hdma-runs';
+import { menuString } from './menu-lib';
+import { until0 } from './until0';
+import { windowProgram } from './window-program';
+import { wordTable } from './word-table';
 import type { RomTable } from './closure.type';
 import { FF, CC, DE } from './closure-menu.constants';
 const C2 = 0x020000;

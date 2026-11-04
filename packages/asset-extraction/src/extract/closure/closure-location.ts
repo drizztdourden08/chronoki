@@ -1,16 +1,11 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure.ptr24, rom_closure.location_indices, rom_closure.colour_slot_tables, rom_closure.location_tables */
-import { byteAt, wordAt } from '../bytes/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
 import type { RomTable } from './closure.type';
 import { LOC_RECORDS, TILESET_LISTS, MAP_PTRS, ASM_PTRS, ASM3_PTRS, TS_PTRS, SCRIPT_PTRS, SCENE_PALETTES, EXITS, TREASURE } from './closure-location.constants';
 import type { LocationIndices } from './closure-location.type';
 
 const maxOf = (values: Iterable<number>): number => Math.max(...values);
-
-const ptr24 = (rom: Uint8Array, at: number): number | null => {
-  const bank = byteAt(rom, at + 2);
-  if (bank < 0xc0) return null;
-  return ((bank - 0xc0) << 16) | wordAt(rom, at);
-};
 
 const locationIndices = (rom: Uint8Array): LocationIndices => {
   const r: LocationIndices = { ts: new Set(), b3s: new Set(), idxs: new Set(), maps: new Set(), scripts: new Set() };
@@ -91,4 +86,4 @@ const locationTables = (rom: Uint8Array): RomTable[] => {
   ];
 };
 
-export { locationTables, ptr24 };
+export { locationTables };

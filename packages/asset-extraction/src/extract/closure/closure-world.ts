@@ -1,9 +1,11 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure.world_headers, rom_closure.place_name_ids, rom_closure.world_scripts, rom_closure.world_tables */
-import { byteAt, wordAt } from '../bytes/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
 import { lzCtlibDecompress } from '../lz-ctlib';
-import { ptr24 } from './closure-location';
-import { until0 } from './menu-lib';
-import { animvmWalk, objvmWalk } from './vm-walk';
+import { ptr24 } from './ptr24';
+import { until0 } from './until0';
+import { animvmWalk } from './animvm-walk';
+import { objvmWalk } from './vm-walk';
 import type { Span } from './vm-walk';
 import type { RomTable } from './closure.type';
 import { C6, WORLD_HDRS, WORLD_HDR_LEN, WORLD_PACKET_TABLES, OW_C2_SCRIPTS, OW_C2_ANIMS } from './closure-world.constants';

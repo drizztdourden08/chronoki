@@ -5,8 +5,9 @@ import { decodeTiles } from './decode-tiles';
 import { lzDecompress } from './lz-decompress';
 import type { CtasEntry } from '../ctas/ctas.type';
 import type { Corner } from './metatiles';
-import { parseMetatiles, serMetas } from './metatiles';
-import { distinctHeaderBytes } from './scene-header';
+import { parseMetatiles } from './metatiles';
+import { serMetas } from './ser-metas';
+import { distinctHeaderBytes } from './distinct-header-bytes';
 import type { Packer } from './extract.type';
 
 const packTileset3: Packer = ({ rom, tables }) => {

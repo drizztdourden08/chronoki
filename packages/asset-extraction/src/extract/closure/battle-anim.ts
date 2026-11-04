@@ -1,12 +1,15 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure_battle.anim_walk, rom_closure_battle.anim_script, rom_closure_battle.anim_tables */
-import { byteAt, itemAt, wordAt } from '../bytes/byte-reader';
-import { byteSpans, romLabel } from './byte-spans';
+import { byteAt } from '../bytes/byte-reader';
+import { itemAt } from '../bytes/item-at';
+import { wordAt } from '../bytes/word-at';
+import { byteSpans } from './byte-spans';
+import { romLabel } from './rom-label';
 import type { RomTable } from './closure.type';
 import { C1, CE, ANIM_OP_JT, ANIM_OPS, ANIM_TABLES } from './battle-anim.constants';
 import type { WalkState } from './battle-anim.type';
+import { animHandler } from './anim-handler';
 
 const popcount = (v: number): number => v.toString(2).replace(/0/g, '').length;
-const animHandler = (rom: Uint8Array, op: number): number => (op < ANIM_OPS ? wordAt(rom, ANIM_OP_JT + 2 * op) : -1);
 
 const animWalk = (rom: Uint8Array, start: number, bankEnd: number, st: WalkState, depth = 0): void => {
   let q = start;
@@ -54,4 +57,4 @@ const animTables = (rom: Uint8Array, lens: number[]): RomTable[] => {
   return out;
 };
 
-export { animHandler, animTables };
+export { animTables };

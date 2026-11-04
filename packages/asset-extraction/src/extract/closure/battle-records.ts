@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure_battle.ai_section_end, rom_closure_battle.record_tables */
-import { byteAt, wordAt } from '../bytes/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
 import type { RomTable } from './closure.type';
 import { CC, FD } from './battle-records.constants';
 

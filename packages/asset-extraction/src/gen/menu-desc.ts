@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import { decodeString, loadDict } from '../extract/text-tokens';
+import { decodeString } from '../extract/text-tokens';
+import { loadDict } from '../extract/load-dict';
 
 /** CC/2EB1 as a HiROM file offset: the table of 16-bit local pointers into bank $CC, one per item id. */
 const BASE = 0x0c2eb1;

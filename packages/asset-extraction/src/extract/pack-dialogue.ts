@@ -2,7 +2,7 @@
 import { T_DIALOGUE } from './asset-types.constants';
 import { scanDialogueTables } from './dialogue-scan';
 import { strList } from './str-list';
-import { loadDict } from './text-tokens';
+import { loadDict } from './load-dict';
 import type { Packer } from './extract.type';
 
 const packDialogue: Packer = ({ rom }) => {

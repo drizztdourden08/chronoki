@@ -1,17 +1,8 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure.word_table, rom_closure.menu_string, rom_closure.window_program, rom_closure.until0, rom_closure.hdma_runs */
-import { byteAt, wordAt } from '../bytes/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
 import type { RomTable } from './closure.type';
-import { FF, MENU_STRING_OPERANDS } from './menu-lib.constants';
-
-const wordTable = (rom: Uint8Array, at: number, bank: number): [number[], number] => {
-  const ts: number[] = [];
-  let o = at;
-  while (o < bank + Math.min(...ts, 0x10000) && o + 1 < rom.length) {
-    ts.push(wordAt(rom, o));
-    o += 2;
-  }
-  return [ts, o];
-};
+import { MENU_STRING_OPERANDS } from './menu-lib.constants';
 
 const menuString = (rom: Uint8Array, start: number, seen: Set<number>, out: RomTable[], depth = 0): number[] => {
   let a = start;
@@ -35,22 +26,4 @@ const menuString = (rom: Uint8Array, start: number, seen: Set<number>, out: RomT
   return caps;
 };
 
-const windowProgram = (rom: Uint8Array, start: number): number => {
-  let a = start;
-  while ((byteAt(rom, a) & 0x80) === 0) a += 1 + byteAt(rom, FF + 0xbd18 + byteAt(rom, a)) + 1;
-  return a + 1;
-};
-
-const until0 = (rom: Uint8Array, start: number): number => {
-  let a = start;
-  while (byteAt(rom, a) !== 0) a += 1;
-  return a + 1;
-};
-
-const hdmaRuns = (rom: Uint8Array, start: number, width: number): number => {
-  let a = start;
-  while (byteAt(rom, a) !== 0) a += 1 + width;
-  return a + 1;
-};
-
-export { hdmaRuns, menuString, until0, windowProgram, wordTable };
+export { menuString };

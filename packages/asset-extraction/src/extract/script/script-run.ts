@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, RomIndexError } from '../bytes/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
+import { RomIndexError } from '../bytes/rom-index-error';
 import { opLen } from './script-oplen';
 import type { RunCtx } from './script-run.type';
 import { OP_HANDLERS, STOP_OPS, OP_LIMIT } from './script-run.constants';

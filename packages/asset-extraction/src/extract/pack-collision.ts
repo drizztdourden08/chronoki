@@ -2,7 +2,8 @@
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_COLLISION } from './asset-types.constants';
 import { createBlobWriter } from './bytes/blob-writer';
-import { sceneHeader, sceneProps } from './scene-props';
+import { sceneHeader } from './scene-props-header';
+import { sceneProps } from './scene-props';
 import type { Packer } from './extract.type';
 
 const packCollision: Packer = ({ rom }) => {

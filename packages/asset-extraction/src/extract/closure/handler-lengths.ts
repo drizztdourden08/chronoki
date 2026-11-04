@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure._handler_lengths */
-import { byteAt, wordAt } from '../bytes/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
 import { operandLength } from './cpu65816';
 import { OPCODE_TABLE } from './cpu65816.constants';
 import type { HandlerLength, Seen, Walk } from './handler-lengths.type';

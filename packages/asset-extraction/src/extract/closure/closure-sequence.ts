@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure.sequence_table_entries, rom_closure.sequence_tables */
-import { byteAt, wordAt } from '../bytes/byte-reader';
-import { ptr24 } from './closure-location';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
+import { ptr24 } from './ptr24';
 import type { RomTable } from './closure.type';
 import { SEQ_TABLE } from './closure-sequence.constants';
 

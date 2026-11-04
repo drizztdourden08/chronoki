@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-class RomIndexError extends Error {}
+import { RomIndexError } from './rom-index-error';
 
 const byteAt = (data: ArrayLike<number>, i: number): number => {
   const v = data[i];
@@ -7,12 +7,4 @@ const byteAt = (data: ArrayLike<number>, i: number): number => {
   return v;
 };
 
-const wordAt = (data: ArrayLike<number>, i: number): number => byteAt(data, i) | (byteAt(data, i + 1) << 8);
-
-const itemAt = <T>(list: readonly T[], i: number): T => {
-  const v = list[i];
-  if (v === undefined) throw new RomIndexError(`list index ${i} is out of range (${list.length})`);
-  return v;
-};
-
-export { byteAt, itemAt, RomIndexError, wordAt };
+export { byteAt };

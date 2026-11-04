@@ -1,6 +1,8 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure_battle.stage_cfgs, rom_closure_battle.anim_set_end, rom_closure_battle.stage_tables */
-import { byteAt, wordAt } from '../bytes/byte-reader';
-import { byteSpans, romLabel } from './byte-spans';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
+import { byteSpans } from './byte-spans';
+import { romLabel } from './rom-label';
 import type { RomTable } from './closure.type';
 import { CD, CE, CC } from './battle-stage.constants';
 import type { StageCfg } from './battle-stage.type';

@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic @source Python maps.scene_exits */
-import { byteAt, wordAt } from './bytes/byte-reader';
+import { byteAt } from './bytes/byte-reader';
+import { wordAt } from './bytes/word-at';
 import { EXITS_BASE } from './scene-exits.constants';
 import type { SceneExit } from './scene-exits.type';
 

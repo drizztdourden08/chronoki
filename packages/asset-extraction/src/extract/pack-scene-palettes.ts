@@ -2,7 +2,7 @@
 import { T_SCENE_PAL } from './asset-types.constants';
 import { flattenRgb } from './flatten-rgb';
 import { scenePalette } from './scene-palette';
-import { distinctHeaderBytes } from './scene-header';
+import { distinctHeaderBytes } from './distinct-header-bytes';
 import type { Packer } from './extract.type';
 
 const packScenePalettes: Packer = ({ rom }) =>

@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { u16 } from '../extract/rom-read';
+import { u16 } from '../extract/u16';
 import { ptr24 } from './closure-locations';
 
 const E4 = 0x240000;

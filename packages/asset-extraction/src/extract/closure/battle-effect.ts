@@ -1,7 +1,9 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure_battle.fx_layout_extent, rom_closure_battle.effect_tables */
-import { byteAt, wordAt } from '../bytes/byte-reader';
-import { byteSpans, romLabel } from './byte-spans';
-import { wordTable } from './menu-lib';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
+import { byteSpans } from './byte-spans';
+import { romLabel } from './rom-label';
+import { wordTable } from './word-table';
 import type { RomTable } from './closure.type';
 import { CD, CE, CF } from './battle-effect.constants';
 const D0 = 0x100000;

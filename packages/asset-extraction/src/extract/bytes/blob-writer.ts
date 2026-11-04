@@ -1,7 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-
 import type { BlobWriter } from './blob-writer.type';
-
 
 const createBlobWriter = (): BlobWriter => {
   let buf = new Uint8Array(256);
@@ -32,11 +30,5 @@ const createBlobWriter = (): BlobWriter => {
   };
 };
 
-const concatBytes = (parts: readonly ArrayLike<number>[]): Uint8Array => {
-  const w = createBlobWriter();
-  for (const p of parts) w.bytes(p);
-  return w.toBytes();
-};
-
-export { concatBytes, createBlobWriter };
+export { createBlobWriter };
 export type { BlobWriter };

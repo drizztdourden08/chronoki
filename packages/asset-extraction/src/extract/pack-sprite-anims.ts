@@ -2,7 +2,10 @@
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_SPRITEANIM } from './asset-types.constants';
 import { createBlobWriter } from './bytes/blob-writer';
-import { animSetIndex, buildAnim, nextAnimPointer, spriteAnimTables } from './sprite-anims';
+import { animSetIndex } from './anim-set-index';
+import { buildAnim } from './sprite-anims';
+import { nextAnimPointer } from './next-anim-pointer';
+import { spriteAnimTables } from './sprite-anim-tables';
 import type { Packer } from './extract.type';
 
 const animCount = (rom: Uint8Array, si: number): number => {

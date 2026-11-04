@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { BANK_FF, T_PORTRAIT } from './asset-types.constants';
-import { u16 } from './rom-read';
+import { u16 } from './u16';
 import { snes15ToRgb } from './snes-color';
 import { tilePixel4 } from './tile-pixel';
 import type { Packer } from './extract.type';

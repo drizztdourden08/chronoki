@@ -1,8 +1,5 @@
 /* @layer shared-asset-extraction @kind logic @source Python lz.lz_decompress */
-const at = (data: Uint8Array, i: number): number => {
-  if (i < 0 || i >= data.length) throw new RangeError('index out of range');
-  return data[i]!;
-};
+import { at } from './rom-at';
 
 const lzDecompress = (data: Uint8Array, start: number): Uint8Array => {
   const compressedSize = (at(data, start + 1) << 8) | at(data, start);
@@ -80,4 +77,4 @@ const lzDecompress = (data: Uint8Array, start: number): Uint8Array => {
   }
 };
 
-export { at, lzDecompress };
+export { lzDecompress };

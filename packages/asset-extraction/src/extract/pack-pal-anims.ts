@@ -1,8 +1,8 @@
 /* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_pal_anims */
 import { createLeWriter } from '../buffer/le-writer';
 import { T_PAL_ANIM } from './asset-types.constants';
-import { readPaletteAnims } from './scene-palette';
-import { distinctHeaderBytes } from './scene-header';
+import { readPaletteAnims } from './read-palette-anims';
+import { distinctHeaderBytes } from './distinct-header-bytes';
 import type { Packer } from './extract.type';
 
 const packPalAnims: Packer = ({ rom }) =>

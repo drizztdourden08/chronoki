@@ -1,14 +1,17 @@
 /* @layer shared-asset-extraction @kind logic @source Python extract_assets._fd_tile_anim_end, extract_assets._fd_obj_slot_ends, extract_assets.rom_tables, extract_assets.table_spans */
-import { byteAt, wordAt } from '../bytes/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
+import { wordAt } from '../bytes/word-at';
 import { animTables } from './battle-anim';
 import { effectTables } from './battle-effect';
-import { miscTables, smallTables } from './battle-misc';
+import { miscTables } from './battle-misc';
+import { smallTables } from './small-tables';
 import { recordTables } from './battle-records';
 import { stageTables } from './battle-stage';
 import { locationTables } from './closure-location';
 import { menuTables } from './closure-menu';
 import { sequenceTables } from './closure-sequence';
-import { partyTables, spriteTables } from './closure-sprites';
+import { partyTables } from './party-tables';
+import { spriteTables } from './closure-sprites';
 import { worldTables } from './closure-world';
 import type { RomTable } from './closure.type';
 import type { ClosureInputs } from './rom-tables.type';

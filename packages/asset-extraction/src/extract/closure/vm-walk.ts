@@ -1,12 +1,10 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure.objvm_walk, rom_closure.animvm_walk */
-import { byteAt, itemAt, wordAt } from '../bytes/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
+import { itemAt } from '../bytes/item-at';
 import { handlerLengths } from './handler-lengths';
 import { OBJVM_ENDS } from './vm-walk.constants';
 import type { Span, Mem7f } from './vm-walk.type';
-
-const C2 = 0x020000;
-
-const signed = (r: number): number => (r >= 0x80 ? r - 256 : r);
+import { signed } from './signed-byte';
 
 const objvmWalk = (rom: Uint8Array, entries: [number, number][], mem7f: Mem7f | null = null): [Span[], Span[]] => {
   const L = handlerLengths(rom, 0x0f91, 0x53);
@@ -64,39 +62,5 @@ const objvmWalk = (rom: Uint8Array, entries: [number, number][], mem7f: Mem7f | 
   return [spans, data];
 };
 
-const animvmWalk = (rom: Uint8Array, entries: number[]): Span[] => {
-  const L = handlerLengths(rom, 0x0e4a, 8);
-  const out: Span[] = [];
-  const seen = new Set<number>();
-  const work = [...entries];
-  while (work.length > 0) {
-    let pc = work.pop() as number;
-    while (!seen.has(pc)) {
-      seen.add(pc);
-      const o = C2 + pc;
-      const op = byteAt(rom, o);
-      const entry = L.get(op);
-      if (!entry) break;
-      const ln = entry[0];
-      if (op === 3) {
-        out.push([o, o + 2]);
-        pc = (pc + signed(byteAt(rom, o + 1))) & 0xffff;
-        continue;
-      }
-      if (ln === 0) {
-        out.push([o, o + 1]);
-        break;
-      }
-      out.push([o, o + ln]);
-      if (op === 4) {
-        const d = C2 + wordAt(rom, o + 1);
-        out.push([d, d + 1 + 4 * byteAt(rom, d)]);
-      }
-      pc = (pc + ln) & 0xffff;
-    }
-  }
-  return out;
-};
-
-export { animvmWalk, objvmWalk };
+export { objvmWalk };
 export type { Mem7f, Span };

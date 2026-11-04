@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_LZ } from './asset-types.constants';
-import { concatBytes } from './bytes/blob-writer';
+import { concatBytes } from './bytes/concat-bytes';
 import type { Packer } from './extract.type';
 
 const readU32 = (d: Uint8Array, o: number): number => {
