@@ -16,7 +16,7 @@ catalog:
   '@drizztdourden08/brock-lint-config': ^0.117.1
   '@drizztdourden08/brock-plugin-snes': ^0.117.1
   '@drizztdourden08/brock-thread': ^0.117.1
-  '@drizztdourden08/tessera': ^0.101.1
+  '@drizztdourden08/tessera': ^0.102.0
   '@electron-toolkit/utils': ^4.0.0
   '@playwright/test': ^1.60.0
   '@types/node': ^24.19.0

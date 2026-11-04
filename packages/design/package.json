@@ -2,11 +2,14 @@
   "name": "@chronoki/design",
   "version": "0.0.0",
   "private": true,
-  "description": "Tessera compounds and views shared by the app (the brand theme and font plug in here later).",
+  "description": "Tessera compounds and views shared by the app (the ChronoKi font and theme).",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
     ".": "./src/index.ts",
+    "./chronoki.css": "./src/theme/chronoki.css",
     "./package.json": "./package.json"
   },
   "dependencies": {
