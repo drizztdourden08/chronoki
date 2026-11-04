@@ -1,7 +1,8 @@
 /* @layer shared @kind constants */
 import type { FeatureDef } from '../feature.type';
+import { CORE_FEATURES } from './core-features.constants';
+import { HOST_FEATURES } from './host-features.constants';
 
-// TODO(P2+): one record per non-original feature; the registry stays empty in the scaffold.
-const FEATURE_REGISTRY: readonly FeatureDef[] = [];
+const FEATURE_REGISTRY: readonly FeatureDef[] = [...CORE_FEATURES, ...HOST_FEATURES];
 
 export { FEATURE_REGISTRY };

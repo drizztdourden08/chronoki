@@ -10,8 +10,22 @@ const DEFAULT_CK_SETTINGS: CkSettings = {
   sceneAdjustments: false,
   volume: 100,
   mute: false,
-  sync: 'frame',
+  sync: 'frame_perfect',
   instantSoundUploads: false,
 };
 
-export { DEFAULT_CK_SETTINGS };
+const INI_HEADER = '; Belthasar -- options. Edited by the F1 overlay; safe to edit by hand.';
+
+const BUTTON_STEMS = ['up', 'down', 'left', 'right', 'a', 'b', 'x', 'y', 'l', 'r', 'select', 'start'] as const;
+
+const DEFAULT_KEY_NAMES = ['Up', 'Down', 'Left', 'Right', 'Z', 'X', 'A', 'S', 'D', 'C', 'Backspace', 'Return'];
+
+const DEFAULT_KEY2_NAMES = ['', '', '', '', '', '', '', '', '', '', '', 'Keypad Enter'];
+
+const DEFAULT_PAD_NAMES = [
+  'dpup', 'dpdown', 'dpleft', 'dpright', 'b', 'a', 'y', 'x', 'leftshoulder', 'rightshoulder', 'back', 'start',
+];
+
+export {
+  BUTTON_STEMS, DEFAULT_CK_SETTINGS, DEFAULT_KEY2_NAMES, DEFAULT_KEY_NAMES, DEFAULT_PAD_NAMES, INI_HEADER,
+};

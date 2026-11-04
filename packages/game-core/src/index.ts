@@ -7,6 +7,7 @@ export {
 } from './port/chronoki-port.constants';
 export { buildCoreConfigIni } from './port/core-config-ini';
 export { DEFAULT_CK_SETTINGS } from './port/core-config-ini.constants';
+export { gateSettings } from './port/gate-settings';
 export { hostGate } from './port/host-gate';
 export { stripCopierHeader } from './port/strip-copier-header';
 export { encodeCkState } from './port/state-container/encode-ck-state';
