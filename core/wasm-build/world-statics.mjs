@@ -48,4 +48,4 @@ const checkWorldStatics = (text, root) => {
   if (out.length) throw new Error(`overworld section statics out of step with world.c:\n  ${out.join('\n  ')}`);
 };
 
-export { checkWorldStatics }
+export { checkWorldStatics, fileScopeStatics }

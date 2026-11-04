@@ -1,5 +1,11 @@
 /* @layer root-config @kind config */
 import { defineBrockConfig } from '@drizztdourden08/brock-build/config';
+import type { WorkflowStep } from '@drizztdourden08/brock-build/config';
+
+const wasmCoreSteps: WorkflowStep[] = [
+  { name: 'Set up Emscripten', uses: 'emscripten-core/setup-emsdk@v16', with: { version: '5.0.7' } },
+  { name: 'Build the wasm core', shell: 'bash', run: 'pnpm --filter chronoki-desktop run ensure-wasm' },
+];
 
 export default defineBrockConfig({
   product: {
@@ -27,12 +33,8 @@ export default defineBrockConfig({
   modules: ['display', 'port-kit', 'input', 'game-info'],
   workflows: {
     steps: {
-      ci: {
-        beforeBuild: [
-          { name: 'Set up Emscripten', uses: 'emscripten-core/setup-emsdk@v16', with: { version: '5.0.7' } },
-          { name: 'Build the wasm core', shell: 'bash', run: 'pnpm --filter chronoki-desktop run ensure-wasm' },
-        ],
-      },
+      ci: { beforeBuild: wasmCoreSteps },
+      release: { beforePackage: wasmCoreSteps },
     },
   },
 });

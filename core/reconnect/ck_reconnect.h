@@ -35,7 +35,7 @@ void ck_view_size(int* w, int* h);
 enum { CK_OP_NONE = 0, CK_OP_SAVE = 1, CK_OP_LOAD = 2 };
 typedef struct { const char* name; uint32_t offset; uint32_t size; } CkHostField;   /* one CtHostState field (ck_host_state.h) */
 typedef struct { const char* name; void* ptr; uint32_t size; } CkPtrField;   /* one WRLD record: a live object by name and size */
-int  ck_state_top(int mode, void* wram, const uint8_t* sram);   /* once per pass; mode 0 none, 1 field scene, 2 overworld; returns a CK_OP_* */
+int  ck_state_top(int mode, void* wram, const uint8_t* sram);   /* once per pass; mode 0 none, 1 field scene, 2 overworld, 3 menu over a field, 4 menu over the overworld; returns a CK_OP_* */
 void ck_state_save_done(int ok, int withScene, const void* host, const CkHostField* table, int count);   /* after a CK_OP_SAVE */
 const uint8_t* ck_state_load_core(void);   /* the staged state's 128 KB WRAM image (CORE), NULL if it has none */
 int  ck_state_load_host(void* host, const CkHostField* table, int count);   /* overlays the HOST section on host; 0 if there is none */
@@ -44,13 +44,20 @@ int  ck_state_load_has_world(void);    /* the staged state is an overworld one (
 int  ck_state_load_world_check(const CkPtrField* table, int count);   /* the WRLD section holds exactly these records (name and size) */
 int  ck_state_load_world(const CkPtrField* table, int count);         /* writes the WRLD records into the live objects; 0 if malformed */
 int  ckWorldStatics(CkPtrField* out, int max);   /* world.c's cross-frame statics (ck_world_state.inc is appended to the patched world.c) */
+void ck_state_save_menu(const CkPtrField* table, int count, const uint8_t* fb, size_t npx);   /* before ck_state_save_done with a menu open: stages MENU (the records) and MPIC (fb, npx pixels, may be NULL) */
+int  ck_state_load_has_menu(void);     /* the staged state was taken with a menu open (it has a MENU section) */
+int  ck_state_load_menu_check(const CkPtrField* table, int count);   /* the MENU section holds exactly these records (name and size) */
+int  ck_state_load_menu_get(const char* name, void* dst, uint32_t size);   /* one MENU record copied out by name, no live object touched */
+int  ck_state_load_menu(const CkPtrField* table, int count, uint8_t* fb, size_t npx);   /* writes the MENU records, and unpacks MPIC into fb (npx pixels) when fb is given; 0 if malformed */
+int  ckMenuStatics(CkPtrField* out, int max);   /* menu.c's cross-frame statics (ck_menu_state.inc is appended to the patched menu.c) */
+void ckMenuAfterLoad(const uint8_t* wram);      /* after the MENU records are written: re-derives menu.c's pointers (the char-select view of the WRAM) */
 void ck_state_load_result(int r);      /* after a CK_OP_LOAD: what CtSceneLoadState answered */
 FILE* ck_fopen(const char* path, const char* mode);   /* fopen, except "mem:scene" and "mem:apu" (ct_vm.c and audio.c are built with fopen = ck_fopen) */
 int  ck_state_request_save(void);      /* 0 if a request is open */
 int  ck_state_request_load(const uint8_t* bytes, long len);   /* 0 if one is open or the container is refused (reason set) */
 uint8_t* ck_state_input(long len);     /* a buffer of len bytes in linear memory for the container to load */
 const uint8_t* ck_state_buffer(long* len);   /* the last container saved */
-const char* ck_state_stamp(void);      /* what this build stamps: pin, core version, schema hash */
+const char* ck_state_stamp(void);      /* what this build stamps: pin, core version, schema, section ids, past layouts */
 int  ck_state_status(void);            /* 0 idle, 1 pending, 2 ok, 3 failed */
 int  ck_state_reason(void);            /* why it failed: 0 none, 1 not a state, 2 schema, 3 mode, 4 not now, 5 corrupt, 6 failed */
 int  ck_state_available(void);         /* the engine is in a mode with a state section and no request is open */

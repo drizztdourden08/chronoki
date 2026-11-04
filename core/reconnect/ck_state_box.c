@@ -1,5 +1,5 @@
 /* The CKST v2 container: "CKST", u32 version 2, u32 section count, then per section a 4 byte tag, u32 section version,
-   u32 length and the bytes. Every section is version 1 for now; the stamp's schema hash is what tells layouts apart. */
+   u32 length and the bytes. Every section is version 1 for now; the stamp's per-section schema ids tell layouts apart (ck_state_schema.c). */
 #include "ck_state_internal.h"
 #include <stdlib.h>
 #include <string.h>
