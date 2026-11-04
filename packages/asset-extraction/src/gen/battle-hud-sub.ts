@@ -42,7 +42,7 @@ const genBattleHudSub = async (ctx: ImportContext): Promise<GenFiles> => {
   const pal = await palette(ctx);
   const lines = [...HEAD];
   for (const [name, script] of CAPTURES) {
-    const rows = bake(await oracle.peek({ state, script, env: { PEEK_ISOBG: '0' } }), pal);
+    const rows = bake(await oracle.peek({ state, script, rule: false, env: { PEEK_ISOBG: '0' } }), pal);
     lines.push(`static const uint8_t ${name}[${STRIP_H}][256] = {`);
     for (const r of rows) lines.push(`  {${r.join(',')}},`);
     lines.push('};');
