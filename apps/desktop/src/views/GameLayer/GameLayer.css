@@ -32,6 +32,24 @@
   object-fit: fill;
 }
 
+/* Fit Window keeps the picture's aspect; the window itself is what is shaped to it, so no bars show. */
+.game-layer__stage--fit canvas {
+  object-fit: contain;
+}
+
+/* Pixel Perfect: the whole-number size is set on the stage as custom properties by usePixelPerfectSize. */
+.game-layer__stage--pixel-perfect {
+  align-items: center;
+  justify-content: center;
+}
+
+.game-layer__stage--pixel-perfect canvas {
+  flex: none;
+  width: var(--pixel-perfect-w, 100%);
+  height: var(--pixel-perfect-h, 100%);
+  image-rendering: pixelated;
+}
+
 .game-layer__stage--idle {
   visibility: hidden;
   position: absolute;

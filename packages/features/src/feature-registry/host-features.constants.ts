@@ -13,11 +13,6 @@ const HOST_FEATURES: FeatureDef[] = [
     group: 'Display', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: true, live: true,
   },
   {
-    id: 'scaleStretch', label: 'Stretch to window', description: 'Stretches the picture to fill the window.',
-    userMessage: 'Stretches the picture to fill the window.',
-    group: 'Display', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: true, live: true,
-  },
-  {
     id: 'saveStates', label: 'Save states', description: 'Save and load the whole game at any moment.',
     userMessage: 'Save and load the whole game at any moment.',
     group: 'Saves', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: false, live: true,

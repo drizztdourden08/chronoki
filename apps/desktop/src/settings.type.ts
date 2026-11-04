@@ -2,6 +2,8 @@
 import type { BaseSettings } from '@drizztdourden08/brock-core';
 import type { RenderScaleFactor, WideAspect } from '@chronoki/features';
 
+type ViewportMode = 'none' | 'fit' | 'fill';
+
 interface AppSettings extends BaseSettings {
   original: boolean;
   gates: string[];
@@ -11,8 +13,10 @@ interface AppSettings extends BaseSettings {
   autoSaveIntervalSeconds: number;
   masterMuted: boolean;
   showFps: boolean;
+  viewportConstraint: ViewportMode;
+  pixelPerfect: boolean;
   autoSaveMaxEntries: number;
   turboSpeed: number;
 }
 
-export type { AppSettings };
+export type { AppSettings, ViewportMode };
