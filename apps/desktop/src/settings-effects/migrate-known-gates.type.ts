@@ -1,4 +1,4 @@
-/* @layer renderer-app @kind type */
+/* @layer renderer-app @kind types */
 interface KnownGatesResult {
   gates: string[];
   knownGates: string[];

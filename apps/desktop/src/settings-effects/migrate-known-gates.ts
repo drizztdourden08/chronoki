@@ -1,11 +1,7 @@
 /* @layer renderer-app @kind logic */
 import { ALL_FEATURE_IDS, FEATURES_BY_ID } from '@chronoki/features';
 import { GATES_ADDED_AFTER_FIRST_PROFILES } from './normalise-settings.constants';
-
-interface KnownGatesResult {
-  gates: string[];
-  knownGates: string[];
-}
+import type { KnownGatesResult } from './migrate-known-gates.type';
 
 const seenBefore = (stored: readonly string[] | undefined): readonly string[] =>
   stored ?? ALL_FEATURE_IDS.filter((id) => !GATES_ADDED_AFTER_FIRST_PROFILES.includes(id));
