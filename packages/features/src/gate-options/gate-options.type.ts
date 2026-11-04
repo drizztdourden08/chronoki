@@ -3,12 +3,18 @@ type AspectRatioChoice = 'original' | 'auto' | 'screen' | '4:3' | '16:10' | '16:
 
 type RenderScaleFactor = 2 | 3 | 4;
 
+interface PixelArea {
+  width: number;
+  height: number;
+}
+
 interface GateOptions {
   aspectRatio: AspectRatioChoice;
   customAspectW: number;
   customAspectH: number;
   renderScale: RenderScaleFactor;
   screenRatio?: number;
+  pixelArea?: PixelArea;
 }
 
-export type { AspectRatioChoice, GateOptions, RenderScaleFactor };
+export type { AspectRatioChoice, GateOptions, PixelArea, RenderScaleFactor };

@@ -13,6 +13,8 @@ const controlLines = (): string[] =>
     `pad_${stem}=${DEFAULT_PAD_NAMES[i]}`,
   ]);
 
+const tallLine = (s: CkSettings): string[] => (s.widescreen === 'off' && s.tallLines > 0 ? [`tall_lines=${s.tallLines}`] : []);
+
 const videoLines = (s: CkSettings): string[] => [
   '[video]',
   'backend=sdl',
@@ -23,6 +25,7 @@ const videoLines = (s: CkSettings): string[] => [
   'filter=nearest',
   `widescreen=${s.widescreen}`,
   `wide_width=${s.widescreen === 'off' ? 0 : s.wideWidth}`,
+  ...tallLine(s),
   `steam_margins=${flag(s.steamMargins)}`,
   `fill_bottom_lines=${flag(s.fillBottomLines)}`,
   `scene_adjustments=${flag(s.sceneAdjustments)}`,

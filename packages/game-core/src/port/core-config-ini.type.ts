@@ -6,6 +6,7 @@ type CkSync = 'frame_perfect' | 'free';
 interface CkSettings {
   widescreen: CkWidescreen;
   wideWidth: number;
+  tallLines: number;
   renderScale: number;
   interpolation: boolean;
   steamMargins: boolean;

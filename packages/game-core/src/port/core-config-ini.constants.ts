@@ -4,6 +4,7 @@ import type { CkSettings } from './core-config-ini.type';
 const DEFAULT_CK_SETTINGS: CkSettings = {
   widescreen: 'off',
   wideWidth: 0,
+  tallLines: 0,
   renderScale: 1,
   interpolation: false,
   steamMargins: false,

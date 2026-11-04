@@ -1,6 +1,6 @@
 /* @layer renderer-appshell @kind types */
 import type { ReactNode } from 'react';
-import type { CkSettings } from '@chronoki/game-core';
+import type { CkArea, CkSettings } from '@chronoki/game-core';
 import type { FunctionAction } from '@chronoki/input-mapping';
 
 interface GameLaunch {
@@ -18,6 +18,8 @@ interface GameSessionValue {
   settings: CkSettings;
   volume: number;
   gates: ReadonlySet<string>;
+  pictureRatio: number;
+  setStageArea: (area: CkArea) => void;
   play: () => void;
   stop: () => void;
   reset: () => void;

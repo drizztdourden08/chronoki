@@ -19,7 +19,7 @@ const sections: Section[] = [
       {
         key: 'aspectRatio',
         label: 'Aspect Ratio',
-        description: 'Original keeps the game width. The others set the shape of the picture; Auto and Screen follow your display.',
+        description: 'Original uses the game width. Wide, Auto, Screen and Custom add width at 224 lines. Tall adds lines at the game width.',
         keywords: 'aspect ratio widescreen original 4:3 16:9 16:10 21:9 tall 3:4 4:5 auto screen custom extended rendering',
         control: { kind: 'choice', options: [], look: 'select' },
       },

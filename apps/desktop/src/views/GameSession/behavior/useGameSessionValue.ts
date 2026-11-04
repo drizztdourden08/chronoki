@@ -2,6 +2,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useCoreState } from '@drizztdourden08/brock-port-kit/renderer';
 import { nav } from '@drizztdourden08/brock-react';
+import type { CkArea } from '@chronoki/game-core';
 import { activeGameHolder, chronokiCore } from '@app/game/lifecycle';
 import { getInputManager } from '@app/input/input-manager/get-input-manager';
 import { NOTICE_NO_PROFILE, NOTICE_NO_ROM } from '../GameSession.constants';
@@ -22,7 +23,8 @@ import { useSyncCorePause } from './useSyncCorePause';
 
 const useGameSessionValue = (): GameSessionValue => {
   const { profile, loaded } = useGameProfile();
-  const core = useCoreSettings();
+  const [stageArea, setStageArea] = useState<CkArea | null>(null);
+  const core = useCoreSettings(stageArea);
   useHostFeatures(core);
   const [launch, setLaunch] = useState<GameLaunch | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -71,7 +73,7 @@ const useGameSessionValue = (): GameSessionValue => {
   useRestartWarning(running, launch?.id ?? null);
 
   return useMemo(
-    () => ({ launch, notice, running, paused, ...core, play, stop, reset, togglePause, onStarted, onFunctionAction, onFunctionRelease }),
+    () => ({ launch, notice, running, paused, ...core, setStageArea, play, stop, reset, togglePause, onStarted, onFunctionAction, onFunctionRelease }),
     [launch, notice, running, paused, core, play, stop, reset, togglePause, onStarted, onFunctionAction, onFunctionRelease],
   );
 };

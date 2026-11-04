@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_GATE_OPTIONS, FEATURE_REGISTRY, resolveGates } from '@chronoki/features';
 import type { AspectRatioChoice } from '@chronoki/features';
-import { frameSizeOf, gateSettings, letterboxBox, parseRatio, ratioToWidth } from '../src';
+import { buildCoreConfigIni, frameSizeOf, gateSettings, parseRatio, ratioToLines, ratioToWidth } from '../src';
 
 describe('ratio to picture width', { tags: ['critical'] }, () => {
   it('gives 298, 358, 398 and 522 for 4:3, 16:10, 16:9 and 21:9', () => {
@@ -16,11 +16,20 @@ describe('custom ratio cap', { tags: ['critical'] }, () => {
   });
 });
 
-describe('tall ratio letterbox', { tags: ['critical'] }, () => {
-  it('keeps the 3:4 frame at 256x224 and presents a 256x341 box', () => {
-    const settings = { widescreen: 'off', wideWidth: 0, renderScale: 1, interpolation: false } as const;
-    expect(frameSizeOf(settings)).toEqual({ width: 256, height: 224 });
-    expect(letterboxBox(parseRatio('3:4'))).toEqual({ width: 256, height: 341 });
+describe('tall ratio lines', { tags: ['critical'] }, () => {
+  it('gives 320 and 340 lines for 4:5 and 3:4, capped at 480', () => {
+    expect(['4:5', '3:4', '1:3'].map((r) => ratioToLines(parseRatio(r)))).toEqual([320, 340, 480]);
+  });
+
+  it('sizes a tall frame 256 x lines at 1x whatever the render scale', () => {
+    const settings = { widescreen: 'off', wideWidth: 0, tallLines: 340, renderScale: 2, interpolation: true } as const;
+    expect(frameSizeOf(settings)).toEqual({ width: 256, height: 340 });
+    expect(frameSizeOf({ ...settings, tallLines: 0, renderScale: 1, interpolation: false })).toEqual({ width: 256, height: 224 });
+  });
+
+  it('writes tall_lines only for a tall picture', () => {
+    expect(buildCoreConfigIni({ tallLines: 340 }).split('\n')).toContain('tall_lines=340');
+    expect(buildCoreConfigIni({ widescreen: '16:9', wideWidth: 398, tallLines: 340 })).not.toContain('tall_lines');
   });
 });
 
@@ -50,6 +59,12 @@ describe('gate settings width', { tags: ['critical'] }, () => {
     const requested = ALL.filter((id) => id !== 'tallRendering');
     expect(widthFor(false, '3:4', requested)).toBe(298);
     expect(widthFor(false, '3:4')).toBe(0);
+  });
+
+  it('renders a tall ratio as 256 x lines with widescreen off and 1x', () => {
+    const { effective } = resolveGates(ALL, { vanillaSafe: false, satisfied: new Set(['steamData']) });
+    const settings = gateSettings(effective, { ...DEFAULT_GATE_OPTIONS, aspectRatio: '3:4' }, audio);
+    expect([settings.widescreen, settings.tallLines, settings.renderScale, settings.interpolation]).toEqual(['off', 340, 1, false]);
   });
 });
 

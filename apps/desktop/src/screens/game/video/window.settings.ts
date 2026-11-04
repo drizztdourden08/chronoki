@@ -29,7 +29,7 @@ const sections: Section[] = [
       {
         key: 'pixelPerfect',
         label: 'Pixel Perfect',
-        description: 'Scale the picture by whole source pixels only, so every pixel is exactly the same size. Removes the shimmer on fences, walls and other straight edges while scrolling, at the cost of slightly wider black borders. Turns Linear Filtering off while active.',
+        description: 'Scale the picture by whole source pixels only, so every pixel is exactly the same size. Removes the shimmer on fences, walls and other straight edges while scrolling. The game draws a little more picture so it still fills your ratio, trimming at most a few edge lines. Turns Linear Filtering off while active.',
         hint: 'Needs the Letterbox viewport.',
         keywords: 'pixel perfect integer scale scaling sharp crisp nearest',
       },

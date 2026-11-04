@@ -1,8 +1,7 @@
 /* @layer renderer-components @kind types */
 import type { RefObject } from 'react';
 import type { WindowMode } from '@drizztdourden08/brock-core';
-import type { CkFrameSize } from '@chronoki/game-core';
-import type { AspectRatioChoice } from '@chronoki/features';
+import type { CkArea, CkPresentMode } from '@chronoki/game-core';
 import type { ViewportMode } from '@app/settings.type';
 import type { GameLaunch } from '@app/views/GameSession';
 
@@ -11,32 +10,22 @@ interface GameBootArgs {
   launch: GameLaunch | null;
 }
 
+interface SessionPicture {
+  frame: CkArea;
+  ratio: number;
+}
+
 interface StageClassArgs {
   visible: boolean;
   gates: ReadonlySet<string>;
-  viewport: ViewportMode;
-  pixelPerfect: boolean;
-  boxed: boolean;
+  mode: CkPresentMode;
 }
 
 interface AspectLockArgs {
   viewport: ViewportMode;
   windowMode: WindowMode;
   isFullscreen: boolean;
-  frame: CkFrameSize;
+  ratio: number;
 }
 
-interface PresentBox {
-  width: number;
-  height: number;
-  boxed: boolean;
-}
-
-interface PresentRatioArgs {
-  gates: ReadonlySet<string>;
-  aspectRatio: AspectRatioChoice;
-  customAspectW: number;
-  customAspectH: number;
-}
-
-export type { AspectLockArgs, PresentBox, PresentRatioArgs, GameBootArgs, StageClassArgs };
+export type { AspectLockArgs, GameBootArgs, SessionPicture, StageClassArgs };

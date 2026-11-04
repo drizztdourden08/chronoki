@@ -1,15 +1,22 @@
 /* @layer renderer-appshell @kind logic */
 import type { CkSettings } from '@chronoki/game-core';
+import type { PixelArea } from '@chronoki/features';
 
 interface CoreSettings {
   settings: CkSettings;
   config: string;
   volume: number;
   gates: ReadonlySet<string>;
+  pictureRatio: number;
   autoSaveIntervalSeconds: number;
   autoSaveMaxEntries: number;
   turboSpeed: number;
   saveHoldDuration: number;
 }
 
-export type { CoreSettings };
+interface DisplayInputs {
+  screenRatio: number;
+  pixelArea: PixelArea | undefined;
+}
+
+export type { CoreSettings, DisplayInputs };

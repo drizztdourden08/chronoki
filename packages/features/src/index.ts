@@ -11,6 +11,6 @@ export { resolveFeatures } from './resolve-features';
 export { resolveGates } from './resolve-gates';
 export type { LockCause, LockCauseContext } from './lock-cause';
 export type { AutoDisabledFeature, ResolveResult } from './resolve-features';
-export type { AspectRatioChoice, GateOptions, RenderScaleFactor } from './gate-options/gate-options.type';
+export type { AspectRatioChoice, GateOptions, PixelArea, RenderScaleFactor } from './gate-options/gate-options.type';
 export type { FeatureDef, FeatureGroup, FeatureIniKey, FeatureKind, FeatureOrigin } from './feature.type';
 export type { ResolveGatesOptions } from './resolve-gates.type';
