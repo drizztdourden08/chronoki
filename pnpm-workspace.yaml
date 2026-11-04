@@ -1,0 +1,56 @@
+# @layer root-config @kind config
+packages:
+  - apps/*
+  - packages/*
+  - tooling/*
+
+catalog:
+  '@capacitor-community/keep-awake': ^8.0.1
+  '@capacitor/android': ^8.4.0
+  '@capacitor/app': ^8.1.0
+  '@capacitor/cli': ^8.4.0
+  '@capacitor/core': ^8.4.0
+  '@capacitor/filesystem': ^8.1.2
+  '@capacitor/haptics': ^8.0.2
+  '@drizztdourden08/brock-build': ^0.116.0
+  '@drizztdourden08/brock-lint-config': ^0.116.0
+  '@drizztdourden08/brock-plugin-snes': ^0.116.0
+  '@drizztdourden08/brock-thread': ^0.116.0
+  '@drizztdourden08/tessera': ^0.101.1
+  '@electron-toolkit/utils': ^4.0.0
+  '@playwright/test': ^1.60.0
+  '@types/node': ^24.19.0
+  '@types/react': ^19.2.15
+  '@types/react-dom': ^19.2.3
+  '@vitejs/plugin-react': ^5.2.0
+  electron: ^42.2.0
+  electron-builder: ^26.8.1
+  electron-vite: ^5.0.0
+  eslint: ^10.4.0
+  jscpd: ^4.0.5
+  jsdom: ^29.1.1
+  knip: ^5.65.0
+  koffi: ^3.1.2
+  markdownlint-cli2: ^0.22.1
+  playwright: ^1.60.0
+  react: ^19.2.6
+  react-dom: ^19.2.6
+  stylelint: ^17.13.0
+  stylelint-config-standard: ^40.0.0
+  typescript: ^6.0.3
+  velopack: ^1.2.110-ge826545
+  vite: ^7.3.3
+  vitest: ^4.1.7
+  zod: ^3.25.76
+  zustand: ^5.0.13
+
+ignoredBuiltDependencies:
+  - electron-winstaller
+  - protobufjs
+
+onlyBuiltDependencies:
+  - '@drizztdourden08/brock-input'
+  - electron
+  - esbuild
+  - koffi
+  - sharp

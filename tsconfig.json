@@ -1,0 +1,11 @@
+{
+  "extends": "@drizztdourden08/brock-lint-config/tsconfig/react.json",
+  "compilerOptions": {
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@app/*": ["./apps/desktop/src/*"]
+    }
+  },
+  "include": ["apps/desktop/src/**/*", "apps/desktop/electron/**/*", "packages/*/src/**/*"],
+  "exclude": ["node_modules", "dist", "out", "core"]
+}

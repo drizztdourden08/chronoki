@@ -1,0 +1,16 @@
+{
+  "name": "@chronoki/game-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The WASM bridge, the game lifecycle glue, save paths and live settings.",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./save-paths": "./src/save-paths/index.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@chronoki/features": "workspace:*"
+  }
+}

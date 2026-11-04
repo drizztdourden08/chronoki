@@ -1,0 +1,21 @@
+{
+  "brock": "0.117.1",
+  "generatedAt": "2026-11-04T05:43:11.943Z",
+  "modules": [
+    {
+      "id": "display",
+      "package": "@drizztdourden08/brock-display",
+      "version": "0.117.1"
+    },
+    {
+      "id": "port-kit",
+      "package": "@drizztdourden08/brock-port-kit",
+      "version": "0.117.1"
+    },
+    {
+      "id": "input",
+      "package": "@drizztdourden08/brock-input",
+      "version": "0.117.1"
+    }
+  ]
+}
