@@ -12,7 +12,7 @@ const presetOf = (device: DetectedDevice): DevicePreset => ({
   pid: device.productId ?? '',
 });
 
-const DevicesPanel = ({ ctrl }: { ctrl: ControlsState }) => (
+const DevicesPanel = ({ ctrl, onApply }: { ctrl: ControlsState; onApply: (preset: DevicePreset) => void }) => (
   <Box className="controls-settings__side">
     <Text className="controls-settings__section-header">Devices</Text>
     {ctrl.devices.map((device) => (
@@ -20,7 +20,7 @@ const DevicesPanel = ({ ctrl }: { ctrl: ControlsState }) => (
         <ListItemRow name={device.displayName} meta={device.connected ? 'Connected' : 'Not connected'} />
         <Box className="controls-settings__device-actions">
           <Button size="xs" variant="ghost" onClick={() => ctrl.createForDevice(presetOf(device))}>New profile</Button>
-          <Button size="xs" variant="ghost" onClick={() => ctrl.applyToActive(presetOf(device))}>Reset current to defaults</Button>
+          <Button size="xs" variant="ghost" onClick={() => onApply(presetOf(device))}>Reset current to defaults</Button>
         </Box>
       </Box>
     ))}
