@@ -2,11 +2,14 @@
   "name": "@chronoki/input-mapping",
   "version": "0.0.0",
   "private": true,
-  "description": "SNES buttons, schemes, presets and glyphs over brock-input.",
+  "description": "SNES buttons, profiles, console defaults, bitmask and function actions over brock-input.",
   "type": "module",
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
     "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@drizztdourden08/brock-input": "^0.117.1"
   }
 }
