@@ -1,10 +1,11 @@
 /* @layer bridge-wasm @kind test */
 import { describe, expect, it } from 'vitest';
 import type { CtPlacement } from './ct-placement.type';
+import type { CtItem } from './ct-world-keys.type';
 import { placementFixture } from './ct-placement.fixture';
 import { describeCtPlacement } from './describe-ct-placement';
 
-const placementOf = (locations: [string, string][], spheres: number): CtPlacement => placementFixture(locations, spheres);
+const placementOf = (locations: [string, CtItem][], spheres: number): CtPlacement => placementFixture(locations, spheres);
 const rowsOf = (placement: CtPlacement) => Object.fromEntries(describeCtPlacement(placement).rows.map((row) => [row.label, row.value]));
 
 describe('describeCtPlacement', { tags: ['critical'] }, () => {
