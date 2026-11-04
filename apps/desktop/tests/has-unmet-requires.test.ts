@@ -1,10 +1,12 @@
 /* @layer tests @kind test */
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { effectiveGatesOf } from '@app/settings-controls/effective-gates-of';
 import { hasUnmetRequires } from '@app/settings-controls/has-unmet-requires';
 import { isSettingDisabled } from '@app/settings-controls/is-setting-disabled';
 import { DEFAULT_SETTINGS } from '@app/settings.constants';
 import type { AppSettings } from '@app/settings.type';
+
+vi.mock('@app/launch-flags/is-packaged', () => ({ isPackaged: () => false }));
 
 const sourceValues = { view: 'full', refreshHz: 4 } as unknown as AppSettings;
 
