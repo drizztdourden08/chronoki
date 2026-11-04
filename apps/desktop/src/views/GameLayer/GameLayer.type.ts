@@ -1,7 +1,7 @@
 /* @layer renderer-components @kind types */
 import type { RefObject } from 'react';
 import type { WindowMode } from '@drizztdourden08/brock-core';
-import type { CkArea, CkPresentMode } from '@chronoki/game-core';
+import type { CkArea, CkPresentMode, CkSettings } from '@chronoki/game-core';
 import type { ViewportMode } from '@app/settings.type';
 import type { GameLaunch } from '@app/views/GameSession';
 
@@ -32,6 +32,36 @@ interface StageWait {
   fullscreen: boolean;
 }
 
+interface BootedPlan {
+  config: string;
+  settings: CkSettings;
+  ratio: number;
+}
+
+type ReplanVerdict = 'idle' | 'replan' | 'defer';
+
+interface ReplanInputs {
+  live: boolean;
+  busy: boolean;
+  runningFrame: string;
+  plannedFrame: string;
+  blockedFrame: string | null;
+  savable: boolean;
+  mode: string | null;
+}
+
+interface FrameReplanArgs {
+  booted: BootedPlan | null;
+  planned: BootedPlan;
+  volume: number;
+  onReplanned: (plan: BootedPlan) => void;
+}
+
+interface DeferredReplan {
+  frame: string;
+  tick: number;
+}
+
 interface AspectLockArgs {
   viewport: ViewportMode;
   windowMode: WindowMode;
@@ -39,4 +69,7 @@ interface AspectLockArgs {
   ratio: number;
 }
 
-export type { AspectLockArgs, GameBootArgs, SessionPicture, SettleState, StageClassArgs, StageWait };
+export type {
+  AspectLockArgs, BootedPlan, DeferredReplan, FrameReplanArgs, GameBootArgs, ReplanInputs, ReplanVerdict, SessionPicture, SettleState,
+  StageClassArgs, StageWait,
+};

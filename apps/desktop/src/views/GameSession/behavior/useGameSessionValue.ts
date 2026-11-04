@@ -17,6 +17,7 @@ import { useGameProfile } from './useGameProfile';
 import { useHostFeatures } from './useHostFeatures';
 import { useLaunchProbes } from './useLaunchProbes';
 import { useMsuSession } from './useMsuSession';
+import { useReplanning } from './useReplanning';
 import { useRestartWarning } from './useRestartWarning';
 import { useSessionRecorder } from './useSessionRecorder';
 import { useSyncCorePause } from './useSyncCorePause';
@@ -30,7 +31,8 @@ const useGameSessionValue = (): GameSessionValue => {
   const [notice, setNotice] = useState<string | null>(null);
   const [counter, setCounter] = useState(0);
   const { status } = useCoreState(chronokiCore);
-  const running = launch !== null && (status === 'running' || status === 'paused');
+  const replanning = useReplanning();
+  const running = launch !== null && (replanning || status === 'running' || status === 'paused');
   const paused = status === 'paused';
 
   const play = useCallback(() => {

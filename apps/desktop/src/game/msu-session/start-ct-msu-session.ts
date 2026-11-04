@@ -36,6 +36,7 @@ const startCtMsuSession = async (packName: string): Promise<boolean> => {
   msuRuntime.bridge = bridge;
   session = startMsuSession(buildSessionOptions(packName, manifest, createCtMsuHost(bridge, audioTarget)));
   msuRuntime.stopPoll = startPollLoop(bridge);
+  msuRuntime.packName = packName;
   bridge.announce();
   appLog.info(`[MSU] Pack "${packName}" session started`);
   return true;

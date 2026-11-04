@@ -16,6 +16,7 @@ interface MsuRuntime {
   generation: number;
   bridge: MsuBridge | null;
   stopPoll: (() => void) | null;
+  packName: string | null;
 }
 
 export type { MsuLive, MsuRoute, MsuRuntime };
