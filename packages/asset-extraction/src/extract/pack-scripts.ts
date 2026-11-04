@@ -2,7 +2,7 @@
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_SCRIPT } from './asset-types.constants';
 import { lzDecompress } from './lz-decompress';
-import { sceneHeader } from './lib/scene-props';
+import { sceneHeader } from './scene-props';
 import { scriptPointers } from './script/script-load';
 import type { Packer } from './extract.type';
 

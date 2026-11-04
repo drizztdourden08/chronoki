@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
-import { lzCtlibDecompress } from '../lib/lz-ctlib';
+import { byteAt, wordAt } from '../bytes/byte-reader';
+import { lzCtlibDecompress } from '../lz-ctlib';
 import { ptr24 } from './closure-location';
 import { until0 } from './menu-lib';
 import { animvmWalk, objvmWalk } from './vm-walk';

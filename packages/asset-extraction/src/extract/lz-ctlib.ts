@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt } from './byte-reader';
+import { byteAt } from './bytes/byte-reader';
 
 /** ctlib/lz.py decompress: the second LZ twin (bit loop; a back-reference before the start is an error). Used by the closures. */
 const lzCtlibDecompress = (data: Uint8Array, start: number): Uint8Array => {

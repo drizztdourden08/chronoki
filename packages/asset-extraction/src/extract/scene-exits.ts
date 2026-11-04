@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from './byte-reader';
+import { byteAt, wordAt } from './bytes/byte-reader';
 
 const EXITS_BASE = 0x250000;
 

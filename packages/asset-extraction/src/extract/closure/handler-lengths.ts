@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
+import { byteAt, wordAt } from '../bytes/byte-reader';
 import { OPCODE_TABLE, operandLength } from './cpu65816';
 
 const C2 = 0x020000;

@@ -2,8 +2,8 @@
 import type { CtasEntry } from '../ctas/ctas.type';
 import type { WorkStore } from '../pipeline/work-store.type';
 import { T_NAMEMSG, T_NAMEWIN, T_WINDOW, T_WORLD, T_WORLDINTROSEED, T_WORLDSPR } from './asset-types.constants';
-import { byteAt, wordAt } from './lib/byte-reader';
-import { createBlobWriter } from './lib/blob-writer';
+import { byteAt, wordAt } from './bytes/byte-reader';
+import { createBlobWriter } from './bytes/blob-writer';
 import type { Packer } from './extract.type';
 
 /** The player object = the block whose handler word is C2/3404, blocks 0x40-strided at $0B30-$1B30; 0 when none. */

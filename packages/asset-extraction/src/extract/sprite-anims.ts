@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from './byte-reader';
+import { byteAt, wordAt } from './bytes/byte-reader';
 import type { SpriteHeader } from './sprite-records';
 
 const SPRITE_META = 0x24ffe0;

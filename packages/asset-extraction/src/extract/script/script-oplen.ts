@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt } from '../lib/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
 
 /** script.py _set(n, ...): the total instruction length (opcode byte included) of the fixed-length ops. */
 const LENGTH_GROUPS: [number, number[]][] = [

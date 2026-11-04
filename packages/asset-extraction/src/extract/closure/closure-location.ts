@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
+import { byteAt, wordAt } from '../bytes/byte-reader';
 import type { RomTable } from './closure.type';
 
 const LOC_RECORDS = 0x360000;

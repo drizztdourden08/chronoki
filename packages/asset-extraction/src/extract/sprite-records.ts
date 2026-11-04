@@ -1,8 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, itemAt, wordAt } from './byte-reader';
-import { getEntries2Byte, getEntries3Byte } from '../rom-read';
-import { lzDecompress } from '../lz-decompress';
-import { snes15ToRgb } from '../snes-color';
+import { byteAt, itemAt, wordAt } from './bytes/byte-reader';
+import { getEntries2Byte, getEntries3Byte } from './rom-read';
+import { lzDecompress } from './lz-decompress';
+import { snes15ToRgb } from './snes-color';
 
 const HEADER_BASE = 0x24f000;
 const PTR_TABLE = 0x24ffe0;

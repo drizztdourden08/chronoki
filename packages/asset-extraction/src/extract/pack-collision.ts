@@ -1,8 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_COLLISION } from './asset-types.constants';
-import { createBlobWriter } from './lib/blob-writer';
-import { sceneHeader, sceneProps } from './lib/scene-props';
+import { createBlobWriter } from './bytes/blob-writer';
+import { sceneHeader, sceneProps } from './scene-props';
 import type { Packer } from './extract.type';
 
 /** extract_assets.pack_collision: per map [w u8][h u8] + w*h shape bytes + w*h z bytes + w*h mover bytes. */

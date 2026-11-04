@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
+import { byteAt, wordAt } from '../bytes/byte-reader';
 import { animTables } from './battle-anim';
 import { effectTables } from './battle-effect';
 import { miscTables, smallTables } from './battle-misc';

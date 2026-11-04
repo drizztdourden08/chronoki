@@ -2,10 +2,10 @@
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_SPRITE } from './asset-types.constants';
 import { decodeTiles } from './decode-tiles';
-import { createBlobWriter } from './lib/blob-writer';
-import { animSetIndex, assemblyFrame, buildAnim, nextAnimPointer, spriteAnimTables } from './lib/sprite-anims';
-import type { AssemblyFrame } from './lib/sprite-anims';
-import { parseTables, readHeader, readSpriteGraphics, readSpritePalette } from './lib/sprite-records';
+import { createBlobWriter } from './bytes/blob-writer';
+import { animSetIndex, assemblyFrame, buildAnim, nextAnimPointer, spriteAnimTables } from './sprite-anims';
+import type { AssemblyFrame } from './sprite-anims';
+import { parseTables, readHeader, readSpriteGraphics, readSpritePalette } from './sprite-records';
 import type { Packer } from './extract.type';
 
 /** The anim count bounding a sprite's frames (2 when the tables can't be read). */

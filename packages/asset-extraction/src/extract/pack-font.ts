@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { T_FONT } from './asset-types.constants';
-import { createBlobWriter } from './lib/blob-writer';
+import { createBlobWriter } from './bytes/blob-writer';
 import type { Packer } from './extract.type';
 
 /**

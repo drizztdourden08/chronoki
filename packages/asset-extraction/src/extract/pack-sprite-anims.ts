@@ -1,8 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_SPRITEANIM } from './asset-types.constants';
-import { createBlobWriter } from './lib/blob-writer';
-import { animSetIndex, buildAnim, nextAnimPointer, spriteAnimTables } from './lib/sprite-anims';
+import { createBlobWriter } from './bytes/blob-writer';
+import { animSetIndex, buildAnim, nextAnimPointer, spriteAnimTables } from './sprite-anims';
 import type { Packer } from './extract.type';
 
 /** The anim count of a sprite: its set's extent in 4-byte rows / 4, within 1..64 (1 when the tables can't be read). */

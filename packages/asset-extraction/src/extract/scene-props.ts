@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, itemAt } from './byte-reader';
-import { lzDecompress } from '../lz-decompress';
-import { getEntries3Byte } from '../rom-read';
+import { byteAt, itemAt } from './bytes/byte-reader';
+import { lzDecompress } from './lz-decompress';
+import { getEntries3Byte } from './rom-read';
 
 const SCENE_HDR = 0x360000;
 const MAP_PTRS = 0x361e00;

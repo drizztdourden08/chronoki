@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, wordAt } from '../lib/byte-reader';
+import { byteAt, wordAt } from '../bytes/byte-reader';
 import { ptr24 } from './closure-location';
 import type { RomTable } from './closure.type';
 

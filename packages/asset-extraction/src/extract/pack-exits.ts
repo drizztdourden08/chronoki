@@ -1,9 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_EXITS } from './asset-types.constants';
-import { createBlobWriter } from './lib/blob-writer';
-import { sceneExits } from './lib/scene-exits';
-import type { SceneExit } from './lib/scene-exits';
+import { createBlobWriter } from './bytes/blob-writer';
+import { sceneExits } from './scene-exits';
+import type { SceneExit } from './scene-exits';
 import type { Packer } from './extract.type';
 
 /** extract_assets.pack_exits: per scene [count u8] + per exit {x,y,w,h u16, kind u8, dest u16, dx,dy i16, facing u8}. */

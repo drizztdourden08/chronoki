@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt } from '../lib/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
 import { loadScript } from './script-load';
 import type { LoadedScript } from './script-load';
 import { createScriptMem } from './script-mem';

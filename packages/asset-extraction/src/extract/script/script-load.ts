@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt } from '../lib/byte-reader';
+import { byteAt } from '../bytes/byte-reader';
 import { lzDecompress } from '../lz-decompress';
 import { getEntries3Byte } from '../rom-read';
 

@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { byteAt, RomIndexError } from '../lib/byte-reader';
+import { byteAt, RomIndexError } from '../bytes/byte-reader';
 import { ACTOR_OPS } from './script-ops-actor';
 import { DATA_OPS } from './script-ops-data';
 import { FLOW_OPS } from './script-ops-flow';

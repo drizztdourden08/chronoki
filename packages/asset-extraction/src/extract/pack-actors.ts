@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_ACTORS } from './asset-types.constants';
-import { createBlobWriter } from './lib/blob-writer';
+import { createBlobWriter } from './bytes/blob-writer';
 import { extractActors } from './script/extract-actors';
 import type { Actor } from './script/script-run.type';
 import type { Packer } from './extract.type';

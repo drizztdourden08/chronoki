@@ -10,8 +10,8 @@ import {
   T_SND_SONG,
   T_SND_TIMING,
 } from './asset-types.constants';
-import { byteAt, wordAt } from './lib/byte-reader';
-import { concatBytes, createBlobWriter } from './lib/blob-writer';
+import { byteAt, wordAt } from './bytes/byte-reader';
+import { concatBytes, createBlobWriter } from './bytes/blob-writer';
 import type { Packer } from './extract.type';
 
 const C7 = 0x70000;
