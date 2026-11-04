@@ -15,6 +15,8 @@ const GameView = () => {
     <Box className="game-view">
       <GameLayer />
       {running && <SaveStateOverlay />}
+      {running && <PauseOverlay />}
+      {running && <ProfileSwitcherOverlay />}
       {launch === null && (
         <Box className="game-view__idle">
           <Image className="game-view__mark" src={product.logos.mark} alt="" />
