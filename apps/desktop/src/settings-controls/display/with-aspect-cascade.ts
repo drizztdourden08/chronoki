@@ -1,8 +1,7 @@
 /* @layer renderer-app @kind logic */
 import { TALL_ASPECT_CHOICES, TALL_FALLBACK_ASPECT } from '@chronoki/features';
 import type { AppSettings } from '@app/settings.type';
-
-const TALL_GATE = 'tallRendering';
+import { TALL_GATE } from './display.constants';
 
 const tallTurnedOff = (patch: Partial<AppSettings>, current: AppSettings): boolean =>
   patch.gates !== undefined && current.gates.includes(TALL_GATE) && !patch.gates.includes(TALL_GATE);

@@ -10,7 +10,9 @@ const usePresentRatioVar = (stageRef: RefObject<HTMLElement | null>, box: Presen
     const el = stageRef.current;
     if (!el || !boxed) return;
     el.style.setProperty(PRESENT_RATIO_VAR, `${width} / ${height}`);
-    return () => el.style.removeProperty(PRESENT_RATIO_VAR);
+    return () => {
+      el.style.removeProperty(PRESENT_RATIO_VAR);
+    };
   }, [stageRef, boxed, width, height]);
 };
 
