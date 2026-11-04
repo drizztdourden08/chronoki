@@ -50,7 +50,7 @@ const sections: Section[] = [
       {
         key: 'showFps',
         label: 'Show FPS',
-        description: 'Display the current frames per second, and the refresh rate of your display, in the title bar while the game is running.',
+        description: 'Display the current frames per second, and the refresh rate of your display, in the title bar while the game is running',
       },
     ],
   },
