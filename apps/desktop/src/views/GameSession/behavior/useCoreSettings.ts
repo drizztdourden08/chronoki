@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useSettings } from '@drizztdourden08/brock-react';
 import { buildCoreConfigIni, gateSettings } from '@chronoki/game-core';
 import { resolveGates } from '@chronoki/features';
+import { useLegacyModeMigration } from '@app/profiles/useLegacyModeMigration';
 import { isPackaged } from '@app/launch-flags/is-packaged';
 import { startupFlag } from '@app/launch-flags/startup-flag';
 import { useVolumeScaleMigration } from '@app/settings-controls/useVolumeScaleMigration';
@@ -13,6 +14,7 @@ import type { CoreSettings } from './useCoreSettings.type';
 const useCoreSettings = (): CoreSettings => {
   const { settings: app } = useSettings<AppSettings>();
   useVolumeScaleMigration();
+  useLegacyModeMigration();
   useWindowModeReset();
   const muted = app.masterMuted || startupFlag('muted') === true;
   const volume = Math.round(app.masterVolume);

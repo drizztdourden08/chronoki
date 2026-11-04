@@ -5,8 +5,9 @@ import { platformFiles } from '@app/storage/platform-files';
 
 export default defineBootTask({
   label: 'Carrying profile modes into settings',
-  run: async ({ report }) => {
-    await migrateLegacyMode(platformFiles()).catch(() => undefined);
+  after: ['settings'],
+  run: async ({ report, profile }) => {
+    await migrateLegacyMode(platformFiles(), profile?.id ?? null).catch(() => undefined);
     report(1);
   },
 });
