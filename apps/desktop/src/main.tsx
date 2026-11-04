@@ -17,6 +17,7 @@ import { appTours } from '../.brock/tours';
 import { appToolbars } from '../.brock/toolbars';
 import { chronokiShellModule } from './shell/chronoki-shell-module';
 import { SETTINGS } from './main.constants';
+import { LEGAL_TEXT } from './legal.constants';
 import { product } from './product';
 import type { AppSettings } from './settings.type';
 
@@ -27,6 +28,7 @@ createRoot(root).render(
   <StrictMode>
     <BrockApp<AppSettings>
       product={product}
+      legalText={LEGAL_TEXT}
       settings={SETTINGS}
       screenTree={screenTree}
       modules={[...rendererModules, chronokiShellModule]}
