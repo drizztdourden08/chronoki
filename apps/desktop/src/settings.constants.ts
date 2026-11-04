@@ -11,6 +11,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   renderScale: DEFAULT_GATE_OPTIONS.renderScale,
   steamDataImported: false,
   autoSaveIntervalSeconds: 300,
+  masterMuted: false,
 };
 
 export { DEFAULT_SETTINGS };
