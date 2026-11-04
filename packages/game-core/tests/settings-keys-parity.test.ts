@@ -8,6 +8,7 @@ const settingsC = readSettingsC();
 const withReference = settingsC ? it : it.skip;
 
 const CONTROL_KEY = /^(key|key2|pad)_(\w+)$/;
+const HOST_READ_KEYS = new Set(['video.wide_width']);
 
 const readLoadedKeys = (src: string): Set<string> => {
   const body = src.slice(src.indexOf('static void setKey'), src.indexOf('int CtSettingsLoad'));
@@ -37,7 +38,7 @@ const writtenKeys = (): string[] => {
 };
 
 const isKnown = (qualified: string, loaded: Set<string>, stems: Set<string>): boolean => {
-  if (loaded.has(qualified)) return true;
+  if (loaded.has(qualified) || HOST_READ_KEYS.has(qualified)) return true;
   const [section, key = ''] = qualified.split('.');
   const control = CONTROL_KEY.exec(key);
   return section === 'controls' && control !== null && stems.has(control[2] ?? '');

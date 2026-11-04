@@ -4,7 +4,7 @@ import { DEFAULT_SETTINGS } from '@app/settings.constants';
 import { normaliseSettings } from '@app/settings-effects/normalise-settings';
 import type { RawSettings } from '@app/settings-effects/normalise-settings.type';
 
-const load = (stored: RawSettings) => normaliseSettings({ ...DEFAULT_SETTINGS, ...stored } as typeof DEFAULT_SETTINGS, stored);
+const load = (stored: RawSettings) => normaliseSettings({ ...DEFAULT_SETTINGS, ...stored }, stored);
 
 describe('aspect ratio migration', { tags: ['critical'] }, () => {
   it('loads an old widescreenAspect 21:9 as aspectRatio 21:9 and drops the old key', () => {
