@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import { checkLoadable, engineStateOf } from '@chronoki/game-core';
 import type { SaveSlotRef } from '@drizztdourden08/brock-port-kit';
+import { restoreMusicPosition } from '../msu-save-glue';
 import { readCoreStamp } from '../state-stamp';
 import { decodeStoredState } from './decode-stored-state';
 import { pushState } from './push-state';
@@ -17,7 +18,9 @@ const loadState = async (ctx: SaveStateContext, ref: SaveSlotRef): Promise<State
   if (!state) return { ok: false, reason: 'corrupt' };
   const verdict = checkLoadable(state, readCoreStamp(core));
   if (!verdict.ok) return { ok: false, reason: 'refused', message: verdict.message };
-  return pushState(core, state);
+  const pushed = await pushState(core, state);
+  if (pushed.ok) await restoreMusicPosition(profileId, ref);
+  return pushed;
 };
 
 export { loadState };

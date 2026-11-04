@@ -2,8 +2,8 @@
 import { listPacks } from '@drizztdourden08/brock-msu/packs';
 import type { MsuPackSummary } from '@drizztdourden08/brock-msu/packs';
 import { platformFiles } from '../platform-files';
-import { chronokiMsuConfig } from './chronoki-msu-config';
+import { ctMsuConfig } from '@chronoki/game-core';
 
-const listMsuPacks = (): Promise<MsuPackSummary[]> => listPacks(chronokiMsuConfig, platformFiles());
+const listMsuPacks = (): Promise<MsuPackSummary[]> => listPacks(ctMsuConfig, platformFiles());
 
 export { listMsuPacks };

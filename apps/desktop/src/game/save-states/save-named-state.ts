@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { NamedSaveKind } from '@drizztdourden08/brock-port-kit';
+import { saveMusicPosition } from '../msu-save-glue';
 import { captureState } from './capture-state';
 import { screenshotBytes } from './screenshot-bytes';
 import type { SaveStateContext, StateResult } from './save-state.type';
@@ -9,7 +10,8 @@ const saveNamedState = async (ctx: SaveStateContext, kind: NamedSaveKind, name: 
   const screenshot = await screenshotBytes(ctx.canvas);
   const captured = await captureState(ctx);
   if (!captured.ok) return captured;
-  await ctx.store.named.create(ctx.profileId, kind, name, { bytes: captured.bytes, screenshot });
+  const entry = await ctx.store.named.create(ctx.profileId, kind, name, { bytes: captured.bytes, screenshot });
+  await saveMusicPosition(ctx.profileId, { kind, id: entry.id });
   return { ok: true };
 };
 

@@ -2,6 +2,9 @@
 export { createMsuBridge } from './create-msu-bridge';
 export { createCtMsuHost } from './create-ct-msu-host';
 export { ctMsuConfig } from './ct-msu-config';
+export { ctSidecarPath } from './ct-sidecar-path';
+export { ctSaveCompanions } from './ct-save-companions';
+export { slotRefOf } from './slot-ref-of';
 export { classifyCtMusic } from './classify-ct-music';
 export { diffSong } from './diff-song';
 export { readMusicState } from './read-music-state';
