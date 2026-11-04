@@ -18,6 +18,12 @@ long ck_frame_count(void);
 void ck_credit(int n);                 /* wasm-build/ck_loop.c: let the engine run n more frames */
 void ck_stop(void);
 int  ck_wide_width(void);              /* settings_reconnect.c: [video] wide_width, 0 when unset (field.c's hostWideW returns it) */
+/* settings_reconnect.c: [video] tall_lines, the field picture's even line count; CK_TALL_LINES_OFF (224) when unset or out of
+   range. 480 = 224 + 2 x 128: RotP's top/bottom budget (kPpuExtraTopBottom, MIN_ASPECT 256/480). field.c's tall patch
+   (wasm-build/patches/tall-field.mjs) reads it through hostTallT. */
+#define CK_TALL_LINES_OFF 224
+#define CK_TALL_LINES_MAX 480
+int  ck_tall_lines(void);
 /* ck_state.c: save states (see its header comment). field.c reaches the ck_state_top .. ck_state_load_result group through
    ck_host_point.inc, the safe point the build includes at the top of its main loop. */
 #define CK_STATE_WRAM_BYTES 0x20000

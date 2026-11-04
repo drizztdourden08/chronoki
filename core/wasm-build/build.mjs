@@ -12,6 +12,7 @@ import { tmpdir } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeMixerGains } from './patches/mixer-gains.mjs';
+import { writeTallField } from './patches/tall-field.mjs';
 import { writeShapes } from './shapes.mjs';
 import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
 
@@ -174,6 +175,7 @@ const main = () => {
   mkdirSync(oracleDir, { recursive: true });
   const gen = writeShapes(outDir);
   gen.gains = writeMixerGains(gen.dir, belthasar);   // the S-DSP's voice-group gains (patches/mixer-gains.mjs)
+  gen.tall = writeTallField(gen.state);   // the field's tall picture, gated by tall_lines (patches/tall-field.mjs)
   if (!gen.tables32) console.log('note: no out/tables32/tables_storage.c; the imported 64-bit table storage is used (docs/p3-findings.md)');
   const jobs = [];
   if (only !== 'oracle') jobs.push(['game', gameArgs(gen)]);
