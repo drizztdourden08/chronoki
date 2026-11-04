@@ -2,7 +2,10 @@
 import { existsSync } from 'node:fs';
 import { registerHooks } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import { HAS_EXTENSION, SUFFIXES } from './register-resolver.constants';
+import type * as ResolverConstants from './register-resolver.constants';
+
+const constantsModule = './register-resolver.constants.ts';
+const { HAS_EXTENSION, SUFFIXES } = (await import(constantsModule)) as typeof ResolverConstants;
 
 const registerResolver = (): void => {
   registerHooks({
