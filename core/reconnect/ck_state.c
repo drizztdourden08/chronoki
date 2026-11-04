@@ -83,7 +83,7 @@ static const char* modeTag(int mode) { return mode == CK_MODE_WORLD ? "world" : 
 
 const char* ck_state_stamp(void) {
   static char text[256];
-  snprintf(text, sizeof text, "pin=%s\ncore=%s\nschema=%s\nmode=field\n", CK_STATE_PIN_COMMIT, CK_STATE_CORE_VERSION, CK_STATE_SCHEMA);
+  snprintf(text, sizeof text, "pin=%s\ncore=%s\nschema=%s\nmode=%s\n", CK_STATE_PIN_COMMIT, CK_STATE_CORE_VERSION, CK_STATE_SCHEMA, modeTag(g_mode));
   return text;
 }
 
