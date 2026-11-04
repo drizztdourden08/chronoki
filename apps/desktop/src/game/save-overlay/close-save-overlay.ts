@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import { clearIdleClose } from './idle-close';
+import { clearIdleClose } from './clear-idle-close';
 import { saveOverlayStore } from './save-overlay-store';
 
 const closeSaveOverlay = (): void => {

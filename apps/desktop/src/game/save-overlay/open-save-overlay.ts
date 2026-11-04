@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import { armIdleClose } from './idle-close';
+import { armIdleClose } from './arm-idle-close';
 import { saveOverlayStore } from './save-overlay-store';
 
 const openSaveOverlay = (slot: number): void => {

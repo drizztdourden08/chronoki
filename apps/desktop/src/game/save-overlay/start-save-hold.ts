@@ -1,11 +1,8 @@
 /* @layer bridge-wasm @kind logic */
-import { clearIdleClose } from './idle-close';
+import { clearIdleClose } from './clear-idle-close';
+import { hold } from './save-hold.state';
 import { HOLD_TO_SAVE_MS } from './save-overlay.constants';
 import { saveOverlayStore } from './save-overlay-store';
-
-const hold: { start: number | null; frame: number } = { start: null, frame: 0 };
-
-const isHolding = (): boolean => hold.start !== null;
 
 const tick = (): void => {
   if (hold.start === null) return;
@@ -20,13 +17,4 @@ const startSaveHold = (): void => {
   hold.frame = requestAnimationFrame(tick);
 };
 
-const endSaveHold = (): number | null => {
-  if (hold.start === null) return null;
-  const elapsed = performance.now() - hold.start;
-  cancelAnimationFrame(hold.frame);
-  hold.start = null;
-  saveOverlayStore.set({ holdProgress: 0 });
-  return elapsed;
-};
-
-export { endSaveHold, isHolding, startSaveHold };
+export { startSaveHold };

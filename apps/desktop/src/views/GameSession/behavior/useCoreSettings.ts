@@ -2,21 +2,11 @@
 import { useMemo } from 'react';
 import { useSettings } from '@drizztdourden08/brock-react';
 import { buildCoreConfigIni, gateSettings } from '@chronoki/game-core';
-import type { CkSettings } from '@chronoki/game-core';
 import { resolveGates } from '@chronoki/features';
 import { isPackaged } from '@app/launch-flags/is-packaged';
 import { startupFlag } from '@app/launch-flags/startup-flag';
 import type { AppSettings } from '@app/settings.type';
-
-interface CoreSettings {
-  settings: CkSettings;
-  config: string;
-  volume: number;
-  gates: ReadonlySet<string>;
-  autoSaveIntervalSeconds: number;
-  autoSaveMaxEntries: number;
-  turboSpeed: number;
-}
+import type { CoreSettings } from './useCoreSettings.type';
 
 const useCoreSettings = (): CoreSettings => {
   const { settings: app } = useSettings<AppSettings>();
