@@ -9,6 +9,8 @@ interface AppSettings extends BaseSettings {
   renderScale: RenderScaleFactor;
   steamDataImported: boolean;
   autoSaveIntervalSeconds: number;
+  autoSaveMaxEntries: number;
+  turboSpeed: number;
 }
 
 export type { AppSettings };

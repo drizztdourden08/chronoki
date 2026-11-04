@@ -5,6 +5,8 @@ const OPTION_KEY_FEATURE: Record<string, string> = {
   widescreenAspect: 'widescreen',
   renderScale: 'renderScale',
   autoSaveIntervalSeconds: 'autoSave',
+  autoSaveMaxEntries: 'autoSave',
+  turboSpeed: 'turbo',
 };
 
 export { GATE_KEY_PREFIX, OPTION_KEY_FEATURE };

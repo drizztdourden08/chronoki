@@ -9,6 +9,9 @@ const meta: ScreenMeta = {
   keywords: ['gameplay', 'original', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward'],
 };
 
+const asCount = (value: number): string => String(value);
+const asMultiplier = (value: number): string => `${value}x`;
+
 const sections: Section[] = [
   {
     id: 'mode',
@@ -38,10 +41,32 @@ const sections: Section[] = [
             description: 'How often a state is saved on its own.',
             hint: 'Needs Auto-save.',
           },
+          {
+            key: 'autoSaveMaxEntries',
+            label: 'Max auto-save entries',
+            description: 'How many auto-saves to keep; the oldest are removed.',
+            hint: 'Needs Auto-save.',
+            keywords: 'auto save max limit entries prune keep',
+            control: { kind: 'range', min: 1, max: 20, step: 1, format: asCount },
+          },
           gateItem('saveOnQuit'),
         ],
       },
-      { id: 'turbo', title: 'Turbo', items: [gateItem('turbo')] },
+      {
+        id: 'turbo',
+        title: 'Turbo',
+        items: [
+          gateItem('turbo'),
+          {
+            key: 'turboSpeed',
+            label: 'Turbo speed',
+            description: 'How much faster the game runs while the Turbo key is held.',
+            hint: 'Needs Turbo.',
+            keywords: 'turbo speed fast forward multiplier',
+            control: { kind: 'range', min: 2, max: 10, step: 1, format: asMultiplier },
+          },
+        ],
+      },
     ],
   },
 ];
