@@ -13,7 +13,7 @@ const startGame = async (request: StartGameRequest): Promise<boolean> => {
   if (!session) return false;
   const { canvas, romFile, profileId } = request;
   const unsubscribePause = startSessionServices({ store, profileId });
-  activeGameHolder.current = { session, store, canvas, romFile, profileId, unsubscribePause };
+  activeGameHolder.current = { session, store, files: request.files, canvas, romFile, profileId, unsubscribePause };
   canvas.focus();
   return true;
 };
