@@ -10,9 +10,9 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { hostFieldList } from './host-fields.mjs';
 
-const CORE_VERSION = '0.2.0';
+const CORE_VERSION = '0.2.1';
 const CONTAINER_VERSION = 2;
-const SECTIONS = { STMP: 1, CORE: 1, HOST: 1, APU: 1 };
+const SECTIONS = { STMP: 1, CORE: 1, HOST: 1, APU: 1, APUH: 1 };
 const WRAM_BYTES = 0x20000;
 const SRAM_BYTES = 0x2000;
 
