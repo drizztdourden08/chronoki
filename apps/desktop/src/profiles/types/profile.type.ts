@@ -3,6 +3,7 @@ interface Profile {
   id: string;
   name: string;
   romFile: string;
+  msuPack?: string;
   created: number;
   lastPlayed: number;
 }
