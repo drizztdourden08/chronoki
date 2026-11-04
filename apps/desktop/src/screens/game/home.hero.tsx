@@ -4,7 +4,9 @@ import { useAppVersion, useProduct } from '@drizztdourden08/brock-react';
 import type { HeroProps, ScreenMeta } from '@drizztdourden08/brock-react';
 import { Button, Text } from '@drizztdourden08/tessera/primitives';
 import { ModeBadge } from '@chronoki/design';
+import { HubGameControls } from '@app/compounds/HubGameControls';
 import { useGateMode } from '@app/settings-controls/useGateMode';
+import { useGameSession } from '@app/views/GameSession';
 
 const meta: ScreenMeta = { title: 'Home', icon: 'house', keywords: ['start', 'overview', 'profile'] };
 
@@ -14,6 +16,7 @@ const HomeHero = (props: HeroProps) => {
   const product = useProduct();
   const version = useAppVersion();
   const mode = useGateMode();
+  const { running, paused, play, stop, reset, togglePause } = useGameSession();
   const facts = useMemo(() => [[
     { label: 'Profile', value: profile?.name ?? 'None' },
     { label: 'Version', value: version, mono: true },
@@ -29,9 +32,16 @@ const HomeHero = (props: HeroProps) => {
         <Button size="sm" variant="secondary" onClick={() => open('profiles')}>Profiles</Button>
       </Tools>
       <Actions>
-        <Button variant="primary" onClick={() => open('data/library')}>Open the Library</Button>
-        <Button variant="secondary" onClick={() => open('settings')}>Settings</Button>
-        <Button variant="secondary" onClick={() => open('about')}>About</Button>
+        <HubGameControls
+          isGameRunning={running}
+          isPaused={paused}
+          showPlay
+          size="md"
+          onStartGame={play}
+          onStopGame={stop}
+          onResetGame={reset}
+          onTogglePause={togglePause}
+        />
       </Actions>
       <Facts rows={facts} />
       <Aside>

@@ -5,19 +5,19 @@
   overflow: hidden;
 }
 
-.game-view__mode {
-  position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
-  z-index: 1;
-}
-
-.game-view__play {
+.game-view__idle {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-md);
+  pointer-events: none;
+}
+
+.game-view__mark {
+  width: calc(32 * var(--size-4));
+  max-width: 40%;
+  opacity: 0.12;
 }
