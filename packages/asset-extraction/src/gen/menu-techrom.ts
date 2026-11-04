@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { romRegion } from '../rom/hirom';
-import { decodeString, loadDict } from '../text/ct-text';
+import { decodeString, loadDict } from '../extract/text-tokens';
 import { cArray } from './c-text';
 
 const IDX_LO = 0x1640;
