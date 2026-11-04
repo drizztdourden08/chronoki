@@ -8,6 +8,9 @@ export {
 export { buildCoreConfigIni } from './port/core-config-ini';
 export { DEFAULT_CK_SETTINGS } from './port/core-config-ini.constants';
 export { gateSettings } from './port/gate-settings';
+export { letterboxBox } from './port/aspect/letterbox-box';
+export { parseRatio } from './port/aspect/parse-ratio';
+export { ratioToWidth } from './port/aspect/ratio-to-width';
 export { frameSizeOf } from './port/frame-size/frame-size-of';
 export { sizePortFrame } from './port/frame-size/size-port-frame';
 export { CT_FRAME_SIZE_FILE } from './port/frame-size/frame-size.constants';
@@ -28,6 +31,7 @@ export { readSramSlotSummary } from './save-file/read-sram-slot-summary';
 export type { SramSlotSummary } from './save-file/save-file.type';
 export * from './game-info';
 export type { CkSettings, CkSync, CkWidescreen } from './port/core-config-ini.type';
+export type { CkPresentBox } from './port/aspect/aspect.type';
 export type { CkFrameSize } from './port/frame-size/frame-size.type';
 export type { CkStateParts } from './port/state-container/ck-state.type';
 export type { CkStamp, CkStateSection, Loadability, SectionedState } from './port/state-container/sectioned-state.type';

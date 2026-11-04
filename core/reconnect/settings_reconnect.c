@@ -1,6 +1,6 @@
 /* src/settings.h without the SDL window, key bindings or file dialogs. The host's options arrive as a ct_settings.ini in
    the core's file system (same keys as Belthasar's own file: [video] widescreen, render_scale, interpolation,
-   steam_margins, fill_bottom_lines, scene_adjustments, [sound] volume, mute, [timing] sync, instant_sound_uploads).
+   wide_width (ChronoKi: the picture's even pixel width, 256 to 544), steam_margins, fill_bottom_lines, scene_adjustments, [sound] volume, mute, [timing] sync, instant_sound_uploads).
    The mods live in this struct, not in WRAM: vanilla (all off) is the cartridge's own behaviour. A change takes effect
    at the next core start; Save is a no-op. */
 #include "settings.h"
@@ -10,8 +10,11 @@
 
 static CtSettings g_set;
 static int g_have = 0;
+static int g_wideWidth = 0;
 
+int ck_wide_width(void) { return g_wideWidth; }
 void CtSettingsDefaults(CtSettings* s) {
+  g_wideWidth = 0;
   memset(s, 0, sizeof *s);
   s->windowScale = 2; s->renderScale = 1; s->vsync = 1;
   s->volume = 100;
@@ -40,6 +43,7 @@ static void apply(CtSettings* s, const char* sec, const char* key, const char* v
     else if (!strcmp(key, "steam_margins")) s->wideSteamMargins = truthy(val) || iv != 0;
     else if (!strcmp(key, "fill_bottom_lines")) s->fillBottomLines = truthy(val) || iv != 0;
     else if (!strcmp(key, "scene_adjustments")) s->sceneAdjust = truthy(val) || iv != 0;
+    else if (!strcmp(key, "wide_width")) g_wideWidth = iv >= 256 && iv <= 544 ? iv & ~1 : 0;
     else if (!strcmp(key, "widescreen"))
       s->widescreen = !strcmp(val, "16:9") ? CT_WIDE_16_9 : !strcmp(val, "16:10") ? CT_WIDE_16_10 : !strcmp(val, "21:9") ? CT_WIDE_21_9 : CT_WIDE_OFF;
   } else if (!strcmp(sec, "sound")) {
