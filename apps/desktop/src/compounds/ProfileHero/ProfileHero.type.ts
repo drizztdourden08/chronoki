@@ -14,4 +14,12 @@ interface HeroLastSave {
   onLoad: () => void;
 }
 
-export type { HeroLastSave, HeroToolsProps };
+interface HeroProgressFile {
+  slot: number;
+  lead: string;
+  level: number;
+  playTime: string;
+  saveNumber: number;
+}
+
+export type { HeroLastSave, HeroProgressFile, HeroToolsProps };

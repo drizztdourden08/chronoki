@@ -2,12 +2,12 @@
 import { useMemo } from 'react';
 import { useProduct } from '@drizztdourden08/brock-react';
 import type { HeroProps, ScreenMeta } from '@drizztdourden08/brock-react';
-import { HeroLastSaveTile, HeroTools } from '@app/compounds/ProfileHero';
+import { HeroLastSaveTile, HeroProgress, HeroTools } from '@app/compounds/ProfileHero';
 import { HubGameControls } from '@app/compounds/HubGameControls';
 import { useGateMode } from '@app/settings-controls/useGateMode';
 import GameBackdrop from './game.backdrop';
 import { useGameSession } from '@app/views/GameSession';
-import { HomeDialogs, HomeTab, MODE_LABELS, buildProfileFacts, romFileOf, useHomeSramImport, useNormalSaves, useRevealProfileFolder } from '@app/views/HomeTab';
+import { HomeDialogs, HomeTab, MODE_LABELS, buildProfileFacts, romFileOf, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
 
 const meta: ScreenMeta = {
   title: 'Home',
@@ -20,7 +20,7 @@ const backdrop = <GameBackdrop />;
 
 const HomeHero = (props: HeroProps) => {
   const { slots, profile } = props;
-  const { Eyebrow, Title, Backdrop, Art, Tools, Actions, Facts, Aside } = slots;
+  const { Eyebrow, Title, Backdrop, Art, Tools, Actions, Facts, Aside, Panel } = slots;
   const product = useProduct();
   const mode = useGateMode();
   const { running, paused, play, stop, reset, togglePause } = useGameSession();
@@ -33,6 +33,7 @@ const HomeHero = (props: HeroProps) => {
     [romFile, profile?.lastPlayed, profile?.created],
   );
 
+  const progress = useProfileProgress(profileId, running);
   const normal = useNormalSaves(profileId, running);
   const lastSave = useMemo(() => {
     const latest = normal.saves[0];
@@ -71,6 +72,7 @@ const HomeHero = (props: HeroProps) => {
       </Tools>
       <Facts rows={facts} />
       {lastSave && <Aside><HeroLastSaveTile save={lastSave} /></Aside>}
+      <Panel><HeroProgress files={progress} /></Panel>
       <HomeTab profileId={profileId} running={running} normal={normal} />
       <HomeDialogs sramImport={sramImport} />
     </>

@@ -6,4 +6,5 @@ export { buildProfileFacts } from './behavior/build-profile-facts';
 export { romFileOf } from './behavior/rom-file-of';
 export { useHomeSramImport } from './behavior/useHomeSramImport';
 export { useNormalSaves } from './behavior/useNormalSaves';
+export { useProfileProgress } from './behavior/useProfileProgress';
 export { useRevealProfileFolder } from './behavior/useRevealProfileFolder';

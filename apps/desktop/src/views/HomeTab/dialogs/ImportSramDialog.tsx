@@ -7,7 +7,7 @@ import { IMPORT_CONFIRM_WORD } from '../HomeTab.constants';
 import type { HomeDialogsProps } from '../HomeTab.type';
 
 const ImportSramDialog = ({ sramImport }: HomeDialogsProps) => {
-  const { dialog, confirmText, setConfirmText, confirm, close } = sramImport;
+  const { dialog, confirmText, setConfirmText, confirm, close, slotCount } = sramImport;
   const typed = confirmText.trim().toLowerCase() === IMPORT_CONFIRM_WORD;
 
   const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => setConfirmText(event.target.value), [setConfirmText]);
@@ -31,6 +31,7 @@ const ImportSramDialog = ({ sramImport }: HomeDialogsProps) => {
         Replace this profile&apos;s save with <Text as="strong">&quot;{dialog.targetName}&quot;</Text>? The current
         in-game save is overwritten and this cannot be undone.
       </Text>
+      <Text as="p">Verified: {dialog.verified ?? 0} of {slotCount} save slot(s) pass the game&apos;s checksum.</Text>
       <Text as="p">Type <Text as="code">{IMPORT_CONFIRM_WORD}</Text> to confirm.</Text>
       <TextInput value={confirmText} onChange={handleChange} onKeyDown={handleKey} placeholder={IMPORT_CONFIRM_WORD} autoFocus />
     </Dialog>
