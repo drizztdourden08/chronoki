@@ -32,10 +32,31 @@ describe('deriveGiftChecks', () => {
       { type: 16, id: 7, data: syntheticScript() },
     ]);
     const checks = deriveGiftChecks(pack);
-    expect(checks.map((c) => c.id)).toEqual(['gift-012-0', 'gift-012-1']);
-    expect(checks[0]).toMatchObject({ kind: 'gift', locationId: 0x12, vanillaItem: 0x0a, scriptId: 7, patchAt: 34 });
-    expect(checks[1]).toMatchObject({ vanillaItem: 0xd7, patchAt: 34 + 9 });
+    expect(checks.map((c) => c.id)).toEqual(['gift-012-o0-0', 'gift-012-o0-1']);
+    expect(checks[0]).toMatchObject({ kind: 'gift', locationId: 0x12, vanillaItem: 0x0a, scriptId: 7, patchAt: [34] });
+    expect(checks[1]).toMatchObject({ vanillaItem: 0xd7, patchAt: [34 + 9] });
     expect(checks[0]?.probe).toBeUndefined();
+  });
+
+  it('collapses repeated same-item ops in one object into one check with every operand', { tags: ['critical'] }, () => {
+    const header = [0, 0, 0, 0, 0, 0, 0, 0, ...le16(7), 0, 0, 0, 0];
+    const objectHeader = [...le16(32), ...le16(36), ...new Array<number>(28).fill(0)];
+    const script = [1, ...objectHeader, 0xca, 0x0a, 0xca, 0x0a, 0xca, 0x0a, 0x00, 0x00];
+    const pack = buildPack([{ type: 3, id: 0x12, data: header }, { type: 16, id: 7, data: script }]);
+    const checks = deriveGiftChecks(pack);
+    expect(checks).toHaveLength(1);
+    expect(checks[0]).toMatchObject({ id: 'gift-012-o0', vanillaItem: 0x0a, patchAt: [34, 36, 38] });
+  });
+
+  it('emits one check per distinct item in an object and one per object', { tags: ['critical'] }, () => {
+    const header = [0, 0, 0, 0, 0, 0, 0, 0, ...le16(7), 0, 0, 0, 0];
+    const pad = new Array<number>(30).fill(0);
+    const objects = [...le16(64), ...pad, ...le16(68), ...pad];
+    const body = [0xca, 0x0a, 0xca, 0x0b, 0xca, 0x0c, 0x00, 0x00];
+    const pack = buildPack([{ type: 3, id: 0x12, data: header }, { type: 16, id: 7, data: [2, ...objects, ...body] }]);
+    const checks = deriveGiftChecks(pack);
+    expect(checks.map((c) => c.id)).toEqual(['gift-012-o0-0', 'gift-012-o0-1', 'gift-012-o1']);
+    expect(checks.map((c) => c.patchAt)).toEqual([[66], [68], [70]]);
   });
 
   it('returns nothing for a buffer that is not a pack', { tags: ['critical'] }, () => {
