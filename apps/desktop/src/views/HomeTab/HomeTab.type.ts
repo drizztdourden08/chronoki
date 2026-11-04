@@ -1,4 +1,6 @@
 /* @layer renderer-components @kind types */
+import type { NamedSaveEntry } from '@drizztdourden08/brock-port-kit';
+import type { ArmedAction } from '@app/compounds/ArmedActionButton';
 import type { useHomeSramImport } from './behavior/useHomeSramImport';
 
 interface SramDialogState {
@@ -20,6 +22,28 @@ interface ProfileFactsInput {
   created: number | undefined;
 }
 
+interface NamedSavesData {
+  list: NamedSaveEntry[];
+  screenshots: Record<string, string>;
+}
+
+interface ArmedRow {
+  id: string;
+  action: ArmedAction;
+}
+
+interface SaveRowPartsInput {
+  screenshotUrl: string | null;
+  savedAt: number;
+  busy: boolean;
+  armed: ArmedAction | null;
+}
+
+interface CreateSaveFormProps {
+  onCreate: (name: string) => void;
+  onCancel: () => void;
+}
+
 interface SlotInfo {
   slot: number;
   savedAt: number | null;
@@ -31,4 +55,7 @@ interface HomeSectionProps {
   running: boolean;
 }
 
-export type { HomeDialogsProps, HomeSectionProps, HomeSramImport, ProfileFactsInput, SlotInfo, SramDialogState };
+export type {
+  ArmedRow, CreateSaveFormProps, HomeDialogsProps, HomeSectionProps, HomeSramImport, NamedSavesData, ProfileFactsInput,
+  SaveRowPartsInput, SlotInfo, SramDialogState,
+};
