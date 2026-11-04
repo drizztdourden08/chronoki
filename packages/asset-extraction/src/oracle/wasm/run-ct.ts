@@ -43,7 +43,7 @@ const runCt = async (
   for (const path of invocation.outputs) ensureDir(module.FS, path.slice(0, path.lastIndexOf('/')));
   let status = 0;
   try {
-    status = module.callMain(invocation.argv) ?? 0;
+    status = (await module.callMain(invocation.argv)) ?? 0;
   } catch (error) {
     status = statusOf(error);
   }

@@ -12,7 +12,7 @@ interface EmscriptenFs {
 interface EmscriptenModule {
   FS: EmscriptenFs;
   ENV: Record<string, string>;
-  callMain: (argv: string[]) => number | undefined;
+  callMain: (argv: string[]) => number | undefined | Promise<number | undefined>;
 }
 
 /**
