@@ -14,12 +14,14 @@ import { CONTROLS_TABS } from './controls.constants';
 import { listeningLabel } from './listening-label';
 import { useCapture } from './useCapture';
 import { useControlsState } from './useControlsState';
+import { useControlsNarrow } from './useControlsNarrow';
 import { usePresetConfirm } from './usePresetConfirm';
 import type { ControlsProps, ControlsTab } from './controls.type';
 import './ControlsSettings.css';
 
 const ControlsSettings = ({ profileId }: ControlsProps) => {
   const ctrl = useControlsState(profileId);
+  const narrow = useControlsNarrow();
   const { listeningFor, setListeningFor, handleCapture, cancel } = useCapture(ctrl);
   const [tab, setTab] = useState<ControlsTab>('controls');
   const [deleteTarget, setDeleteTarget] = useState<InputProfile | null>(null);
@@ -39,7 +41,7 @@ const ControlsSettings = ({ profileId }: ControlsProps) => {
     <Box className="controls-settings">
       <Box className="controls-settings__layout">
         <SearchAnchor anchor="input-profiles" className="controls-settings__anchor">
-          <ProfilesPanel ctrl={ctrl} onDelete={setDeleteTarget} />
+          <ProfilesPanel ctrl={ctrl} onDelete={setDeleteTarget} narrow={narrow} />
         </SearchAnchor>
         <SearchAnchor anchor="bindings" className="controls-settings__anchor controls-settings__anchor--main">
           <Box className="controls-settings__main">
@@ -52,7 +54,7 @@ const ControlsSettings = ({ profileId }: ControlsProps) => {
           </Box>
         </SearchAnchor>
         <SearchAnchor anchor="devices" className="controls-settings__anchor">
-          <DevicesPanel ctrl={ctrl} onApply={setPresetTarget} />
+          <DevicesPanel ctrl={ctrl} onApply={setPresetTarget} narrow={narrow} />
         </SearchAnchor>
       </Box>
 

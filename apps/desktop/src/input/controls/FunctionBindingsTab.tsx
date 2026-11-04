@@ -37,7 +37,7 @@ const FunctionBindingsTab = ({ ctrl, onRebind }: FunctionBindingsTabProps) => {
             actionLabel={FUNCTION_ACTION_LABELS[mapping.action]}
             binding={mapping.binding}
             icon={mapping.icon}
-            deviceIconSrc={bindingDeviceIcon(mapping.binding, mapping.sourceVid, mapping.sourcePid, ctrl.devices)}
+            deviceIconSrc={bindingDeviceIcon(mapping.binding, mapping.sourceVid, mapping.sourcePid, ctrl.devices, ctrl.activeProfile)}
             onRebind={() => onRebind(mapping.action)}
             onClear={() => ctrl.clearFunction(mapping.action)}
           />

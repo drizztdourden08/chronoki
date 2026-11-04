@@ -1,14 +1,20 @@
 /* @layer renderer-components @kind component */
-import { Icon, IconButton } from '@drizztdourden08/tessera/primitives';
+import { Box, Icon, IconButton } from '@drizztdourden08/tessera/primitives';
 import { SidePanel } from '@drizztdourden08/tessera/composites';
 import { ProfileItem } from './ProfileItem';
-import { PROFILES_DEFAULT_FOLDED, SIDE_PANEL_SIZE } from './controls.constants';
+import { PROFILES_DEFAULT_FOLDED, PROFILES_FOLD_KEY, SIDE_PANEL_SIZE } from './controls.constants';
+import { sideSlotClass } from './side-slot-class';
 import { useFoldWhenNarrow } from './useFoldWhenNarrow';
 import type { ProfilesPanelProps } from './ProfilesPanel.type';
 
-const ProfilesPanel = ({ ctrl, onDelete }: ProfilesPanelProps) => {
-  const { collapsed, setCollapsed } = useFoldWhenNarrow(PROFILES_DEFAULT_FOLDED);
+const ProfilesPanel = ({ ctrl, onDelete, narrow }: ProfilesPanelProps) => {
+  const { collapsed, setCollapsed, expand } = useFoldWhenNarrow(PROFILES_FOLD_KEY, PROFILES_DEFAULT_FOLDED, narrow);
+  const handleAdd = () => {
+    expand();
+    ctrl.create();
+  };
   return (
+  <Box className={sideSlotClass('start', collapsed)}>
   <SidePanel
     title="Profiles"
     {...SIDE_PANEL_SIZE}
@@ -28,7 +34,7 @@ const ProfilesPanel = ({ ctrl, onDelete }: ProfilesPanelProps) => {
       </IconButton>
     ))}
     action={(
-      <IconButton variant="ghost" size="sm" label="New profile" onClick={ctrl.create}>
+      <IconButton variant="ghost" size="sm" label="New profile" onClick={handleAdd}>
         <Icon name="plus" />
       </IconButton>
     )}
@@ -48,6 +54,7 @@ const ProfilesPanel = ({ ctrl, onDelete }: ProfilesPanelProps) => {
       )),
     }]}
   />
+  </Box>
   );
 };
 

@@ -1,18 +1,20 @@
 /* @layer renderer-components @kind component */
-import { EmptyState } from '@drizztdourden08/tessera/primitives';
+import { Box, EmptyState } from '@drizztdourden08/tessera/primitives';
 import { SidePanel } from '@drizztdourden08/tessera/composites';
 import { RescanButton, useControllerDevices } from '@drizztdourden08/brock-input/renderer';
 import { DeviceRailButton } from './DeviceRailButton';
 import { DeviceRow } from './DeviceRow';
+import { sideSlotClass } from './side-slot-class';
 import { useFoldWhenNarrow } from './useFoldWhenNarrow';
-import { SIDE_PANEL_SIZE } from './controls.constants';
+import { DEVICES_FOLD_KEY, SIDE_PANEL_SIZE } from './controls.constants';
 import type { DevicesPanelProps } from './controls.type';
 
-const DevicesPanel = ({ ctrl, onApply }: DevicesPanelProps) => {
+const DevicesPanel = ({ ctrl, onApply, narrow }: DevicesPanelProps) => {
   const { isRescanPending, handleRescan } = useControllerDevices();
   const devices = ctrl.devices.filter((d) => !d.displayName.toLowerCase().includes('mouse'));
-  const { collapsed, setCollapsed } = useFoldWhenNarrow(false);
+  const { collapsed, setCollapsed } = useFoldWhenNarrow(DEVICES_FOLD_KEY, false, narrow);
   return (
+    <Box className={sideSlotClass('end', collapsed)}>
     <SidePanel
       side="end"
       title="Devices"
@@ -34,6 +36,7 @@ const DevicesPanel = ({ ctrl, onApply }: DevicesPanelProps) => {
         ),
       }]}
     />
+    </Box>
   );
 };
 
