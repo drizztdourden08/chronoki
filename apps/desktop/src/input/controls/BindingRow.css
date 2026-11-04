@@ -30,6 +30,10 @@
 }
 
 .binding-row:hover {
+  background: var(--c-surface);
+}
+
+.binding-row:active {
   background: var(--c-bg);
 }
 
