@@ -11,6 +11,7 @@ import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, 
 import { tmpdir } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { writeMixerGains } from './patches/mixer-gains.mjs';
 import { writeShapes } from './shapes.mjs';
 import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
 
@@ -87,9 +88,10 @@ const gameArgs = (gen) => [
   ...common,
   '-DCT_DATAFREE', '-DCT_XLAT_NO_GWARP', '-DCT_AUDIO_SPC_DEFAULT=1',
   '-I', abs('src'), '-I', abs('snes'), '-I', join(root, 'core', 'reconnect'), '-I', abs('src/tables'), '-I', gen.dir,
-  ...gameSources().filter((f) => !gen.state.replaced.includes(f)).map(abs),
+  ...gameSources().filter((f) => !gen.state.replaced.includes(f) && !gen.gains.replaced.includes(f)).map(abs),
   ...gen.gameFiles,
   ...gen.state.files,
+  ...gen.gains.files,
   ...reconnectSources,
   ...hostSources,
   '-o', join(outDir, 'chronoki.js'),
@@ -102,11 +104,13 @@ const gameArgs = (gen) => [
   // JS frame. Legacy EH: what Node 24 and the browsers run without a flag.
   '-fwasm-exceptions', '-sSUPPORT_LONGJMP=wasm', '-sWASM_LEGACY_EXCEPTIONS=1',
   ...(trace ? ['-DCK_TRACE'] : []),
+  // the music tap (reconnect/music_tap.c) wraps the game's one audio entry; the real one still runs unchanged
+  '-Wl,--wrap=CtAudioService',
   '-sINVOKE_RUN=1',            // main runs after preRun (the shell writes its files there) and parks at the first present
   '-sMODULARIZE=1', '-sEXPORT_NAME=Chronoki', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
-  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_ck_coro_entry',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,callMain,FS,ENV,HEAPU8,HEAP16,HEAP32',
   '-lm',
 ];
@@ -167,6 +171,7 @@ const main = () => {
   mkdirSync(outDir, { recursive: true });
   mkdirSync(oracleDir, { recursive: true });
   const gen = writeShapes(outDir);
+  gen.gains = writeMixerGains(gen.dir, belthasar);   // the S-DSP's voice-group gains (patches/mixer-gains.mjs)
   if (!gen.tables32) console.log('note: no out/tables32/tables_storage.c; the imported 64-bit table storage is used (docs/p3-findings.md)');
   const jobs = [];
   if (only !== 'oracle') jobs.push(['game', gameArgs(gen)]);
