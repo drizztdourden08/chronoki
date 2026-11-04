@@ -14,6 +14,8 @@ counted in setup.py's "progress K/N". All 65 ported (by source; none verified ag
 | extract_assets.py container (build layout) | `ctas/ctas-builder.ts`, `read-ctas.ts` | ported |
 | pack_tables.py back end (layout, relocs, pool, FNV hash, container, merge_into) | `tables/*.ts`, `ctas/table-container.ts` | ported; pointer width is a parameter |
 | pack_tables.py front end (Headers, Expr, lexer: C parser) | `tables/c-parse/*.ts` | ported |
+| pack_tables.py headers (tables_storage.c only; the per-header tables/*.h, tables_real.c and ct_tables.h are not ported) | `tables/storage/*.ts`; `tables/pack-headers.ts` | ported, unverified (no run); layout width from the headers' ABI |
+| pack_tables.py pack + into + headers as one command | `cli/repack.ts` (`node packages/asset-extraction/src/cli/repack.ts --work <dir> --abi native64|wasm32 --out <dir>`; a resolver hook makes the extensionless imports run under node) | ported, unverified (no run) |
 
 ## Stages
 
@@ -36,7 +38,7 @@ counted in setup.py's "progress K/N". All 65 ported (by source; none verified ag
 | animeng_gato, atbsel, battle_anim, battle_anim_add, battle_dissolve, battle_fx, battle_gato_atkfaces, battle_gato_faces, battle_hetake, battle_hud, battle_hud_sub, battle_marleatk, battle_settle, battle_stance, ct_charbase, ct_ng_pan, dlg_cursor, menu_arrow, menu_chrome | gen/<name>.py | generate | ported (`gen/<name>.ts`, registered in `gen/oracle-runners-a.ts`; need the oracle `PeekOracle` driver, `oracle/peek.type.ts`; --verify paths not ported) |
 | menu_configgrid, menu_icons, menu_itemdetail, menu_itemoverlay, menu_itemuse, menu_loader, menu_opt0, menu_saveform, menu_shop, menu_tech, ow_era_placard, ow_gullmap, seq_credits, title_intro | gen/<name>.py | generate | ported (`gen/<name>.ts`, runners in `gen/oracle-gen-runners-b.ts`; oracle calls beyond runRecipe go through `gen/ctgen/oracle-tools.type.ts`) |
 | seq_c3, wipe_c3, owwin_c6, gwarp_fd, hdma_fd | gen/xlat_all.py (+ gen/xlat.py, disasm65816.py) | generate | ported (`gen/xlat/`, runners in `gen/xlat-runners.ts`; need `PeekOracle` plus `CpuTraceOracle.cpuTrace` from `gen/xlat/cpu-trace.type.ts`, ct.exe --cputrace with CPUTRACE_UNIQUE=1; writes `src/xlat/<name>.c`) |
-| pack-tables | gen/pack_tables.py pack | tail | ported (`tables/pack-tables-stage.ts`; layout width from `ctx.abi`) |
+| pack-tables | gen/pack_tables.py pack | tail | ported (`tables/pack-tables-stage.ts`, parse in `tables/pack-headers.ts`; layout width from `ctx.abi`) |
 | steam-margins | steam_wide.py | tail | ported (`steam/`; off without `ctx.steam`, find_steam is host work) |
 | write-player-assets | gen/pack_tables.py into | tail | ported |
 
