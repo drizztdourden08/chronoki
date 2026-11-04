@@ -39,7 +39,12 @@ const tableStorage = (outDir) => {
   const own = join(outDir, 'tables32', 'tables_storage.c');
   const text = readFileSync(existsSync(own) ? own : join(belthasar, 'src', 'tables', 'tables_storage.c'), 'utf8');
   const noChecks = existsSync(own) ? text : text.replace(/^CT_TBL_CHECK\(.*\);\s*$/gm, '');
-  return { text: noChecks.replace('#include "../datapack.h"', '#include "datapack.h"'), is32: existsSync(own) };
+  // src/tables/X.h can share its name with an engine header in src/ (title_intro.h): name the tables' ones by path
+  const fixed = noChecks
+    .replace('#include "../datapack.h"', '#include "datapack.h"')
+    .replace(/^#include "([A-Za-z0-9_]+\.h)"/gm, (line, h) =>
+      existsSync(join(belthasar, 'src', 'tables', h)) ? `#include "tables/${h}"` : line);
+  return { text: fixed, is32: existsSync(own) };
 };
 
 // returns { dir, gameFiles, oracleIncludes, tables32 }
