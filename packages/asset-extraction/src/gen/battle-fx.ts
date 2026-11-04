@@ -1,8 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
-import { headText, FLASH_FRAME } from './battle-fx/fx-head';
-import { palText, tailText } from './battle-fx/fx-pal';
+import { headText } from './battle-fx/fx-head';
+import { FLASH_FRAME } from './battle-fx/fx-head.constants';
+import { palText } from './battle-fx/fx-pal';
+import { tailText } from './battle-fx/fx-tail';
 import type { GenFiles } from './oracle-gen-stage';
 import { cgramOf } from './shared/fb-decode';
 
