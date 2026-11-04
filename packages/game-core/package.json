@@ -7,10 +7,10 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
-    "./save-paths": "./src/save-paths/index.ts",
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@chronoki/features": "workspace:*"
+    "@chronoki/features": "workspace:*",
+    "@drizztdourden08/brock-port-kit": "^0.117.1"
   }
 }
