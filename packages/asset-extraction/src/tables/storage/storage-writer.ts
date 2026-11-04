@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { Headers } from '../c-parse/headers';
+import type { Headers } from '../c-parse/headers.type';
 import { compiledIn, runtimeDefines } from './storage-defines';
 import { checkLines, descLines, pointerLines } from './storage-tables';
 

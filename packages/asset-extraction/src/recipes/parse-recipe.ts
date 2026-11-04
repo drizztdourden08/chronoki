@@ -1,7 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { Recipe, RecipeExpect, RecipeStep } from './recipe.type';
-
-type Json = unknown;
+import type { Json } from './parse-recipe.type';
 
 const asString = (v: Json, what: string): string => {
   if (typeof v !== 'string') throw new Error(`recipe: ${what} must be a string`);

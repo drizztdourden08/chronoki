@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-type RomErrorCode = 'wrong-size' | 'unknown-rom';
+import type { RomErrorCode } from './rom-error.type';
 
 class RomError extends Error {
   readonly code: RomErrorCode;
@@ -16,4 +16,3 @@ class RomError extends Error {
 }
 
 export { RomError };
-export type { RomErrorCode };

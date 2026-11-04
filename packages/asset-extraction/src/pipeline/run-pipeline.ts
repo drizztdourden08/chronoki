@@ -6,13 +6,7 @@ import type { ProgressEvent, ProgressKind, ProgressSink } from './progress.type'
 import { GROUP_PLAN } from './stage-groups.constants';
 import { STAGES } from './stages';
 import type { ImportStage } from './stage.type';
-
-interface PipelineResult {
-  complete: boolean;
-  done: string[];
-  skipped: string[];
-  failed: { stageId: string; message: string }[];
-}
+import type { PipelineResult } from './run-pipeline.type';
 
 const skipReason = (s: ImportStage, ctx: ImportContext): string | null => {
   if (s.run === null) return `not ported yet (${s.python})`;
@@ -79,4 +73,3 @@ const runPipeline = async (
 };
 
 export { runPipeline };
-export type { PipelineResult };

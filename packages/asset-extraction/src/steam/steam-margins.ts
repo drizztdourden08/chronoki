@@ -1,23 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
 import { readEntry } from './steam-archive';
-import type { SteamArchive, SteamFiles } from './steam-archive';
+import type { SteamArchive, SteamFiles } from './steam-archive.type';
 import { sheetPages } from './steam-sheets';
+import type { Metatile, Margin } from './steam-margins.type';
 
 const LOCATIONS = 0x200;
-
-interface Metatile {
-  t: number;
-  corners: [number, number, number][];
-}
-
-interface Margin {
-  w: number;
-  h: number;
-  planes: Uint8Array;
-  slots: number[];
-  metas: Metatile[];
-  pages: [number, string][];
-}
 
 const u16s = (b: Uint8Array): Uint16Array => {
   const out = new Uint16Array(b.length >> 1);
@@ -78,4 +65,3 @@ const readMargins = async (archive: SteamArchive, files: SteamFiles): Promise<Ma
 };
 
 export { readMargins };
-export type { Margin, Metatile };

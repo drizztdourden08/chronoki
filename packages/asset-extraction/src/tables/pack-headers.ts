@@ -2,7 +2,7 @@
 import type { WorkStore } from '../pipeline/work-store.type';
 import { requireBytes } from '../pipeline/work-files';
 import { createHeaders } from './c-parse/headers';
-import type { Headers } from './c-parse/headers';
+import type { Headers } from './c-parse/headers.type';
 import { PackError } from './pack-error';
 import type { TableAbi } from './table-abi.type';
 

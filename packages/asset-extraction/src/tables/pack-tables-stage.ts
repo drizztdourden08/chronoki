@@ -4,7 +4,7 @@ import { TABLES_PATH } from '../pipeline/setup-runners';
 import type { StageRun } from '../pipeline/stage.type';
 import { buildPack, layoutOf } from './build-pack';
 import { createHeaders } from './c-parse/headers';
-import type { Headers } from './c-parse/headers';
+import type { Headers } from './c-parse/headers.type';
 import { fnv64 } from './fnv64';
 import { PackError } from './pack-error';
 import { parseOrder, parseWorkHeaders } from './pack-headers';

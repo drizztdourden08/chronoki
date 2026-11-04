@@ -1,8 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-interface StringPool {
-  add: (text: Uint8Array) => number;
-  bytes: () => Uint8Array;
-}
+import type { StringPool } from './string-pool.type';
 
 const keyOf = (text: Uint8Array): string => Array.from(text, (b) => b.toString(16).padStart(2, '0')).join('');
 
@@ -24,4 +21,3 @@ const createStringPool = (): StringPool => {
 };
 
 export { createStringPool };
-export type { StringPool };

@@ -7,9 +7,10 @@ import { describeType, pointerOffsets } from './c-types';
 import { fnv64 } from './fnv64';
 import { createInitWriter } from './init-writer';
 import { PackError } from './pack-error';
-import type { BuiltTable, ConstEval, PackDefine, PackTable } from './pack.type';
+import type { BuiltTable, PackDefine, PackTable } from './pack.type';
 import { createStringPool } from './string-pool';
 import type { TableAbi } from './table-abi.type';
+import type { PackInput } from './build-pack.type';
 
 const FORMAT_VERSION = 1;
 const LITTLE_ENDIAN = 1;
@@ -55,13 +56,6 @@ const entryDefines = (defines: PackDefine[]): CtasEntry => {
   return { type: T_TABLE_DEFINES, id: 0, blob: w.toBytes() };
 };
 
-interface PackInput {
-  tables: PackTable[];
-  defines: PackDefine[];
-  evalConst: ConstEval;
-  abi: TableAbi;
-}
-
 const buildTable = (t: PackTable, input: PackInput, pool: ReturnType<typeof createStringPool>): BuiltTable => {
   const buf = new Uint8Array(t.ctype.size);
   const relocs: number[] = [];
@@ -85,4 +79,3 @@ const buildPack = (input: PackInput): { pack: Uint8Array; built: BuiltTable[] } 
 };
 
 export { buildPack, layoutOf };
-export type { PackInput };

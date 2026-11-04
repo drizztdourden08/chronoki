@@ -3,15 +3,11 @@ import type { CType } from '../c-type.type';
 import { describeType, makeArray, makePointer } from '../c-types';
 import { countElements } from '../init-writer';
 import { PackError } from '../pack-error';
-import type { PackTable } from '../pack.type';
+
 import { parseInitializer } from './initializer';
 import { isCharScalar, parseDims, parseTypeSpec } from './type-spec';
-import type { ParseEnv } from './type-spec';
-
-interface DeclSink {
-  tables: PackTable[];
-  passthrough: { header: string; name: string }[];
-}
+import type { ParseEnv } from './type-spec.type';
+import type { DeclSink } from './declaration.type';
 
 const parseTypedef = (env: ParseEnv): void => {
   const { cur } = env;
@@ -79,4 +75,3 @@ const parseDeclaration = (env: ParseEnv, code: string, sink: DeclSink): void => 
 };
 
 export { parseDeclaration };
-export type { DeclSink };

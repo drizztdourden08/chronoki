@@ -1,17 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { createLeWriter } from '../buffer/le-writer';
-import type { Margin } from './steam-margins';
-import type { Rgba } from './steam-image';
-
-type ResolvedMargin = Omit<Margin, 'pages'> & { pages: [number, number][] };
-
-interface CtWide {
-  margins: Map<number, ResolvedMargin>;
-  sets: Map<number, Uint8Array>;
-  sheets: Uint8Array[];
-  specials: (Rgba & { name: string })[];
-  palettes: Map<number, Uint8Array>;
-}
+import type { ResolvedMargin, CtWide } from './ct-wide-writer.type';
 
 const byKey = <T>(m: Map<number, T>): [number, T][] => [...m.entries()].sort((a, b) => a[0] - b[0]);
 
@@ -65,4 +54,3 @@ const writeCtWide = ({ margins, sets, sheets, specials, palettes }: CtWide): Uin
 };
 
 export { writeCtWide };
-export type { CtWide, ResolvedMargin };

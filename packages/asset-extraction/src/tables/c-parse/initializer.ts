@@ -2,7 +2,7 @@
 import { PackError } from '../pack-error';
 import type { InitNode, PackToken } from '../pack.type';
 import { unescape } from './unescape';
-import type { ParseEnv } from './type-spec';
+import type { ParseEnv } from './type-spec.type';
 
 const concat = (parts: Uint8Array[]): Uint8Array => {
   const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));

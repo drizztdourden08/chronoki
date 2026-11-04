@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { Headers } from '../c-parse/headers';
+import type { Headers } from '../c-parse/headers.type';
 import { layoutOf } from '../build-pack';
 import type { CStruct } from '../c-type.type';
 import { elementOf, pointerOffsets } from '../c-types';

@@ -1,15 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import { PackError } from '../pack-error';
 import type { LexToken } from './lex-token.type';
-
-interface TokenCursor {
-  peek: (k?: number) => string | null;
-  peekKind: () => string | null;
-  take: (want?: string) => LexToken;
-  done: () => boolean;
-  nextStart: () => number;
-  lastEnd: () => number;
-}
+import type { TokenCursor } from './token-cursor.type';
 
 const createCursor = (toks: LexToken[], header: string): TokenCursor => {
   let p = 0;
@@ -32,4 +24,3 @@ const createCursor = (toks: LexToken[], header: string): TokenCursor => {
 };
 
 export { createCursor };
-export type { TokenCursor };

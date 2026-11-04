@@ -1,9 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-interface SteamArchive {
-  read: (offset: number, length: number) => Promise<Uint8Array>;
-}
-
-type SteamFiles = Map<string, [number, number]>;
+import type { SteamArchive, SteamFiles } from './steam-archive.type';
 
 const keystreamXor = (data: Uint8Array, seed: number): Uint8Array => {
   const out = new Uint8Array(data.length);
@@ -49,4 +45,3 @@ const readDirectory = async (archive: SteamArchive): Promise<SteamFiles> => {
 };
 
 export { inflate, keystreamXor, readBlock, readDirectory, readEntry };
-export type { SteamArchive, SteamFiles };

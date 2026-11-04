@@ -1,11 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { inflate } from './steam-archive';
-
-interface Rgba {
-  w: number;
-  h: number;
-  px: Uint8Array;
-}
+import type { Rgba } from './steam-image.type';
 
 const PNG_MAGIC = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 const CHANNELS: Record<number, number> = { 0: 1, 2: 3, 3: 1, 6: 4 };
@@ -106,4 +101,3 @@ const halve = ({ w, h, px }: Rgba): Rgba => {
 };
 
 export { halve, pngRgba };
-export type { Rgba };

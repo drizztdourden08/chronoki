@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-type Limiter = <T>(task: () => Promise<T>) => Promise<T>;
+import type { Limiter } from './limit.type';
 
 const createLimiter = (max: number): Limiter => {
   const waiting: (() => void)[] = [];
@@ -20,4 +20,3 @@ const createLimiter = (max: number): Limiter => {
 };
 
 export { createLimiter };
-export type { Limiter };

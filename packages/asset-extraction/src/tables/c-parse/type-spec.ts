@@ -2,18 +2,9 @@
 import type { CType } from '../c-type.type';
 import { makeArray, makePointer, makeStruct } from '../c-types';
 import { PackError } from '../pack-error';
-import type { ConstEval, PackToken } from '../pack.type';
+import type { PackToken } from '../pack.type';
 import { SCALAR_TYPES } from '../scalars.constants';
-import type { TableAbi } from '../table-abi.type';
-import type { TokenCursor } from './token-cursor';
-
-interface ParseEnv {
-  cur: TokenCursor;
-  header: string;
-  abi: TableAbi;
-  typedefs: Map<string, CType>;
-  evalConst: ConstEval;
-}
+import type { ParseEnv } from './type-spec.type';
 
 const SCALAR_WORDS = ['unsigned', 'signed', 'char', 'short', 'int'];
 const UNSUPPORTED_WORDS = ['long', 'float', 'double', '_Bool', 'bool'];
@@ -105,4 +96,3 @@ const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean; anon?: b
 };
 
 export { isCharScalar, parseDims, parseTypeSpec };
-export type { ParseEnv };

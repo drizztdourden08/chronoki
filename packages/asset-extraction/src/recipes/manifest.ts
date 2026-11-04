@@ -1,18 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-interface Generator {
-  out: string[];
-  cmd: string[];
-  stdout?: boolean;
-  stage?: string;
-  status: string;
-  recipes?: string[];
-  needs?: string[];
-}
-
-interface ManifestFile {
-  name: string;
-  text: string;
-}
+import type { Generator, ManifestFile } from './manifest.type';
 
 const baseName = (path: string): string => path.slice(Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\')) + 1);
 
@@ -30,4 +17,3 @@ const stageOf = (g: Generator): string => g.stage ?? 'data';
 const recipesNeeded = (gens: Generator[]): string[] => [...new Set(gens.flatMap((g) => g.recipes ?? []))].sort();
 
 export { orderedGenerators, recipesNeeded, stageOf };
-export type { Generator, ManifestFile };

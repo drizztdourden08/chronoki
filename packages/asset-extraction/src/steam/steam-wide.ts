@@ -1,11 +1,11 @@
 /* @layer shared-asset-extraction @kind logic */
 import { writeCtWide } from './ct-wide-writer';
-import type { ResolvedMargin } from './ct-wide-writer';
+import type { ResolvedMargin } from './ct-wide-writer.type';
 import { halve, pngRgba } from './steam-image';
 import { readDirectory, readEntry } from './steam-archive';
-import type { SteamArchive, SteamFiles } from './steam-archive';
+import type { SteamArchive, SteamFiles } from './steam-archive.type';
 import { readMargins } from './steam-margins';
-import type { Margin } from './steam-margins';
+import type { Margin } from './steam-margins.type';
 import { chipSet, pixelSheet, steamPalette } from './steam-sheets';
 
 const SPECIAL = ['Game/special/into_lavos/40_kokscr_ext.png'];

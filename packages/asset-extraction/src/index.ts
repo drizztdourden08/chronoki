@@ -23,7 +23,7 @@ export type { WasmOracle, WasmOracleOptions } from './oracle/wasm/wasm-oracle.ty
 export { RomError } from './rom/rom-error';
 export { CT_ROM_SHA1 } from './rom/rom.constants';
 export type { OracleDriver, OracleResult, OracleRun } from './oracle/oracle-driver.type';
-export type { PipelineResult } from './pipeline/run-pipeline';
+export type { PipelineResult } from './pipeline/run-pipeline.type';
 export type { ProgressEvent, ProgressSink } from './pipeline/progress.type';
 export type { ImportContext, KitSources } from './pipeline/import-context.type';
 export type { ImportStage, StageDef } from './pipeline/stage.type';

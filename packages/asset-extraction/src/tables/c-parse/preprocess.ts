@@ -1,13 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import { PackError } from '../pack-error';
 import type { PackToken } from '../pack.type';
-import type { DefineMap } from './expr';
-import { lex } from './lexer';
 
-interface DefineLog {
-  defines: DefineMap;
-  order: { header: string; name: string }[];
-}
+import { lex } from './lexer';
+import type { DefineLog } from './preprocess.type';
 
 const sameTokens = (a: PackToken[], b: PackToken[]): boolean =>
   a.length === b.length && a.every((t, i) => t.kind === (b[i] as PackToken).kind && t.text === (b[i] as PackToken).text);
@@ -38,4 +34,3 @@ const blankDirectives = (text: string, header: string, log: DefineLog): string =
 };
 
 export { blankDirectives };
-export type { DefineLog };

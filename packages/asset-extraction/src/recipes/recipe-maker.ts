@@ -1,24 +1,16 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { OracleDriver, OracleRun } from '../oracle/oracle-driver.type';
+import type { OracleRun } from '../oracle/oracle-driver.type';
 import { createLimiter } from '../pipeline/limit';
 import { requireBytes } from '../pipeline/work-files';
-import type { WorkStore } from '../pipeline/work-store.type';
+
 import { sha1Hex } from '../rom/sha1';
 import { checkExpect } from './check-expect';
 import { expandPadScript } from './expand-pad-script';
 import { chainOf, closureOf } from './recipe-chain';
 import { recipeKey } from './recipe-key';
 import { readCached, sramOf, writeCached } from './recipe-store';
-import type { Recipe, RecipeSet } from './recipe.type';
-
-interface MakerEnv {
-  recipes: RecipeSet;
-  oracle: OracleDriver;
-  work: WorkStore;
-  romSha1: string;
-  jobs: number;
-  log: (message: string) => void;
-}
+import type { Recipe } from './recipe.type';
+import type { MakerEnv } from './recipe-maker.type';
 
 const isExecutable = (op: string): boolean => op !== 'sram' && op !== 'sram_file';
 
@@ -94,4 +86,3 @@ const createRecipeMaker = (env: MakerEnv) => {
 };
 
 export { createRecipeMaker };
-export type { MakerEnv };

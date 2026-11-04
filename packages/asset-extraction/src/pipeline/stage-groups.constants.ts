@@ -1,10 +1,6 @@
 /* @layer shared-asset-extraction @kind constants */
 import type { StageGroupId } from './stage.type';
-
-interface GroupPlan {
-  parallel: boolean;
-  fatal: boolean;
-}
+import type { GroupPlan } from './group-plan.type';
 
 const GROUP_PLAN: Record<StageGroupId, GroupPlan> = {
   setup: { parallel: false, fatal: true },
@@ -15,4 +11,3 @@ const GROUP_PLAN: Record<StageGroupId, GroupPlan> = {
 };
 
 export { GROUP_PLAN };
-export type { GroupPlan };

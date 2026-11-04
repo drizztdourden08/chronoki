@@ -1,10 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { ImportStage, StageGroupId } from './stage.type';
-
-interface StageBatch {
-  group: StageGroupId;
-  stages: ImportStage[];
-}
+import type { ImportStage } from './stage.type';
+import type { StageBatch } from './plan-groups.type';
 
 const planGroups = (stages: ImportStage[]): StageBatch[] => {
   const batches: StageBatch[] = [];
@@ -17,4 +13,3 @@ const planGroups = (stages: ImportStage[]): StageBatch[] => {
 };
 
 export { planGroups };
-export type { StageBatch };

@@ -1,34 +1,24 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CType } from '../c-type.type';
-import type { ConstEval, PackDefine, PackTable } from '../pack.type';
+import type { ConstEval, PackDefine } from '../pack.type';
 import { PackError } from '../pack-error';
 import type { TableAbi } from '../table-abi.type';
 import { parseDeclaration } from './declaration';
-import type { DeclSink } from './declaration';
+import type { DeclSink } from './declaration.type';
 import { evaluateExpr } from './expr';
-import type { DefineMap } from './expr';
+import type { DefineMap } from './expr.type';
 import { tokenize } from './lexer';
 import { blankDirectives } from './preprocess';
-import type { DefineLog } from './preprocess';
+import type { DefineLog } from './preprocess.type';
 import { stripComments } from './strip-comments';
 import { createCursor } from './token-cursor';
+import type { Headers } from './headers.type';
 
 const decodeHeader = (bytes: Uint8Array): string => {
   let text = '';
   for (let i = 0; i < bytes.length; i += 4096) text += String.fromCharCode(...bytes.subarray(i, i + 4096));
   return text.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
 };
-
-interface Headers {
-  tables: PackTable[];
-  passthrough: DeclSink['passthrough'];
-  evalConst: ConstEval;
-  defines: DefineMap;
-  typedefs: Map<string, CType>;
-  texts: Map<string, string>;
-  parseFile: (bytes: Uint8Array, header: string) => void;
-  numericDefines: () => PackDefine[];
-}
 
 const createHeaders = (abi: TableAbi): Headers => {
   const defines: DefineMap = new Map();
@@ -74,4 +64,3 @@ const createHeaders = (abi: TableAbi): Headers => {
 };
 
 export { createHeaders, decodeHeader };
-export type { Headers };

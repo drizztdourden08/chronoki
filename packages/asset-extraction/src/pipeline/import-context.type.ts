@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind types */
 import type { OracleDriver } from '../oracle/oracle-driver.type';
-import type { SteamArchive } from '../steam/steam-archive';
-import type { ManifestFile } from '../recipes/manifest';
+import type { SteamArchive } from '../steam/steam-archive.type';
+import type { ManifestFile } from '../recipes/manifest.type';
 import type { TableAbi } from '../tables/table-abi.type';
 import type { WorkStore } from './work-store.type';
 

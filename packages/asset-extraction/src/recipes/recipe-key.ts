@@ -1,16 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import { sha1Hex } from '../rom/sha1';
 import { chainOf } from './recipe-chain';
-import type { RecipeSet } from './recipe.type';
+import type { KeyInputs } from './recipe-key.type';
 
 const encoder = new TextEncoder();
-
-interface KeyInputs {
-  recipes: RecipeSet;
-  romSha1: string;
-  oracleTag: string;
-  fileHash: (path: string) => string;
-}
 
 const recipeKey = (inputs: KeyInputs, name: string): string => {
   const chain = chainOf(inputs.recipes, name);
@@ -25,4 +18,3 @@ const recipeKey = (inputs: KeyInputs, name: string): string => {
 };
 
 export { recipeKey };
-export type { KeyInputs };

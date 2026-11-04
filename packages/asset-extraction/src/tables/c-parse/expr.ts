@@ -2,8 +2,7 @@
 import { PackError } from '../pack-error';
 import type { PackToken } from '../pack.type';
 import { unescape } from './unescape';
-
-type DefineMap = Map<string, PackToken[]>;
+import type { DefineMap } from './expr.type';
 
 const PREC: string[][] = [['|'], ['^'], ['&'], ['<<', '>>'], ['+', '-'], ['*', '/', '%']];
 const MAX_DEPTH = 50;
@@ -91,4 +90,3 @@ const evaluateExpr = (defines: DefineMap, toks: PackToken[], context = '', depth
 };
 
 export { evaluateExpr };
-export type { DefineMap };

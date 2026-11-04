@@ -3,17 +3,8 @@ import type { CType } from './c-type.type';
 import { describeType } from './c-types';
 import { CHAR_KINDS } from './scalars.constants';
 import { PackError } from './pack-error';
-import type { ConstEval, InitNode } from './pack.type';
-import type { StringPool } from './string-pool';
-
-interface WriterEnv {
-  tableName: string;
-  header: string;
-  buf: Uint8Array;
-  relocs: number[];
-  pool: StringPool;
-  evalConst: ConstEval;
-}
+import type { InitNode } from './pack.type';
+import type { WriterEnv } from './init-writer.type';
 
 const isCharArray = (t: CType): boolean => t.tag === 'array' && t.elem.tag === 'scalar' && CHAR_KINDS.includes(t.elem.kind);
 const isAggregate = (t: CType): boolean => t.tag === 'array' || t.tag === 'struct';
@@ -122,4 +113,3 @@ const countElements = (elem: CType, init: InitNode, name: string): number => {
 };
 
 export { countElements, createInitWriter, isAggregate, isCharArray, subobjects };
-export type { WriterEnv };
