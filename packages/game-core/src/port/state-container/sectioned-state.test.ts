@@ -2,16 +2,16 @@
 import { describe, expect, it } from 'vitest';
 import { checkLoadable } from './check-loadable';
 import { encodeCkState } from './encode-ck-state';
-import { encodeCkStateV2 } from './encode-ck-state-v2';
+import { encodeSectionedState } from './encode-sectioned-state';
 import { engineStateOf } from './engine-state-of';
 import { readCkStamp } from './read-ck-stamp';
 
 const text = (value: string): Uint8Array => new TextEncoder().encode(value);
 const stamped = (stamp: string): Uint8Array =>
-  encodeCkStateV2([{ tag: 'STMP', version: 1, bytes: text(stamp) }, { tag: 'SCEN', version: 1, bytes: new Uint8Array([1]) }]);
+  encodeSectionedState([{ tag: 'STMP', version: 1, bytes: text(stamp) }, { tag: 'SCEN', version: 1, bytes: new Uint8Array([1]) }]);
 const current = readCkStamp('pin=abcdef0123\ncore=0.1.0\nschema=aaaa\nmode=field\n');
 
-describe('CKST v2 container', { tags: ['critical'] }, () => {
+describe('CKST sectioned container', { tags: ['critical'] }, () => {
   it('loads a state with the current schema', () => {
     expect(checkLoadable(stamped('pin=x\ncore=0.1.0\nschema=aaaa\nmode=field\n'), current).ok).toBe(true);
   });

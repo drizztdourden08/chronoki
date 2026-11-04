@@ -13,7 +13,7 @@ interface CkStamp {
   legacy: boolean;
 }
 
-interface CkStateV2 {
+interface SectionedState {
   stamp: CkStamp;
   sections: CkStateSection[];
 }
@@ -22,4 +22,4 @@ type Loadability =
   | { ok: true; stamp: CkStamp }
   | { ok: false; stamp: CkStamp | null; reason: 'not-a-state' | 'format-mismatch' | 'unsupported-mode'; message: string };
 
-export type { CkStamp, CkStateSection, CkStateV2, Loadability };
+export type { CkStamp, CkStateSection, Loadability, SectionedState };
