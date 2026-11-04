@@ -32,7 +32,7 @@ interface ProfileListPaneProps {
 interface ProfileCreateWizardProps {
   readyRoms: ReadyRom[];
   onCancel: () => void;
-  onCreated: (profileId: string) => void;
+  onCreated: (profile: Profile) => void;
 }
 
 interface ProfileWizardValues {

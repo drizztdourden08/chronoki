@@ -1,9 +1,10 @@
 /* @layer renderer-components @kind hook */
 import { useCallback, useState } from 'react';
 import { useProfiles } from '@drizztdourden08/brock-react';
+import type { Profile } from '@drizztdourden08/brock-core';
 import { useReadyRoms } from './useReadyRoms';
 
-const useProfileManager = () => {
+const useProfileManager = (onOpenProfile: (profile: Profile) => void) => {
   const { profiles, remove } = useProfiles();
   const readyRoms = useReadyRoms();
   const [selected, setSelected] = useState<string | null>(null);
@@ -27,10 +28,11 @@ const useProfileManager = () => {
     stopCreating();
   }, [stopCreating]);
 
-  const finishCreating = useCallback((profileId: string) => {
-    setSelected(profileId);
+  const finishCreating = useCallback((profile: Profile) => {
+    setSelected(profile.id);
     stopCreating();
-  }, [stopCreating]);
+    onOpenProfile(profile);
+  }, [stopCreating, onOpenProfile]);
 
   return {
     profiles, readyRoms, remove,

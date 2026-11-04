@@ -9,11 +9,12 @@ export default defineBrockConfig({
     ports: { base: 2010 },
     description: 'A desktop and mobile port of Chrono Trigger. You bring your own ROM.',
     author: { name: 'drizztdourden_', email: 'drizztdourden08@users.noreply.github.com' },
+    copyright: 'Copyright (c) 2026 drizztdourden_',
     linuxCategory: 'Game',
     window: { titleBar: { mobile: false } },
     artifactPrefix: 'chronoki-',
     dataDirs: ['assets', 'roms', 'profiles', 'config', 'input'],
-    icons: { brand: 'chronoki' },
+    icons: { brand: 'chronoki', wordmark: { src: './logos/wordmark.svg' } },
     profilesRoute: 'data/profiles',
   },
   packaging: {
