@@ -2,6 +2,7 @@
    render-scale options). All plain synchronous functions: see ck_loop.c for how a frame is paced. */
 #include <emscripten.h>
 #include "ck_reconnect.h"
+#include "ck_music.h"
 
 static int g_paused = 0;
 
@@ -35,3 +36,11 @@ EMSCRIPTEN_KEEPALIVE int CkFrameCount(void) { return (int)ck_frame_count(); }
 /* Stereo frames queued since the last call (consumes them); CkSamplesPtr is the S16 interleaved buffer. */
 EMSCRIPTEN_KEEPALIVE int CkSampleCount(void) { return ck_audio_take((const int16_t**)0); }
 EMSCRIPTEN_KEEPALIVE const void* CkSamplesPtr(void) { return ck_audio_ptr(); }
+/* The music tap (reconnect/music_tap.c). CkMusicState returns a CkMusicStateT snapshot (the commands seen since the last
+   call plus D_SONG, D_SFX_VOICES and the music fade byte from ARAM) and empties the ring; read it after CkRunFrame.
+   CkSetVoiceGains(music, sfx): 256 is unchanged, 0 silent, clamped to 0..256. Not in any save state. */
+EMSCRIPTEN_KEEPALIVE const void* CkMusicState(void) { return ck_music_state(); }
+EMSCRIPTEN_KEEPALIVE void CkSetVoiceGains(int music, int sfx) {
+  g_ckGain[0] = music < 0 ? 0 : music > 256 ? 256 : music;
+  g_ckGain[1] = sfx < 0 ? 0 : sfx > 256 ? 256 : sfx;
+}
