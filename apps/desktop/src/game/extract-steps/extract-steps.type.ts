@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind types */
 import type { KitSources } from '@chronoki/asset-extraction';
 
-type ExtractStepId = 'assets';
+type ExtractStepId = 'assets' | 'steam';
 
 interface ExtractData {
   romBytes: Uint8Array;
@@ -13,8 +13,13 @@ interface AssetsStepInput {
   kit: KitSources;
 }
 
-interface ExtractInputs {
-  assets: AssetsStepInput;
+interface SteamStepInput {
+  file: File;
 }
 
-export type { AssetsStepInput, ExtractData, ExtractInputs, ExtractStepId };
+interface ExtractInputs {
+  assets: AssetsStepInput;
+  steam: SteamStepInput;
+}
+
+export type { AssetsStepInput, ExtractData, ExtractInputs, ExtractStepId, SteamStepInput };

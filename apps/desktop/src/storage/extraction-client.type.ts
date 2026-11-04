@@ -5,7 +5,7 @@ interface ExtractJob<Id extends ExtractStepId> {
   step: Id;
   title: string;
   subject: string;
-  romBytes: Uint8Array;
+  romBytes?: Uint8Array;
   input: ExtractInputs[Id];
 }
 
