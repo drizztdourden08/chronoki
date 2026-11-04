@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { MemoryView } from '@drizztdourden08/brock-randomizer/session';
+import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import {
   CLOCK_BASE, CLOCK_HOUR_ONES, CLOCK_HOUR_TENS, CLOCK_MINUTE_ONES, CLOCK_MINUTE_TENS, CLOCK_SECONDS,
 } from '../../game-info/wram-map.constants';

@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind type */
-import type { MemoryView } from '@drizztdourden08/brock-randomizer/session';
+import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 
 type GiftTarget = { id: string; locationId: number; item: number };
 

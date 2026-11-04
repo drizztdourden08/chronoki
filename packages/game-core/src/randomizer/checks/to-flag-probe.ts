@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { FlagProbe } from '@drizztdourden08/brock-randomizer/session';
+import type { FlagProbe } from '@drizztdourden08/brock-randomizer/memory';
 import type { FlagProbe as CtFlagProbe } from './check.type';
 
 const toFlagProbe = (probe: CtFlagProbe): FlagProbe =>
