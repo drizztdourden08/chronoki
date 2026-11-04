@@ -12,7 +12,7 @@ import { HomeDialogs, HomeTab, MODE_LABELS, buildProfileFacts, romFileOf, useHom
 const meta: ScreenMeta = {
   title: 'Home',
   icon: 'house',
-  keywords: ['play', 'start', 'stop', 'reset', 'saves', 'quick save', 'auto save', 'import save'],
+  keywords: ['play', 'start', 'stop', 'reset', 'saves', 'quick save', 'auto save', 'import save', 'play sessions', 'progress'],
   hero: { size: 'compact' },
 };
 
@@ -45,6 +45,8 @@ const HomeHero = (props: HeroProps) => {
       onLoad: () => void normal.load(latest.id),
     };
   }, [normal]);
+
+  if (!profile) return null;
 
   return (
     <>
