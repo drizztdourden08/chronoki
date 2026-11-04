@@ -2,7 +2,9 @@
 import {
   GOLD, GOLD_MAX, SAVE_COUNT, SAVE_COUNT_CAP, SONG_FIELD, SONG_OVERWORLD, WRAM_MIN_BYTES,
 } from './wram-map.constants';
-import { byteAt, triAt, wordAt } from './read-bytes';
+import { byteAt } from './read-bytes';
+import { triAt } from './read-tri';
+import { wordAt } from './read-word';
 import { readClock } from './read-clock';
 import { readInventory } from './read-inventory';
 import { readLocation } from './read-location';

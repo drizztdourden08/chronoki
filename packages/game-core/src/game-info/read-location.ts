@@ -4,7 +4,8 @@ import {
   LOCATION_LAST_INSIDE, LOCATION_MASK, LOCATION_OVERWORLD_FIRST, LOCATION_OVERWORLD_LAST, LOCATION_RETURN,
   OBJECT_STRIDE, OBJECT_X_BASE, OBJECT_Y_BASE,
 } from './wram-map.constants';
-import { byteAt, wordAt } from './read-bytes';
+import { byteAt } from './read-bytes';
+import { wordAt } from './read-word';
 import type { GameInfoLocation } from './game-info.type';
 
 const readLocation = (heap: Uint8Array, ptr: number): GameInfoLocation => {

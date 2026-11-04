@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-const MAX_C_STRING = 256;
+import { MAX_C_STRING } from './decode-c-string.constants';
 
 const decodeCString = (heap: Uint8Array, at: number): string => {
   let text = '';

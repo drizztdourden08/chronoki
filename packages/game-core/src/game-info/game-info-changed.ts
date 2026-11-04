@@ -1,9 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { GameInfoSnapshot } from './game-info.type';
-
-const KEYS: readonly (keyof GameInfoSnapshot)[] = [
-  'location', 'party', 'clock', 'gold', 'saveCount', 'story', 'inventory', 'techs', 'songField', 'songOverworld',
-];
+import { KEYS } from './game-info-changed.constants';
 
 const gameInfoChanged = (
   prev: GameInfoSnapshot | null,

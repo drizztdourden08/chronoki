@@ -4,7 +4,9 @@ import {
   PARTY_RESERVE, PARTY_RESERVE_SLOTS, SHEET_BASE, SHEET_COUNT, SHEET_EQUIPMENT, SHEET_EQUIPMENT_SLOTS, SHEET_EXP,
   SHEET_EXP_NEXT, SHEET_HP, SHEET_LEVEL, SHEET_MAX_HP, SHEET_MAX_MP, SHEET_MP, SHEET_STRIDE,
 } from './wram-map.constants';
-import { byteAt, triAt, wordAt } from './read-bytes';
+import { byteAt } from './read-bytes';
+import { triAt } from './read-tri';
+import { wordAt } from './read-word';
 import { decodeSaveName } from '../save-file/decode-save-name';
 import type { GameInfoParty, GameInfoSheet } from './game-info.type';
 

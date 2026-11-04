@@ -13,12 +13,12 @@ const put = (heap: Uint8Array, at: number, ...bytes: number[]): void => {
 };
 
 describe('readGameInfo', () => {
-  it('refuses a null pointer or a short heap', () => {
+  it('refuses a null pointer or a short heap', { tags: ['critical'] }, () => {
     expect(readGameInfo(makeHeap(), 0)).toBeNull();
     expect(readGameInfo(new Uint8Array(0x100), PTR)).toBeNull();
   });
 
-  it('masks the location to 0x1FF and flags the overworld range', () => {
+  it('masks the location to 0x1FF and flags the overworld range', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x0100, 0xf3, 0xfd);
     const info = readGameInfo(heap, PTR);
@@ -26,7 +26,7 @@ describe('readGameInfo', () => {
     expect(info?.location.overworld).toBe(true);
   });
 
-  it('treats bit 7 party slots as empty', () => {
+  it('treats bit 7 party slots as empty', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x2980, 0x02, 0x80, 0xff);
     put(heap, 0x2983, 0x04, 0x80);
@@ -35,7 +35,7 @@ describe('readGameInfo', () => {
     expect(info?.party.reserve.slice(0, 2)).toEqual([4, null]);
   });
 
-  it('reads a sheet and derives KO from zero HP', () => {
+  it('reads a sheet and derives KO from zero HP', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x2600 + 0x50 + 0x12, 12);
     put(heap, 0x2600 + 0x50 + 0x3f, 0x2c, 0x01);
@@ -45,13 +45,13 @@ describe('readGameInfo', () => {
     expect(sheet?.ko).toBe(true);
   });
 
-  it('reads 24-bit gold little endian', () => {
+  it('reads 24-bit gold little endian', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x2c53, 0x40, 0x42, 0x0f);
     expect(readGameInfo(heap, PTR)?.gold).toBe(1000000);
   });
 
-  it('reads the clock and caps it at 99:59', () => {
+  it('reads the clock and caps it at 99:59', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x0400, 0, 7, 3, 4, 2, 1);
     expect(readGameInfo(heap, PTR)?.clock).toMatchObject({ hours: 12, minutes: 43, seconds: 7, capped: false });
@@ -59,21 +59,21 @@ describe('readGameInfo', () => {
     expect(readGameInfo(heap, PTR)?.clock).toMatchObject({ hours: 99, minutes: 59, capped: true });
   });
 
-  it('lists inventory slots that have an id and a count', () => {
+  it('lists inventory slots that have an id and a count', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x2400, 0x10, 0x00, 0x20);
     put(heap, 0x2500, 5, 9, 0);
     expect(readGameInfo(heap, PTR)?.inventory).toEqual([{ slot: 0, id: 0x10, count: 5 }]);
   });
 
-  it('reads single techs most significant bit first', () => {
+  it('reads single techs most significant bit first', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x2837 + 2, 0b10100000);
     const bits = readGameInfo(heap, PTR)?.techs.single[2];
     expect(bits?.slice(0, 4)).toEqual([true, false, true, false]);
   });
 
-  it('counts story chest bits and reads the counter', () => {
+  it('counts story chest bits and reads the counter', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x10000, 0x6c, 0x03, 0x80);
     expect(readGameInfo(heap, PTR)?.story).toEqual({ counter: 0x6c, chestsOpened: 3 });
@@ -81,7 +81,7 @@ describe('readGameInfo', () => {
 });
 
 describe('gameInfoChanged', () => {
-  it('lists only the changed sections', () => {
+  it('lists only the changed sections', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     const a = readGameInfo(heap, PTR);
     put(heap, 0x2c53, 1);
@@ -92,7 +92,7 @@ describe('gameInfoChanged', () => {
 });
 
 describe('decodeCString', () => {
-  it('stops at NUL', () => {
+  it('stops at NUL', { tags: ['critical'] }, () => {
     expect(decodeCString(Uint8Array.from([72, 105, 0, 88]), 0)).toBe('Hi');
   });
 });
