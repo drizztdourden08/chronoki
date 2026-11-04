@@ -5,6 +5,7 @@ import { restoreMusicPosition } from '../msu-save-glue';
 import { readCoreStamp } from '../state-stamp';
 import { decodeStoredState } from './decode-stored-state';
 import { pushState } from './push-state';
+import { stateLoadedSignal } from './state-loaded-signal';
 import type { SaveStateContext, StateResult } from './save-state.type';
 
 const loadState = async (ctx: SaveStateContext, ref: SaveSlotRef): Promise<StateResult> => {
@@ -19,7 +20,10 @@ const loadState = async (ctx: SaveStateContext, ref: SaveSlotRef): Promise<State
   const verdict = checkLoadable(state, readCoreStamp(core));
   if (!verdict.ok) return { ok: false, reason: 'refused', message: verdict.message };
   const pushed = await pushState(core, state);
-  if (pushed.ok) await restoreMusicPosition(profileId, ref);
+  if (pushed.ok) {
+    await restoreMusicPosition(profileId, ref);
+    stateLoadedSignal.emit();
+  }
   return pushed;
 };
 

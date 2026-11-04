@@ -31,6 +31,7 @@ export { readSramSlotSummary } from './save-file/read-sram-slot-summary';
 export type { SramSlotSummary } from './save-file/save-file.type';
 export * from './game-info';
 export * from './randomizer/checks';
+export * from './randomizer';
 export * from './msu-bridge';
 export type { CkSettings, CkSync, CkWidescreen } from './port/core-config-ini.type';
 export type { CkPresentBox } from './port/aspect/aspect.type';
