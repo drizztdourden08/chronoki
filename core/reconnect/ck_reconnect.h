@@ -17,6 +17,7 @@ const uint8_t* ck_frame_rgba(void);
 long ck_frame_count(void);
 void ck_credit(int n);                 /* wasm-build/ck_loop.c: let the engine run n more frames */
 void ck_stop(void);
+int  ck_wide_width(void);              /* settings_reconnect.c: [video] wide_width, 0 when unset (field.c's hostWideW returns it) */
 /* ck_state.c: save states (see its header comment). field.c reaches the ck_state_top .. ck_state_load_result group through
    ck_host_point.inc, the safe point the build includes at the top of its main loop. */
 #define CK_STATE_WRAM_BYTES 0x20000

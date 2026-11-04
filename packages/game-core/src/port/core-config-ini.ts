@@ -22,6 +22,7 @@ const videoLines = (s: CkSettings): string[] => [
   'aspect=pixel',
   'filter=nearest',
   `widescreen=${s.widescreen}`,
+  `wide_width=${s.widescreen === 'off' ? 0 : s.wideWidth}`,
   `steam_margins=${flag(s.steamMargins)}`,
   `fill_bottom_lines=${flag(s.fillBottomLines)}`,
   `scene_adjustments=${flag(s.sceneAdjustments)}`,

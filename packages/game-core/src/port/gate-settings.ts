@@ -2,6 +2,8 @@
 import { DEFAULT_CK_SETTINGS } from './core-config-ini.constants';
 import type { CkSettings } from './core-config-ini.type';
 import type { GateOptions } from '@chronoki/features';
+import { parseRatio } from './aspect/parse-ratio';
+import { ratioToWidth } from './aspect/ratio-to-width';
 
 const gateSettings = (
   effective: ReadonlySet<string>,
@@ -11,6 +13,7 @@ const gateSettings = (
   ...DEFAULT_CK_SETTINGS,
   ...audio,
   widescreen: effective.has('widescreen') ? options.widescreenAspect : 'off',
+  wideWidth: effective.has('widescreen') ? ratioToWidth(parseRatio(options.widescreenAspect)) : 0,
   renderScale: effective.has('renderScale') ? options.renderScale : 1,
   interpolation: effective.has('interpolate'),
   steamMargins: effective.has('wideSteamMargins'),

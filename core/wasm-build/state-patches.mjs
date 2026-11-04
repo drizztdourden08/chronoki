@@ -28,6 +28,13 @@ const FIELD_PATCHES = [
   [F5_PRINT, '', 1],
   ['int f5b = dks2[SDL_SCANCODE_F5];', 'int f5b = 0;', 1],
   ['int f9b = dks2[SDL_SCANCODE_F9];', 'int f9b = 0;', 1],
+  [
+    '  int w = ((int)(ar[st->widescreen] * CAMH / par + 0.5)) & ~1;
+',
+    '  int w = ck_wide_width() > 0 ? ck_wide_width() : ((int)(ar[st->widescreen] * CAMH / par + 0.5)) & ~1;
+',
+    1,
+  ],
 ];
 
 // audio.c: the engine's two state functions become static and ck_audio_state.inc (appended) wraps them with the host
