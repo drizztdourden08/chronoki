@@ -8,8 +8,10 @@ type CheckDef = {
   kind: CheckKind;
   locationId: number;
   tile?: { x: number; y: number };
-  probe: FlagProbe;
+  probe?: FlagProbe;
   vanillaItem: number;
+  scriptId?: number;
+  patchAt?: number;
 };
 
 export type { CheckDef, CheckKind, FlagProbe };
