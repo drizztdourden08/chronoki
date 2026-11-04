@@ -1,8 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import { CT_MAX_CROP_PIXELS } from './aspect.constants';
+import { EPSILON } from './whole-scale-of.constants';
 import type { CkArea } from './aspect.type';
-
-const EPSILON = 1e-6;
 
 const cropOf = (frame: number, scale: number, stage: number): number => Math.max(0, frame * scale - stage) / scale;
 

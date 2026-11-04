@@ -1,9 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import { CT_MAX_CROP_PIXELS } from './aspect.constants';
+import { EPSILON } from './cover-frame.constants';
 import type { CkArea, CkCoverFrame, CkFrameRanges } from './aspect.type';
 import { containBox } from './contain-box';
-
-const EPSILON = 1e-6;
 
 const evenCeil = (value: number): number => Math.ceil(value / 2 - EPSILON) * 2;
 

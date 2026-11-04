@@ -15,6 +15,8 @@ const controlLines = (): string[] =>
 
 const tallLine = (s: CkSettings): string[] => (s.widescreen === 'off' && s.tallLines > 0 ? [`tall_lines=${s.tallLines}`] : []);
 
+const wideLine = (s: CkSettings): string[] => (s.widescreen === 'off' ? [] : [`wide_width=${s.wideWidth}`]);
+
 const videoLines = (s: CkSettings): string[] => [
   '[video]',
   'backend=sdl',
@@ -24,7 +26,7 @@ const videoLines = (s: CkSettings): string[] => [
   'aspect=pixel',
   'filter=nearest',
   `widescreen=${s.widescreen}`,
-  `wide_width=${s.widescreen === 'off' ? 0 : s.wideWidth}`,
+  ...wideLine(s),
   ...tallLine(s),
   `steam_margins=${flag(s.steamMargins)}`,
   `fill_bottom_lines=${flag(s.fillBottomLines)}`,

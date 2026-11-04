@@ -1,7 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { CkArea } from './aspect.type';
-
-const MATCH_PIXELS = 2;
+import { MATCH_PIXELS } from './present-ratio-of.constants';
 
 const presentRatioOf = (frame: CkArea, ratio: number): number => {
   const own = frame.height > 0 ? frame.width / frame.height : 0;

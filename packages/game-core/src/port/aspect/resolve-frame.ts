@@ -5,10 +5,9 @@ import type { CkResolvedFrame } from './aspect.type';
 import { aspectRatioOf } from './aspect-ratio-of';
 import { coverFrame } from './cover-frame';
 import { CT_TALL_RANGES, CT_WIDE_RANGES } from './frame-ranges.constants';
+import { ORIGINAL_FRAME } from './resolve-frame.constants';
 import { ratioToLines } from './ratio-to-lines';
 import { ratioToWidth } from './ratio-to-width';
-
-const ORIGINAL_FRAME: CkResolvedFrame = { width: CT_ASPECT_MIN_WIDTH, lines: CT_ASPECT_HEIGHT };
 
 const plannedFrame = (options: GateOptions, ratio: number, tall: boolean): CkResolvedFrame | null => {
   if (!options.pixelArea) return null;
