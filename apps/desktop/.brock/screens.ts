@@ -17,6 +17,7 @@ const screenTree = buildScreenTree(config, [
   { kind: 'page', bucket: 'data', group: 'library', id: 'library', component: lazyComponent(() => import('../src/screens/data/library/library.page')), meta: dataLibraryLibraryPageMeta },
   { kind: 'page', bucket: 'data', group: 'library', id: 'profiles', component: lazyComponent(() => import('../src/screens/data/library/profiles.page')), meta: dataLibraryProfilesPageMeta },
   { kind: 'settings', bucket: 'game', id: 'enhancements', sections: GameEnhancementsSettings, meta: gameEnhancementsSettingsMeta },
+  { kind: 'backdrop', bucket: 'game', id: 'game', component: lazyComponent(() => import('../src/screens/game/game.backdrop')) },
   { kind: 'custom', bucket: 'game', group: 'gameplay', id: 'controls', component: lazyComponent(() => import('../src/screens/game/gameplay/controls.custom')), meta: gameGameplayControlsCustomMeta },
   { kind: 'settings', bucket: 'game', id: 'general', sections: GameGeneralSettings, meta: gameGeneralSettingsMeta },
   { kind: 'hero', bucket: 'game', id: 'home', component: lazyComponent(() => import('../src/screens/game/home.hero')), meta: gameHomeHeroMeta },
