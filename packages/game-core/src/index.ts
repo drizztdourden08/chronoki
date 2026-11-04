@@ -9,6 +9,7 @@ export { buildCoreConfigIni } from './port/core-config-ini';
 export { DEFAULT_CK_SETTINGS } from './port/core-config-ini.constants';
 export { gateSettings } from './port/gate-settings';
 export { hostGate } from './port/host-gate';
+export { onHostGatesChange } from './port/on-host-gates-change';
 export { setHostGates } from './port/set-host-gates';
 export { stripCopierHeader } from './port/strip-copier-header';
 export { encodeCkState } from './port/state-container/encode-ck-state';

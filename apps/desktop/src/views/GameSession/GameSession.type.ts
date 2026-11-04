@@ -20,6 +20,7 @@ interface GameSessionValue {
   stop: () => void;
   onStarted: () => void;
   onFunctionAction: (action: FunctionAction) => void;
+  onFunctionRelease: (action: FunctionAction) => void;
 }
 
 interface GameSessionProps {

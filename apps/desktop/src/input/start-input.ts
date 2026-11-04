@@ -5,12 +5,13 @@ import { loadInputState } from './profile-store/load-input-state';
 import { SET_INPUT_CALL } from './input.constants';
 import type { InputHandle, StartInputArgs } from './start-input.type';
 
-const startInput = ({ core, profileId, onFunctionAction }: StartInputArgs): InputHandle => {
+const startInput = ({ core, profileId, onFunctionAction, onFunctionRelease }: StartInputArgs): InputHandle => {
   const m = getInputManager();
   m.setWasmBridge((mask) => core.calls()?.call(SET_INPUT_CALL, mask));
   const unsubscribers = FUNCTION_ACTIONS
     .filter((action) => action !== 'pause')
     .map((action) => m.onFunctionAction(action, () => onFunctionAction(action)));
+  const unsubscribeRelease = m.functionActions.onKeyUp((action) => onFunctionRelease?.(action));
   m.functionActions.onPauseToggle = () => {
     m.pauseManager.togglePause();
     onFunctionAction('pause');
@@ -21,6 +22,7 @@ const startInput = ({ core, profileId, onFunctionAction }: StartInputArgs): Inpu
     for (const unsubscribe of unsubscribers) unsubscribe();
     m.functionActions.onPauseToggle = () => m.pauseManager.togglePause();
     m.functionActions.clearHeld();
+    unsubscribeRelease();
     m.keyStates.clear();
     m.setInputFn?.(0);
     m.setWasmBridge(null);

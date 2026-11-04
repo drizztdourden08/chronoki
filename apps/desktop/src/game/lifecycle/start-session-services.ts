@@ -1,6 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import { getPlatform } from '@drizztdourden08/brock-react';
+import { startAutoSave } from '../auto-save/start-auto-save';
 import { startSramSync } from '../sram-sync';
+import { startTurboLoop } from '../turbo/start-turbo-loop';
 import type { ActiveGame } from './active-game.type';
 import { chronokiCore } from './chronoki-core';
 import { saveOnQuit } from './save-on-quit';
@@ -10,7 +12,11 @@ const startSessionServices = (game: Pick<ActiveGame, 'store' | 'profileId'>): ((
   if (game.profileId) startSramSync(chronokiCore, game.store.sram, game.profileId);
   device.keepAwake();
   const unsubscribe = device.onAppPause(() => { void saveOnQuit(); });
+  const stopAutoSave = startAutoSave();
+  const stopTurbo = startTurboLoop();
   return () => {
+    stopAutoSave();
+    stopTurbo();
     unsubscribe();
     device.allowSleep();
   };

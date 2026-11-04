@@ -6,6 +6,7 @@ interface StartInputArgs {
   core: GameCore;
   profileId: string;
   onFunctionAction: (action: FunctionAction) => void;
+  onFunctionRelease?: (action: FunctionAction) => void;
 }
 
 interface InputHandle {

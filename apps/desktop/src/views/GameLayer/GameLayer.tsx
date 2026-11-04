@@ -12,10 +12,10 @@ import './GameLayer.css';
 
 const GameLayer = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const { launch, gates, onFunctionAction } = useGameSession();
+  const { launch, gates, onFunctionAction, onFunctionRelease } = useGameSession();
   const { status, error } = useCoreState(chronokiCore);
   useGameBoot({ canvasRef, launch });
-  useGameInput(status === 'running' || status === 'paused', launch?.profileId ?? null, onFunctionAction);
+  useGameInput(status === 'running' || status === 'paused', launch?.profileId ?? null, onFunctionAction, onFunctionRelease);
 
   return (
     <Box className="game-layer">

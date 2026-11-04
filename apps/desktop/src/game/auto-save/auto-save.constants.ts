@@ -1,0 +1,14 @@
+/* @layer bridge-wasm @kind constants */
+const AUTO_SAVE_GATE = 'autoSave';
+
+const SAVE_ON_QUIT_GATE = 'saveOnQuit';
+
+const AUTO_SAVE_KEEP = 5;
+
+const AUTO_SAVE_MIN_SECONDS = 30;
+
+const AUTO_SAVE_MAX_SECONDS = 3600;
+
+const AUTO_SAVE_DEFAULT_SECONDS = 300;
+
+export { AUTO_SAVE_DEFAULT_SECONDS, AUTO_SAVE_GATE, AUTO_SAVE_KEEP, AUTO_SAVE_MAX_SECONDS, AUTO_SAVE_MIN_SECONDS, SAVE_ON_QUIT_GATE };
