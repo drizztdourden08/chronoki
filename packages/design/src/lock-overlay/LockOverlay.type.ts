@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 interface LockOverlayProps {
   cause: string;
   userMessage?: string;
+  onOpenSettings?: () => void;
   children: ReactNode;
 }
 
