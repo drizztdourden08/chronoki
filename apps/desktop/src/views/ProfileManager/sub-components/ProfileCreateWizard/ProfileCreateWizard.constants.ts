@@ -6,8 +6,8 @@ const STEP_LABELS = { profile: 'Profile', mode: 'Mode', review: 'Review' } as co
 const WIZARD_TITLE = 'New profile';
 const FINISH_LABEL = 'Create profile';
 const CREATING_HINT = 'Creating the profile';
-const NO_NAME_ERROR = 'Enter a name for the profile.';
-const NO_ROM_ERROR = 'Choose a ROM. Add one in the Library first if the list is empty.';
+const NO_NAME_ERROR = 'Give the profile a name.';
+const NO_ROM_ERROR = 'Pick a ROM.';
 
 const MODE_HINTS = {
   original: 'The game as it shipped.',

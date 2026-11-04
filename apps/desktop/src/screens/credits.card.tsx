@@ -2,7 +2,7 @@
 import type { ScreenMeta } from '@drizztdourden08/brock-react';
 import { CreditsPage } from '@app/views/CreditsPage';
 
-const meta: ScreenMeta = { title: 'Credits', icon: 'file-text', bare: true, requiresProfile: false, size: 'info', keywords: ['thanks', 'authors', 'licence', 'font'] };
+const meta: ScreenMeta = { title: 'Credits', icon: 'trophy', bare: true, requiresProfile: false, size: 'info', keywords: ['thanks', 'contributors', 'authors', 'licence', 'font'] };
 
 const CreditsCard = () => <CreditsPage />;
 

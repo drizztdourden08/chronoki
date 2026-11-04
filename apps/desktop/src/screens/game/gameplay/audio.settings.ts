@@ -13,7 +13,7 @@ const sections: Section[] = [
       {
         key: 'masterVolume',
         label: 'Master Volume',
-        description: 'Controls the overall game volume, so it affects all audio output.',
+        description: 'Controls the overall game volume, so it affects all audio output',
         control: { kind: 'range', min: 0, max: 100, step: 5, format: asPercent },
       },
     ],
