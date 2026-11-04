@@ -7,6 +7,7 @@ import { genCtRegroup } from './ct-regroup';
 import { genMenuRomdata } from './menu-romdata';
 import { genMenuWingrad } from './menu-wingrad';
 import { genOwAnim } from './ow-anim';
+import { ROM_GEN_RUNNERS } from './rom-gen-runners';
 
 /** A generator that reads only the ROM and writes src/data/<name>.h into the workdir (the file the C build would include). */
 const textGenStage =
@@ -23,6 +24,7 @@ const GEN_RUNNERS: Record<string, StageRun> = {
   coll_slope: textGenStage('coll_slope', genCollSlope),
   ow_anim: textGenStage('ow_anim', genOwAnim),
   ct_regroup: textGenStage('ct_regroup', genCtRegroup),
+  ...ROM_GEN_RUNNERS,
 };
 
 export { GEN_RUNNERS, textGenStage };
