@@ -117,6 +117,7 @@ const oracleArgs = (gen) => [
   join(root, 'core', 'reconnect', 'coro_wasm.c'),
   '-o', join(outDir, 'chronoki-oracle.js'),
   '-sJSPI', '-sJSPI_EXPORTS=main,ck_coro_entry',
+  '-fwasm-exceptions', '-sSUPPORT_LONGJMP=wasm', '-sWASM_LEGACY_EXCEPTIONS=1',
   '-sINVOKE_RUN=0', '-sEXIT_RUNTIME=1',
   '-sMODULARIZE=1', '-sEXPORT_NAME=ChronoKiOracle', '-sENVIRONMENT=node,web,worker',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=134217728', '-sSTACK_SIZE=8388608',
