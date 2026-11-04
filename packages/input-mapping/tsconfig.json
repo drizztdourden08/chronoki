@@ -4,12 +4,7 @@
     "types": [
       "node",
       "vite/client"
-    ],
-    "paths": {
-      "@drizztdourden08/brock-core/augment": [
-        "./node_modules/@drizztdourden08/brock-core/src/augment.ts"
-      ]
-    }
+    ]
   },
   "include": [
     "src",
