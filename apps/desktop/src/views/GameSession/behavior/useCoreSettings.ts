@@ -18,11 +18,12 @@ const useCoreSettings = (): CoreSettings => {
   useWindowModeReset();
   const muted = app.masterMuted || startupFlag('muted') === true;
   const volume = Math.round(app.masterVolume);
-  const { vanillaSafe, gates, widescreenAspect, renderScale, steamDataImported, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration } = app;
+  const { vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, steamDataImported, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration } = app;
+  const screenRatio = window.screen.width / window.screen.height;
   return useMemo(() => {
     const satisfied = new Set(steamDataImported ? ['steamData'] : []);
     const { effective } = resolveGates(gates, { vanillaSafe, packaged: isPackaged(), satisfied });
-    const settings = gateSettings(effective, { widescreenAspect, renderScale }, { volume, mute: muted });
+    const settings = gateSettings(effective, { aspectRatio, customAspectW, customAspectH, renderScale, screenRatio }, { volume, mute: muted });
     return {
       settings,
       config: buildCoreConfigIni(settings),
@@ -33,7 +34,7 @@ const useCoreSettings = (): CoreSettings => {
       turboSpeed,
       saveHoldDuration,
     };
-  }, [muted, volume, vanillaSafe, gates, widescreenAspect, renderScale, steamDataImported, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration]);
+  }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, steamDataImported, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration]);
 };
 
 export { useCoreSettings };
