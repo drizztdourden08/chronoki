@@ -8,9 +8,8 @@ const withIds = (gates: readonly string[], ids: readonly string[]): string[] => 
 const normaliseSettings = (settings: AppSettings, stored?: RawSettings | null): AppSettings => {
   const raw: RawSettings = stored ?? settings;
   const { original: legacy, ...rest } = settings as RawSettings & AppSettings;
-  const oldFlag = raw.original ?? legacy;
-  const vanillaSafe = oldFlag ?? raw.vanillaSafe ?? rest.vanillaSafe;
-  const fromOldConfig = Array.isArray(raw.gates) && (oldFlag !== undefined || raw.vanillaSafe === undefined);
+  const vanillaSafe = raw.vanillaSafe ?? raw.original ?? legacy ?? rest.vanillaSafe;
+  const fromOldConfig = Array.isArray(raw.gates) && raw.vanillaSafe === undefined;
   const gates = fromOldConfig ? withIds(rest.gates, NEW_DEFAULT_GATES) : rest.gates;
   return { ...rest, vanillaSafe: vanillaSafe === true, gates: withIds(gates, ALWAYS_ON_GATES) };
 };

@@ -7,7 +7,6 @@ const lockCauseOf = (id: string, context: LockCauseContext): LockCause | null =>
   if (!def) return null;
   if (context.vanillaSafe && def.affectsVanillaParity) return 'vanillaSafe';
   if (context.packaged === true && def.kind === 'dev') return 'developerBuild';
-  if (def.requires.some((required) => !context.enabled.has(required))) return 'requires';
   const satisfied = context.satisfied ?? new Set<string>();
   return (def.requiresData ?? []).some((required) => !satisfied.has(required)) ? 'missingData' : null;
 };

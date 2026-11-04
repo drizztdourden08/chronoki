@@ -33,7 +33,7 @@ describe('requirements', { tags: ['critical'] }, () => {
   it('names the cause that locks a control', () => {
     const base = { vanillaSafe: false, enabled: new Set<string>() };
     expect(lockCauseOf('widescreen', { ...base, vanillaSafe: true })).toBe('vanillaSafe');
-    expect(lockCauseOf('sceneAdjust', base)).toBe('requires');
+    expect(lockCauseOf('sceneAdjust', base)).toBeNull();
     expect(lockCauseOf('wideSteamMargins', { ...base, enabled: new Set(['widescreen']) })).toBe('missingData');
     expect(lockCauseOf('fillBottomLine', base)).toBeNull();
   });
