@@ -24,7 +24,7 @@ export default defineBrockConfig({
     ],
   },
   targets: ['desktop', 'android', 'web'],
-  modules: ['display', 'port-kit', 'input'],
+  modules: ['display', 'port-kit', 'input', 'game-info'],
   workflows: {
     steps: {
       ci: {

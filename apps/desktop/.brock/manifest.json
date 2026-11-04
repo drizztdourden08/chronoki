@@ -1,6 +1,6 @@
 {
   "brock": "0.120.1",
-  "generatedAt": "2026-11-04T10:16:51.248Z",
+  "generatedAt": "2026-11-04T18:20:16.842Z",
   "modules": [
     {
       "id": "display",
@@ -15,6 +15,11 @@
     {
       "id": "input",
       "package": "@drizztdourden08/brock-input",
+      "version": "0.120.1"
+    },
+    {
+      "id": "game-info",
+      "package": "@drizztdourden08/brock-game-info",
       "version": "0.120.1"
     }
   ]
