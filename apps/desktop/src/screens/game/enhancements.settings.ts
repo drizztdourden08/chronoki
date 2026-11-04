@@ -48,6 +48,18 @@ const sections: Section[] = [
       },
     ],
   },
+  {
+    id: 'saves',
+    title: 'Save options',
+    items: [
+      {
+        key: 'autoSaveIntervalSeconds',
+        label: 'Auto-save interval',
+        description: 'How often a state is saved on its own.',
+        hint: 'Used when Auto-save is on. The latest five auto-saves are kept.',
+      },
+    ],
+  },
 ];
 
 export default sections;

@@ -8,6 +8,7 @@ interface AppSettings extends BaseSettings {
   widescreenAspect: WideAspect;
   renderScale: RenderScaleFactor;
   steamDataImported: boolean;
+  autoSaveIntervalSeconds: number;
 }
 
 export type { AppSettings };

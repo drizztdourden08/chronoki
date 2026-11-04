@@ -1,4 +1,5 @@
 /* @layer electron-main @kind logic */
+import { app } from 'electron';
 import { GAME_LAUNCH_FLAGS, SCREENSHOT_FLAG } from './automation-flags.constants';
 import { chronokiAutomationFlags } from './chronoki-automation-flags';
 import { forwardedValueFlags } from './forwarded-value-flags';
@@ -11,6 +12,7 @@ const screenshotKindOf = (argv: readonly string[]): 'game' | 'hub' | null => {
 const chronokiRendererFlags = (argv: string[]): string[] => {
   const flags: string[] = [];
   if (chronokiAutomationFlags.isHeadlessLaunch(argv) && !argv.includes('--sound')) flags.push('--startup-muted');
+  if (app.isPackaged) flags.push('--startup-packaged');
   flags.push(...forwardedValueFlags(argv));
   const screenshot = screenshotKindOf(argv);
   if (screenshot) flags.push(`--startup-screenshot=${screenshot}`);

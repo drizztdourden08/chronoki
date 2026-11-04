@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   widescreenAspect: DEFAULT_GATE_OPTIONS.widescreenAspect,
   renderScale: DEFAULT_GATE_OPTIONS.renderScale,
   steamDataImported: false,
+  autoSaveIntervalSeconds: 300,
 };
 
 export { DEFAULT_SETTINGS };
