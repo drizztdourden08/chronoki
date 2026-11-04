@@ -16,7 +16,7 @@ const dimDefines = (hs: Headers): Set<string> => {
   for (const text of hs.texts.values()) {
     const code = text.replace(/^[ \t]*#(?:[^\n]*\\\n)*[^\n]*/gm, '');
     for (const m of code.matchAll(/\[([^\]]*)\]/g)) {
-      for (const w of m[1].match(/[A-Za-z_]\w*/g) ?? []) if (hs.defines.has(w)) out.add(w);
+      for (const w of (m[1] as string).match(/[A-Za-z_]\w*/g) ?? []) if (hs.defines.has(w)) out.add(w);
     }
   }
   const todo = [...out];
@@ -45,7 +45,7 @@ const literalValue = (digits: string): bigint => (/^0\d+$/.test(digits) ? BigInt
 
 /** pack_tables.py define_ctype(): the type the compiler gives a run-time #define's literal, 'int' or 'unsigned'. */
 const defineCType = (name: string, toks: PackToken[]): DefineCType => {
-  const neg = toks.length === 2 && toks[0].text === '-';
+  const neg = toks.length === 2 && toks[0]?.text === '-';
   const lit = neg || toks.length === 1 ? toks[toks.length - 1] : undefined;
   if (lit === undefined || lit.kind !== 'num') {
     throw new PackError(`#define ${name}: a run-time #define must be one integer literal, not '${toks.map((t) => t.text).join(' ')}'`);

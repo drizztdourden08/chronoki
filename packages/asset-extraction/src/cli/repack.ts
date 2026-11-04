@@ -4,6 +4,7 @@
 import { existsSync } from 'node:fs';
 import { registerHooks } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import type { repack as repackType } from './repack-main';
 
 const HAS_EXTENSION = /\.[cm]?[jt]s$|\.json$/;
 
@@ -19,7 +20,8 @@ registerHooks({
   },
 });
 
-const { repack } = await import('./repack-main.ts');
+const MAIN_MODULE = './repack-main.ts';
+const { repack } = (await import(MAIN_MODULE)) as { repack: typeof repackType };
 
 process.exitCode = await repack(process.argv.slice(2)).catch((e: unknown) => {
   console.error(`repack: ${e instanceof Error ? e.message : String(e)}`);
