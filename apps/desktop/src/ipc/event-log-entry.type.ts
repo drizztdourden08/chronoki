@@ -11,6 +11,28 @@ type FramesProbeEntry = {
 
 type StateProbeEntry = { probe: 'state'; save: string; load: string };
 
-type EventLogEntry = FramesProbeEntry | StateProbeEntry;
+type InputProbeEntry = {
+  probe: 'input';
+  ok: boolean;
+  buttons: string[];
+  masks: number[];
+  screenStatic: boolean;
+  before: string;
+  after: string;
+  errors: string[];
+};
 
-export type { EventLogEntry, FramesProbeEntry, StateProbeEntry };
+type SramProbeEntry = {
+  probe: 'sram';
+  ok: boolean;
+  original: number | null;
+  stored: number | null;
+  pattern: number;
+  patternStored: boolean;
+  restored: boolean;
+  errors: string[];
+};
+
+type EventLogEntry = FramesProbeEntry | StateProbeEntry | InputProbeEntry | SramProbeEntry;
+
+export type { EventLogEntry, FramesProbeEntry, InputProbeEntry, SramProbeEntry, StateProbeEntry };

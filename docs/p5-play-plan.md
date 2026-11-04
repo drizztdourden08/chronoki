@@ -73,7 +73,10 @@ It passes when:
   errors;
 - title.png is not black.
 
-Second launch: `--probe-state --screenshot=state` (quick save and load in the field; the screenshot flag makes the app quit when the probe ends). Third launch: `--probe-import` (expected to fail until
+Second launch: `--probe-state --screenshot=state` (quick save and load in the field; the screenshot flag makes the app quit when the probe ends). Input launch: `npx brock-thread launch main game --prod --auto-start --probe-input --screenshot=input --event-log=.user-data/Data/logs/input.jsonl`
+(real key events through the input manager and `CkSetInput`; logs `{"probe":"input"}` with the masks seen and the frame hash before and after).
+SRAM launch: the same with `--probe-sram --screenshot=sram` and `sram.jsonl` (writes a test pattern into the core's SRAM file, flushes through the
+SRAM sync, reads the profile's saved file back, restores the original; logs `{"probe":"sram"}`). Third launch: `--probe-import` (expected to fail until
 P4 is verified).
 
 The pack staged in test-roms/data is git-ignored and never committed.
