@@ -33,6 +33,11 @@ const HOST_FEATURES: FeatureDef[] = [
     userMessage: 'Automatically create a save state when you stop the game or close the app',
     group: 'Saves', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: false, live: true,
   },
+  {
+    id: 'perGroupVolume', label: 'Independent Music / SFX', description: 'Set music and sound effects apart, with a volume for each.',
+    userMessage: 'Set music and sound effects apart, with a volume for each.',
+    group: 'Audio', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: true, live: true,
+  },
 ];
 
 export { HOST_FEATURES };

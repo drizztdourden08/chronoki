@@ -4,6 +4,10 @@ import type { RenderScaleFactor, WideAspect } from '@chronoki/features';
 
 type ViewportMode = 'none' | 'fit' | 'fill';
 
+type MsuConfigMode = 'auto' | 'manual';
+
+type MsuFormat = 'false' | 'msu1' | 'opuz' | 'layered';
+
 interface AppSettings extends BaseSettings {
   vanillaSafe: boolean;
   gates: string[];
@@ -19,6 +23,16 @@ interface AppSettings extends BaseSettings {
   autoSaveMaxEntries: number;
   turboSpeed: number;
   saveHoldDuration: number;
+  musicVolume: number;
+  musicMuted: boolean;
+  sfxVolume: number;
+  sfxMuted: boolean;
+  msuConfigMode: MsuConfigMode;
+  enableMSU: MsuFormat;
+  resumeMSU: boolean;
+  resetMSUAtTitle: boolean;
+  msuChipFallback: boolean;
+  packReplaceSfx: boolean;
 }
 
-export type { AppSettings, ViewportMode };
+export type { AppSettings, MsuConfigMode, MsuFormat, ViewportMode };
