@@ -1,7 +1,7 @@
 /* @layer renderer-components @kind component */
 import { useState } from 'react';
-import { Button, Flex, Icon, Stack, Status, Tabs, Text, Title } from '@drizztdourden08/tessera/primitives';
-import { DATA_TAB, MODE_LABELS, OVERVIEW_TAB, PROFILE_TABS, PROFILE_TEXT, SETTINGS_TAB } from '../ProfileManager.constants';
+import { Button, Flex, Icon, Stack, Tabs, Title } from '@drizztdourden08/tessera/primitives';
+import { DATA_TAB, OVERVIEW_TAB, PROFILE_TABS, PROFILE_TEXT, SETTINGS_TAB } from '../ProfileManager.constants';
 import type { ProfileDetailPanelProps } from '../ProfileManager.type';
 import { ProfileDataTab } from './ProfileDataTab';
 import { ProfileOverviewTab } from './ProfileOverviewTab';
@@ -13,13 +13,7 @@ const ProfileDetailPanel = ({ profile, readyRoms, onOpen, onDelete }: ProfileDet
   return (
     <Stack gap="lg">
       <Flex justify="between" align="start" gap="md" wrap>
-        <Stack gap="2xs">
-          <Flex gap="sm" align="center" wrap>
-            <Title level={3}>{profile.name}</Title>
-            <Status tone="primary" variant="pill">{MODE_LABELS[profile.mode]}</Status>
-          </Flex>
-          <Text variant="caption" tone="muted">{profile.romFile || PROFILE_TEXT.noRom}</Text>
-        </Stack>
+        <Title level={3}>{profile.name}</Title>
         <Flex gap="sm" align="center" wrap>
           <Button variant="primary" icon={<Icon name="play" />} onClick={() => onOpen(profile)}>{PROFILE_TEXT.open}</Button>
           <Button variant="danger" icon={<Icon name="trash-2" />} onClick={() => onDelete(profile)}>{PROFILE_TEXT.delete}</Button>
