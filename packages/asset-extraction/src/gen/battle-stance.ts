@@ -12,7 +12,7 @@ import { BRACKET_TILE } from './battle-stance.constants';
 
 const genBattleStance = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_gato_press_action');
-  const dump = await peekOracle(ctx).peek({ state, script: BTN });
+  const dump = await peekOracle(ctx).peek({ state, script: BTN, rule: false });
   const cgram = oamCgram(dump.oam);
   if (!cgram) throw new Error('the peek .oam sidecar carries no CGRAM');
   const on = decodeOam(oamBlob(dump.oam))

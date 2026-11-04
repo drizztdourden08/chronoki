@@ -34,7 +34,7 @@ const slices = (vram: Uint8Array, n: number): Uint8Array[] => {
 const bakeMarle = async (oracle: PeekOracle, state: Uint8Array): Promise<MarleKf[]> => {
   const kfs: MarleKf[] = [];
   for (const [pose, rf] of MARLE_KF) {
-    const dump = await oracle.peek({ state, script: bs(rf) });
+    const dump = await oracle.peek({ state, script: bs(rf), rule: false });
     const on = onpal(decodeOam(oamBlob(dump.oam)), 6, 0x20, 0x38);
     kfs.push({
       pose,
@@ -51,7 +51,7 @@ const bakeMarle = async (oracle: PeekOracle, state: Uint8Array): Promise<MarleKf
 const bakeSpark = async (oracle: PeekOracle, state: Uint8Array): Promise<(SparkKf | null)[]> => {
   const kfs: (SparkKf | null)[] = [];
   for (const [pose, rf] of SPARK_KF) {
-    const dump = await oracle.peek({ state, script: bs(rf) });
+    const dump = await oracle.peek({ state, script: bs(rf), rule: false });
     const eff = decodeOam(oamBlob(dump.oam)).filter(
       (s) => s.pal === 0 && s.tile >= 0x100 && s.tile < 0x190 && s.y < 200 && s.x > -30 && s.x < 250,
     );

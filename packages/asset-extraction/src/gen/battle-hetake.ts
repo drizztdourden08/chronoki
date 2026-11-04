@@ -24,8 +24,8 @@ const cellsRel = (g: Sprite[], ax: number, ay: number): Cell[] =>
 const genBattleHetake = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_forest_3hetake');
   const oracle = peekOracle(ctx);
-  const idle = await oracle.peek({ state, script: '0:8' });
-  const atk = await oracle.peek({ state, script: '0:90' });
+  const idle = await oracle.peek({ state, script: '0:8', rule: false });
+  const atk = await oracle.peek({ state, script: '0:90', rule: false });
   const isp = decodeOam(oamBlob(idle.oam));
   const asp = decodeOam(oamBlob(atk.oam));
 
@@ -40,7 +40,7 @@ const genBattleHetake = async (ctx: ImportContext): Promise<GenFiles> => {
 
   const cursors: [number, number][] = [];
   for (const script of CURSOR_SCRIPTS) {
-    const dump = await oracle.peek({ state, script });
+    const dump = await oracle.peek({ state, script, rule: false });
     const cur = decodeOam(oamBlob(dump.oam)).filter(
       (s) => s.prio === 3 && s.pal === 1 && s.tile === 0 && s.x >= 0 && s.x < 256 && s.y < 224,
     );

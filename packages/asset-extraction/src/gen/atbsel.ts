@@ -17,7 +17,7 @@ import { BTNE, BTNA } from './atbsel.constants';
 const genAtbsel = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'atb_vram');
   const oracle = peekOracle(ctx);
-  const frame = async (script: string) => loadFb((await oracle.peek({ state, script })).fb);
+  const frame = async (script: string) => loadFb((await oracle.peek({ state, script, rule: false })).fb);
   const fr0 = await frame(BTN0);
   const fr1 = await frame(BTN1);
   const fre = await frame(BTNE);

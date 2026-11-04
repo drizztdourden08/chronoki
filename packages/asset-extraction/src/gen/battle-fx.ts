@@ -32,8 +32,8 @@ const build = (frames: number): string => {
 const genBattleFx = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_gato_press_action');
   const oracle = peekOracle(ctx);
-  const bake = await oracle.peek({ state, script: build(BAKE_FRAME) });
-  const flash = await oracle.peek({ state, script: build(FLASH_FRAME) });
+  const bake = await oracle.peek({ state, script: build(BAKE_FRAME), rule: false });
+  const flash = await oracle.peek({ state, script: build(FLASH_FRAME), rule: false });
   const text = headText(bake.vram) + palText(ctx.rom, cgramOf(bake.oam)) + tailText(cgramOf(flash.oam));
   return { 'battle_fx.h': text };
 };

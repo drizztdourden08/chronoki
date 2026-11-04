@@ -32,13 +32,13 @@ const cluster = (sprites: Sprite[], pal: number): Sprite[] =>
 const genBattleSettle = async (ctx: ImportContext): Promise<GenFiles> => {
   const oracle = peekOracle(ctx);
   const state = await recipeState(ctx, 'battle_gato_press_action');
-  const mid = (await oracle.peek({ state, script: '100:8,0:392', save: true })).state;
+  const mid = (await oracle.peek({ state, script: '100:8,0:392', save: true, rule: false })).state;
   if (!mid) throw new Error('the oracle returned no saved state for gato_mid');
   const kfs: SettleKf[] = [];
   const objFlat: Sprite[] = [];
   for (const [name, n, pal] of KEYS) {
     const script = `${mash(110)}${n > 110 ? `,0:${n - 110}` : ''}`;
-    const dump = await oracle.peek({ state: mid, script, env: { PEEK_POKE: KILL_POKE } });
+    const dump = await oracle.peek({ state: mid, script, env: { PEEK_POKE: KILL_POKE }, rule: false });
     const on = cluster(decodeOam(oamBlob(dump.oam)), pal);
     if (on.length === 0) continue;
     const tiles: Uint8Array[] = [];

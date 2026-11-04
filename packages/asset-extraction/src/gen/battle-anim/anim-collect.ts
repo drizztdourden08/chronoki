@@ -23,7 +23,7 @@ const collect = async (ctx: ImportContext, state: Uint8Array): Promise<Collected
     const id = `${key.driver}:${key.repFrame}`;
     let dump = dumps.get(id);
     if (!dump) {
-      dump = await oracle.peek({ state, script: scriptFor(key.driver, key.repFrame) });
+      dump = await oracle.peek({ state, script: scriptFor(key.driver, key.repFrame), rule: false });
       dumps.set(id, dump);
     }
     cgram = oamCgram(dump.oam) ?? cgram;
