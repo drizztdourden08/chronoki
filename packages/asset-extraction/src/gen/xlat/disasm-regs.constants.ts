@@ -1,5 +1,4 @@
 /* @layer shared-asset-extraction @kind constants */
-
 const REGS: Record<number, string> = {};
 const names = (from: number, list: string): void => {
   list.split(' ').forEach((name, i) => {
@@ -19,15 +18,4 @@ const DMA_NAMES: Record<number, string> = {
   0: 'DMAP', 1: 'BBAD', 2: 'A1TL', 3: 'A1TH', 4: 'A1B', 5: 'DASL', 6: 'DASH', 7: 'DASB', 8: 'A2AL', 9: 'A2AH', 10: 'NTRL',
 };
 
-const regName = (address: number): string | null => {
-  const eff = address & 0xffff;
-  const plain = REGS[eff];
-  if (plain !== undefined) return plain;
-  if (eff >= 0x4300 && eff <= 0x437f) {
-    const nm = DMA_NAMES[eff & 0xf];
-    return nm === undefined ? null : `${nm}${(eff >> 4) & 7}`;
-  }
-  return null;
-};
-
-export { regName, REGS };
+export { DMA_NAMES, REGS };

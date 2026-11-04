@@ -1,5 +1,4 @@
 /* @layer shared-asset-extraction @kind constants */
-
 const OPCODE_ROWS =
   'BRK:imm8 ORA:idx COP:imm8 ORA:sr TSB:dp ORA:dp ASL:dp ORA:idl ' +
   'PHP:imp ORA:immM ASL:acc PHD:imp TSB:abs ORA:abs ASL:abs ORA:abl ' +

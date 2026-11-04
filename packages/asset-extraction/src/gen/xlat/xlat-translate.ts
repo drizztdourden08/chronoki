@@ -8,7 +8,7 @@ const translate = (input: XlatInput): string => {
   const sites = collectExecuted(input);
   const tracedCount = sites.size;
   const staticCount = extendStatically(input, sites);
-  return emitProgram(input.name, sites, input.stops, staticCount, tracedCount);
+  return emitProgram(input.name, sites, input.stops, { staticCount, tracedCount });
 };
 
 export { translate };
