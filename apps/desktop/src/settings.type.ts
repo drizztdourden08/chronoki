@@ -12,6 +12,7 @@ interface AppSettings extends BaseSettings {
   steamDataImported: boolean;
   autoSaveIntervalSeconds: number;
   masterMuted: boolean;
+  volumeScale?: number;
   showFps: boolean;
   viewportConstraint: ViewportMode;
   pixelPerfect: boolean;

@@ -5,7 +5,7 @@ import { DEFAULT_SETTINGS } from './settings.constants';
 
 const SETTINGS = { defaults: DEFAULT_SETTINGS, ...SETTINGS_CONTROLS };
 
-const VOLUME = volumeFromSettings({ value: 'masterVolume', muted: 'masterMuted', max: 1 });
+const VOLUME = volumeFromSettings({ value: 'masterVolume', muted: 'masterMuted', max: 100 });
 
 const DEVELOPER_TOOLS = developerToolsFromSettings('developerToolsEnabled');
 

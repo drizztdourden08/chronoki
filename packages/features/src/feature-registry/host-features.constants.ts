@@ -8,22 +8,22 @@ const HOST_FEATURES: FeatureDef[] = [
     group: 'Quality of life', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: true, live: true,
   },
   {
-    id: 'linearFiltering', label: 'Linear filtering', description: 'Smooths the picture instead of sharp pixels.',
+    id: 'linearFiltering', label: 'Linear Filtering', description: 'Smooths the picture instead of sharp pixels.',
     userMessage: 'Smooths the picture instead of sharp pixels.',
     group: 'Display', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: true, live: true,
   },
   {
-    id: 'saveStates', label: 'Save states', description: 'Save and load the whole game at any moment.',
+    id: 'saveStates', label: 'Save States', description: 'Save and load the whole game at any moment.',
     userMessage: 'Save and load the whole game at any moment.',
     group: 'Saves', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: false, live: true,
   },
   {
-    id: 'autoSave', label: 'Auto-save', description: 'Saves a state on its own at a set interval.',
+    id: 'autoSave', label: 'Enable Auto-Save', description: 'Saves a state on its own at a set interval.',
     userMessage: 'Saves a state on its own at a set interval.',
     group: 'Saves', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: false, live: true,
   },
   {
-    id: 'saveOnQuit', label: 'Save on quit', description: 'Saves a state when you leave the game.',
+    id: 'saveOnQuit', label: 'Save on Quit', description: 'Saves a state when you leave the game.',
     userMessage: 'Saves a state when you leave the game.',
     group: 'Saves', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: false, live: true,
   },

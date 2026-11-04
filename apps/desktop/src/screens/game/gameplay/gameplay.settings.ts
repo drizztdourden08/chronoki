@@ -14,18 +14,6 @@ const asMultiplier = (value: number): string => `${value}x`;
 
 const sections: Section[] = [
   {
-    id: 'mode',
-    title: 'Mode',
-    items: [
-      {
-        key: 'original',
-        label: 'Original mode',
-        description: 'Play Chrono Trigger exactly as released.',
-        hint: 'On, every enhancement that changes the game is switched off and locked. Your choices are kept for when you turn it off.',
-      },
-    ],
-  },
-  {
     id: 'game-flow',
     title: 'Game Flow',
     subsections: [
@@ -37,15 +25,15 @@ const sections: Section[] = [
           gateItem('autoSave'),
           {
             key: 'autoSaveIntervalSeconds',
-            label: 'Auto-save interval',
+            label: 'Auto-Save Interval',
             description: 'How often a state is saved on its own.',
-            hint: 'Needs Auto-save.',
+            hint: 'Needs Enable Auto-Save.',
           },
           {
             key: 'autoSaveMaxEntries',
-            label: 'Max auto-save entries',
-            description: 'How many auto-saves to keep; the oldest are removed.',
-            hint: 'Needs Auto-save.',
+            label: 'Max Auto-Save Entries',
+            description: 'How many auto-saves to keep, removing the oldest first.',
+            hint: 'Needs Enable Auto-Save.',
             keywords: 'auto save max limit entries prune keep',
             control: { kind: 'range', min: 1, max: 20, step: 1, format: asCount },
           },
@@ -59,13 +47,24 @@ const sections: Section[] = [
           gateItem('turbo'),
           {
             key: 'turboSpeed',
-            label: 'Turbo speed',
-            description: 'How much faster the game runs while the Turbo key is held.',
-            hint: 'Needs Turbo.',
+            label: 'Turbo Speed',
+            description: 'How much faster the game runs while the shortcut is held, from 2x up to 10x.',
+            hint: 'Needs Turbo on.',
             keywords: 'turbo speed fast forward multiplier',
             control: { kind: 'range', min: 2, max: 10, step: 1, format: asMultiplier },
           },
         ],
+      },
+    ],
+  },
+  {
+    id: 'mode',
+    title: 'Original Mode',
+    items: [
+      {
+        key: 'original',
+        label: 'Original Mode',
+        description: 'Forces off every enhancement, so the game plays exactly as released. Your choices are kept for when you turn it off.',
       },
     ],
   },
