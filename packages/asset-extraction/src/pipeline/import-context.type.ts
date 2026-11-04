@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind types */
 import type { OracleDriver } from '../oracle/oracle-driver.type';
+import type { SteamArchive } from '../steam/steam-archive';
 import type { ManifestFile } from '../recipes/manifest';
 import type { TableAbi } from '../tables/table-abi.type';
 import type { WorkStore } from './work-store.type';
@@ -28,6 +29,8 @@ interface ImportContext {
   jobs: number;
   /** Where the player's files go in the workdir (setup.py --out; its default is build/player). */
   outDir: string;
+  /** The player's Steam resources.bin, when the host found one (the optional margins mod); null or absent leaves the option off. */
+  steam?: SteamArchive | null;
   log: (message: string) => void;
 }
 

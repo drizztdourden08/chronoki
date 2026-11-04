@@ -6,6 +6,7 @@ import { genBattleHudChrome } from './battle-hud-chrome';
 import { genMenuDesc } from './menu-desc';
 import { genMenuEquip } from './menu-equip';
 import { genMenuTechrom } from './menu-techrom';
+import { steamMarginsStage } from '../steam/steam-stage';
 
 const decoder = new TextDecoder();
 
@@ -35,6 +36,7 @@ const ROM_GEN_RUNNERS: Record<string, StageRun> = {
   menu_equip: romTextStage('menu_equip.h', genMenuEquip),
   menu_techrom: romTextStage('menu_techrom.h', genMenuTechrom),
   animeng_pc: animengPcStage,
+  'steam-margins': steamMarginsStage,
   battle_hud_chrome: battleHudChromeStage,
 };
 
