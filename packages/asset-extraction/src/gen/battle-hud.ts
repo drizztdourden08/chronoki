@@ -14,10 +14,10 @@ import { STATE, COMMAND_SCRIPT, ENEMY_SCRIPT } from './battle-hud.constants';
 const genBattleHud = async (ctx: ImportContext): Promise<GenFiles> => {
   const oracle = peekOracle(ctx);
   const state = await recipeState(ctx, STATE);
-  const cmd = await oracle.peek({ state, script: COMMAND_SCRIPT });
-  const enemy = await oracle.peek({ state, script: ENEMY_SCRIPT });
-  const isoE = await oracle.peek({ state, script: ENEMY_SCRIPT, env: { PEEK_ISOBG: '0' } });
-  const isoC = await oracle.peek({ state, script: COMMAND_SCRIPT, env: { PEEK_ISOBG: '0' } });
+  const cmd = await oracle.peek({ state, script: COMMAND_SCRIPT, rule: false });
+  const enemy = await oracle.peek({ state, script: ENEMY_SCRIPT, rule: false });
+  const isoE = await oracle.peek({ state, script: ENEMY_SCRIPT, rule: false, env: { PEEK_ISOBG: '0' } });
+  const isoC = await oracle.peek({ state, script: COMMAND_SCRIPT, rule: false, env: { PEEK_ISOBG: '0' } });
   const texE = bakeBg1(isoE);
   const texC = bakeBg1(isoC);
   const bg1Pal = bg1Palette(texE, texC);
