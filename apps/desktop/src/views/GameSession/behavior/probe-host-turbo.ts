@@ -5,9 +5,11 @@ import { getInputManager } from '@app/input/input-manager/get-input-manager';
 import { HOST_PROBE_TURBO_FRAMES } from '../GameSession.constants';
 import type { HostProbeEntry } from '@app/ipc/event-log-entry.type';
 import { presentedFrames } from './presented-frames';
+import { turboMatchesGate } from './turbo-matches-gate';
 import { waitForFrames } from './wait-for-frames';
 
-const keyEvent = (type: 'keydown' | 'keyup', code: string): void => {
+const keyEvent = (type: 'keydown' | 'keyup', code: string | null): void => {
+  if (code === null) return;
   window.dispatchEvent(new KeyboardEvent(type, { code, key: code, bubbles: true, cancelable: true }));
 };
 
@@ -21,16 +23,14 @@ const probeHostTurbo = async (errors: string[]): Promise<HostProbeEntry['turbo']
   const code = fastForwardCode();
   if (code === null) errors.push('no key bound to fast-forward');
   const before = turboState.extraFrames;
-  if (code !== null) keyEvent('keydown', code);
+  keyEvent('keydown', code);
   await waitForFrames(presentedFrames() + HOST_PROBE_TURBO_FRAMES);
   const mutedDuring = turboState.muted;
-  if (code !== null) keyEvent('keyup', code);
+  keyEvent('keyup', code);
   await waitForFrames(presentedFrames() + 2);
-  const extraFrames = turboState.extraFrames - before;
-  const restored = !turboState.held && !turboState.muted;
-  const good = expected ? extraFrames > 0 && mutedDuring && restored : extraFrames === 0 && !mutedDuring && restored;
-  if (!good) errors.push('turbo did not match the gate');
-  return { expected, extraFrames, mutedDuring, restored };
+  const result = { expected, extraFrames: turboState.extraFrames - before, mutedDuring, restored: !turboState.held && !turboState.muted };
+  if (!turboMatchesGate(result)) errors.push('turbo did not match the gate');
+  return result;
 };
 
 export { probeHostTurbo };

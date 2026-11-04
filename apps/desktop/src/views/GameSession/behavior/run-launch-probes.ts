@@ -5,10 +5,10 @@ import { isProbeHost } from '@app/launch-flags/is-probe-host';
 import { isProbeInput } from '@app/launch-flags/is-probe-input';
 import { isProbeSram } from '@app/launch-flags/is-probe-sram';
 import { isProbeState } from '@app/launch-flags/is-probe-state';
-import { isScreenshotRequested } from '@app/launch-flags/is-screenshot-requested';
 import { probeFrames } from '@app/launch-flags/probe-frames';
 import { appLog } from '@app/log/app-log';
 import { DEFAULT_SCREENSHOT_FRAMES } from '../GameSession.constants';
+import { needsScreenshotWait } from './needs-screenshot-wait';
 import { runFramesProbe } from './run-frames-probe';
 import { runHostProbe } from './run-host-probe';
 import { runInputProbe } from './run-input-probe';
@@ -26,7 +26,7 @@ const runLaunchProbes = async (): Promise<void> => {
     if (isProbeSram()) await runSramProbe();
     if (isProbeHost()) await runHostProbe();
     if (isProbeState()) await runStateProbe();
-    else if (frames === null && !isProbeInput() && !isProbeSram() && isScreenshotRequested()) await waitForFrames(DEFAULT_SCREENSHOT_FRAMES);
+    else if (needsScreenshotWait(frames)) await waitForFrames(DEFAULT_SCREENSHOT_FRAMES);
   } catch (error) {
     appLog.error('[launch] probes failed', error);
   } finally {

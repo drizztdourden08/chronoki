@@ -2,9 +2,7 @@
 import { hostGate } from '@chronoki/game-core';
 import { activeGameHolder } from '@app/game/lifecycle';
 import { autoSaveTick, saveStateOnQuit } from '@app/game/auto-save';
-import type { HostProbeEntry } from '@app/ipc/event-log-entry.type';
-
-type SaveSection = HostProbeEntry['autoSave'];
+import type { SaveSection } from './probe-host-saves.type';
 
 const autoIds = async (profileId: string): Promise<string[]> => {
   const game = activeGameHolder.current;
