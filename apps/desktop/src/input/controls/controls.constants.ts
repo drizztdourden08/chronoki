@@ -33,8 +33,8 @@ const SHORTCUT_ACTIONS: readonly FunctionAction[] = [
 ];
 
 const SNES_ACTION_LABELS: Record<SnesButton, string> = {
-  A: 'Confirm / Talk', B: 'Cancel / Run', X: 'Menu', Y: 'Y Button', L: 'L Bumper', R: 'R Bumper',
-  Start: 'Pause', Select: 'Select',
+  A: 'Confirm / Talk', B: 'Cancel / Run', X: 'Menu', Y: 'Y Button', L: 'L Button', R: 'R Button',
+  Start: 'Start Button', Select: 'Select Button',
   Up: 'Move Up', Down: 'Move Down', Left: 'Move Left', Right: 'Move Right',
 };
 
