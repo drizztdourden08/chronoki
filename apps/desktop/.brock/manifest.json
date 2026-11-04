@@ -21,6 +21,11 @@
       "id": "game-info",
       "package": "@drizztdourden08/brock-game-info",
       "version": "0.120.1"
+    },
+    {
+      "id": "randomizer",
+      "package": "@drizztdourden08/brock-randomizer",
+      "version": "0.120.1"
     }
   ]
 }

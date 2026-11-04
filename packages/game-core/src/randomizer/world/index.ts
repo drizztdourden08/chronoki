@@ -7,8 +7,12 @@ export { isCtKeyItem } from './is-ct-key-item';
 export { CT_KEY_ITEMS, CT_KEY_ITEM_NAMES } from './ct-key-items.constants';
 export { CT_OPTION_CATALOG } from './ct-options.constants';
 export { CT_REGIONS } from './regions/ct-regions.constants';
-export { CT_GAME, CT_WORLD_SCHEMA } from './ct-world.constants';
+export { CT_GAME, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA } from './ct-world.constants';
+export { rollCtPlacement } from './roll-ct-placement';
+export { describeCtPlacement } from './describe-ct-placement';
+export { treasureRomIdOf } from './treasure-rom-id-of';
 export type { CtOptionDef } from './ct-option-def.type';
+export type { CtPlacement } from './ct-placement.type';
 export type { CtRegionSpec } from './ct-region-spec.type';
 export type { CtOptionValues, CtWorldInput } from './ct-world-input.type';
 export type {

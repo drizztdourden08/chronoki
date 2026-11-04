@@ -39,6 +39,7 @@ interface ProfileWizardValues {
   name: string;
   rom: string;
   preset: ProfilePresetId;
+  [slice: string]: unknown;
 }
 
 interface MsuFolderImport {

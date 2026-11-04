@@ -4,12 +4,14 @@ import displayRenderer from '@drizztdourden08/brock-display/renderer';
 import portKitRenderer from '@drizztdourden08/brock-port-kit/renderer';
 import inputRenderer from '@drizztdourden08/brock-input/renderer';
 import gameInfoRenderer from '@drizztdourden08/brock-game-info/renderer';
+import randomizerRenderer from '@drizztdourden08/brock-randomizer/renderer';
 
 const rendererModules: RendererModule[] = [
   displayRenderer,
   portKitRenderer,
   inputRenderer,
   gameInfoRenderer,
+  randomizerRenderer,
 ];
 
 export { rendererModules };

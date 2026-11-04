@@ -44,6 +44,12 @@ const HOST_FEATURES: FeatureDef[] = [
     userMessage: 'Read only: it never changes what the game computes. Off in Vanilla Safe.',
     group: 'Quality of life', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: true, live: true,
   },
+  {
+    id: 'randomizer', label: 'Randomizer',
+    description: 'Lets a new profile shuffle where treasure is found, from a seed, and tracks the checks while you play.',
+    userMessage: 'Changes the game\'s treasure. New randomizer profiles need it on. Off in Vanilla Safe.',
+    group: 'Quality of life', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: true, live: false,
+  },
 ];
 
 export { HOST_FEATURES };

@@ -6,3 +6,4 @@ export type { CtMemoryOptions } from './memory/ct-memory-options.type';
 export { isCtSafeFrame } from './safe-frame/is-ct-safe-frame';
 export * from './world';
 export * from './apply';
+export * from './session';

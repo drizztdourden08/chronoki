@@ -5,7 +5,9 @@ import type { WizardApi } from '@drizztdourden08/tessera/composites';
 import { PRESET_HINTS, PRESET_OPTIONS } from '@app/profiles/presets';
 import type { ProfileWizardValues, ReadyRom } from '../../ProfileManager.type';
 import { STEP_IDS, STEP_LABELS } from './ProfileCreateWizard.constants';
+import { ModuleStepBody } from './ModuleStepBody';
 import { presetLabelOf } from './behavior/preset-label-of';
+import { randomizerReviewSection } from './behavior/randomizer-review-section';
 
 const ProfileStepBody = ({ wizard, readyRoms }: { wizard: WizardApi<ProfileWizardValues>; readyRoms: ReadyRom[] }) => {
   const { values, update } = wizard;
@@ -42,13 +44,13 @@ const ProfileStepBody = ({ wizard, readyRoms }: { wizard: WizardApi<ProfileWizar
               { label: 'ROM', value: values.rom, title: values.rom },
               { label: 'Preset', value: presetLabelOf(values.preset) },
             ],
-          }]}
+          }, ...[randomizerReviewSection(values)].filter((section) => section !== null)]}
           disabled={wizard.busy}
           onEdit={(stepId) => wizard.goTo(stepId)}
         />
       );
     default:
-      return null;
+      return <ModuleStepBody wizard={wizard} />;
   }
 };
 

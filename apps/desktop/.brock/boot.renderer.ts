@@ -2,11 +2,13 @@
 import type { RendererBootTask } from '@drizztdourden08/brock-react';
 import glyphSourceTask from '../src/boot/glyph-source.task';
 import migrateLegacyModeTask from '../src/boot/migrate-legacy-mode.task';
+import randomizerTask from '../src/boot/randomizer.task';
 import screenshotHoldTask from '../src/boot/screenshot-hold.task';
 
 const rendererBootTasks: RendererBootTask[] = [
   { ...glyphSourceTask, id: 'glyph-source' },
   { ...migrateLegacyModeTask, id: 'migrate-legacy-mode' },
+  { ...randomizerTask, id: 'randomizer' },
   { ...screenshotHoldTask, id: 'screenshot-hold' },
 ];
 
