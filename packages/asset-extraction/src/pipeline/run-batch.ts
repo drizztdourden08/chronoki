@@ -8,7 +8,13 @@ const runBatch = async (batch: StageBatch, jobs: number, runOne: RunOne): Promis
   const plan = GROUP_PLAN[batch.group];
   if (plan.parallel) {
     const limit = createLimiter(jobs);
-    await Promise.all(batch.stages.map((s) => limit(() => runOne(s))));
+    const finished = new Map<string, Promise<boolean>>();
+    const start = (s: StageBatch['stages'][number]): Promise<boolean> => {
+      const settled = Promise.all(s.after.map((id) => finished.get(id) ?? Promise.resolve(true))).then(() => limit(() => runOne(s)));
+      finished.set(s.id, settled);
+      return settled;
+    };
+    await Promise.all(batch.stages.map(start));
     return;
   }
   for (const s of batch.stages) {

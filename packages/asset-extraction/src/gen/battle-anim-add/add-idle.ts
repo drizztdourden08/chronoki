@@ -13,6 +13,7 @@ const makeIdleState = async (ctx: ImportContext, state: Uint8Array): Promise<Uin
   const dump: SavingDump = await peekOracle(ctx).peek({
     state,
     script: '100:8,0:392',
+    rule: false,
     env: { PEEK_SAVE: SAVED_STATE },
   });
   if (!dump.state) throw new Error('battle_anim_add: the oracle driver did not return the PEEK_SAVE state');

@@ -23,12 +23,12 @@ const pyAnchor = (a: Anchor): string => `(${a[0]}, ${a[1]})`;
 const genBattleGatoAtkfaces = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_gato_press_action');
   const oracle = peekOracle(ctx);
-  const mid = await peekSaved(oracle, { state, script: '100:8,0:392' });
+  const mid = await peekSaved(oracle, { state, script: '100:8,0:392', rule: false });
   const capture = (prefix: string): Promise<PeekDump> => {
     const [side, n] = prefix.split('_f') as [string, string];
     const [x, y] = CRONO_AT[side] as [number, number];
     const poke = `1D0C=${hex2(x)},1D23=${hex2(y)},5EB0=00,5EB1=00,5ECA=80`;
-    return oracle.peek({ state: mid, script: `0:${n}`, env: { PEEK_POKE: poke } });
+    return oracle.peek({ state: mid, script: `0:${n}`, rule: false, env: { PEEK_POKE: poke } });
   };
 
   const poses: Pose[] = [];

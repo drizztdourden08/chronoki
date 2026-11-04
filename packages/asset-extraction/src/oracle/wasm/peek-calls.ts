@@ -11,16 +11,17 @@ const peekCall = async (ct: CtRunner, req: PeekArgs): Promise<PeekDump> => {
   const args = ['--peek', STATE_IN, RAW_OUT];
   if (req.script !== null) args.push('--btnscript', req.script);
   if (req.frames !== undefined && req.frames !== null) args.push('--frames', String(req.frames));
+  const save = Boolean(req.save) || req.env?.PEEK_SAVE !== undefined;
   const outcome = await ct({
     args,
     rule: req.rule ?? true,
-    env: { ...(req.save ? { PEEK_SAVE: STATE_OUT } : {}), ...req.env },
+    env: { ...req.env, ...(save ? { PEEK_SAVE: STATE_OUT } : {}) },
     files: { [STATE_IN]: req.state },
     outputs: [...dumpPaths(RAW_OUT), STATE_OUT],
   });
   const dump = readDump(outcome, RAW_OUT, `--peek (${tailOf(outcome).slice(-300)})`);
   const state = outcome.files[STATE_OUT];
-  return req.save && state ? { ...dump, state } : dump;
+  return save && state ? { ...dump, state } : dump;
 };
 
 export { peekCall };

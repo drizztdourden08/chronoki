@@ -77,7 +77,7 @@ const bake = (name: string, facing: number, dump: PeekDump): Baked => {
 const genBattleGatoFaces = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_gato_press_action');
   const oracle = peekOracle(ctx);
-  const capture = (n: number): Promise<PeekDump> => oracle.peek({ state, script: `100:8,0:${n - 8}` });
+  const capture = (n: number): Promise<PeekDump> => oracle.peek({ state, script: `100:8,0:${n - 8}`, rule: false });
 
   const idle = await capture(400);
   const cellsI = cellsOf(decodeOam(oamBlob(idle.oam)));

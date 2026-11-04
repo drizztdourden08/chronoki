@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind constants */
 const IMPORT_USAGE =
-  'usage: node --experimental-wasm-jspi packages/asset-extraction/src/cli/import.ts --rom <file> --belthasar <dir> --abi native64|wasm32 --out <dir> [--work <dir>] [--jobs n] [--glue <chronoki-oracle.js>]';
+  'usage: node --experimental-wasm-jspi packages/asset-extraction/src/cli/import.ts --rom <file> --belthasar <dir> --abi native64|wasm32 --out <dir> [--work <dir>] [--jobs n] [--glue <chronoki-oracle.js>] [--only <id,id,...>] [--from <id>]';
 
 const JSPI_FLAG = '--experimental-wasm-jspi';
 

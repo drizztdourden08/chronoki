@@ -16,6 +16,7 @@ interface StageDef {
   status: StageStatus;
   step: boolean;
   needs: StageNeed[];
+  after: string[];
 }
 
 type StageRun = (ctx: ImportContext) => Promise<void>;

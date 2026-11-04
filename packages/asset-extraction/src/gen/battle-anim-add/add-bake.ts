@@ -13,7 +13,7 @@ const bakeGroup = async (ctx: ImportContext, state: Uint8Array, specs: Spec[]): 
   const kfs: AddKf[] = [];
   const tiles: Uint8Array[][] = [];
   for (const [pal, pose, rf, ...extra] of specs) {
-    const dump = await oracle.peek({ state, script: holdScript(rf) });
+    const dump = await oracle.peek({ state, script: holdScript(rf), rule: false });
     const on = combatant(decodeOam(oamBlob(dump.oam)), pal);
     kfs.push({
       pal,
