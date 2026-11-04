@@ -4,6 +4,7 @@ import { Box, Image, Text } from '@drizztdourden08/tessera/primitives';
 import { GameLayer } from '@app/views/GameLayer';
 import { useGameSession } from '@app/views/GameSession';
 import { PauseOverlay } from '@app/views/PauseOverlay';
+import { ProfileSwitcherOverlay } from '@app/views/ProfileSwitcherOverlay';
 import { SaveStateOverlay } from '@app/views/SaveStateOverlay';
 import './GameView.css';
 

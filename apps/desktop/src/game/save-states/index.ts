@@ -7,4 +7,5 @@ export { loadState } from './load-state';
 export { overwriteNamedState } from './overwrite-named-state';
 export { saveNamedState } from './save-named-state';
 export { saveState } from './save-state';
+export { screenshotBytes } from './screenshot-bytes';
 export type { SaveStateContext, StateFailure, StateResult } from './save-state.type';
