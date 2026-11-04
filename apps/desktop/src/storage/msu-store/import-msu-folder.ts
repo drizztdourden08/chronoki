@@ -4,7 +4,10 @@ import { installClassicSet } from './install-classic-set';
 import { DEFAULT_PACK_NAME } from './msu-store.constants';
 import type { MsuImportProgress, MsuImportResult, MsuSourceFile } from './msu-store.type';
 
-const folderNameOf = (files: File[]): string => files[0]?.webkitRelativePath.split('/')[0] || DEFAULT_PACK_NAME;
+const folderNameOf = (files: File[]): string => {
+  const name = files[0]?.webkitRelativePath.split('/')[0] ?? '';
+  return name === '' ? DEFAULT_PACK_NAME : name;
+};
 
 const toSource = async (file: File): Promise<MsuSourceFile> => ({ name: file.name, bytes: new Uint8Array(await file.arrayBuffer()) });
 

@@ -1,12 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import { FADE_CTRL_BASE } from './msu-bridge.constants';
 import { ctrlOfCommand } from './ct-music-ctrl';
+import type { CollectedMusic } from './diff-song.type';
 import type { BridgeTrackState, MusicStateSnapshot } from './music-state.type';
-
-interface CollectedMusic {
-  ctrls: readonly number[];
-  state: BridgeTrackState;
-}
 
 const playCtrls = (snapshot: MusicStateSnapshot): number[] =>
   snapshot.commands.map(ctrlOfCommand).filter((ctrl): ctrl is number => ctrl !== null);

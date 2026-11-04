@@ -1,13 +1,12 @@
 /* @layer bridge-wasm @kind logic */
 import type { CoreCalls } from '@drizztdourden08/brock-port-kit';
 import { classifyCtMusic } from './classify-ct-music';
+import { FRESH } from './create-msu-bridge.constants';
 import { diffSong } from './diff-song';
 import { CK_EXPORT_MUSIC_STATE } from './msu-bridge.constants';
 import type { BridgeTrackState, MsuBridge, MsuBridgeEvent } from './music-state.type';
 import { readMusicState } from './read-music-state';
 import { setVoiceGains } from './set-voice-gains';
-
-const FRESH: BridgeTrackState = { song: null, fade: null };
 
 const createMsuBridge = (calls: CoreCalls, onEvent: (event: MsuBridgeEvent) => void): MsuBridge => {
   let state: BridgeTrackState = FRESH;
