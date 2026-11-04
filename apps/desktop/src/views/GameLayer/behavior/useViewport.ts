@@ -4,7 +4,6 @@ import type { AppSettings, ViewportMode } from '@app/settings.type';
 
 const useViewport = (): { viewport: ViewportMode; pixelPerfect: boolean } => {
   const { settings } = useSettings<AppSettings>();
-  if (settings.original) return { viewport: 'none', pixelPerfect: false };
   const viewport = settings.viewportConstraint;
   return { viewport, pixelPerfect: settings.pixelPerfect && viewport === 'none' };
 };
