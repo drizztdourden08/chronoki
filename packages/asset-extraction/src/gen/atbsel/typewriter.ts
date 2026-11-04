@@ -1,50 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
-const STR_TBL = 0xffcf3b - 0xc00000;
-const WIDTH_TBL = 0xc260e6 - 0xc00000;
-const INDENT = 8;
-const TEXT_X = 32;
-
-const penRows = (rom: Uint8Array): number[][][] => {
-  const out: number[][][] = [];
-  for (const row of [0, 1]) {
-    const at = STR_TBL + (row + 1) * 2;
-    const off = (rom[at] as number) | ((rom[at + 1] as number) << 8);
-    let a = 0xff0000 + off - 0xc00000;
-    const chars: number[] = [];
-    while (rom[a] !== 0x00) {
-      chars.push(rom[a] as number);
-      a += 1;
-    }
-    const lines: number[][] = [[]];
-    for (const c of chars) {
-      if (c === 0x05) lines.push([]);
-      else (lines[lines.length - 1] as number[]).push(c);
-    }
-    out.push(
-      lines.map((ln) => {
-        let pen = INDENT;
-        const pens: number[] = [];
-        ln.forEach((c, k) => {
-          pen += rom[WIDTH_TBL + (c - 0xa0)] as number;
-          if (k % 2 === 1 || k === ln.length - 1) pens.push(pen);
-        });
-        return pens;
-      }),
-    );
-  }
-  return out;
-};
+import { TEXT_X } from './typewriter.constants';
+import type { EmitTypewriterOptions } from './typewriter.type';
 
 const pyStr = (v: number | undefined): string => (v === undefined ? 'None' : String(v));
 
-const emitTypewriter = (
-  pens: number[][][],
-  empty: (number | undefined)[][],
-  ex: number,
-  ey: number,
-  ew: number,
-  eh: number,
-): string => {
+const emitTypewriter = ({ pens, empty, ex, ey, ew, eh }: EmitTypewriterOptions): string => {
   const o: string[] = [];
   const w = (t = ''): void => {
     o.push(`${t}\n`);
@@ -90,4 +50,4 @@ const emitTypewriter = (
   return o.join('');
 };
 
-export { TEXT_X, emitTypewriter, penRows };
+export { emitTypewriter };
