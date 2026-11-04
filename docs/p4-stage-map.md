@@ -13,14 +13,14 @@ counted in setup.py's "progress K/N". Ported 10, pending 55. Python paths are re
 | ct.exe oracle | `oracle/oracle-driver.type.ts` | interface only (P3 supplies the WASM driver) |
 | extract_assets.py container (build layout) | `ctas/ctas-builder.ts`, `read-ctas.ts` | ported |
 | pack_tables.py back end (layout, relocs, pool, FNV hash, container, merge_into) | `tables/*.ts`, `ctas/table-container.ts` | ported; pointer width is a parameter |
-| pack_tables.py front end (Headers, Expr, lexer: C parser) | none | pending |
+| pack_tables.py front end (Headers, Expr, lexer: C parser) | `tables/c-parse/*.ts` | ported |
 
 ## Stages
 
 | Stage | Python | Group | Status |
 |---|---|---|---|
 | verify-rom | setup.py main; ctlib/rom.py | setup | ported (`pipeline/setup-runners.ts`) |
-| shapes-install | gen/shapes.py install | setup | pending |
+| shapes-install | gen/shapes.py install | setup | ported (`tables/shapes-install-stage.ts`; needs `kit.shapes`) |
 | oracle | setup.py main (ct.exe) | setup | ported (needs the oracle driver) |
 | replay-recipes | recipes.py make_many | setup | ported (needs the oracle driver) |
 | snd_timing, anim_oplen, lz_pack, ow_world, ow_sprites, ct_window, ct_namewin, ct_namemsg | gen/<name>.py | captures | pending (oracle) |
@@ -34,7 +34,7 @@ counted in setup.py's "progress K/N". Ported 10, pending 55. Python paths are re
 | menu_desc | gen/menu_desc.py | generate | pending (text.py, compile) |
 | menu_equip, menu_techrom, animeng_pc, battle_hud_chrome | gen/<name>.py | generate | pending (ROM only, next to port) |
 | the other 37 gens (title_intro, seq_*, battle_*, ct_*, ow_*, dlg_cursor, menu_*) | gen/<name>.py, gen/xlat_all.py | generate | pending (oracle power-on) |
-| pack-tables | gen/pack_tables.py pack | tail | pending (needs the C parser) |
+| pack-tables | gen/pack_tables.py pack | tail | ported (`tables/pack-tables-stage.ts`; layout width from `ctx.abi`) |
 | steam-margins | steam_wide.py | tail | pending |
 | write-player-assets | gen/pack_tables.py into | tail | ported |
 
