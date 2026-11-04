@@ -39,7 +39,7 @@
     "@drizztdourden08/brock-lint-config": "catalog:",
     "@drizztdourden08/brock-plugin-snes": "catalog:",
     "@drizztdourden08/brock-thread": "catalog:",
-    "@drizztdourden08/standards": "^0.14.2",
+    "@drizztdourden08/standards": "^0.15.0",
     "@drizztdourden08/tessera": "catalog:",
     "@types/node": "catalog:",
     "@vitejs/plugin-react": "catalog:",
