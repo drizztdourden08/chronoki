@@ -1,4 +1,4 @@
-/* @layer bridge-wasm @kind logic */
+/* @layer bridge-wasm @kind constants */
 import type { CkSettings } from './core-config-ini.type';
 import { definePort } from '@drizztdourden08/brock-port-kit';
 import {
@@ -12,7 +12,7 @@ const CHRONOKI_PORT = definePort<CkSettings>({
   core: CHRONOKI_CORE,
   rom: {
     extensions: ['.sfc', '.smc'],
-    known: CT_ROM_SHA1 ? { [CT_ROM_SHA1]: { id: CT_ROM_KIND, label: CT_ROM_LABEL } } : {},
+    known: { [CT_ROM_SHA1]: { id: CT_ROM_KIND, label: CT_ROM_LABEL } },
     normalize: stripCopierHeader,
     keepFileName: true,
   },

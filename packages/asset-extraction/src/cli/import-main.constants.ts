@@ -14,4 +14,16 @@ const EXIT_USAGE = 2;
 
 const EXIT_INCOMPLETE = 3;
 
-export { DEFAULT_WORK_DIR, EXIT_INCOMPLETE, EXIT_USAGE, GLUE_RELATIVE_PATH, IMPORT_USAGE, JSPI_FLAG, PACK_FILES };
+const IMPORT_OPTIONS = {
+  rom: { type: 'string' },
+  belthasar: { type: 'string' },
+  abi: { type: 'string' },
+  out: { type: 'string' },
+  work: { type: 'string' },
+  jobs: { type: 'string' },
+  glue: { type: 'string' },
+  only: { type: 'string' },
+  from: { type: 'string' },
+} as const;
+
+export { DEFAULT_WORK_DIR, EXIT_INCOMPLETE, EXIT_USAGE, GLUE_RELATIVE_PATH, IMPORT_OPTIONS, IMPORT_USAGE, JSPI_FLAG, PACK_FILES };

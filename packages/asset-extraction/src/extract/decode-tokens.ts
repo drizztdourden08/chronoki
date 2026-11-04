@@ -1,7 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import { DEFAULT_PB, DEFAULT_IND } from './text-tokens.constants';
 import type { DecodeOptions, TokenSource, TokenState } from './text-tokens.type';
-import { stepToken, takeByte } from './token-handlers';
+import { takeByte } from './take-byte';
+import { stepToken } from './token-handlers';
 
 const decodeTokens = (
   rom: Uint8Array,

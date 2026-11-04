@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { decodeCkState } from './decode-ck-state';
 import { encodeCkState } from './encode-ck-state';
 
-describe('CKST container', () => {
+describe('CKST container', { tags: ['critical'] }, () => {
   it('round-trips scene, apu and options', () => {
     const parts = {
       scene: new Uint8Array([1, 2, 3, 4]),

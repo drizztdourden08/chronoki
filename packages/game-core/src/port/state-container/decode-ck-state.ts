@@ -1,8 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { CkStateParts } from './ck-state.type';
-import { CKST_HEADER_BYTES, CKST_LENGTH_BYTES, CKST_MAGIC, CKST_VERSION } from './ck-state.constants';
-
-const SECTION_COUNT = 3;
+import { CKST_HEADER_BYTES, CKST_LENGTH_BYTES, CKST_MAGIC, CKST_SECTION_COUNT, CKST_VERSION } from './ck-state.constants';
 
 const decodeCkState = (bytes: Uint8Array): CkStateParts | null => {
   if (bytes.length < CKST_HEADER_BYTES) return null;
@@ -11,7 +9,7 @@ const decodeCkState = (bytes: Uint8Array): CkStateParts | null => {
   if (magic !== CKST_MAGIC || view.getUint32(CKST_LENGTH_BYTES, true) !== CKST_VERSION) return null;
   const sections: Uint8Array[] = [];
   let at = CKST_HEADER_BYTES;
-  for (let i = 0; i < SECTION_COUNT; i += 1) {
+  for (let i = 0; i < CKST_SECTION_COUNT; i += 1) {
     if (at + CKST_LENGTH_BYTES > bytes.length) return null;
     const length = view.getUint32(at, true);
     const start = at + CKST_LENGTH_BYTES;

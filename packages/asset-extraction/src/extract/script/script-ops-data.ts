@@ -35,11 +35,13 @@ const shiftRight = (cur: number, src: number): number => {
   return res;
 };
 
+const isOneOf = (op: number, ops: number[]): boolean => ops.includes(op);
+
 const localCompute = (op: number, cur: number, src: number): number => {
-  if (op === 0x5b || op === 0x5e) return cur + src;
-  if (op === 0x5f || op === 0x60 || op === 0x61) return cur - src;
-  if (op === 0x63 || op === 0x69) return cur | src;
-  if (op === 0x64 || op === 0x67) return cur & src;
+  if (isOneOf(op, [0x5b, 0x5e])) return cur + src;
+  if (isOneOf(op, [0x5f, 0x60, 0x61])) return cur - src;
+  if (isOneOf(op, [0x63, 0x69])) return cur | src;
+  if (isOneOf(op, [0x64, 0x67])) return cur & src;
   if (op === 0x6b) return cur ^ src;
   return shiftRight(cur, src);
 };
