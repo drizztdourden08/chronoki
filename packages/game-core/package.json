@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@chronoki/features": "workspace:*",
+    "@chronoki/game-data": "workspace:*",
+    "@drizztdourden08/brock-msu": "^0.120.0",
     "@drizztdourden08/brock-port-kit": "^0.120.0"
   }
 }
