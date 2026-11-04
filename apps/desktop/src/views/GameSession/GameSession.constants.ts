@@ -29,7 +29,7 @@ const INPUT_PROBE_GAP_FRAMES = 30;
 
 const INPUT_PROBE_BUTTONS = ['Start', 'A'];
 
-const INPUT_PROBE_STORY_BUTTONS = ['Start', ...Array.from({ length: 24 }, () => 'A')];
+const INPUT_PROBE_STORY_BUTTONS = ['Start', ...Array.from({ length: 24 }, () => 'A'), 'Start', ...Array.from({ length: 30 }, () => 'A')];
 
 const HOST_PROBE_BOOT_FRAMES = 300;
 
