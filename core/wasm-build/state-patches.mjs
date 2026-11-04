@@ -64,7 +64,7 @@ const writeStatePatches = (genDir, belthasar) => {
   const out = {
     'ct_vm.c': prefixed(belthasar, 'ct_vm.c'),
     'audio.c': prefixed(belthasar, 'audio.c'),
-    'field.c': applyPatches('field.c', '#include "ck_reconnect.h"\n' + readFileSync(join(belthasar, 'src', 'field.c'), 'utf8'), FIELD_PATCHES),
+    'field.c': applyPatches('field.c', '#include "ck_reconnect.h"\n' + readFileSync(join(belthasar, 'src', 'field.c'), 'utf8').replace(/\r\n/g, '\n'), FIELD_PATCHES),
   };
   for (const [name, text] of Object.entries(out)) writeFileSync(join(dir, name), text);
   return { files: Object.keys(out).map((n) => join(dir, n)), replaced: Object.keys(out).map((n) => `src/${n}`) };
