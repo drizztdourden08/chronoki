@@ -1,7 +1,2 @@
-/* @layer shared-placeholder @kind barrel */
-import type { PackagePlaceholder } from './placeholder.type';
-
-const PLACEHOLDER: PackagePlaceholder = { name: '@chronoki/design', ready: false };
-
-export { PLACEHOLDER };
-export type { PackagePlaceholder };
+/* @layer shared-other @kind barrel */
+export { CHRONOKI_FONT_TOKEN, CHRONOKI_PALETTE } from './chronoki.constants';

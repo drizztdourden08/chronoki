@@ -14,8 +14,7 @@ export default defineBrockConfig({
     profilesRoute: 'data/profiles',
     artifactPrefix: 'chronoki-',
     dataDirs: ['assets', 'roms', 'profiles', 'config', 'input'],
-    // TODO: brand icons arrive with @chronoki/design; the Brock default set stands in until then.
-    icons: { brand: 'brock' },
+    icons: { brand: 'chronoki' },
   },
   targets: ['desktop', 'android', 'web'],
   modules: ['display', 'port-kit', 'input'],
