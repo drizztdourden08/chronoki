@@ -8,6 +8,7 @@ import { useGameSession } from '@app/views/GameSession';
 import { GAME_LAYER_ERROR_TITLE, GAME_LAYER_LABEL } from './GameLayer.constants';
 import { stageClass } from './behavior/stage-class';
 import { useGameBoot } from './behavior/useGameBoot';
+import { useAspectRatioLock } from './behavior/useAspectRatioLock';
 import { useGameInput } from './behavior/useGameInput';
 import { useLegacyStretchMigration } from './behavior/useLegacyStretchMigration';
 import { usePixelPerfectSize } from './behavior/usePixelPerfectSize';
@@ -22,6 +23,7 @@ const GameLayer = () => {
   const { viewport, pixelPerfect } = useViewport();
   const { settings } = useGameSession();
   useLegacyStretchMigration();
+  useAspectRatioLock(launch !== null, frameSizeOf({ widescreen: settings.widescreen, renderScale: 1, interpolation: false }));
   usePixelPerfectSize(stageRef, pixelPerfect, frameSizeOf({ widescreen: settings.widescreen, renderScale: 1, interpolation: false }));
   useGameBoot({ canvasRef, launch });
   useGameInput(status === 'running' || status === 'paused', launch?.profileId ?? null, onFunctionAction, onFunctionRelease);

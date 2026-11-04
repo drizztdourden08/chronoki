@@ -13,7 +13,7 @@ const windowModes = [
 
 const viewportModes = [
   { value: 'none', label: 'Letterbox', hint: 'Keeps the game ratio and fills the rest of the window with black bars.' },
-  { value: 'fit', label: 'Fit Window', hint: 'Fills the window as far as the game ratio allows.' },
+  { value: 'fit', label: 'Fit Window', hint: 'Fills the window as far as the game ratio allows, and resizing the window keeps the game ratio.' },
   { value: 'fill', label: 'Stretch', hint: 'Stretches the picture to fill the whole window.' },
 ];
 
