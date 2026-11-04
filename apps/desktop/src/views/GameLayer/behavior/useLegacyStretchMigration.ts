@@ -4,7 +4,6 @@ import { useSettings } from '@drizztdourden08/brock-react';
 import type { AppSettings } from '@app/settings.type';
 import { LEGACY_STRETCH_GATE } from '../GameLayer.constants';
 
-/* The old "Stretch to window" gate became the Stretch viewport choice: carry a saved "on" over once. */
 const useLegacyStretchMigration = (): void => {
   const { settings, patch } = useSettings<AppSettings>();
   const { gates } = settings;

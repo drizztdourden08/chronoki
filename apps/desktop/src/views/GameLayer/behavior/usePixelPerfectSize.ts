@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import type { RefObject } from 'react';
 import { PIXEL_PERFECT_HEIGHT_VAR, PIXEL_PERFECT_WIDTH_VAR } from '../GameLayer.constants';
 
-/* Largest whole-number scale of the source picture that fits the stage, set as CSS custom properties. */
 const usePixelPerfectSize = (stageRef: RefObject<HTMLElement | null>, enabled: boolean, source: { width: number; height: number }): void => {
   const { width, height } = source;
   useEffect(() => {
