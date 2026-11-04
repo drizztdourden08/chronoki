@@ -3,14 +3,16 @@ import { useProduct } from '@drizztdourden08/brock-react';
 import { Box, Image, Text } from '@drizztdourden08/tessera/primitives';
 import { GameLayer } from '@app/views/GameLayer';
 import { useGameSession } from '@app/views/GameSession';
+import { SaveStateOverlay } from '@app/views/SaveStateOverlay';
 import './GameView.css';
 
 const GameView = () => {
-  const { launch, notice } = useGameSession();
+  const { launch, notice, running } = useGameSession();
   const product = useProduct();
   return (
     <Box className="game-view">
       <GameLayer />
+      {running && <SaveStateOverlay />}
       {launch === null && (
         <Box className="game-view__idle">
           <Image className="game-view__mark" src={product.logos.mark} alt="" />

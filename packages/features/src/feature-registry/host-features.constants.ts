@@ -20,7 +20,7 @@ const HOST_FEATURES: FeatureDef[] = [
   {
     id: 'saveStates', label: 'Save states', description: 'Save and load the whole game at any moment.',
     userMessage: 'Save and load the whole game at any moment.',
-    group: 'Saves', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: false, live: true,
+    group: 'Saves', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: false, live: true,
   },
   {
     id: 'autoSave', label: 'Auto-save', description: 'Saves a state on its own at a set interval.',
