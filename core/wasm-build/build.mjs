@@ -2,14 +2,14 @@
 // embedded; the shell puts /ct_assets.dat (and /ct_tables.dat) in the core's file system before it starts the engine.
 //   node core/wasm-build/build.mjs [--only game|oracle] [--emsdk <dir>] [--debug]
 // Output (git-ignored): core/wasm-build/out/chronoki-core.{js,wasm}  (factory ChronoKiCore, the game: JSPI)
-//                       core/wasm-build/out/chronoki-oracle.{js,wasm} (factory ChronoKiOracle, ct_oracle: the replay check)
+//                       core/wasm-build/out/chronoki-oracle.{js,wasm} (factory ChronoKiOracle, the full ct tool: JSPI)
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeShapes } from './shapes.mjs';
-import { belthasar, gameSources, hostSources, oracleSources, reconnectSources, root } from './sources.mjs';
+import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = join(here, 'out');
@@ -97,15 +97,23 @@ const gameArgs = (gen) => [
   '-lm',
 ];
 
+// The full ct tool (the importer's ct.exe, docs/p3-findings.md): ct's own source list, the game's data-free table storage
+// (shapes.mjs) and the reconnect layer's coroutine. JSPI as the game's: the sound machine's coroutine (--sndtiming)
+// suspends inside main, so callMain returns a Promise.
 const oracleArgs = (gen) => [
   ...common,
-  '-DCT_ORACLE_ONLY',
-  '-I', abs('snes'), '-I', abs('src'), '-I', gen.dir,
-  ...oracleSources().map(abs),
+  '-DCT_DATAFREE', '-DCT_XLAT_NO_GWARP',
+  '-I', abs('snes'), '-I', abs('src'), '-I', join(root, 'core', 'reconnect'), '-I', abs('src/tables'), '-I', gen.dir,
+  ...ctSources().map(abs),
+  ...gen.gameFiles,
+  join(here, 'xlat_stubs.c'),
+  join(root, 'core', 'reconnect', 'coro_wasm.c'),
   '-o', join(outDir, 'chronoki-oracle.js'),
+  '-sJSPI', '-sJSPI_EXPORTS=main,ck_coro_entry',
   '-sINVOKE_RUN=0', '-sEXIT_RUNTIME=1',
   '-sMODULARIZE=1', '-sEXPORT_NAME=ChronoKiOracle', '-sENVIRONMENT=node,web,worker',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=134217728', '-sSTACK_SIZE=8388608',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=callMain,FS,ENV',
   '-lm',
 ];

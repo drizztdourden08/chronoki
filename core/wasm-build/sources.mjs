@@ -58,9 +58,18 @@ const gameSources = () => {
   return [...kept, 'src/overlay_stub.c'];
 };
 
-const oracleSources = () => {
-  const list = expand(execBlock(cmake(), 'ct_oracle'));
-  return list.filter((f) => existsSync(join(belthasar, f)));
+// The full ct tool (add_executable(ct ...)): every mode of main.c, no CT_ORACLE_ONLY. src/sound/coro.c is the reconnect
+// layer's (coro_wasm.c); src/xlat/*.c is not in the import (xlat_stubs.c stands in); any other missing file is an error.
+const ctSources = () => {
+  const kept = [];
+  const missing = [];
+  for (const f of expand(execBlock(cmake(), 'ct'))) {
+    if (replaced.has(f) || f.startsWith('src/xlat/')) continue;
+    if (existsSync(join(belthasar, f))) kept.push(f);
+    else missing.push(f);
+  }
+  if (missing.length) throw new Error(`ct in CMakeLists.txt but not in the import: ${missing.join(', ')}`);
+  return kept;
 };
 
 const reconnectSources = [
@@ -70,4 +79,4 @@ const reconnectSources = [
 
 const hostSources = ['ck_api.c', 'ck_loop.c'].map((f) => join(here, f));
 
-export { belthasar, gameSources, hostSources, oracleSources, reconnectSources, root }
+export { belthasar, gameSources, ctSources, hostSources, reconnectSources, root }

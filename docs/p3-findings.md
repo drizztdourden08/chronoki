@@ -113,11 +113,17 @@ compiles the `.wasm` once and hands every instance the same `WebAssembly.Module`
 To resolve the `boot` clash (OracleDriver.boot(rom) vs the power-on capture), `OracleTools.boot` is now `powerOn` and
 `OracleTools.monitor` is `monitorText` (PeekOracle keeps `monitor`).
 
-**Modes the oracle build lacks.** `build.mjs` compiles `main.c` with `-DCT_ORACLE_ONLY`: only `--peek`, `--monitor`, `--fb`
-(and `--serve`) run. Every other mode exits 97 (`ct_oracle: not an oracle mode`), and the driver turns that into a stop. So
-these ported stages cannot run on the current `chronoki-oracle.wasm`: `--teleport` (teleport recipe steps, `teleport`),
-`--owforce`, `--owsprite`, `--owboat`, `--owbirds`, `--cputrace` (xlat_all), and `--lzpack`, `--animoplen`, `--sndtiming`
-(inside `#ifndef CT_ORACLE_ONLY`, they also need the assets and audio sources). Fixing it needs a second, fuller WASM build
-of `main.c` (the `ct.exe` source list, without `CT_ORACLE_ONLY`) for these modes. Unverified: the driver was never run
-against the built module (no tests allowed here); `--animoplen` opens `Chrono_Trigger_USA_SNES.sfc` by name, so the ROM is
-staged under that name in `/`.
+**The oracle build is the full ct tool (I-13 follow-up).** `build.mjs` no longer defines `CT_ORACLE_ONLY`; `chronoki-oracle`
+is `main.c` plus the `add_executable(ct ...)` list from Belthasar's CMakeLists (`ctSources()` in `sources.mjs`, read from the
+pin), so `--teleport`, `--owforce/owsprite/owboat/owbirds`, `--cputrace`, `--lzpack`, `--animoplen`, `--sndtiming` are compiled
+in. Build shape, as the game target's: `-DCT_DATAFREE -DCT_XLAT_NO_GWARP`, the shapes.mjs `datapack.c` + `tables_storage.c`
+(tables32 when present), `-I` src/snes/reconnect/src/tables/gen, `coro_wasm.c` in place of `sound/coro.c`, and
+`-sJSPI -sJSPI_EXPORTS=main,ck_coro_entry` (+ `_ck_coro_entry` exported). MODULARIZE, `ChronoKiOracle`, `callMain`, `FS`, `ENV`
+and `EXIT_RUNTIME=1` are unchanged. Not in the import: `src/xlat/*.c`, so `core/wasm-build/xlat_stubs.c` defines
+`CtXlat_*` (return `CT_XLAT_MISS`) and `CtXlatHdmaBuild` (-1): `--xlatcmp`, `--hdmabuildxlat`, `--hdmafuzz` do not work.
+No threads, stdin or sockets are used by the ct list; it needs only MEMFS files (ROM staged as `Chrono_Trigger_USA_SNES.sfc`
+for `--animoplen`, states, `--lzpack` list, outputs in `/out`).
+
+**Driver change needed.** With JSPI `callMain` returns a Promise (main is a suspending export): `run-ct.ts` must
+`status = (await module.callMain(argv)) ?? 0` (and keep catching a thrown ExitStatus around the await). Unverified: never built
+or run (no emcc allowed here); a likely first link error is a symbol from a file the reconnect layer replaced (present/settings).
