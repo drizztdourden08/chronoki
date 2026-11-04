@@ -2,9 +2,7 @@
 import { byteAt } from '../bytes/byte-reader';
 import { GLB, LOC } from './script-mem.constants';
 import type { OpHandler, RunCtx } from './script-run.type';
-
-const MASKS = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f];
-const ARITH = [0x5b, 0x5e, 0x5f, 0x60, 0x61, 0x63, 0x64, 0x67, 0x69, 0x6b, 0x6f];
+import { MASKS, ARITH } from './script-ops-data.constants';
 
 const b = (c: RunCtx, addr: number, k: number): number => byteAt(c.body, addr + k);
 const w = (c: RunCtx, addr: number, k: number): number => b(c, addr, k) | (b(c, addr, k + 1) << 8);
@@ -96,7 +94,7 @@ const counter = (delta: number): OpHandler =>
     c.mem.w8(i, c.mem.r8(i) + delta);
   });
 
-const DATA_OPS: [number, OpHandler][] = [
+const dataOps: [number, OpHandler][] = [
   [0x4f, store((c, a) => c.mem.w8(LOC + b(c, a, 2) * 2, b(c, a, 1)))],
   [0x50, store((c, a) => c.mem.w16(LOC + b(c, a, 3) * 2, w(c, a, 1)))],
   [0x75, store((c, a) => c.mem.w8(LOC + b(c, a, 1) * 2, 1))],
@@ -119,4 +117,4 @@ const DATA_OPS: [number, OpHandler][] = [
   [0x66, setBit(false)],
 ];
 
-export { DATA_OPS };
+export { dataOps };

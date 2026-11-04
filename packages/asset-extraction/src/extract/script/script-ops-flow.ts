@@ -13,7 +13,7 @@ const jumpIf =
 
 const b = (c: Parameters<OpHandler>[0], addr: number, k: number): number => byteAt(c.body, addr + k);
 
-const FLOW_OPS: [number, OpHandler][] = [
+const flowOps: [number, OpHandler][] = [
   [0x10, (c, addr) => addr + b(c, addr, 1) + 1],
   [0x11, (c, addr) => addr - b(c, addr, 1) + 1],
   [0x12, jumpIf((c, a) => cmp(c.mem.r8(LOC + b(c, a, 1) * 2), b(c, a, 2), b(c, a, 3)), 4)],
@@ -58,4 +58,4 @@ const FLOW_OPS: [number, OpHandler][] = [
   ],
 ];
 
-export { FLOW_OPS };
+export { flowOps };

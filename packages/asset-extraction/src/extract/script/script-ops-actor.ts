@@ -2,16 +2,7 @@
 import { byteAt } from '../bytes/byte-reader';
 import { LOC, PARTY } from './script-mem.constants';
 import type { OpHandler, RunCtx } from './script-run.type';
-
-const PC_LOADERS: [number, number][] = [
-  [0x57, 0],
-  [0x5c, 1],
-  [0x62, 2],
-  [0x6a, 3],
-  [0x68, 4],
-  [0x6c, 5],
-  [0x6d, 6],
-];
+import { PC_LOADERS } from './script-ops-actor.constants';
 
 const b = (c: RunCtx, addr: number, k: number): number => byteAt(c.body, addr + k);
 
@@ -81,7 +72,7 @@ const selfDraw =
     return nxt;
   };
 
-const ACTOR_OPS: [number, OpHandler][] = [
+const actorOps: [number, OpHandler][] = [
   ...PC_LOADERS.map(([op, id]): [number, OpHandler] => [op, loadChar(id)]),
   [0x80, loadChar(null)],
   [0x81, loadSprite(0)],
@@ -159,4 +150,4 @@ const ACTOR_OPS: [number, OpHandler][] = [
   ],
 ];
 
-export { ACTOR_OPS };
+export { actorOps };
