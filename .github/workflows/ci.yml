@@ -48,6 +48,15 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
 
+      - name: "Set up Emscripten"
+        uses: emscripten-core/setup-emsdk@v16
+        with:
+          version: "5.0.7"
+
+      - name: "Build the wasm core"
+        shell: bash
+        run: "pnpm --filter chronoki-desktop run ensure-wasm"
+
       - name: Build
         run: pnpm --dir "$APP_DIR" exec brock build
 
@@ -100,6 +109,15 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
 
+      - name: "Set up Emscripten"
+        uses: emscripten-core/setup-emsdk@v16
+        with:
+          version: "5.0.7"
+
+      - name: "Build the wasm core"
+        shell: bash
+        run: "pnpm --filter chronoki-desktop run ensure-wasm"
+
       - name: Build
         run: pnpm --dir "$APP_DIR" exec brock build
 
@@ -142,6 +160,15 @@ jobs:
         run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: "Set up Emscripten"
+        uses: emscripten-core/setup-emsdk@v16
+        with:
+          version: "5.0.7"
+
+      - name: "Build the wasm core"
+        shell: bash
+        run: "pnpm --filter chronoki-desktop run ensure-wasm"
 
       - name: Build the web app
         run: pnpm --dir "$APP_DIR" exec brock web build
