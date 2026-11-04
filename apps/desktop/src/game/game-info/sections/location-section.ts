@@ -13,10 +13,19 @@ const locationBlocks = ({ eraName, location }: ChronokiInfoSnapshot): Block[] =>
   },
 ];
 
+const detailBlock = ({ location }: ChronokiInfoSnapshot): Block => ({
+  kind: 'rows',
+  rows: [
+    { label: 'Previous map', value: { id: location.returnId, width: MAP_ID_WIDTH }, mono: true },
+    { label: 'Lead position', value: `${location.leadX}, ${location.leadY}`, mono: true },
+    { label: 'Epoch', value: `${location.epochX}, ${location.epochY}${location.epochBoarded ? ' (boarded)' : ''}`, mono: true },
+  ],
+});
+
 const locationSection: GameInfoSection<ChronokiInfoSnapshot> = {
   id: 'location',
   title: 'Location',
-  blocks: locationBlocks,
+  blocks: (snapshot) => [...locationBlocks(snapshot), detailBlock(snapshot)],
   compact: locationBlocks,
 };
 
