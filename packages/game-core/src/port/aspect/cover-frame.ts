@@ -2,6 +2,7 @@
 import { EPSILON } from './cover-frame.constants';
 import type { CkArea, CkAxisPlan, CkCoverFrame, CkFrameAxis, CkFrameRanges } from './aspect.type';
 import { fillBox } from './fill-box';
+import { wholeFrame } from './whole-frame';
 
 const evenCeil = (value: number): number => Math.ceil(value / 2 - EPSILON) * 2;
 
@@ -23,11 +24,13 @@ const planFit = (axis: CkFrameAxis): CkAxisPlan => {
 };
 
 /* The frame that fills the stage for a ratio: wide pictures keep their lines and pick a width, tall ones keep their width and
-   pick lines. The picture covers the fill box; what passes it is cropped. */
+   pick lines; with both axes free and whole pixels, both are picked (wholeFrame). The picture covers the fill box; what
+   passes it is cropped. */
 const coverFrame = (area: CkArea, ratio: number, ranges: CkFrameRanges, whole: boolean): CkCoverFrame => {
   const box = fillBox(ratio, area);
   if (box.width <= 0 || box.height <= 0) return { width: ranges.minWidth, height: ranges.minHeight, scale: 1 };
   const wide = ranges.minHeight === ranges.maxHeight;
+  if (whole && !wide && ranges.minWidth !== ranges.maxWidth) return wholeFrame(box, ranges);
   const axis: CkFrameAxis = wide
     ? { fixed: ranges.maxHeight, boxFixed: box.height, boxFree: box.width, min: ranges.minWidth, max: ranges.maxWidth }
     : { fixed: ranges.maxWidth, boxFixed: box.width, boxFree: box.height, min: ranges.minHeight, max: ranges.maxHeight };

@@ -5,8 +5,10 @@ import { coverFrame, fillBox, gateSettings, presentBoxOf, presentSizeOf } from '
 
 const WIDE = { minWidth: 256, maxWidth: 544, minHeight: 224, maxHeight: 224 };
 const TALL = { minWidth: 256, maxWidth: 256, minHeight: 224, maxHeight: 480 };
+const FREE = { minWidth: 256, maxWidth: 544, minHeight: 224, maxHeight: 480 };
 const area = (width: number, height: number) => ({ width, height });
 const ALL = FEATURE_REGISTRY.map((f) => f.id);
+const NO_TALL = ALL.filter((id) => id !== 'tallRendering');
 const settingsFor = (requested: string[], options: Partial<typeof DEFAULT_GATE_OPTIONS>) => {
   const { effective } = resolveGates(requested, { vanillaSafe: false, satisfied: new Set(['steamData']) });
   return gateSettings(effective, { ...DEFAULT_GATE_OPTIONS, ...options }, { volume: 100, mute: false });
@@ -24,7 +26,26 @@ describe('fill box', { tags: ['critical'] }, () => {
   });
 });
 
-describe('pixel perfect frame planning', { tags: ['critical'] }, () => {
+describe('pixel perfect frame on both axes', { tags: ['critical'] }, () => {
+  it('fills 1920x1080 exactly at x4 with 480x270', () => {
+    expect(coverFrame(area(1920, 1080), 16 / 9, FREE, true)).toEqual({ width: 480, height: 270, scale: 4 });
+  });
+
+  it('renders 428x240 at x3 on 1280x720 and at x6 on 2560x1440', () => {
+    expect(coverFrame(area(1280, 720), 16 / 9, FREE, true)).toEqual({ width: 428, height: 240, scale: 3 });
+    expect(coverFrame(area(2560, 1440), 16 / 9, FREE, true)).toEqual({ width: 428, height: 240, scale: 6 });
+  });
+
+  it('keeps 256 wide and 224 lines at least: 3:4 on 810x1080 is x3, 270x360', () => {
+    expect(coverFrame(area(810, 1080), 3 / 4, FREE, true)).toEqual({ width: 270, height: 360, scale: 3 });
+  });
+
+  it('raises the scale when the width would pass 544', () => {
+    expect(coverFrame(area(2560, 1080), 2560 / 1080, FREE, true)).toEqual({ width: 512, height: 224, scale: 5 });
+  });
+});
+
+describe('pixel perfect frame on one axis (tall rendering off)', { tags: ['critical'] }, () => {
   it('renders 384x224 at x5 for 16:9 on 1920x1080, cropping 4 lines top and bottom', () => {
     expect(coverFrame(area(1920, 1080), 16 / 9, WIDE, true)).toEqual({ width: 384, height: 224, scale: 5 });
   });
@@ -64,8 +85,9 @@ describe('free scale frame planning', { tags: ['critical'] }, () => {
 
 describe('gate settings frame', { tags: ['critical'] }, () => {
   it('feeds the planned width to the core when the stage is given', () => {
-    expect(settingsFor(ALL, { stageArea: area(1920, 1080), wholePixels: true }).wideWidth).toBe(384);
-    expect(settingsFor(ALL, { stageArea: area(1920, 1080) }).wideWidth).toBe(398);
+    expect(settingsFor(ALL, { stageArea: area(1920, 1080), wholePixels: true })).toMatchObject({ wideWidth: 480, tallLines: 270 });
+    expect(settingsFor(NO_TALL, { stageArea: area(1920, 1080), wholePixels: true })).toMatchObject({ wideWidth: 384, tallLines: 0 });
+    expect(settingsFor(ALL, { stageArea: area(1920, 1080) })).toMatchObject({ wideWidth: 398, tallLines: 0 });
     expect(settingsFor(ALL, { aspectRatio: 'original', stageArea: area(1920, 1080), wholePixels: true }).wideWidth).toBe(0);
   });
 
@@ -101,6 +123,13 @@ describe('canvas size with pixel perfect', { tags: ['critical'] }, () => {
     expect(presentSizeOf(area(2560, 1080), area(512, 224), 2560 / 1080, 'whole')).toEqual(area(2560, 1120));
     expect(presentSizeOf(area(1920, 1080), area(480, 224), 21 / 9, 'whole')).toEqual(area(1920, 896));
     expect(presentSizeOf(area(810, 1080), area(256, 270), 3 / 4, 'whole')).toEqual(area(1024, 1080));
+  });
+
+  it('fills the stage with a frame planned on both axes', () => {
+    expect(presentSizeOf(area(1920, 1080), area(480, 270), 16 / 9, 'whole')).toEqual(area(1920, 1080));
+    expect(presentSizeOf(area(1280, 720), area(428, 240), 16 / 9, 'whole')).toEqual(area(1284, 720));
+    expect(presentSizeOf(area(2560, 1440), area(428, 240), 16 / 9, 'whole')).toEqual(area(2568, 1440));
+    expect(presentSizeOf(area(810, 1080), area(270, 360), 3 / 4, 'whole')).toEqual(area(810, 1080));
   });
 
   it('still covers with a frame planned for an older stage, never x4 with bars', () => {

@@ -10,4 +10,8 @@ const CT_TALL_RANGES: CkFrameRanges = {
   minWidth: CT_ASPECT_MIN_WIDTH, maxWidth: CT_ASPECT_MIN_WIDTH, minHeight: CT_ASPECT_HEIGHT, maxHeight: CT_TALL_MAX_LINES,
 };
 
-export { CT_TALL_RANGES, CT_WIDE_RANGES };
+const CT_FREE_RANGES: CkFrameRanges = {
+  minWidth: CT_ASPECT_MIN_WIDTH, maxWidth: CT_ASPECT_MAX_WIDTH, minHeight: CT_ASPECT_HEIGHT, maxHeight: CT_TALL_MAX_LINES,
+};
+
+export { CT_FREE_RANGES, CT_TALL_RANGES, CT_WIDE_RANGES };

@@ -1,0 +1,4 @@
+/* @layer bridge-wasm @kind constants */
+const EPSILON = 1e-6;
+
+export { EPSILON };
