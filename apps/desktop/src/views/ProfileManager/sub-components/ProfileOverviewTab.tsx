@@ -3,7 +3,7 @@ import { Card, Field, Select, Stack } from '@drizztdourden08/tessera/primitives'
 import { FactsPanel } from '@drizztdourden08/tessera/composites';
 import type { Profile } from '@drizztdourden08/brock-core';
 import { updateProfile } from '@app/storage/profile-store';
-import { MODE_LABELS } from '@app/views/HomeTab/HomeTab.constants';
+import { MODE_LABELS } from '@app/profiles/profile-mode-labels.constants';
 import type { ReadyRom } from '../ProfileManager.type';
 import { buildProfileFacts } from '../behavior/build-profile-facts';
 import { useProfileSettings } from '../behavior/useProfileSettings';

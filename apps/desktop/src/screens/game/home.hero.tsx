@@ -7,7 +7,8 @@ import { HubGameControls } from '@app/compounds/HubGameControls';
 import { useProfileMode } from '@app/profiles/useProfileMode';
 import GameBackdrop from './game.backdrop';
 import { useGameSession } from '@app/views/GameSession';
-import { HomeDialogs, HomeTab, MODE_LABELS, buildProfileFacts, romFileOf, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
+import { MODE_LABELS } from '@app/profiles/profile-mode-labels.constants';
+import { HomeDialogs, HomeTab, buildProfileFacts, romFileOf, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
 
 const meta: ScreenMeta = {
   title: 'Home',

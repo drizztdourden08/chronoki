@@ -1,5 +1,5 @@
 /* @layer shared @kind types */
-type LockCause = 'vanillaSafe' | 'requires' | 'missingData' | 'developerBuild';
+type LockCause = 'vanillaSafe' |'missingData' | 'developerBuild';
 
 interface LockCauseContext {
   vanillaSafe: boolean;

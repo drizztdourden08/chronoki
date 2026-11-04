@@ -5,6 +5,7 @@ interface SettingsKey {
   key: string;
   label: string;
   format?: SettingFormat;
+  gate?: boolean;
 }
 
 interface SettingsSection {

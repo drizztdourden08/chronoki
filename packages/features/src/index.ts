@@ -4,6 +4,7 @@ export { FEATURE_REGISTRY } from './feature-registry/feature-registry.constants'
 export { FEATURES_BY_ID } from './feature-registry/features-by-id.constants';
 export { DEFAULT_GATE_OPTIONS } from './gate-options/gate-options.constants';
 export { lockCauseOf } from './lock-cause';
+export { isVanillaSafeLockedSetting } from './vanilla-safe-settings/is-vanilla-safe-locked-setting';
 export { resolveFeatures } from './resolve-features';
 export { resolveGates } from './resolve-gates';
 export type { LockCause, LockCauseContext } from './lock-cause';
