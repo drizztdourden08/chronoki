@@ -6,7 +6,7 @@ import { EXPORT_STATE_STAMP, readHeapText } from '../state-buffers';
 
 const readCoreStamp = (core: GameCore<CkSettings>): CkStamp | null => {
   const calls = core.calls();
-  if (!calls || !calls.has(EXPORT_STATE_STAMP)) return null;
+  if (!calls?.has(EXPORT_STATE_STAMP)) return null;
   const ptr = calls.number(EXPORT_STATE_STAMP);
   return ptr ? readCkStamp(readHeapText(calls, ptr)) : null;
 };

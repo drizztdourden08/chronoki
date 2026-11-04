@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { CkStamp } from './ck-state-v2.type';
+import type { CkStamp } from './sectioned-state.type';
 
 const readCkStamp = (text: string): CkStamp | null => {
   const values = new Map<string, string>();
