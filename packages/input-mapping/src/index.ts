@@ -38,6 +38,7 @@ export { computeBitmask } from './runtime/polling-engine';
 export type { BitmaskSources, GamepadMaps, HidDeviceState } from './runtime/polling-engine.type';
 export { FunctionActionEngine } from './runtime/function-actions';
 export type { FunctionKeyUpListener } from './runtime/function-actions.type';
+export { MANUAL_PAUSE } from './runtime/pause-manager.constants';
 export { PauseManager } from './runtime/pause-manager';
 export type { PauseListener } from './runtime/pause-manager';
 export { RawInputDispatcher } from './runtime/raw-input-dispatcher';

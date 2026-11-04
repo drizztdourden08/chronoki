@@ -2,11 +2,13 @@
 import { titleBarFromFiles } from '@drizztdourden08/brock-react';
 import frameRateItem, { order as frameRateOrder } from '../src/title-bar/frame-rate.action';
 import refreshRateItem, { order as refreshRateOrder } from '../src/title-bar/refresh-rate.action';
+import saveStatesItem, { order as saveStatesOrder } from '../src/title-bar/save-states.action';
 import volumeItem, { order as volumeOrder } from '../src/title-bar/volume.action';
 
 const appTitleBar = titleBarFromFiles([
   { id: 'frame-rate', source: frameRateItem, order: frameRateOrder },
   { id: 'refresh-rate', source: refreshRateItem, order: refreshRateOrder },
+  { id: 'save-states', source: saveStatesItem, order: saveStatesOrder },
   { id: 'volume', source: volumeItem, order: volumeOrder },
 ]);
 
