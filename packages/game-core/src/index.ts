@@ -3,7 +3,7 @@ export { CHRONOKI_PORT, CHRONOKI_VIDEO } from './port/chronoki-port-definition.c
 export {
   CHRONOKI_CORE, CHRONOKI_PORT_ID, COPIER_HEADER_BYTES, CRASH_ARM_DELAY_MS, CT_ASSETS_FILE, CT_FRAME_HEIGHT,
   CT_FRAME_WIDTH, CT_QUICK_SLOTS, CT_ROM_KIND, CT_ROM_LABEL, CT_ROM_SHA1, CT_SAMPLE_RATE, CT_SETTINGS_FILE,
-  CT_SRAM_FILE, CT_STATE_FILE, SRAM_SYNC_MS,
+  CT_SRAM_FILE, CT_STATE_FILE, CT_WIDE_FILE, SRAM_SYNC_MS,
 } from './port/chronoki-port.constants';
 export { buildCoreConfigIni } from './port/core-config-ini';
 export { DEFAULT_CK_SETTINGS } from './port/core-config-ini.constants';
