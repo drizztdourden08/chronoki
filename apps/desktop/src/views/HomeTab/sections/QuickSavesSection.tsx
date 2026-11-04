@@ -19,7 +19,6 @@ const QuickSavesSection = ({ profileId, running }: HomeSectionProps) => {
             isEmpty={info.savedAt === null}
             busy={busySlot === info.slot}
             disableSave={!running}
-            disableLoad={!running}
             onSave={(slot) => void save(slot)}
             onLoad={(slot) => void load(slot)}
           />

@@ -1,9 +1,11 @@
 /* @layer renderer-components @kind component */
+import { useProduct } from '@drizztdourden08/brock-react';
 import { Box, Icon, Image } from '@drizztdourden08/tessera/primitives';
 import { NO_SCREENSHOT_CANCEL, NO_SCREENSHOT_FRAME } from '../SaveSlot.constants';
 import type { SlotScreenshotProps } from '../SaveSlot.type';
 
 const SlotScreenshot = ({ screenshotUrl, isEmpty, slotNumber }: SlotScreenshotProps) => {
+  const product = useProduct();
   if (screenshotUrl) {
     return <Image src={screenshotUrl} alt={`Slot ${slotNumber}`} className="save-slot__img" />;
   }
@@ -31,7 +33,7 @@ const SlotScreenshot = ({ screenshotUrl, isEmpty, slotNumber }: SlotScreenshotPr
           strokeLinejoin="round"
         />
       </Box>
-      <Image src="./logos/sentri/sentri-trimmed.png" alt="" className="save-slot__empty-mascot" />
+      <Image src={product.logos.mark} alt="" className="save-slot__empty-mascot" />
     </Box>
   );
 };

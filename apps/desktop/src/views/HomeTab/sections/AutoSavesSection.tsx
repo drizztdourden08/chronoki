@@ -6,11 +6,12 @@ import type { NamedSaveEntry } from '@drizztdourden08/brock-port-kit';
 import { SaveRowActions } from '@app/compounds/SaveRowActions';
 import { useArmedRow } from '../behavior/useArmedRow';
 import { useAutoSaves } from '../behavior/useAutoSaves';
+import { autoTriggerLabel } from '../behavior/auto-trigger-label';
 import { saveRowParts } from '../behavior/save-row-parts';
 import type { HomeSectionProps } from '../HomeTab.type';
 
 const idOf = (save: NamedSaveEntry) => save.id;
-const nameOf = (save: NamedSaveEntry) => save.name;
+const nameOf = (save: NamedSaveEntry) => autoTriggerLabel(save.name);
 
 const AutoSavesSection = ({ profileId, running }: HomeSectionProps) => {
   const { saves, screenshots, busyId, load, remove } = useAutoSaves(profileId, running);
@@ -26,7 +27,7 @@ const AutoSavesSection = ({ profileId, running }: HomeSectionProps) => {
 
   const rowActions = useCallback((save: NamedSaveEntry, row: ItemListRowState) => (
     <SaveRowActions
-      name={`auto-save ${save.name}`}
+      name={`auto-save ${autoTriggerLabel(save.name)}`}
       busy={busyId !== null}
       tabIndex={row.tabIndex}
       onLoad={() => void load(save.id)}
