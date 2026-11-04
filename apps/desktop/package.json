@@ -42,6 +42,7 @@
     "@drizztdourden08/brock-core": "^0.120.0",
     "@drizztdourden08/brock-display": "^0.120.0",
     "@drizztdourden08/brock-electron": "^0.120.0",
+    "@drizztdourden08/brock-game-info": "^0.120.1",
     "@drizztdourden08/brock-input": "^0.120.0",
     "@drizztdourden08/brock-port-kit": "^0.120.0",
     "@drizztdourden08/brock-react": "^0.120.0",

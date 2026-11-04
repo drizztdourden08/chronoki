@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import { createSaveStore } from '@drizztdourden08/brock-port-kit';
+import { provideChronokiGameInfo } from '../game-info';
 import { activeGameHolder } from './active-game-holder';
 import { bootGameModule } from './boot-game-module';
 import { startSessionServices } from './start-session-services';
@@ -14,6 +15,7 @@ const startGame = async (request: StartGameRequest): Promise<boolean> => {
   const { canvas, romFile, profileId } = request;
   const unsubscribePause = startSessionServices({ store, profileId });
   activeGameHolder.current = { session, store, files: request.files, canvas, romFile, profileId, unsubscribePause };
+  provideChronokiGameInfo();
   canvas.focus();
   return true;
 };
