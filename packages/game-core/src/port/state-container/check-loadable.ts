@@ -1,6 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { CkStamp, Loadability } from './sectioned-state.type';
-import { MESSAGE_NOT_A_STATE, MESSAGE_WORLD_MODE, PIN_SHORT } from './check-loadable.constants';
+import { MESSAGE_NOT_A_STATE, PIN_SHORT } from './check-loadable.constants';
 import { decodeSectionedState } from './decode-sectioned-state';
 
 const madeBy = (stamp: CkStamp): string =>
@@ -18,7 +18,6 @@ const checkLoadable = (bytes: Uint8Array, current: CkStamp | null): Loadability 
       message: `This save state was made by ${madeBy(stamp)}, which used a different save state format.`,
     };
   }
-  if (stamp.mode === 'world') return { ok: false, stamp, reason: 'unsupported-mode', message: MESSAGE_WORLD_MODE };
   return { ok: true, stamp };
 };
 

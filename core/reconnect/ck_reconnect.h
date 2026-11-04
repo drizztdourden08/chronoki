@@ -23,10 +23,16 @@ int  ck_wide_width(void);              /* settings_reconnect.c: [video] wide_wid
 #define CK_STATE_WRAM_BYTES 0x20000
 enum { CK_OP_NONE = 0, CK_OP_SAVE = 1, CK_OP_LOAD = 2 };
 typedef struct { const char* name; uint32_t offset; uint32_t size; } CkHostField;   /* one CtHostState field (ck_host_state.h) */
+typedef struct { const char* name; void* ptr; uint32_t size; } CkPtrField;   /* one WRLD record: a live object by name and size */
 int  ck_state_top(int mode, void* wram, const uint8_t* sram);   /* once per pass; mode 0 none, 1 field scene, 2 overworld; returns a CK_OP_* */
 void ck_state_save_done(int ok, int withScene, const void* host, const CkHostField* table, int count);   /* after a CK_OP_SAVE */
 const uint8_t* ck_state_load_core(void);   /* the staged state's 128 KB WRAM image (CORE), NULL if it has none */
 int  ck_state_load_host(void* host, const CkHostField* table, int count);   /* overlays the HOST section on host; 0 if there is none */
+void ck_state_save_world(const CkPtrField* table, int count);   /* before ck_state_save_done on the overworld: stages the WRLD section */
+int  ck_state_load_has_world(void);    /* the staged state is an overworld one (it has a WRLD section) */
+int  ck_state_load_world_check(const CkPtrField* table, int count);   /* the WRLD section holds exactly these records (name and size) */
+int  ck_state_load_world(const CkPtrField* table, int count);         /* writes the WRLD records into the live objects; 0 if malformed */
+int  ckWorldStatics(CkPtrField* out, int max);   /* world.c's cross-frame statics (ck_world_state.inc is appended to the patched world.c) */
 void ck_state_load_result(int r);      /* after a CK_OP_LOAD: what CtSceneLoadState answered */
 FILE* ck_fopen(const char* path, const char* mode);   /* fopen, except "mem:scene" and "mem:apu" (ct_vm.c and audio.c are built with fopen = ck_fopen) */
 int  ck_state_request_save(void);      /* 0 if a request is open */

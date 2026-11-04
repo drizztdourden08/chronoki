@@ -10,8 +10,9 @@
    The container is CKST v2 (ck_state_box.c). Sections: STMP (the stamp, "key=value" lines), CORE (the 128 KB WRAM then the
    8 KB SRAM), SCEN (the scene state, field saves only), HOST (the host mode machine, ck_state_host.c), APU (the sound
    machine state), APUH (the sound's host side: its FIFO, cycle carry and field parity, ck_audio_state.inc; a state without
-   it loads with the engine's reset of those). Overworld states are saved but refused on load until the world section
-   exists (phase 2). */
+   it loads with the engine's reset of those). An overworld save (mode 2) has no SCEN and carries WRLD instead (phase 2:
+   World's dynamic fields, world.c's and field.c's cross-frame statics and the 64 KB VRAM, as name/size records over live
+   objects, ck_state_host.c); the loader enters the world from the CORE image, then overlays WRLD (ck_world_point.inc). */
 #include "ck_state_internal.h"
 #include "ck_state_stamp.h"
 #include "ct_vm.h"
@@ -33,7 +34,9 @@ typedef struct { char* buf; size_t size; } OutChan;
 static const char* const g_chanPath[CK_CHANNELS] = { "mem:scene", "mem:apu", "mem:apuh" };
 static OutChan g_out[CK_CHANNELS];       /* 0 scene, 1 apu, 2 the sound's host side: what the engine just wrote */
 static CkSpan g_in[CK_CHANNELS];         /* what the engine reads back on a load */
-static CkSpan g_inCore, g_inHost;        /* the staged state's CORE and HOST sections */
+static CkSpan g_inCore, g_inHost, g_inWorld;   /* the staged state's CORE, HOST and WRLD sections */
+static uint8_t* g_worldBytes = NULL;     /* the WRLD section staged by ck_state_save_world, until save_done */
+static size_t g_worldLen = 0;
 static uint8_t* g_loadCopy = NULL;       /* the staged container the spans point into */
 static uint8_t* g_input = NULL;          /* CkStateInput's buffer */
 static size_t g_inputCap = 0;
@@ -63,6 +66,14 @@ FILE* ck_fopen(const char* path, const char* mode) {
 
 static void clearOut(void) {
   for (int i = 0; i < CK_CHANNELS; i++) { free(g_out[i].buf); g_out[i].buf = NULL; g_out[i].size = 0; }
+  free(g_worldBytes); g_worldBytes = NULL; g_worldLen = 0;
+}
+
+void ck_state_save_world(const CkPtrField* table, int count) {
+  free(g_worldBytes);
+  g_worldLen = ck_fields_encode(NULL, table, count);
+  g_worldBytes = (uint8_t*)malloc(g_worldLen ? g_worldLen : 1);
+  if (g_worldBytes) ck_fields_encode(g_worldBytes, table, count); else g_worldLen = 0;
 }
 
 static const char* modeTag(int mode) { return mode == CK_MODE_WORLD ? "world" : "field"; }
@@ -118,14 +129,15 @@ void ck_state_save_done(int ok, int withScene, const void* host, const CkHostFie
   int scene = withScene && g_out[0].buf && g_out[0].size > 0;
   uint8_t* box = NULL;
   size_t boxLen = 0;
-  if (ok && g_core && hostBytes && (scene || !withScene)) {
+  if (ok && g_core && hostBytes && (scene || !withScene) && (g_takenMode != CK_MODE_WORLD || g_worldBytes)) {
     ck_host_encode(hostBytes, host, table, count);
-    CkSection s[6];
+    CkSection s[8];
     int n = 0;
     s[n++] = (CkSection){ "STMP", (const uint8_t*)stamp, (size_t)stampLen };
     s[n++] = (CkSection){ "CORE", g_core, CK_CORE_BYTES };
     if (scene) s[n++] = (CkSection){ "SCEN", (const uint8_t*)g_out[0].buf, g_out[0].size };
     s[n++] = (CkSection){ "HOST", hostBytes, hostLen };
+    if (g_takenMode == CK_MODE_WORLD) s[n++] = (CkSection){ "WRLD", g_worldBytes, g_worldLen };
     s[n++] = (CkSection){ "APU ", (const uint8_t*)g_out[1].buf, g_out[1].size };
     if (g_out[2].buf && g_out[2].size > 0) s[n++] = (CkSection){ "APUH", (const uint8_t*)g_out[2].buf, g_out[2].size };
     box = ck_box_build(s, n, &boxLen);
@@ -143,6 +155,10 @@ const uint8_t* ck_state_load_core(void) {
 int ck_state_load_host(void* host, const CkHostField* table, int count) {
   return g_inHost.data && ck_host_decode(host, table, count, g_inHost);
 }
+
+int ck_state_load_has_world(void) { return g_inWorld.data != NULL; }
+int ck_state_load_world_check(const CkPtrField* table, int count) { return g_inWorld.data && ck_fields_check(table, count, g_inWorld); }
+int ck_state_load_world(const CkPtrField* table, int count) { return g_inWorld.data && ck_fields_decode(table, count, g_inWorld); }
 
 void ck_state_load_result(int r) {
   if (g_phase != CK_LOAD_TAKEN) return;
@@ -165,7 +181,7 @@ int ck_state_request_load(const uint8_t* p, long len) {
   char schema[96];
   snprintf(schema, sizeof schema, "schema=%s", CK_STATE_SCHEMA);
   if (!ck_box_has_line(stamp, "legacy=1") && !ck_box_has_line(stamp, schema)) return refuse(CK_REASON_SCHEMA);
-  if (ck_box_has_line(stamp, "mode=world") || !ck_box_find(p, (size_t)len, "SCEN").data) return refuse(CK_REASON_MODE);
+  if (ck_box_has_line(stamp, "mode=world") ? !ck_box_find(p, (size_t)len, "WRLD").data : !ck_box_find(p, (size_t)len, "SCEN").data) return refuse(CK_REASON_MODE);
   free(g_loadCopy);
   g_loadCopy = (uint8_t*)malloc((size_t)len);
   if (!g_loadCopy) return refuse(CK_REASON_FAILED);
@@ -175,6 +191,7 @@ int ck_state_request_load(const uint8_t* p, long len) {
   g_in[2] = ck_box_find(g_loadCopy, (size_t)len, "APUH");
   g_inCore = ck_box_find(g_loadCopy, (size_t)len, "CORE");
   g_inHost = ck_box_find(g_loadCopy, (size_t)len, "HOST");
+  g_inWorld = ck_box_find(g_loadCopy, (size_t)len, "WRLD");
   g_phase = CK_WAIT_LOAD; g_status = 1; g_reason = CK_REASON_NONE; g_waited = 0;
   return 1;
 }

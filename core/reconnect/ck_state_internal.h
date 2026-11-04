@@ -20,4 +20,9 @@ int ck_box_has_line(CkSpan stamp, const char* line);                          /*
 /* ck_state_host.c: the HOST section, one record per field: u8 name length, the name, u32 size, the bytes */
 size_t ck_host_encode(uint8_t* out, const void* host, const CkHostField* table, int count);   /* out NULL: the size only */
 int ck_host_decode(void* host, const CkHostField* table, int count, CkSpan section);          /* 0 if malformed */
+
+/* ck_state_host.c: the WRLD section, the same records over live objects (strict on load) */
+size_t ck_fields_encode(uint8_t* out, const CkPtrField* table, int count);   /* out NULL: the size only */
+int ck_fields_check(const CkPtrField* table, int count, CkSpan section);     /* 1 if the section holds exactly the table's records */
+int ck_fields_decode(const CkPtrField* table, int count, CkSpan section);    /* check, then write; 0 if not matching */
 #endif
