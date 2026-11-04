@@ -4,7 +4,9 @@ import { peekOracle, recipeState } from '../oracle/peek-access';
 import { emitStance } from './battle-stance-emit';
 import { BTN } from './battle-stance-emit.constants';
 import type { GenFiles } from './oracle-gen-stage.type';
-import { decodeOam, oamBlob, oamCgram } from './shared/oam-decode';
+import { decodeOam } from './shared/oam-decode';
+import { oamCgram } from './shared/oam-cgram';
+import { oamBlob } from './shared/oam-blob';
 import { BRACKET_TILE } from './battle-stance.constants';
 
 const genBattleStance = async (ctx: ImportContext): Promise<GenFiles> => {

@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hx } from './ctgen/text-file';
+import { hx } from './ctgen/hx';
 import { PUNCT } from './menu-loader-strings.constants';
 
 const cstr = (rom: Uint8Array, ptr: number): number[] => {

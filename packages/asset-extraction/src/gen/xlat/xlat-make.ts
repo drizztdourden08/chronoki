@@ -9,7 +9,6 @@ import { translate } from './xlat-translate';
 
 const address = (text: string): number => Number.parseInt(text.replace(':', ''), 16);
 
-/** The oracle with the CPU trace mode, or a clear stop. */
 const requireCpuTrace = (ctx: ImportContext): CpuTraceOracle => {
   const driver = ctx.oracle as Partial<CpuTraceOracle> | null;
   if (driver === null || typeof driver.cpuTrace !== 'function') {
@@ -18,7 +17,6 @@ const requireCpuTrace = (ctx: ImportContext): CpuTraceOracle => {
   return driver as CpuTraceOracle;
 };
 
-/** xlat_all.make: the recipe states, then the derived (--peek) ones, in the program's order. */
 const buildStates = async (ctx: ImportContext, program: XlatProgram): Promise<Map<string, Uint8Array>> => {
   const states = new Map<string, Uint8Array>();
   for (const [key, st] of Object.entries(program.states)) {
@@ -33,7 +31,6 @@ const buildStates = async (ctx: ImportContext, program: XlatProgram): Promise<Ma
   return states;
 };
 
-/** xlat_all.make(name): the oracle runs, then tools/gen/xlat.py over them; the text of src/xlat/<name>.c. */
 const makeXlat = async (ctx: ImportContext, name: string): Promise<string> => {
   const program = XLAT_PROGRAMS[name];
   if (!program) throw new Error(`xlat_all: no program ${name} (${Object.keys(XLAT_PROGRAMS).join(', ')})`);

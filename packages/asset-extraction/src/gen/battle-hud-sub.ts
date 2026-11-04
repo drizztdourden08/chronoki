@@ -4,7 +4,7 @@ import { readText } from '../pipeline/work-files';
 import type { PeekDump } from '../oracle/peek.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import { OVERSCAN, STRIP_H, STRIP_Y0 } from './battle-hud-strip.constants';
-import { rgbOfFb } from './shared/fb-decode';
+import { rgbOfFb } from './shared/rgb-of-fb';
 import type { GenFiles } from './oracle-gen-stage.type';
 import { CAPTURES, HEAD } from './battle-hud-sub.constants';
 

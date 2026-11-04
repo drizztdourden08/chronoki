@@ -1,17 +1,18 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
 import { recipeState } from '../oracle/peek-access';
-import { ANIM_RECIPE } from './battle-anim/anim-consts';
-import { bakeGroup, CRONO_IDLE_KEYS, GATO_SWIPE_KEYS } from './battle-anim-add/add-bake';
+import { ANIM_RECIPE } from './battle-anim/anim-consts.constants';
+import { bakeGroup } from './battle-anim-add/add-bake';
+import { CRONO_IDLE_KEYS, GATO_SWIPE_KEYS } from './battle-anim-add/add-bake.constants';
 import { emitAdd } from './battle-anim-add/add-emit';
-import { gatoIdleV2 } from './battle-anim-add/add-idle';
+import { gatoIdleNoAttack } from './battle-anim-add/add-idle';
 import type { GenFiles } from './oracle-gen-stage.type';
 
 const genBattleAnimAdd = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, ANIM_RECIPE);
   const cidle = await bakeGroup(ctx, state, CRONO_IDLE_KEYS);
   const gswipe = await bakeGroup(ctx, state, GATO_SWIPE_KEYS);
-  const v2 = await gatoIdleV2(ctx, state);
+  const v2 = await gatoIdleNoAttack(ctx, state);
   return { 'battle_anim_add.h': emitAdd(cidle, gswipe, v2) };
 };
 

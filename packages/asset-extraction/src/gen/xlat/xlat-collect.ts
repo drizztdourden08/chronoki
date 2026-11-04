@@ -1,60 +1,71 @@
 /* @layer shared-asset-extraction @kind logic */
-import { opLen, TABLE } from './disasm';
-import type { Sites, XlatInput } from './xlat-site.type';
+import { opLen } from './op-len';
+import { TABLE } from './disasm.constants';
+import { hx } from './hx';
+import { TRACE_LINE } from './xlat-collect.constants';
+import type { Site, Sites, XlatInput } from './xlat-site.type';
 
-const TRACE_LINE = /^([0-9A-F]{2}):([0-9A-F]{4}) ((?:[0-9A-F?]{2}){4}) .* P=(\S{8})/;
+const parseBytes = (raw: string, len: number, adr: number): number[] => {
+  const bytes: number[] = [];
+  for (let j = 0; j < Math.min(len, 4); j += 1) {
+    const byte = raw.slice(2 * j, 2 * j + 2);
+    if (!/^[0-9A-F]{2}$/.test(byte)) throw new Error(`xlat: bad trace byte at ${hx(adr, 6)}`);
+    bytes.push(Number.parseInt(byte, 16));
+  }
+  return bytes;
+};
 
-const hex6 = (adr: number): string => adr.toString(16).toUpperCase().padStart(6, '0');
+const merge = (s: Site, op: number, len: number, bytes: number[], adr: number): void => {
+  if (s.op !== op) {
+    throw new Error(`xlat: REFUSING -- ${hx(adr, 6)} executed two different opcodes (${hx(s.op, 2)}, ${hx(op, 2)})`);
+  }
+  s.variants.add(bytes.join(','));
+  if (s.variants.size > 1) s.smc = true;
+  if (len !== s.len) throw new Error(`xlat: REFUSING -- ${hx(adr, 6)} ran with two instruction lengths`);
+};
 
-/** xlat.py "the executed instructions": every address the traces ran, with its bytes and its M / X widths. */
+const record = (sites: Sites, adr: number, mo: RegExpExecArray, image: string): void => {
+  const raw = mo[3] as string;
+  const p = mo[4] as string;
+  const m = p[2] === 'M' ? 1 : 0;
+  const x = p[3] === 'X' ? 1 : 0;
+  const op = Number.parseInt(raw.slice(0, 2), 16);
+  const len = 1 + opLen((TABLE[op] as readonly [string, string])[1], m, x);
+  const bytes = parseBytes(raw, len, adr);
+  const s = sites.get(adr);
+  if (s === undefined) {
+    sites.set(adr, { op, bytes, len, m, x, traced: true, smc: false, variants: new Set([bytes.join(',')]), image });
+  } else {
+    merge(s, op, len, bytes, adr);
+  }
+};
+
+const addressOf = (mo: RegExpExecArray): number =>
+  (Number.parseInt(mo[1] as string, 16) << 16) | Number.parseInt(mo[2] as string, 16);
+
+const collectTrace = (sites: Sites, text: string, image: string, input: XlatInput): void => {
+  const { starts, stops } = input;
+  let live = starts.size === 0;
+  for (const ln of text.split(/\r?\n/)) {
+    const mo = ln.startsWith('-- frame') ? null : TRACE_LINE.exec(ln);
+    if (!mo) continue;
+    const adr = addressOf(mo);
+    if (!live && !starts.has(adr)) continue;
+    live = true;
+    if (stops.has(adr)) {
+      if (starts.size === 0) break;
+      live = false;
+      continue;
+    }
+    if (!(mo[3] as string).slice(0, 2).includes('?')) record(sites, adr, mo, image);
+  }
+};
+
 const collectExecuted = (input: XlatInput): Sites => {
   const sites: Sites = new Map();
-  const { starts, stops } = input;
-  for (const { text, image } of input.traces) {
-    let live = starts.size === 0; // --from K:PPPP: the program begins at its first run
-    for (const ln of text.split(/\r?\n/)) {
-      if (ln.startsWith('-- frame')) continue;
-      const mo = TRACE_LINE.exec(ln);
-      if (!mo) continue;
-      const adr = (Number.parseInt(mo[1] as string, 16) << 16) | Number.parseInt(mo[2] as string, 16);
-      if (!live) {
-        if (!starts.has(adr)) continue;
-        live = true;
-      }
-      if (stops.has(adr)) {
-        // ...and ends where it hands control back; with --from it then waits for the next entry
-        if (starts.size === 0) break;
-        live = false;
-        continue;
-      }
-      const raw = mo[3] as string;
-      if (raw.slice(0, 2).includes('?')) continue;
-      const p = mo[4] as string;
-      const m = p[2] === 'M' ? 1 : 0;
-      const x = p[3] === 'X' ? 1 : 0;
-      const op = Number.parseInt(raw.slice(0, 2), 16);
-      const len = 1 + opLen((TABLE[op] as readonly [string, string])[1], m, x);
-      const bytes: number[] = [];
-      for (let j = 0; j < Math.min(len, 4); j += 1) {
-        const byte = raw.slice(2 * j, 2 * j + 2);
-        if (!/^[0-9A-F]{2}$/.test(byte)) throw new Error(`xlat: bad trace byte at ${hex6(adr)}`);
-        bytes.push(Number.parseInt(byte, 16));
-      }
-      const s = sites.get(adr);
-      if (s === undefined) {
-        sites.set(adr, { op, bytes, len, m, x, traced: true, smc: false, variants: new Set([bytes.join(',')]), image });
-      } else {
-        if (s.op !== op) {
-          throw new Error(`xlat: REFUSING -- ${hex6(adr)} executed two different opcodes (${s.op.toString(16).toUpperCase().padStart(2, '0')}, ${op.toString(16).toUpperCase().padStart(2, '0')})`);
-        }
-        s.variants.add(bytes.join(','));
-        if (s.variants.size > 1) s.smc = true;
-        if (len !== s.len) throw new Error(`xlat: REFUSING -- ${hex6(adr)} ran with two instruction lengths`);
-      }
-    }
-  }
-  for (const st of stops) sites.delete(st); // an exit is the host's, not the program's
+  for (const { text, image } of input.traces) collectTrace(sites, text, image, input);
+  for (const st of input.stops) sites.delete(st);
   return sites;
 };
 
-export { collectExecuted, hex6 };
+export { collectExecuted };

@@ -1,8 +1,11 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { block16, rgb } from './ctgen/menugfx';
-import { cgramOf, peek, recipeState } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { block16 } from './ctgen/block16';
+import { rgb } from './ctgen/rgb';
+import { peek } from './ctgen/peek';
+import { cgramOf } from './ctgen/cgram-of';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 import { HEADER } from './menu-icons.constants';
 
 const icon = (vram: Uint8Array, cg: Uint8Array, t: number): number[] =>

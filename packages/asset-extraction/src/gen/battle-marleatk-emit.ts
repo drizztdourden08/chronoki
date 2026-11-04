@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import { dec, hexN } from './shared/py-format';
+import { dec } from './shared/py-format';
+import { hexN } from './shared/hex-n';
 import type { MarleKf, SparkKf, TrajRow } from './battle-marleatk-emit.type';
 
 const bytes = (t: Uint8Array): string => Array.from(t, (b) => `0x${hexN(b, 2)}`).join(',');

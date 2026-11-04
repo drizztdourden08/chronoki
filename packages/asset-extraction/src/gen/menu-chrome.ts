@@ -4,7 +4,7 @@ import { peekOracle, recipeState } from '../oracle/peek-access';
 import { chromeText } from './menu-chrome/chrome-text';
 import type { GenFiles } from './oracle-gen-stage.type';
 import { cgramOf } from './shared/fb-decode';
-import { hexN } from './shared/py-format';
+import { hexN } from './shared/hex-n';
 import { TMW, TMH, BASE, OPEN_X } from './menu-chrome.constants';
 
 const tilemap = (vram: Uint8Array): number[] =>

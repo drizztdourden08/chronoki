@@ -1,7 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peek, recipeState } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { peek } from './ctgen/peek';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 import { DRIVE, BASE, HEADER } from './menu-itemoverlay.constants';
 
 const genMenuItemoverlay = async (ctx: ImportContext): Promise<string> => {

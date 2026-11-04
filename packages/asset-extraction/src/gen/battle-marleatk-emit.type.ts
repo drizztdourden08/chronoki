@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind type */
-import type { Sprite } from './shared/oam-decode';
+import type { Sprite } from './shared/oam-decode.type';
 
 interface MarleKf {
   pose: string;

@@ -1,9 +1,15 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
-import { BTN0, BTN1, emitMain } from './atbsel/emit';
-import { buildPalette, diffBbox, loadFb, toIdx } from './atbsel/frames';
-import { emitTypewriter, penRows, TEXT_X } from './atbsel/typewriter';
+import { emitMain } from './atbsel/emit';
+import { BTN0, BTN1 } from './atbsel/emit.constants';
+import { diffBbox } from './atbsel/diff-bbox';
+import { toIdx } from './atbsel/to-idx';
+import { buildPalette } from './atbsel/build-palette';
+import { loadFb } from './atbsel/load-fb';
+import { emitTypewriter } from './atbsel/typewriter';
+import { penRows } from './atbsel/pen-rows';
+import { TEXT_X } from './atbsel/typewriter.constants';
 import type { GenFiles } from './oracle-gen-stage.type';
 import { BTNE, BTNA } from './atbsel.constants';
 
@@ -25,7 +31,7 @@ const genAtbsel = async (ctx: ImportContext): Promise<GenFiles> => {
   const ph = y1 - y0 + 1;
   const row = (r: number[][], j: number): number[] => (r[j] as number[]);
   const patch = Array.from({ length: ph }, (_, j) => Array.from({ length: pw }, (_, i) => row(idx1, y0 + j)[x0 + i] as number));
-  let out = emitMain(pal, idx0, patch, x0, y0, pw, ph);
+  let out = emitMain({ pal, idx0, patch, px0: x0, py0: y0, pw, ph });
   const pens = penRows(ctx.rom);
   const empty: (number | undefined)[][] = Array.from({ length: ph }, (_, j) =>
     Array.from({ length: pw }, (_, i) => row(idxe, y0 + j)[x0 + i]),
@@ -44,7 +50,7 @@ const genAtbsel = async (ctx: ImportContext): Promise<GenFiles> => {
       (empty[y - y0] as (number | undefined)[])[x - x0] = (ia[y] as (number | undefined)[])[x];
     }
   }
-  out += emitTypewriter(pens, empty, x0, y0, pw, ph);
+  out += emitTypewriter({ pens, empty, ex: x0, ey: y0, ew: pw, eh: ph });
   return { 'atbsel.h': out };
 };
 

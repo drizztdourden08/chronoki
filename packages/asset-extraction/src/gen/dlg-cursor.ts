@@ -3,7 +3,7 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState, teleportState } from '../oracle/peek-access';
 import { requireBytes } from '../pipeline/work-files';
 import type { GenFiles } from './oracle-gen-stage.type';
-import { rgbOfFb } from './shared/fb-decode';
+import { rgbOfFb } from './shared/rgb-of-fb';
 import { CELL_X, CELL_Y, CELL_W, CELL_H, FB_OFFSET, DRIVE } from './dlg-cursor.constants';
 
 const sameRgb = (a: Uint8Array, ao: number, b: Uint8Array, bo: number): boolean =>

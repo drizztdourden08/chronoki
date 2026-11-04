@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hx } from './ctgen/text-file';
+import { hx } from './ctgen/hx';
 import { TASKS, VBLS } from './title-intro-seed.constants';
 
 const refuse = (msg: string): Error => new Error(`title_intro: REFUSING: ${msg}`);

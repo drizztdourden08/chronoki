@@ -6,8 +6,9 @@ import { emitMarleAtk } from './battle-marleatk-emit';
 import { NTILE } from './battle-marleatk-emit.constants';
 import type { MarleKf, SparkKf, TrajRow } from './battle-marleatk-emit.type';
 import type { GenFiles } from './oracle-gen-stage.type';
-import { decodeOam, oamBlob } from './shared/oam-decode';
-import type { Sprite } from './shared/oam-decode';
+import { decodeOam } from './shared/oam-decode';
+import { oamBlob } from './shared/oam-blob';
+import type { Sprite } from './shared/oam-decode.type';
 import { BRK, MARLE_HOME, MARLE_KF, SPARK_KF, MASH, MONITOR_LINE } from './battle-marleatk.constants';
 
 const bs = (t: number): string => {

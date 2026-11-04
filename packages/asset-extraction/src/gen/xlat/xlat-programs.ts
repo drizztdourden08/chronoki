@@ -1,13 +1,10 @@
 /* @layer shared-asset-extraction @kind constants */
 import type { XlatProgram } from './xlat-program.type';
 
-/** The pad script `0:at,100:10,0:400` (A pressed at frame `at`). */
 const press = (at: number): string => `0:${at},100:10,0:400`;
 
-/** Scene 8's cutscene: A for 3 frames every 30. */
 const S8_MASH = `0:15,${Array.from({ length: 120 }, () => '100:3,0:27').join(',')}`;
 
-/** xlat_all._cut: a pad script truncated to `frames` frames (--peek runs a script to its end). */
 const cutScript = (script: string, frames: number): string => {
   const out: string[] = [];
   let at = 0;
@@ -38,7 +35,6 @@ const SEQ_C3: XlatProgram = {
     { name: 'e3_a100', state: 'e3', frames: 250, env: { ...FROM_C3, CPUTRACE_BTN: press(100) } },
     { name: 'e3_a250', state: 'e3', frames: 330, env: { ...FROM_C3, CPUTRACE_BTN: press(250) } },
   ],
-  // the stage's last frame: the race's JML $C0:0000 runs in its frame 430, entry 3's in its frame 316
   images: { race: { state: 'race', script: '0:430' }, e3: { state: 'e3', script: '0:300' } },
   pairs: [['race', 'race'], ['e3', 'e3'], ['race_a40', 'race'], ['race_a170', 'race'], ['race_a350', 'race'],
     ['e3_a50', 'e3'], ['e3_a100', 'e3'], ['e3_a250', 'e3']],
@@ -82,16 +78,13 @@ const GWARP_FD: XlatProgram = {
 };
 
 const HDMA_FD: XlatProgram = {
-  // Enemy 6E's exit tail (GATO_6E_POKES on gato_wait) reaches no line of the family these three runs miss, so it is not run.
   states: { boot: { recipe: 'attract_boot' }, gato: { recipe: 'gato_wait' }, s8: { recipe: 'field_telepod_gate' } },
-  // the attract first: from power-on its first line of the family is the entry FD:C2C1, which --from needs
   traces: [
     { name: 'att', state: 'boot', frames: 13600, env: {} },
     { name: 'gato', state: 'gato', frames: 220, env: {} },
     { name: 's8', state: 's8', frames: 400, env: { CPUTRACE_BTN: cutScript(S8_MASH, 165) } },
   ],
   images: { boot: { state: 'boot', script: '0:0' } },
-  // FD/C2C1 is called from the host's code: the family's own lines (FD:C2C1-D52C), each first seen once
   family: [0xfdc2c1, 0xfdd52c],
   pairs: [['family', 'boot']],
   froms: ['FD:C2C1'],

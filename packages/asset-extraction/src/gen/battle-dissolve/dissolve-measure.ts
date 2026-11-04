@@ -1,12 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
-import { KEY_ORDER } from './dissolve-sprite';
+import { KEY_ORDER } from './dissolve-sprite.constants';
+import type { Seq } from './dissolve-measure.type';
+import { at } from './seq-at';
 
-type Seq = Map<number, number[]>;
-
-const at = (seq: Seq, n: number): number[] => seq.get(n) as number[];
 const fmt = (k: number): string => `(${k % 32}, ${Math.floor(k / 32)})`;
 
-/** The dissolve's start: the last frame before the first clear whose content is otherwise unchanged. */
 const findStart = (seq: Seq, frames: number[]): number => {
   for (let i = 1; i < frames.length; i += 1) {
     const a = at(seq, frames[i - 1] as number);
@@ -18,11 +16,7 @@ const findStart = (seq: Seq, frames: number[]): number => {
   throw new Error(`battle_dissolve: no dissolve in peek frames ${frames[0]}..${frames[frames.length - 1]}`);
 };
 
-/** measure(seq): (S, dither[8][8]) from the per-frame sprites. */
-const measure = (seq: Seq): { start: number; dither: number[][] } => {
-  const frames = [...seq.keys()].sort((a, b) => a - b);
-  const lastFrame = frames[frames.length - 1] as number;
-  const start = findStart(seq, frames);
+const clearSteps = (seq: Seq, start: number, lastFrame: number): Map<number, number> => {
   const base = at(seq, start);
   const last = new Map<number, number>();
   for (const k of KEY_ORDER) {
@@ -36,7 +30,11 @@ const measure = (seq: Seq): { start: number; dither: number[][] } => {
     }
     last.set(k, n - start);
   }
-  const dither: (number | null)[][] = Array.from({ length: 8 }, () => new Array(8).fill(null));
+  return last;
+};
+
+const ditherOf = (last: Map<number, number>): number[][] => {
+  const dither: (number | null)[][] = Array.from({ length: 8 }, () => new Array<number | null>(8).fill(null));
   for (const [k, step] of last) {
     const gx = k % 32;
     const gy = Math.floor(k / 32);
@@ -50,27 +48,14 @@ const measure = (seq: Seq): { start: number; dither: number[][] } => {
   if (dither.some((row) => row.some((v) => v === null))) {
     throw new Error('battle_dissolve: a dither cell has no inked pixel to measure it');
   }
-  return { start, dither: dither as number[][] };
+  return dither as number[][];
 };
 
-/** verify(): every frame from the start predicted from (the tiles at S + the table); the mismatch count. */
-const verifyBad = (seq: Seq, start: number, dither: number[][]): { bad: number; tot: number } => {
-  const base = at(seq, start);
-  let bad = 0;
-  let tot = 0;
-  for (const n of [...seq.keys()].sort((a, b) => a - b)) {
-    if (n < start) continue;
-    const step = n - start;
-    const cur = at(seq, n);
-    for (const k of KEY_ORDER) {
-      const v = base[k] as number;
-      const cell = (dither[Math.floor(k / 32) % 8] as number[])[(k % 32) % 8] as number;
-      tot += 1;
-      if ((cell >= step ? v : 0) !== cur[k]) bad += 1;
-    }
-  }
-  return { bad, tot };
+const measure = (seq: Seq): { start: number; dither: number[][] } => {
+  const frames = [...seq.keys()].sort((a, b) => a - b);
+  const lastFrame = frames[frames.length - 1] as number;
+  const start = findStart(seq, frames);
+  return { start, dither: ditherOf(clearSteps(seq, start, lastFrame)) };
 };
 
-export type { Seq };
-export { measure, verifyBad };
+export { measure };

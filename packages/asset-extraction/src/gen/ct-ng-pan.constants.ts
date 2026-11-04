@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind constants */
-import { hexN } from './shared/py-format';
+import { hexN } from './shared/hex-n';
 
 const REGS = '7E0100:2,7E0020:2,7E0026:2,7E00E3:1,7E00E7:1';
 const HEADER = ({ x, y, e3, e7, n }: { x: number; y: number; e3: number; e7: number; n: number }): string => `\

@@ -5,8 +5,9 @@ import { emitSettle } from './battle-settle-emit';
 import { NTILE } from './battle-settle-emit.constants';
 import type { SettleKf } from './battle-settle-emit.type';
 import type { GenFiles } from './oracle-gen-stage.type';
-import { decodeOam, oamBlob } from './shared/oam-decode';
-import type { Sprite } from './shared/oam-decode';
+import { decodeOam } from './shared/oam-decode';
+import { oamBlob } from './shared/oam-blob';
+import type { Sprite } from './shared/oam-decode.type';
 import { BRACKET, KILL_POKE, KEYS } from './battle-settle.constants';
 
 const mash = (f: number): string => {

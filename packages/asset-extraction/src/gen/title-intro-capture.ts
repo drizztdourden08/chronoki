@@ -1,7 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peek, requireTools } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { requireTools } from './ctgen/require-tools';
+import { peek } from './ctgen/peek';
+import { hx } from './ctgen/hx';
 import { checkSeed } from './title-intro-seed';
 import type { TitleCapture } from './title-intro.type';
 import { SEED_FRAME, GFX_FRAME, SCRIPT_BASE, SCRIPT_END, PKG_BASE, PKG_END, VBASE, VWORDS } from './title-intro-capture.constants';

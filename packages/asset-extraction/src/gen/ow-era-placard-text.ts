@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hx } from './ctgen/text-file';
+import { hx } from './ctgen/hx';
 import { HEADER } from './ow-era-placard-text.constants';
 import type { Placard } from './ow-era-placard-text.type';
 

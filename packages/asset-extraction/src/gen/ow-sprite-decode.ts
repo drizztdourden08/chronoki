@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { x5 } from './ctgen/menugfx';
+import { x5 } from './ctgen/x5';
 
 const decode16 = (vram: Uint8Array, cg: number[], sel: { name: number; pal: number; base?: number }): Uint8Array => {
   const { name, pal, base = 0 } = sel;

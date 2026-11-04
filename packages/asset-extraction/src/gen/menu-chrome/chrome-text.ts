@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hexN } from '../shared/py-format';
+import { hexN } from '../shared/hex-n';
 
 const TMW = 32;
 const TMH = 28;
@@ -103,7 +103,6 @@ interface ChromeCaps {
   exc: number[];
 }
 
-/** The whole header text (menu_chrome.py's `text`), with "\n" line ends. */
 const chromeText = (c: ChromeCaps): string =>
   HEAD +
   paletteText(c.cg0) +

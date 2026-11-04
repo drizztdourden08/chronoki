@@ -3,7 +3,8 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import type { GenFiles } from './oracle-gen-stage.type';
 import { cgramOf } from './shared/fb-decode';
-import { block16, cgramRgb } from './shared/tile-decode';
+import { block16 } from './shared/block16';
+import { cgramRgb } from './shared/cgram-rgb';
 import { HEAD } from './menu-arrow.constants';
 
 const genMenuArrow = async (ctx: ImportContext): Promise<GenFiles> => {

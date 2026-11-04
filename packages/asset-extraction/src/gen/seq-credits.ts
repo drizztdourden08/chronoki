@@ -1,7 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peek, requireTools } from './ctgen/require-tools';
-import { chunks, hx } from './ctgen/text-file';
+import { requireTools } from './ctgen/require-tools';
+import { peek } from './ctgen/peek';
+import { chunks } from './ctgen/chunks';
+import { hx } from './ctgen/hx';
 import { BOOT_FRAMES, PAGE2_AFTER, TEXT_BASE, TEXT_END, BG_TABLE, OAM_TABLE, FONT_WORDS } from './seq-credits.constants';
 
 const die = (msg: string): Error => new Error(`gen_seq_credits: REFUSING -- ${msg}`);

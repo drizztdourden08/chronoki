@@ -1,8 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
-import { measure, verifyBad } from './battle-dissolve/dissolve-measure';
-import type { Seq } from './battle-dissolve/dissolve-measure';
+import { measure } from './battle-dissolve/dissolve-measure';
+import { verifyBad } from './battle-dissolve/verify-bad';
+import type { Seq } from './battle-dissolve/dissolve-measure.type';
 import { sprite } from './battle-dissolve/dissolve-sprite';
 import type { GenFiles } from './oracle-gen-stage.type';
 import { dec } from './shared/py-format';

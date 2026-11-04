@@ -7,7 +7,6 @@ const K = Array.from({ length: 64 }, (_, i) => Math.floor(Math.abs(Math.sin(i + 
 
 const rotl = (x: number, c: number): number => ((x << c) | (x >>> (32 - c))) >>> 0;
 
-/** hashlib.md5(data).hexdigest(). */
 const md5Hex = (data: Uint8Array): string => {
   const padded = (data.length + 9 + 63) & ~63;
   const buf = new Uint8Array(padded);

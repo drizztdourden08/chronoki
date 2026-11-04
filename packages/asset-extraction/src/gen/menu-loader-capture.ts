@@ -1,7 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { cgramOf, peek, recipeState, requireTools } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { requireTools } from './ctgen/require-tools';
+import { peek } from './ctgen/peek';
+import { cgramOf } from './ctgen/cgram-of';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 import type { LoaderCapture } from './menu-loader-capture.type';
 
 const batteryOf = async (ctx: ImportContext): Promise<Uint8Array> => {

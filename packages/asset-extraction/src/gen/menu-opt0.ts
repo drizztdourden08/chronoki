@@ -1,8 +1,11 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { rgb, tile4 } from './ctgen/menugfx';
-import { cgramOf, peek, recipeState } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { rgb } from './ctgen/rgb';
+import { tile4 } from './ctgen/tile4';
+import { peek } from './ctgen/peek';
+import { cgramOf } from './ctgen/cgram-of';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 import { DRIVE, SINGLE, HEADER, TILES_DOC } from './menu-opt0.constants';
 
 const genMenuOpt0 = async (ctx: ImportContext): Promise<string> => {

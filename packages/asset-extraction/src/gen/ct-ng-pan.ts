@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
-import { hexN } from './shared/py-format';
+import { hexN } from './shared/hex-n';
 import type { GenFiles } from './oracle-gen-stage.type';
 import { REGS, HEADER, LINE } from './ct-ng-pan.constants';
 

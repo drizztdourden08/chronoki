@@ -1,12 +1,11 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hexBytes } from '../battle-anim/anim-emit';
-import { objLine } from '../battle-anim/anim-sprites';
-import type { GatoStep } from '../battle-anim/anim-tables';
+import { hexBytes } from '../battle-anim/hex-bytes';
+import { objLine } from '../battle-anim/obj-line';
+import type { GatoStep } from '../battle-anim/anim-tables.type';
 import { dec } from '../shared/py-format';
-import type { AddGroup } from './add-bake';
-import { GATO_V2_F0 } from './add-idle';
+import type { AddGroup } from './add-bake.type';
+import { GATO_V2_F0 } from './add-idle.constants';
 
-/** battle_anim_add.py _emit_group: the OBJ list, keyframe table and tiles of one group. */
 const emitGroup = (arr: string, g: AddGroup, doc: string): string => {
   const up = arr.toUpperCase();
   const o: string[] = [];
@@ -36,7 +35,6 @@ const emitGroup = (arr: string, g: AddGroup, doc: string): string => {
   return o.join('');
 };
 
-/** battle_anim_add.py emit(): the whole src/data/battle_anim_add.h text. */
 const emitAdd = (cidle: AddGroup, gswipe: AddGroup, v2: GatoStep[]): string => {
   const o: string[] = [];
   const W = (s: string): void => {

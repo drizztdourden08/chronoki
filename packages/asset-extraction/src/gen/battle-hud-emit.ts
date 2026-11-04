@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hexN } from './shared/py-format';
+import { hexN } from './shared/hex-n';
 import type { MapCell } from './battle-hud-bake.type';
 import { HUD_HEAD } from './battle-hud-head-text.constants';
 import type { Rgb3 } from './battle-hud-strip.type';

@@ -1,29 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import { hex } from '../c-hex';
 import { hexByte } from '../c-hex-byte';
-
-const NTILE = 0x80;
-
-interface Cell {
-  dx: number;
-  dy: number;
-  tile: number;
-  hf: number;
-  vf: number;
-}
-
-interface Cluster {
-  ax: number;
-  ay: number;
-  cells: Cell[];
-}
-
-/** Measured leap-arc trajectory (dx,dy vs home 104,35), OAM-shadow monitor forest HOLD f85-147. */
-const TRAJ: [number, number][] = [
-  [0, -15], [2, -17], [4, -21], [6, -22], [8, -24], [10, -26], [12, -25], [14, -25], [16, -25], [18, -24],
-  [20, -22], [22, -20], [24, -17], [26, -13], [28, -11], [27, 4], [29, 4], [24, 10], [20, 5], [16, 3],
-  [12, 2], [8, 4], [4, 7], [0, 13], [0, 0],
-];
+import type { Cell, HetakeTextOptions } from './hetake-emit.type';
+import { NTILE, TRAJ } from './hetake-emit.constants';
 
 const cellText = (c: Cell): string => `{${c.dx},${c.dy},0x${hex(c.tile, 3)},${c.hf},${c.vf}},`;
 
@@ -39,15 +18,7 @@ const palWord = (cg: Uint8Array, c: number): number => {
   return (cg[i * 2] as number) | ((cg[i * 2 + 1] as number) << 8);
 };
 
-/** The whole battle_hetake.h. */
-const hetakeText = (
-  idleV: Uint8Array,
-  idleCg: Uint8Array,
-  clusters: Cluster[],
-  atkAsm: Cell[],
-  atkV: Uint8Array,
-  cursors: [number, number][],
-): string => {
+const hetakeText = ({ idleV, idleCg, clusters, atkAsm, atkV, cursors }: HetakeTextOptions): string => {
   const out: string[] = [];
   const W = (s: string): void => {
     out.push(s);
@@ -102,5 +73,4 @@ const hetakeText = (
   return out.join('');
 };
 
-export type { Cell, Cluster };
 export { hetakeText };
