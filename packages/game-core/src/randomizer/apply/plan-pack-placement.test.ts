@@ -2,11 +2,12 @@
 import { describe, expect, it } from 'vitest';
 import type { CheckDef } from '../checks/check.type';
 import type { CtPlacement } from '../world/ct-placement.type';
+import { placementFixture } from '../world/ct-placement.fixture';
 import { planPackPlacement } from './plan-pack-placement';
 
 const check = (id: string): CheckDef => ({ id, kind: 'chest', locationId: 1, vanillaItem: 0 });
 const placementOf = (locations: [string, string][]): CtPlacement =>
-  ({ seed: 's', locations, spheres: [] }) as unknown as CtPlacement;
+  placementFixture(locations);
 
 describe('planPackPlacement', { tags: ['critical'] }, () => {
   it('puts treasure on known checks into the pack with its ROM id', () => {

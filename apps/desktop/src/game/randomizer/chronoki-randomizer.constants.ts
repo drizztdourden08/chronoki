@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind constants */
 import type { RandomizerLabels } from '@drizztdourden08/brock-randomizer';
+import type { ApplyResult } from '@drizztdourden08/brock-randomizer/session';
 
 const RANDOMIZER_GATE = 'randomizer';
 const LOCAL_MODE = 'local';
@@ -22,9 +23,10 @@ const BOOT_REFUSALS = {
 } as const;
 
 const NOT_APPLIED_REFUSAL = 'the seed was not written to the game pack at boot';
+const NOT_APPLIED_RESULT: ApplyResult<unknown> = { ok: false, refusal: NOT_APPLIED_REFUSAL };
 const NO_CHECKS_ROLL = 'the checks are not loaded: pick the ROM again and retry';
 
 export {
-  BOOT_REFUSALS, CHRONOKI_RANDOMIZER_LABELS, LOCAL_MODE, NOT_APPLIED_REFUSAL, NO_CHECKS_ROLL, RANDOMIZER_GATE,
+  BOOT_REFUSALS, CHRONOKI_RANDOMIZER_LABELS, LOCAL_MODE, NOT_APPLIED_REFUSAL, NOT_APPLIED_RESULT, NO_CHECKS_ROLL, RANDOMIZER_GATE,
   REFUSAL_TOAST_MS, REFUSED_SAMPLE, SEED_DIGITS, SEED_RADIX,
 };

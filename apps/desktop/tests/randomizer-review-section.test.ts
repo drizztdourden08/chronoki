@@ -5,11 +5,11 @@ import type { ProfileWizardValues } from '@app/views/ProfileManager/ProfileManag
 
 vi.mock('@drizztdourden08/brock-randomizer/renderer', () => ({ randomizerRenderer: { profileWizardSteps: [] } }));
 
-const valuesOf = (form: unknown): ProfileWizardValues => ({ randomizer: form }) as unknown as ProfileWizardValues;
+const valuesOf = (form?: unknown): ProfileWizardValues => ({ name: '', rom: '', preset: 'vanilla', randomizer: form });
 
 describe('randomizerReviewSection', { tags: ['critical'] }, () => {
   it('returns null when the wizard has no randomizer slice', () => {
-    expect(randomizerReviewSection({} as ProfileWizardValues)).toBeNull();
+    expect(randomizerReviewSection(valuesOf())).toBeNull();
   });
 
   it('shows Off when the randomizer is disabled', () => {

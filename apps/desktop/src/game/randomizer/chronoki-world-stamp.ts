@@ -2,6 +2,6 @@
 import type { RandomizerWorldGame } from '@drizztdourden08/brock-randomizer/world';
 import { createCtWorldGame } from '@chronoki/game-core';
 
-const chronokiWorldStamp = createCtWorldGame({ checks: [] }) as unknown as RandomizerWorldGame;
+const chronokiWorldStamp = createCtWorldGame({ checks: [] }) as RandomizerWorldGame;
 
 export { chronokiWorldStamp };

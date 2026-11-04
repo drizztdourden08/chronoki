@@ -11,7 +11,7 @@ import { chronokiToConfig } from './chronoki-to-config';
 import { chronokiWorldStamp } from './chronoki-world-stamp';
 import { rollChronokiSeed } from './roll-chronoki-seed';
 
-const chronokiRandomizerGame = defineRandomizerGame<CtPlacement, unknown>({
+const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   id: CT_GAME,
   world: chronokiWorldStamp,
   placementSchemas: CT_PLACEMENT_SCHEMAS,

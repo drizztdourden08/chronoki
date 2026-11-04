@@ -1,4 +1,5 @@
 /* @layer bridge-wasm @kind logic */
+import type { RandomizerProfileConfig } from '@drizztdourden08/brock-randomizer';
 import type { CtPlacement } from '@chronoki/game-core';
 import { hostGate } from '@chronoki/game-core';
 import { gateRandomizerBoot, pendingBoot } from '@drizztdourden08/brock-randomizer/session';
@@ -14,12 +15,17 @@ const refuse = (reason: string): SeededAssets => {
   return { ok: false, reason };
 };
 
+const gateRefusalOf = (config: RandomizerProfileConfig): string | null => {
+  if (!hostGate(RANDOMIZER_GATE)) return BOOT_REFUSALS.gateOff;
+  return config.mode === LOCAL_MODE ? null : BOOT_REFUSALS.notLocal;
+};
+
 const prepareSeededAssets = async (profileId: string | null, assets: Uint8Array): Promise<SeededAssets> => {
   localRunHolder.applied = null;
   const config = profileId === null ? undefined : randomizerConfigOf(profileId);
   if (profileId === null || config === undefined) return { ok: true, assets };
-  if (!hostGate(RANDOMIZER_GATE)) return refuse(BOOT_REFUSALS.gateOff);
-  if (config.mode !== LOCAL_MODE) return refuse(BOOT_REFUSALS.notLocal);
+  const gateRefusal = gateRefusalOf(config);
+  if (gateRefusal !== null) return refuse(gateRefusal);
   const checks = ctChecksCache.prime(assets);
   if (checks.length === 0) return refuse(BOOT_REFUSALS.noChecks);
   const gate = await gateRandomizerBoot(profileId, config);
