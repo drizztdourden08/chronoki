@@ -1,6 +1,7 @@
 /* @layer renderer-components @kind logic */
 const formatDuration = (ms: number): string => {
   const totalMin = Math.floor(ms / 60000);
+  if (totalMin < 1) return `${Math.max(1, Math.round(ms / 1000))}s`;
   if (totalMin < 60) return `${totalMin}m`;
   const h = Math.floor(totalMin / 60);
   const m = totalMin % 60;

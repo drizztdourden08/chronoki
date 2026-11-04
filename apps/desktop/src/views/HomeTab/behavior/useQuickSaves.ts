@@ -21,6 +21,10 @@ const useQuickSaves = (profileId: string | null, running: boolean) => {
   useEffect(() => { void refresh(); }, [refresh, running]);
 
   const save = useCallback(async (slot: number) => {
+    if (!(await ensureGameRunning(running, play))) {
+      appLog.warn(`[state] save ${slot + 1} skipped: the game is not running`);
+      return;
+    }
     const ctx = activeStateContext();
     if (!ctx) return;
     setBusySlot(slot);
@@ -28,7 +32,7 @@ const useQuickSaves = (profileId: string | null, running: boolean) => {
     if (!result.ok) appLog.warn(`[state] save ${slot + 1} failed: ${result.reason}`);
     await refresh();
     setBusySlot(null);
-  }, [refresh]);
+  }, [refresh, running, play]);
 
   const load = useCallback(async (slot: number) => {
     if (!(await ensureGameRunning(running, play))) return;

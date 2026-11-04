@@ -1,9 +1,7 @@
 /* @layer renderer-appshell @kind hook */
 import { useEffect, useRef } from 'react';
-import { appLog } from '@app/log/app-log';
+import { endSession, startSession } from '@app/game/session-tracker';
 import { useGateMode } from '@app/settings-controls/useGateMode';
-import { saveSession } from '@app/storage/profile-data-store';
-import { buildSession } from './build-session';
 
 const useSessionRecorder = (profileId: string | null, running: boolean): void => {
   const mode = useGateMode();
@@ -12,11 +10,8 @@ const useSessionRecorder = (profileId: string | null, running: boolean): void =>
 
   useEffect(() => {
     if (!running || !profileId) return undefined;
-    const startedAt = Date.now();
-    const startMode = modeRef.current;
-    return () => {
-      saveSession(profileId, buildSession(profileId, startedAt, startMode)).catch(() => appLog.warn('[session] could not record play session'));
-    };
+    startSession(profileId, modeRef.current);
+    return () => { void endSession(); };
   }, [running, profileId]);
 };
 
