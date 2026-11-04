@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind types */
 type CkWidescreen = 'off' | '16:9' | '16:10' | '21:9';
 
-type CkSync = 'frame' | 'free';
+type CkSync = 'frame_perfect' | 'free';
 
 interface CkSettings {
   widescreen: CkWidescreen;
