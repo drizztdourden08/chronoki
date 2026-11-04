@@ -2,10 +2,10 @@
 import type { FileStore } from '@drizztdourden08/brock-core';
 import type { CreateProfileOptions, Profile } from '@app/profiles/types';
 import { newId, writeJson } from '@drizztdourden08/brock-core';
-import { savesDir } from '@chronoki/game-core/save-paths';
 import { configFile } from './config-file';
 import { DEFAULT_PROFILE_MODE } from './profiles.constants';
 import { profileFile } from './profile-file';
+import { savesDir } from './saves-dir';
 
 const createProfile = async (files: FileStore, opts: CreateProfileOptions): Promise<Profile> => {
   const { name, romFile, mode = DEFAULT_PROFILE_MODE } = opts;
