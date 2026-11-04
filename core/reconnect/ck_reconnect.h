@@ -24,6 +24,11 @@ int  ck_wide_width(void);              /* settings_reconnect.c: [video] wide_wid
 #define CK_TALL_LINES_OFF 224
 #define CK_TALL_LINES_MAX 480
 int  ck_tall_lines(void);
+/* field.c's tall patch (ck_tall_host.inc): the band rows a side this run draws (0 = off: headless, or tall_lines off), and the
+   1x picture size the core reports (W = the widescreen's width or 256, H = 224 + 2 x the band rows). The patched world.c
+   reads ck_tall_rows to keep the overworld pieces above and below the view; ck_api.c hands ck_view_size to the host. */
+int  ck_tall_rows(void);
+void ck_view_size(int* w, int* h);
 /* ck_state.c: save states (see its header comment). field.c reaches the ck_state_top .. ck_state_load_result group through
    ck_host_point.inc, the safe point the build includes at the top of its main loop. */
 #define CK_STATE_WRAM_BYTES 0x20000
