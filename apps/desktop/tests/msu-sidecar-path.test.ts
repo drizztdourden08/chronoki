@@ -1,7 +1,6 @@
 /* @layer tests @kind test */
 import { describe, expect, it } from 'vitest';
 import { ctMsuConfig, ctSaveCompanions, ctSidecarPath, slotRefOf } from '@chronoki/game-core';
-import { slotRefOf } from '@chronoki/game-core';
 
 describe('ctSidecarPath', { tags: ['critical'] }, () => {
   it('sits beside a quick save', () => {
