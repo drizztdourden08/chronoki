@@ -18,6 +18,7 @@ export { stripCopierHeader } from './port/strip-copier-header';
 export { encodeCkState } from './port/state-container/encode-ck-state';
 export { decodeCkState } from './port/state-container/decode-ck-state';
 export { CKST_MAGIC, CKST_VERSION } from './port/state-container/ck-state.constants';
+export { SRAM_SLOT_COUNT } from './save-file/save-file.constants';
 export { validSramSlots } from './save-file/valid-sram-slots';
 export { readSramSlotSummary } from './save-file/read-sram-slot-summary';
 export type { SramSlotSummary } from './save-file/save-file.type';

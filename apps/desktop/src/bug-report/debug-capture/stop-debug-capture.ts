@@ -1,7 +1,8 @@
 /* @layer renderer-lib @kind logic */
 import { appLog } from '@app/log/app-log';
 import { platformFiles } from '@app/storage/platform-files';
-import { capturePathOf, captureDirOf } from './capture-path';
+import { capturePathOf } from './capture-path';
+import { captureDirOf } from './capture-dir-of';
 import { captureRun } from './debug-capture.state';
 import { debugCaptureStore } from './debug-capture-store';
 

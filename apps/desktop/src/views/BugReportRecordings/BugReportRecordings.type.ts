@@ -14,7 +14,7 @@ interface IncludeButtonProps {
   included: boolean;
   name: string;
   disabled: boolean;
-  tabIndex: number;
+  tabIndex?: number;
   onToggle: () => void;
 }
 

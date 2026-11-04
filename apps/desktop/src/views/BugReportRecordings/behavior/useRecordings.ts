@@ -7,6 +7,8 @@ import { readCaptureSession } from '@app/bug-report/debug-capture/read-capture-s
 import type { CaptureSummary } from '@app/bug-report/debug-capture/debug-capture.type';
 import type { RecordingsModel } from '../BugReportRecordings.type';
 
+const withoutSession = (sessionKey: string) => (now: CaptureSummary[]): CaptureSummary[] => now.filter((session) => session.sessionKey !== sessionKey);
+
 const useRecordings = (profileId: string, setExtras: BugReportSectionProps['setExtras']): RecordingsModel => {
   const [sessions, setSessions] = useState<CaptureSummary[]>([]);
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
@@ -45,7 +47,7 @@ const useRecordings = (profileId: string, setExtras: BugReportSectionProps['setE
   }, []);
 
   const deleteSession = useCallback((sessionKey: string) => {
-    void deleteDebugCapture(profileId, sessionKey).then(() => setSessions((now) => now.filter((session) => session.sessionKey !== sessionKey)));
+    void deleteDebugCapture(profileId, sessionKey).then(() => setSessions(withoutSession(sessionKey)));
   }, [profileId]);
 
   return { sessions, loading, selected, toggleSession, deleteSession };

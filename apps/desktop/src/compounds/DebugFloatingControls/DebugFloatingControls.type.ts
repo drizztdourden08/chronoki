@@ -1,5 +1,6 @@
 /* @layer renderer-components @kind types */
 import type { PointerEvent } from 'react';
+import type { IconName } from '@drizztdourden08/tessera/primitives';
 
 interface DebugFloatingControlsProps {
   profileId: string | null;
@@ -26,7 +27,7 @@ interface DragStart {
 
 interface DebugRoundButtonProps extends DragHandlers {
   className: string;
-  icon: string;
+  icon: IconName;
   label: string;
   onPress: () => void;
   dragging: boolean;

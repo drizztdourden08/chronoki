@@ -1,8 +1,6 @@
 /* @layer renderer-lib @kind logic */
-import { CAPTURE_DIR } from './debug-capture.constants';
-
-const captureDirOf = (profileId: string): string => `${CAPTURE_DIR}/${profileId}`;
+import { captureDirOf } from './capture-dir-of';
 
 const capturePathOf = (profileId: string, sessionKey: string): string => `${captureDirOf(profileId)}/${sessionKey}.json`;
 
-export { captureDirOf, capturePathOf };
+export { capturePathOf };
