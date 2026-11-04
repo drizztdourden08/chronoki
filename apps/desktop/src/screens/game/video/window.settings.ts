@@ -6,7 +6,7 @@ const meta: ScreenMeta = { title: 'Window', icon: 'app-window', order: 2, keywor
 
 const viewportModes = [
   { value: 'none', label: 'Letterbox', hint: 'Keeps the game ratio and fills the rest of the window with black bars.' },
-  { value: 'fit', label: 'Fit Window', hint: 'Fills the window as far as the game ratio allows, and resizing the window keeps the game ratio.' },
+  { value: 'fit', label: 'Fit Window', hint: 'Locks the window shape to the game ratio while you resize it, so no bars show.' },
   { value: 'fill', label: 'Stretch', hint: 'Stretches the picture to fill the whole window.' },
 ];
 
@@ -18,12 +18,12 @@ const sections: Section[] = [
       {
         key: 'startFullscreen',
         label: 'Start in Fullscreen',
-        description: 'Opens the app in fullscreen the next time it starts.',
+        description: 'Automatically enter fullscreen when the game starts',
       },
       {
         key: 'viewportConstraint',
         label: 'Viewport',
-        description: 'How the picture relates to the window.',
+        description: 'Controls how the game canvas relates to the window',
         hint: 'Original Mode always uses Letterbox.',
         keywords: 'ratio aspect black bars stretch fill fit letterbox viewport',
         control: { kind: 'choice', options: viewportModes },
@@ -31,7 +31,7 @@ const sections: Section[] = [
       {
         key: 'pixelPerfect',
         label: 'Pixel Perfect',
-        description: 'Scales the picture by whole pixels only, with wider black borders, and turns Linear Filtering off while on.',
+        description: 'Scale the picture by whole source pixels only, so every pixel is exactly the same size. Removes the shimmer on fences, walls and other straight edges while scrolling, at the cost of slightly wider black borders. Turns Linear Filtering off while active.',
         hint: 'Needs the Letterbox viewport.',
         keywords: 'pixel perfect integer scale scaling sharp crisp nearest',
       },

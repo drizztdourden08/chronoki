@@ -23,7 +23,7 @@ const sections: Section[] = [
       {
         key: 'allowDebugLogging',
         label: 'Allow debugging logs tracking',
-        description: 'Keeps detailed logs to help when you report a bug.',
+        description: 'Keeps detailed logs and adds a capture key (`) and a floating button for sending a debug report.',
         keywords: 'debug logs tracking report crash capture',
       },
     ],

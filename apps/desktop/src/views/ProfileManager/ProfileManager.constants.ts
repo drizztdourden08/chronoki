@@ -14,7 +14,7 @@ const PROFILE_TABS: TabItem[] = [
 
 const MODE_LABELS: Record<ProfileMode, string> = {
   original: 'Original',
-  enhanced: 'Modified',
+  enhanced: 'Enhanced',
 };
 
 const MODE_OPTIONS: { value: ProfileMode; label: string }[] = [
