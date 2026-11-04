@@ -12,7 +12,7 @@ const buildImportOverrides = async (
   belthasar: string,
   abi: TableAbi,
   work: ImportContext['work'],
-  options: { glue: string | undefined; jobs: string | undefined },
+  options: { glue?: string | undefined; jobs?: string | undefined },
 ): Promise<Partial<ImportContext>> => {
   const glue = options.glue ?? fileURLToPath(new URL(GLUE_RELATIVE_PATH, import.meta.url));
   return {

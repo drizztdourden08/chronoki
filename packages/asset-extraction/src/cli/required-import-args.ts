@@ -1,13 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { TableAbi } from '../tables/table-abi.type';
 import { ABIS } from './repack-main.constants';
-
-interface RequiredImportArgs {
-  rom: string;
-  belthasar: string;
-  out: string;
-  abi: TableAbi;
-}
+import type { RequiredImportArgs } from './required-import-args.type';
 
 const requiredImportArgs = (values: { rom?: string; belthasar?: string; out?: string; abi?: string }): RequiredImportArgs | null => {
   const abi = ABIS[values.abi ?? ''];
