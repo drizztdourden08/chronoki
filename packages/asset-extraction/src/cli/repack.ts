@@ -22,6 +22,6 @@ const mainModule = './repack-main.ts';
 const { repack } = (await import(mainModule)) as { repack: typeof repackType };
 
 process.exitCode = await repack(process.argv.slice(2)).catch((e: unknown) => {
-  console.error(`repack: ${e instanceof Error ? e.message : String(e)}`);
+  process.stderr.write(`repack: ${e instanceof Error ? e.message : String(e)}\n`);
   return 1;
 });

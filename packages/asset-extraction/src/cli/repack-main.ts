@@ -8,7 +8,9 @@ import { mergeTablesInto } from '../ctas/table-container';
 import { parseWorkHeaders } from '../tables/pack-headers';
 import { writeTablesStorage } from '../tables/storage/storage-writer';
 
+import { errLine } from './err-line';
 import { createFsWorkStore } from './fs-work-store';
+import { outLine } from './out-line';
 import { ABIS, USAGE } from './repack-main.constants';
 
 const readAssets = async (work: ReturnType<typeof createFsWorkStore>): Promise<Uint8Array> =>
@@ -18,7 +20,7 @@ const repack = async (argv: string[]): Promise<number> => {
   const { values } = parseArgs({ args: argv, options: { work: { type: 'string' }, abi: { type: 'string' }, out: { type: 'string' } } });
   const abi = ABIS[values.abi ?? ''];
   if (values.work === undefined || values.out === undefined || abi === undefined) {
-    console.error(USAGE);
+    errLine(USAGE);
     return 2;
   }
   const work = createFsWorkStore(values.work);
@@ -29,7 +31,7 @@ const repack = async (argv: string[]): Promise<number> => {
   const assets = mergeTablesInto(await readAssets(work), pack);
   await out.writeBytes('ct_assets.dat', assets);
   await out.writeBytes('tables_storage.c', new TextEncoder().encode(writeTablesStorage(hs)));
-  console.log(`repack ${abi.name}: ${built.length} tables, pack ${pack.length} bytes, ct_assets.dat ${assets.length} bytes -> ${values.out}`);
+  outLine(`repack ${abi.name}: ${built.length} tables, pack ${pack.length} bytes, ct_assets.dat ${assets.length} bytes -> ${values.out}`);
   return 0;
 };
 

@@ -40,6 +40,8 @@ target/
 
 # Local app data for dev and worktree runs
 .user-data/
+# Importer CLI work folder (ROM-derived; never committed)
+.import-work/
 # brock sync: generated icon files, start. Brock rewrites the lines up to the end marker.
 apps/desktop/build/icons/
 apps/desktop/build/filetypes/
