@@ -1,0 +1,90 @@
+# P3 findings: Belthasar in WebAssembly
+
+Status: written, not yet built or run (the coder does not build). Every claim below marked *hypothesis* is for the
+checker to confirm with `node core/wasm-build/build.mjs`, `probe/frames.mjs` and `probe/oracle.mjs`.
+
+## What exists
+
+- `core/reconnect/`: `SDL.h` (the 38 SDL functions `field.c` calls, plus the types and constants) and its C bodies:
+  virtual clock, no events, a window of fixed size, an audio device that is a linear buffer, no controllers. It also
+  holds the replacements for the sources the import drops: `present_reconnect.c` (RGB24 to RGBA, swap = yield),
+  `settings_reconnect.c` (parses `/ct_settings.ini`), `touchpad_reconnect.c` (the input channel),
+  `launcher_reconnect.c` (argv becomes `--assets /ct_assets.dat --boot`; env `CT_SRAM=/saves/ct_sram.srm`).
+- `core/wasm-build/`: `build.mjs`, `sources.mjs` (file lists read from Belthasar's own `CMakeLists.txt`: the
+  `CT_FIELD_SRC` group, the `${SNES_SRC}` glob, the `ct_oracle` target), `shapes.mjs`, `ck_api.c`, `ck_loop.c`, and
+  `probe/`. Output in `core/wasm-build/out/` (git-ignored): `chronoki-core.{js,wasm}` (factory `ChronoKiCore`) and
+  `chronoki-oracle.{js,wasm}` (factory `ChronoKiOracle`). Nothing from the engine, ROM or data is embedded.
+- Both modules need the shell to fill the file system first, so `INVOKE_RUN=0`: the shell writes `/ct_assets.dat`
+  (and `/ct_tables.dat` if separate), `/ct_settings.ini`, `/saves/`, then calls `callMain([])` and does not await it.
+
+## Unknown 1: the blocking loop (hypothesis: go)
+
+`field.c` `main()` loops forever: events, sound, logic, `CtPresentSwap`, pace. Port-kit's host loop calls `runFrame`
+synchronously (`ccall`, no await) and then reads the frame. A JSPI-suspended call cannot be that call, so:
+
+- `main` is the only JSPI export (`-sJSPI -sJSPI_EXPORTS=main`). `CtPresentSwap` calls `ck_yield_to_host()`, which
+  awaits a promise (`EM_ASYNC_JS`, `ck_loop.c`) while no frame credit is held.
+- `CkRunFrame` is a plain sync export: it moves the virtual clock one 1/60 s tick, adds a credit and resolves the
+  promise. The engine resumes in a microtask once the host's stack unwinds, runs one frame, parks at the next present.
+- Cost: a constant one frame of video latency (the host reads the frame the previous call produced); catch-up steps
+  make the engine run frames back to back. `CkSampleCount` consumes the audio accumulated (reset on read), so audio
+  is neither doubled nor lost under catch-up. Backlog is capped at 8 credits.
+- Pacing: `SDL_GetPerformanceCounter` is virtual (1 MHz), `SDL_Delay` advances it, `CkRunFrame` sets it to the frame
+  tick. The engine's `hostPaceDo` therefore never decides a present is late, so it never skips one. `CT_NOPACE` is
+  not set because it makes `g_hostInteractive` false (settings would not load); the video driver reports `chronoki`.
+- Risks the checker settles: Node 24's V8 needs `--experimental-wasm-jspi` (the probe re-runs itself with it; browsers
+  that ship JSPI do not); `-sJSPI_EXPORTS=main` with `INVOKE_RUN=0` and `callMain` is unverified; a JS-to-wasm frame
+  between `main` and the yield (none known) would trap. Fallback: Asyncify with `emscripten_fiber_swap`, same
+  `ck_yield_to_host` seam.
+
+## Unknown 2: the 32-bit table layout (hypothesis: the 64-bit reference pack does not load in wasm32)
+
+`datapack.c` checks the pack header's pointer size against `sizeof(void*)` (8 against 4: refused), then per table the
+size and a layout hash, reads each pointer slot as a `u64` (UINT64_MAX = NULL) and relocates strings out of the pool.
+`src/tables/tables_storage.c` is generated for the 64-bit model: 398 `CT_TBL_CHECK` compile-time asserts, baked
+`elemSize`, layout hashes and pointer offsets. Only about eleven tables carry `const char*` members
+(`ctBattleAnimKf`, `ctMarleAtkKf`, `ctBattleSettleKf`, `ctBattleStanceActor`, `ctCronoIdleAddKf`, `ctGatoAtkFace`,
+`ctGatoFaceKf`, `ctGatoSwipeKf`, `ctLoaderChapter`, `ctLoaderEra`, `ctMarleSparkKf`); every other table has the same
+layout in both models. A wasm32 core needs three things:
+
+1. a 32-bit pack: `tools/gen/pack_tables.py` with `PTR_SIZE = 4`, `NULL_OFF = 0xFFFFFFFF`, `'<Q'` to `'<I'` for the
+   slots (a patched copy executed with `__file__` set to the real path; the kit's bundled python runs it);
+2. a regenerated `tables_storage.c` (its `headers` command with the same patch) so sizes and layout hashes match;
+3. the pointer-slot read in `datapack.c`. `shapes.mjs` applies an exact-match text patch (u32 slot when
+   `sizeof(void*) == 4`) and fails the build if the upstream line changes.
+
+Until (1) and (2) exist, `shapes.mjs` compiles the imported storage with the `CT_TBL_CHECK` lines stripped; the module
+links, and `frames.mjs` prints the loader's message (pointer size or "another layout") and exits 2. Put a generated
+32-bit storage at `core/wasm-build/out/tables32/tables_storage.c` and it is used instead. The alternative,
+`-sMEMORY64=1`, keeps the reference pack but needs wasm64 in the browser (not on every mobile browser). The longer
+fix is the TypeScript pack writer planned for P4, emitting the pointer size the target asks for.
+
+## Unknown 3: src/data and src/xlat shapes (hypothesis: not needed for the game)
+
+The data-free import already carries `src/tables/*.h`, which declare every table through `CT_TBL_EXTERN` /
+`CT_TBL_CONST`; the game target compiles against those. `CT_XLAT_NO_GWARP` is defined and the other `xlat` switches are
+not, so no `src/xlat/*.c` is needed. The one generated shape is for the oracle: `main.c` includes
+`data/animeng_sheet_gato.h` unconditionally; `shapes.mjs` writes a zeroed same-shape header to `out/gen/data/`.
+`sources.mjs` skips CMake-listed files the import dropped and stops with a list if anything else is missing.
+
+## Unknown 4: mod state and save states (hypothesis: no gate words in WRAM)
+
+Belthasar's mods (widescreen, scene adjustments, Steam margins, fill bottom lines, interpolation, render scale, free
+sync, instant sound uploads) live in the host `CtSettings` struct, not in WRAM; with them off the game is the
+cartridge's. So, unlike RotP, no gate words need freezing in a save state: the gates are the options in
+`ct_settings.ini`, applied once at start (an option marked `live:false` in the shell needs a core restart).
+The engine has no whole-core snapshot: F5/F9 (`CtSceneSaveState`) are scene-level, and an in-game save writes
+`/saves/ct_sram.srm` itself. Hence `CkSaveSram` returns 1 (the shell persists that file) and
+`CkSaveState`/`CkLoadState` return 0 for now. Later options: an engine hook that serialises the machine, or a heap
+snapshot (fragile under JSPI). A save-state container must record the option set so a load can refuse or re-apply it.
+
+## Other things the lead should know
+
+- Audio is 48000 Hz S16 stereo (800 frames per engine frame), not 32000: the port definition's `sampleRate` is 48000.
+- The frame is RGB24 of a variable size (widescreen, render scale); it is converted to RGBA. Extra exports
+  `CkFrameWidth`/`CkFrameHeight`/`CkFrameCount` carry the size; port-kit's fixed frame size must follow them.
+- Input is the touch-pad channel: `CkSetInput` takes port-kit's SNES 12-bit mask and remaps it to `CT_BTN_*`;
+  `field.c` derives the edges. `SDL_PollEvent` is always empty.
+- `CT_ROM` is not set; the checker should confirm the data-free engine boots from the assets alone (hypothesis: it does).
+- emcc comes from the emsdk RotP uses (`X:/relic-of-the-past/third_party/emsdk`; `--emsdk`, `CHRONOKI_EMSDK` or
+  `third_party/emsdk` override). A port-kit `portKit.wasm` entry in `apps/desktop/package.json` is not part of P3.

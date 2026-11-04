@@ -5,6 +5,9 @@
     "compounds": "packages/design/src/compounds",
     "views": "packages/design/src/views"
   },
+  "theme": {
+    "palette": "chronoki"
+  },
   "apps": {
     "apps/desktop": {
       "parts": {

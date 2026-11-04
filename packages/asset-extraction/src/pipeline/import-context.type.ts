@@ -11,6 +11,8 @@ import type { WorkStore } from './work-store.type';
 interface KitSources {
   recipeTexts: string[];
   manifests: ManifestFile[];
+  /** tools/gen/shapes/ files by path under it ("data/menu_shop.h", "xlat/seq_c3.c"): the shapes-install and pack-tables stages. */
+  shapes?: Record<string, string>;
 }
 
 /** What every stage works on (the plan's ImportContext). */
