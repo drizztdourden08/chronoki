@@ -1,5 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hex, hexByte } from '../c-text';
+import { hex } from '../c-hex';
+import { hexByte } from '../c-hex-byte';
 
 const DIGIT_BASE = 0x190;
 const NDIGIT = 10;

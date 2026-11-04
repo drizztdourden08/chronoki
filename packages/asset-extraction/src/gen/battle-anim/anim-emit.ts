@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hex } from '../c-text';
+import { hex } from '../c-hex';
 import { dec } from '../shared/py-format';
 import { CRONO_REF, GATO_REF, NTILE } from './anim-consts';
 import type { Collected } from './anim-collect';

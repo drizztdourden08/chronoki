@@ -3,21 +3,18 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { requireBytes } from '../pipeline/work-files';
 import { cgramOf, peek, recipeState } from './ctgen/require-tools';
 import { hx } from './ctgen/text-file';
-import { decode16, sprFrames } from './ow-sprite-decode';
-
-/** C3:E6A2's op-4 descriptors E77A/E77F/E784. */
-const GULL_NAMES = [0x1ca, 0x1cc, 0x1ce];
+import { decode16 } from './ow-sprite-decode';
+import { sprFrames } from './ow-spr-frames';
+import { GULL_NAMES } from './ow-gullmap.constants';
+import type { Hit } from './ow-gullmap.type';
 
 const sameBytes = (a: Uint8Array, b: Uint8Array): boolean => a.length === b.length && a.every((v, i) => v === b[i]);
 
-type Hit = [number, number];
-
-/** Every (palette, atlas slot) whose frame equals the tile decoded from VRAM in that OBJ palette. */
 const findHits = (vram: Uint8Array, cg: number[], frames: Uint8Array[]): Map<number, Hit[]> => {
   const hits = new Map<number, Hit[]>();
   for (let pal = 0; pal < 8; pal += 1) {
     for (const nm of GULL_NAMES) {
-      const dec = decode16(vram, cg, nm, pal);
+      const dec = decode16(vram, cg, { name: nm, pal });
       frames.forEach((f, k) => {
         if (sameBytes(f, dec)) hits.set(nm, [...(hits.get(nm) ?? []), [pal, k]]);
       });
@@ -43,7 +40,6 @@ const checkHits = (hits: Map<number, Hit[]>): number => {
   return [...pals][0] as number;
 };
 
-/** tools/gen/ow_gullmap.py: which slot of the gull atlas each ROM gull tile name is, matched by pixels (recipe ow_nav_w0). */
 const genOwGullmap = async (ctx: ImportContext): Promise<string> => {
   const w0 = await recipeState(ctx, 'ow_nav_w0');
   const spr = await requireBytes(ctx.work, 'saves/ow_gulls.spr');

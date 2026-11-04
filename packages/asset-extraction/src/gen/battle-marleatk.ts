@@ -2,31 +2,14 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import type { PeekOracle } from '../oracle/peek.type';
-import { emitMarleAtk, NTILE } from './battle-marleatk-emit';
-import type { MarleKf, SparkKf, TrajRow } from './battle-marleatk-emit';
-import type { GenFiles } from './oracle-gen-stage';
+import { emitMarleAtk } from './battle-marleatk-emit';
+import { NTILE } from './battle-marleatk-emit.constants';
+import type { MarleKf, SparkKf, TrajRow } from './battle-marleatk-emit.type';
+import type { GenFiles } from './oracle-gen-stage.type';
 import { decodeOam, oamBlob } from './shared/oam-decode';
 import type { Sprite } from './shared/oam-decode';
+import { BRK, MARLE_HOME, MARLE_KF, SPARK_KF, MASH, MONITOR_LINE } from './battle-marleatk.constants';
 
-const BRK = 0x006;
-const MARLE_HOME = [164, 63];
-const MARLE_KF: [string, number][] = [
-  ['MA1_aim', 905],
-  ['MA2_raise', 918],
-  ['MA3_fire', 930],
-  ['MA4_recover', 948],
-];
-/** Peek timeline = monitor + 2: monitor 0x12E@922 0x108@930 0x10C@932 0x10E@934 -> peek 924 932 934 936. */
-const SPARK_KF: [string, number][] = [
-  ['E0_spark', 924],
-  ['E1_ring0', 932],
-  ['E2_ring1', 934],
-  ['E3_ring2', 936],
-];
-const MASH = Array<string>(42).fill('100:16,0:16').join(',');
-const MONITOR_LINE = /^\s*f(\d+)\s+000700=([0-9A-Fa-f]+)\s+000900=([0-9A-Fa-f]+)/;
-
-/** The 42x A-mash prefix that lands exactly on frame T (cycle = 100:16,0:16 = 32f). */
 const bs = (t: number): string => {
   const ci = Math.floor(t / 32);
   const rem = t % 32;
@@ -77,7 +60,6 @@ const bakeSpark = async (oracle: PeekOracle, state: Uint8Array): Promise<(SparkK
 
 const fromHex = (h: string): number[] => (h.match(/../g) ?? []).map((p) => parseInt(p, 16));
 
-/** Per-frame anchor delta + poseId over the attack window. */
 const marleTraj = async (oracle: PeekOracle, state: Uint8Array): Promise<TrajRow[]> => {
   const lines = await oracle.monitor({ state, regions: '0700:512,0900:32', script: MASH });
   const fr = new Map<number, Sprite[]>();
@@ -104,7 +86,6 @@ const marleTraj = async (oracle: PeekOracle, state: Uint8Array): Promise<TrajRow
   return rows;
 };
 
-/** tools/gen/battle_marleatk.py: Marle's crossbow attack animation as src/data/battle_marleatk.h. */
 const genBattleMarleAtk = async (ctx: ImportContext): Promise<GenFiles> => {
   const oracle = peekOracle(ctx);
   const state = await recipeState(ctx, 'battle_gato_press_action');

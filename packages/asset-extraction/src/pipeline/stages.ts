@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { EXTRACT_RUNNERS } from '../extract/extract-runners';
-import { GEN_RUNNERS } from '../gen/gen-runners';
+import { GEN_RUNNERS } from '../gen/gen-runners.constants';
 import { TABLE_RUNNERS } from '../tables/table-runners';
 import { SETUP_RUNNERS } from './setup-runners';
 import { CAPTURE_STAGES } from './stage-defs/captures.stages';

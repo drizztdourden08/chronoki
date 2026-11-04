@@ -3,7 +3,7 @@ import type { MonitorRequest } from '../../oracle/peek.type';
 import type { Sprite } from '../shared/oam-decode';
 import { decodeOam } from '../shared/oam-decode';
 import { dec } from '../shared/py-format';
-import { hex } from '../c-text';
+import { hex } from '../c-hex';
 import { BRACKET_TILE } from './anim-consts';
 
 /** mash_bs: "100:16,0:16" repeated up to F frames. */

@@ -1,26 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { hx } from './ctgen/text-file';
-
-const PUNCT: Record<number, string> = {
-  0xde: '!',
-  0xdf: '?',
-  0xe0: '/',
-  0xe1: '"',
-  0xe2: '"',
-  0xe3: ':',
-  0xe4: '&',
-  0xe5: '(',
-  0xe6: ')',
-  0xe7: "'",
-  0xe8: '.',
-  0xe9: ',',
-  0xea: '=',
-  0xeb: '-',
-  0xec: '+',
-  0xed: '%',
-  0xef: ' ',
-  0xf3: '#',
-};
+import { PUNCT } from './menu-loader-strings.constants';
 
 const cstr = (rom: Uint8Array, ptr: number): number[] => {
   const out: number[] = [];
@@ -28,10 +8,6 @@ const cstr = (rom: Uint8Array, ptr: number): number[] => {
   return out;
 };
 
-/**
- * assets/text.py parse_character, verbatim for the printable subset. Leading spaces are kept (the ROM does not centre
- * these strings); only the tail is stripped.
- */
 const mapped = (bytes: number[]): string =>
   bytes
     .map((c) => {
@@ -48,7 +24,6 @@ const word = (rom: Uint8Array, at: number): number => (rom[at] as number) | ((ro
 const strings = (rom: Uint8Array, table: number, n: number): string =>
   Array.from({ length: n }, (_, k) => `  "${mapped(cstr(rom, word(rom, table + 2 * k))).replaceAll('"', '\\"')}",\n`).join('');
 
-/** The two ROM string tables the screen shows (chapter titles, era names) and the tables that pick them. */
 const stringBlock = (rom: Uint8Array): string => {
   const thr = Array.from(rom.subarray(0x3fd024, 0x3fd024 + 26), (b) => `0x${hx(b, 2)}`).join(', ');
   const eraNib = Array.from({ length: 512 }, (_, loc) => {

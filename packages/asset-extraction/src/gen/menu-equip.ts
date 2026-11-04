@@ -1,11 +1,12 @@
 /* @layer shared-asset-extraction @kind logic */
 import { romRegion } from '../rom/hirom';
-import { cArray, hex } from './c-text';
+import { cArray } from './c-array';
+import { hex } from './c-hex';
+import { STAT_CAP_NOTE } from './menu-equip.constants';
 
 const r8 = (rom: Uint8Array, a: number): number => rom[a] as number;
 const r16 = (rom: Uint8Array, a: number): number => r8(rom, a) | (r8(rom, a + 1) << 8);
 
-/** `static const uint16_t name[n]`, eight words a row (menu_equip.py emit16). */
 const cArray16 = (name: string, words: number[]): string[] => {
   const rows: string[] = [];
   for (let i = 0; i < words.length; i += 8) {
@@ -17,7 +18,6 @@ const cArray16 = (name: string, words: number[]): string[] => {
 const emit = (name: string, data: Uint8Array, note: string): string[] => [`// ${note}`, ...cArray('uint8_t', name, data)];
 const emit16 = (name: string, words: number[], note: string): string[] => [`// ${note}`, ...cArray16(name, words)];
 
-/** The Equip screen's three item property pages, rebuilt the way the menu open builds them in RAM (C2/98B5 -> C2/994C). */
 const equipPages = (rom: Uint8Array): { mask: Uint8Array; bonus: Uint8Array; power: Uint8Array } => {
   const cls = Array.from({ length: 6 }, (_, i) => r8(rom, 0x288a7 + i));
   const cf0e = Array.from({ length: 5 }, (_, i) => r16(rom, 0x3fcf0e + i * 2));
@@ -51,7 +51,6 @@ const equipPages = (rom: Uint8Array): { mask: Uint8Array; bonus: Uint8Array; pow
   return { mask, bonus, power };
 };
 
-/** tools/gen/menu_equip.py: the Equip screen's ROM data as src/data/menu_equip.h. */
 const genMenuEquip = (rom: Uint8Array): string => {
   const { mask, bonus, power } = equipPages(rom);
   const out = [
@@ -66,7 +65,7 @@ const genMenuEquip = (rom: Uint8Array): string => {
     ...emit('ctEqPower', power, "$7E:7C00 -- the gear 'power' byte: weapon Atk source, armour Def source, AND the list sort key"),
     ...emit16('ctEqBonusSet', Array.from({ length: 0x100 }, (_, i) => r16(rom, 0x0c29d7 + i * 2)), 'CC/29D7 -- bonus set: low byte = a stat MASK walked from bit7, high byte = the amount added'),
     ...emit('ctEqStatOff', romRegion(rom, 0x3fcf2c, 0x3fcf33), "FF/CF2C -- mask bit k -> the stat's offset inside the sheet's +0x0B..+0x11 block"),
-    ...emit('ctEqStatCap', romRegion(rom, 0x3fcf33, 0x3fcf3a), 'FF/CF33 -- per-k cap (note: indexed by k, NOT by the offset)'),
+    ...emit('ctEqStatCap', romRegion(rom, 0x3fcf33, 0x3fcf3a), STAT_CAP_NOTE),
     ...emit('ctEqRange', romRegion(rom, 0x289dc, 0x289e4), 'C2/89DC -- INTERLEAVED [lo,hi) per gear slot: Weapon [00,5A) Helm [7B,94) Armor [5A,7B) Accessory [94,BC)'),
     ...emit('ctEqSheetOff', romRegion(rom, 0x2a4ab, 0x2a4af), 'C2/A4AB -- gear slot -> sheet offset: Weapon +29, Helm +27, Armor +28, Accessory +2A'),
     ...emit16('ctEqAyla', Array.from({ length: 100 }, (_, i) => r16(rom, 0x0c2d69 + i * 2)), "CC/2D69 -- Ayla's per-LEVEL attack term (C2/91DB case 5)"),

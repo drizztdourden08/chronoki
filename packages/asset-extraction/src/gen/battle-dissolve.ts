@@ -4,13 +4,9 @@ import { peekOracle, recipeState } from '../oracle/peek-access';
 import { measure, verifyBad } from './battle-dissolve/dissolve-measure';
 import type { Seq } from './battle-dissolve/dissolve-measure';
 import { sprite } from './battle-dissolve/dissolve-sprite';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
 import { dec } from './shared/py-format';
-
-/** A = Att., Down, Down = target slot 2, A = confirm (39 frames). */
-const NAV = '0:6,100:3,0:8,20:3,0:8,20:3,0:8,100:3';
-const WINDOW_LO = 120;
-const WINDOW_HI = 300;
+import { NAV, WINDOW_LO, WINDOW_HI } from './battle-dissolve.constants';
 
 const emit = (dither: number[][]): string => {
   const L: string[] = [
@@ -39,7 +35,6 @@ const emit = (dither: number[][]): string => {
   return `${L.join('\n')}\n`;
 };
 
-/** tools/gen/battle_dissolve.py: the enemy-death dissolve table (src/data/battle_dissolve.h), measured on the oracle. */
 const genBattleDissolve = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'forest_battle_3hetake');
   const frames: number[] = [];

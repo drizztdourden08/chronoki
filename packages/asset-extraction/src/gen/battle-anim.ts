@@ -6,9 +6,8 @@ import { ANIM_RECIPE } from './battle-anim/anim-consts';
 import { emitBattleAnim } from './battle-anim/anim-emit';
 import { monitorRequest, parseMonitor, scriptFor } from './battle-anim/anim-sprites';
 import { cronoAttackTable, cronoBobTable, gatoIdleTable } from './battle-anim/anim-tables';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
 
-/** tools/gen/battle_anim.py: the Crono attack, GATO idle and GATO attack animations as src/data/battle_anim.h. */
 const genBattleAnim = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, ANIM_RECIPE);
   const collected = await collect(ctx, state);

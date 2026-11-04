@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hex } from '../c-text';
+import { hex } from '../c-hex';
 
 const E3_BASE = (0xe3 - 0xc0) << 16;
 const STRIDE = 0x78;

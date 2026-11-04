@@ -2,34 +2,10 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { cgramOf, peek, recipeState } from './ctgen/require-tools';
 import { hx } from './ctgen/text-file';
+import { TMW, TMH, BASE, OPEN_X } from './menu-chrome-caps.constants';
+import type { ChromeCaptures, Cap } from './menu-chrome-caps.type';
 
-const TMW = 32;
-const TMH = 28;
-const BASE = 0x6000;
-
-interface ChromeCaptures {
-  /** The ribbon view per option (Right x n). */
-  ribbon: number[][];
-  /** The entered screen per option. */
-  entered: number[][];
-  equip: number[];
-  equipList: number[];
-  exchange: number[];
-  /** VRAM and CGRAM of the menu open with the ribbon on opt0. */
-  vram0: Uint8Array;
-  cg0: Uint8Array;
-}
-
-interface Cap {
-  vram: Uint8Array;
-  wram: Uint8Array;
-  cg: Uint8Array;
-}
-
-/** The ribbon on option n: Right x n. */
 const ribbon = (n: number): string => `0:20${',80:2,0:8'.repeat(n)},0:40`;
-/** From the field: X opens the menu. */
-const OPEN_X = '0:20,200:2,0:60';
 
 const need = (cond: boolean, what: string): void => {
   if (!cond) throw new Error(`menu_chrome: REFUSING -- ${what}`);
@@ -38,7 +14,6 @@ const need = (cond: boolean, what: string): void => {
 const tilemap = (vram: Uint8Array): number[] =>
   Array.from({ length: TMW * TMH }, (_, i) => (vram[BASE * 2 + i * 2] as number) | ((vram[BASE * 2 + i * 2 + 1] as number) << 8));
 
-/** The five start states: menu_open_gato2, grupo_3_mapa (Form), ow_w0 (Save), menu_equip_spare, gato_wait (exchange). */
 const captureChrome = async (ctx: ImportContext): Promise<ChromeCaptures> => {
   const menu = await recipeState(ctx, 'menu_open_gato2');
   const form = await recipeState(ctx, 'grupo_3_mapa');
@@ -77,7 +52,6 @@ const captureChrome = async (ctx: ImportContext): Promise<ChromeCaptures> => {
   const el = await cap(eqlist, `${OPEN_X},100:2,0:40,100:2,0:60,20:2,0:20,100:2,0:60`);
   need(w67(el) === 1 && el.wram[0xbe] === 3, `not the Equip candidate list ($00BE = ${el.wram[0xbe]})`);
   need(((el.wram[0x0fc6] as number) | 0) > 0, 'empty candidate list');
-  // Screen $07 (C2/C7A6): Y on the field (C0/1985 -> C0/19CE), the picker settled (P = f86, the fade-in done by f95).
   const ex = await cap(exch, '0:20,2:4,0:96', { PEEK_POKE: '7F0000=49,2982=02,2983=03,0126=00' });
   need(w67(ex) === 7 && ex.wram[0x0a00] === 5, `the exchange screen did not open ($0067 = ${hx(w67(ex), 2)}, $0A00 = ${hx(ex.wram[0x0a00] as number, 2)})`);
   need(ex.wram[0x0f0c] === 1, `no reserve member on the exchange screen ($0F0C = ${ex.wram[0x0f0c]})`);
@@ -94,5 +68,4 @@ const captureChrome = async (ctx: ImportContext): Promise<ChromeCaptures> => {
   };
 };
 
-export { TMH, TMW, captureChrome };
-export type { ChromeCaptures };
+export { captureChrome };

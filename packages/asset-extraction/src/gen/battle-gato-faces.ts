@@ -2,20 +2,13 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import type { PeekDump } from '../oracle/peek.type';
-import { hex } from './c-text';
-import type { GenFiles } from './oracle-gen-stage';
+import { hex } from './c-hex';
+import type { GenFiles } from './oracle-gen-stage.type';
 import { BRACKET_TILE, NTILE, bodyMd5, gatoFoot, sheetRows, tileSheet } from './shared/gato-bake';
 import { decodeOam, oamBlob } from './shared/oam-decode';
 import type { Sprite } from './shared/oam-decode';
 import { dec } from './shared/py-format';
-
-interface Baked {
-  name: string;
-  facing: number;
-  rel: { rx: number; ry: number; tile: number }[];
-  tiles: Uint8Array[];
-  md5: string;
-}
+import type { Baked } from './battle-gato-faces.type';
 
 const cellsOf = (sprites: Sprite[]): Sprite[] =>
   sprites.filter((s) => s.y < 210 && s.x > -60 && s.x < 256 && s.pal === 1 && s.tile !== BRACKET_TILE);
@@ -75,7 +68,6 @@ const bake = (name: string, facing: number, dump: PeekDump): Baked => {
   };
 };
 
-/** tools/gen/battle_gato_faces.py: GATO's directional facing pose bakes (src/data/battle_gato_faces.h). */
 const genBattleGatoFaces = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_gato_press_action');
   const oracle = peekOracle(ctx);

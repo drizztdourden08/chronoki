@@ -2,14 +2,10 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import { chromeText } from './menu-chrome/chrome-text';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
 import { cgramOf } from './shared/fb-decode';
 import { hexN } from './shared/py-format';
-
-const TMW = 32;
-const TMH = 28;
-const BASE = 0x6000;
-const OPEN_X = '0:20,200:2,0:60';
+import { TMW, TMH, BASE, OPEN_X } from './menu-chrome.constants';
 
 const tilemap = (vram: Uint8Array): number[] =>
   Array.from({ length: TMW * TMH }, (_, i) => (vram[BASE * 2 + i * 2] as number) | ((vram[BASE * 2 + i * 2 + 1] as number) << 8));
@@ -20,16 +16,17 @@ const need = (cond: boolean, what: string): void => {
 
 const ribbon = (n: number): string => `0:20${',80:2,0:8'.repeat(n)},0:40`;
 
-/** tools/gen/menu_chrome.py: the X menu's BG2 chrome (tiles, palettes, every screen's tilemap) as src/data/menu_chrome.h (CRLF). */
+const loadStates = async (ctx: ImportContext) => ({
+  menu: await recipeState(ctx, 'menu_open_gato2'),
+  form: await recipeState(ctx, 'grupo_3_mapa'),
+  save: await recipeState(ctx, 'ow_w0'),
+  eqlist: await recipeState(ctx, 'menu_equip_spare'),
+  exch: await recipeState(ctx, 'gato_wait'),
+});
+
 const genMenuChrome = async (ctx: ImportContext): Promise<GenFiles> => {
   const oracle = peekOracle(ctx);
-  const S = {
-    menu: await recipeState(ctx, 'menu_open_gato2'),
-    form: await recipeState(ctx, 'grupo_3_mapa'),
-    save: await recipeState(ctx, 'ow_w0'),
-    eqlist: await recipeState(ctx, 'menu_equip_spare'),
-    exch: await recipeState(ctx, 'gato_wait'),
-  };
+  const S = await loadStates(ctx);
   const cap = async (key: keyof typeof S, script: string, env?: Record<string, string>) => {
     const d = await oracle.peek({ state: S[key], script, env, rule: true });
     return { vram: d.vram, w: d.wram, cg: cgramOf(d.oam) };

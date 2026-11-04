@@ -1,21 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import { x5 } from './ctgen/menugfx';
 
-/** tools/gen/ow_sprites.py spr_frames: the pixel blocks of a .spr atlas (count byte, then 7-byte headers + w*h*4 RGBA). */
-const sprFrames = (data: Uint8Array): Uint8Array[] => {
-  const out: Uint8Array[] = [];
-  let o = 1;
-  for (let i = 0; i < (data[0] as number); i += 1) {
-    const size = (data[o + 3] as number) * (data[o + 4] as number) * 4;
-    out.push(data.slice(o + 7, o + 7 + size));
-    o += 7 + size;
-  }
-  if (o !== data.length) throw new Error(`ow_sprites: a malformed .spr (${o} of ${data.length} bytes)`);
-  return out;
-};
-
-/** ow_sprites.decode16: a 16x16 OBJ (name base `base` bytes, the second table at +0x2000) -> RGBA; `cg` are the 256 CGRAM words. */
-const decode16 = (vram: Uint8Array, cg: number[], name: number, pal: number, base = 0): Uint8Array => {
+const decode16 = (vram: Uint8Array, cg: number[], sel: { name: number; pal: number; base?: number }): Uint8Array => {
+  const { name, pal, base = 0 } = sel;
   const px = new Uint8Array(16 * 16 * 4);
   for (let py = 0; py < 16; py += 1) {
     for (let x = 0; x < 16; x += 1) {
@@ -36,4 +23,4 @@ const decode16 = (vram: Uint8Array, cg: number[], name: number, pal: number, bas
   return px;
 };
 
-export { decode16, sprFrames };
+export { decode16 };

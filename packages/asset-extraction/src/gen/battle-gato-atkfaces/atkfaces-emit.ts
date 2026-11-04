@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hex } from '../c-text';
+import { hex } from '../c-hex';
 import { NTILE, sheetRows } from '../shared/gato-bake';
 import { dec } from '../shared/py-format';
 

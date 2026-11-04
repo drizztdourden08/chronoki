@@ -3,14 +3,10 @@ import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import { headText, FLASH_FRAME } from './battle-fx/fx-head';
 import { palText, tailText } from './battle-fx/fx-pal';
-import type { GenFiles } from './oracle-gen-stage';
+import type { GenFiles } from './oracle-gen-stage.type';
 import { cgramOf } from './shared/fb-decode';
+import { BAKE_FRAME, AON, AOFF } from './battle-fx.constants';
 
-const BAKE_FRAME = 540;
-const AON = 16;
-const AOFF = 16;
-
-/** build(F): the A-mash button script that boots the GATO fight, cut to F frames. */
 const build = (frames: number): string => {
   const seq: string[] = [];
   let n = 0;
@@ -30,7 +26,6 @@ const build = (frames: number): string => {
   return seq.join(',');
 };
 
-/** tools/gen/battle_fx.py: the battle action-feedback digit popup, MISS glyph and palettes (src/data/battle_fx.h). */
 const genBattleFx = async (ctx: ImportContext): Promise<GenFiles> => {
   const state = await recipeState(ctx, 'battle_gato_press_action');
   const oracle = peekOracle(ctx);

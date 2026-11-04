@@ -1,0 +1,23 @@
+/* @layer shared-asset-extraction @kind constants */
+const PUNCT: Record<number, string> = {
+  0xde: '!',
+  0xdf: '?',
+  0xe0: '/',
+  0xe1: '"',
+  0xe2: '"',
+  0xe3: ':',
+  0xe4: '&',
+  0xe5: '(',
+  0xe6: ')',
+  0xe7: "'",
+  0xe8: '.',
+  0xe9: ',',
+  0xea: '=',
+  0xeb: '-',
+  0xec: '+',
+  0xed: '%',
+  0xef: ' ',
+  0xf3: '#',
+};
+
+export { PUNCT };
