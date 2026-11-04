@@ -1,0 +1,12 @@
+{
+  "name": "@chronoki/game-data",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The Chrono Trigger dataset: ROM SHA-1 table, eras and locations.",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  }
+}

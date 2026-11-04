@@ -1,0 +1,19 @@
+{
+  "name": "@chronoki/design",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tessera compounds and views shared by the app (the brand theme and font plug in here later).",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@drizztdourden08/tessera": "catalog:",
+    "react": "catalog:"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:"
+  }
+}
