@@ -40,6 +40,15 @@ describe('pixel perfect frame on both axes', { tags: ['critical'] }, () => {
     expect(coverFrame(area(810, 1080), 3 / 4, FREE, true)).toEqual({ width: 270, height: 360, scale: 3 });
   });
 
+  it('widens a 3:4 frame past 256 on a settled stage, windowed or fullscreen', () => {
+    expect(coverFrame(area(810, 1040), 3 / 4, FREE, true)).toEqual({ width: 270, height: 348, scale: 3 });
+    expect(coverFrame(area(1920, 1080), 3 / 4, FREE, true)).toEqual({ width: 270, height: 360, scale: 3 });
+  });
+
+  it('stays 256 wide when planned from a stage still settling (810x990), so the boot waits for it', () => {
+    expect(coverFrame(area(810, 990), 3 / 4, FREE, true)).toEqual({ width: 256, height: 330, scale: 3 });
+  });
+
   it('raises the scale when the width would pass 544', () => {
     expect(coverFrame(area(2560, 1080), 2560 / 1080, FREE, true)).toEqual({ width: 512, height: 224, scale: 5 });
   });
@@ -89,6 +98,16 @@ describe('gate settings frame', { tags: ['critical'] }, () => {
     expect(settingsFor(NO_TALL, { stageArea: area(1920, 1080), wholePixels: true })).toMatchObject({ wideWidth: 384, tallLines: 0 });
     expect(settingsFor(ALL, { stageArea: area(1920, 1080) })).toMatchObject({ wideWidth: 398, tallLines: 0 });
     expect(settingsFor(ALL, { aspectRatio: 'original', stageArea: area(1920, 1080), wholePixels: true }).wideWidth).toBe(0);
+  });
+
+  it('plans 3:4 on both axes under pixel perfect and on the lines alone without it', () => {
+    expect(settingsFor(ALL, { aspectRatio: '3:4', stageArea: area(810, 1080), wholePixels: true })).toMatchObject({ wideWidth: 270, tallLines: 360 });
+    expect(settingsFor(ALL, { aspectRatio: '3:4', stageArea: area(810, 1080) })).toMatchObject({ wideWidth: 0, tallLines: 340 });
+  });
+
+  it('plans from the stage it is given: a 1032 high stage before fullscreen gives 258 lines', () => {
+    expect(settingsFor(ALL, { aspectRatio: '16:9', stageArea: area(1920, 1032), wholePixels: true })).toMatchObject({ wideWidth: 480, tallLines: 258 });
+    expect(settingsFor(ALL, { aspectRatio: '16:9', stageArea: area(1920, 1080), wholePixels: true })).toMatchObject({ wideWidth: 480, tallLines: 270 });
   });
 
   it('renders at scale 1 when the render scale gate is off', () => {

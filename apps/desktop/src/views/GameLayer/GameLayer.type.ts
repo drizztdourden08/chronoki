@@ -21,6 +21,17 @@ interface StageClassArgs {
   mode: CkPresentMode;
 }
 
+interface SettleState {
+  elapsed: number;
+  fullscreenPending: boolean;
+}
+
+interface StageWait {
+  id: number;
+  since: number;
+  fullscreen: boolean;
+}
+
 interface AspectLockArgs {
   viewport: ViewportMode;
   windowMode: WindowMode;
@@ -28,4 +39,4 @@ interface AspectLockArgs {
   ratio: number;
 }
 
-export type { AspectLockArgs, GameBootArgs, SessionPicture, StageClassArgs };
+export type { AspectLockArgs, GameBootArgs, SessionPicture, SettleState, StageClassArgs, StageWait };
