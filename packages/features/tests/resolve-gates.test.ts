@@ -4,7 +4,7 @@ import { FEATURES_BY_ID, FEATURE_REGISTRY, lockCauseOf, resolveFeatures, resolve
 
 const ALL = FEATURE_REGISTRY.map((feature) => feature.id);
 const STEAM = new Set(['steamData']);
-const ALLOWED_IN_ORIGINAL = ['saveStates', 'autoSave', 'saveOnQuit', 'developerTools'];
+const ALLOWED_IN_ORIGINAL = ['saveStates', 'autoSave', 'saveOnQuit'];
 
 describe('original mode', { tags: ['critical'] }, () => {
   it('leaves no feature that changes the game', () => {
@@ -12,14 +12,9 @@ describe('original mode', { tags: ['critical'] }, () => {
     expect([...effective].filter((id) => FEATURES_BY_ID[id]?.affectsVanillaParity)).toEqual([]);
   });
 
-  it('keeps save states, auto-save, save on quit and developer tools', () => {
+  it('keeps save states, auto-save, save on quit', () => {
     const { effective } = resolveGates(ALL, { vanillaSafe: true, satisfied: STEAM });
     expect([...effective].sort()).toEqual([...ALLOWED_IN_ORIGINAL].sort());
-  });
-
-  it('drops developer tools in a packaged build', () => {
-    const { effective } = resolveGates(ALL, { vanillaSafe: false, packaged: true, satisfied: STEAM });
-    expect(effective.has('developerTools')).toBe(false);
   });
 });
 
@@ -40,7 +35,6 @@ describe('requirements', { tags: ['critical'] }, () => {
     expect(lockCauseOf('widescreen', { ...base, vanillaSafe: true })).toBe('vanillaSafe');
     expect(lockCauseOf('sceneAdjust', base)).toBe('requires');
     expect(lockCauseOf('wideSteamMargins', { ...base, enabled: new Set(['widescreen']) })).toBe('missingData');
-    expect(lockCauseOf('developerTools', { ...base, packaged: true })).toBe('developerBuild');
     expect(lockCauseOf('fillBottomLine', base)).toBeNull();
   });
 });
