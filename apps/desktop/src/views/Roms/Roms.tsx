@@ -1,11 +1,12 @@
 /* @layer renderer-components @kind component */
 import { EmptyState } from '@drizztdourden08/tessera/primitives';
 import { ListDetailLayout } from '@drizztdourden08/tessera/composites';
-import { ROMS_TEXT } from './Roms.constants';
+import { ROMS_TEXT, STEAM_TEXT } from './Roms.constants';
 import { useRoms } from './behavior/useRoms';
 import { RomDetail } from './sub-components/RomDetail';
 import { RomImport } from './sub-components/RomImport';
 import { RomList } from './sub-components/RomList';
+import { SteamImport } from './sub-components/SteamImport';
 
 const Roms = () => {
   const { roms, selected, setSelected, status, busy, detail, loading, handleDrop, handleRebuild, handleDelete } = useRoms();
@@ -20,6 +21,7 @@ const Roms = () => {
           title: ROMS_TEXT.listTitle,
           content: <RomList roms={roms} selected={selected} busy={busy} onSelect={setSelected} onDelete={handleDelete} />,
         },
+        { title: STEAM_TEXT.title, content: <SteamImport /> },
       ]}
       detail={rom ? <RomDetail rom={rom} detail={detail} loading={loading} busy={busy} onRebuild={handleRebuild} onDelete={handleDelete} /> : null}
       emptyDetail={<EmptyState message={ROMS_TEXT.noSelection} />}

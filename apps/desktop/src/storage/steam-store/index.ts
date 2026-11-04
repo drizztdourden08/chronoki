@@ -1,7 +1,9 @@
 /* @layer renderer-lib @kind barrel */
 export { hasSteamData } from './has-steam-data';
 export { importSteamArchive } from './import-steam-archive';
+export { importSteamPath } from './import-steam-path';
 export { onSteamDataChanged } from './on-steam-data-changed';
+export { refreshSteamFlag } from './refresh-steam-flag';
 export { readSteamMarker } from './read-steam-marker';
 export { readSteamWide } from './read-steam-wide';
 export { removeSteamData } from './remove-steam-data';
