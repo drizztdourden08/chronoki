@@ -6,6 +6,8 @@ import { GateToggle } from './GateToggle';
 import { TurboSpeedControl } from './TurboSpeedControl';
 import { RenderScaleControl } from './RenderScaleControl';
 import { VolumeRow } from './audio/VolumeRow';
+import { DetectedPackSummary } from './audio/DetectedPackSummary';
+import { openProfilesPage } from './audio/open-profiles-page';
 import { GATE_KEY_PREFIX } from './gate-keys.constants';
 
 const renderSettingControl = (key: string, settings: AppSettings, onChange: SettingsPatch<AppSettings>): ReactNode | null => {
@@ -15,6 +17,8 @@ const renderSettingControl = (key: string, settings: AppSettings, onChange: Sett
   if (key === 'renderScale') return <RenderScaleControl settings={settings} onChange={onChange} />;
   if (key === 'turboSpeed') return <TurboSpeedControl settings={settings} onChange={onChange} />;
   if (key === 'masterVolume') return <VolumeRow settingKey="masterVolume" settings={settings} onChange={onChange} />;
+  if (key === 'musicVolume' || key === 'sfxVolume') return <VolumeRow settingKey={key} settings={settings} onChange={onChange} />;
+  if (key === 'detectedPack') return <DetectedPackSummary pack={null} onOpenProfiles={openProfilesPage} />;
   return null;
 };
 

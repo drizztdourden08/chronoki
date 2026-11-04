@@ -38,6 +38,12 @@ const HOST_FEATURES: FeatureDef[] = [
     userMessage: 'Set music and sound effects apart, with a volume for each.',
     group: 'Audio', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: true, live: true,
   },
+  {
+    id: 'gameInfo', label: 'Game Info widget',
+    description: 'Reads location, party, gold, time and story progress from the running game for the Game Info widget.',
+    userMessage: 'Read only: it never changes what the game computes. Off in Vanilla Safe.',
+    group: 'Quality of life', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: true, live: true,
+  },
 ];
 
 export { HOST_FEATURES };
