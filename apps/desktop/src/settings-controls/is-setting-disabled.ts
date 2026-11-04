@@ -1,11 +1,15 @@
 /* @layer renderer-app @kind logic */
 import type { AppSettings } from '@app/settings.type';
+import { effectiveGatesOf } from './effective-gates-of';
+import { GATE_KEY_PREFIX, OPTION_KEY_FEATURE } from './gate-keys.constants';
 import { lockCauseOf } from './lock-cause-of';
 
 const isSettingDisabled = (key: string, settings: AppSettings): boolean => {
-  if (key === 'viewportConstraint') return settings.original;
-  if (key === 'pixelPerfect') return settings.original || settings.viewportConstraint !== 'none';
-  return lockCauseOf(key, settings) !== null;
+  if (key === 'pixelPerfect') return settings.viewportConstraint !== 'none';
+  if (key === `${GATE_KEY_PREFIX}linearFiltering` && settings.pixelPerfect && settings.viewportConstraint === 'none') return true;
+  if (lockCauseOf(key, settings) !== null) return true;
+  const parent = OPTION_KEY_FEATURE[key];
+  return parent !== undefined && !effectiveGatesOf(settings).has(parent);
 };
 
 export { isSettingDisabled };

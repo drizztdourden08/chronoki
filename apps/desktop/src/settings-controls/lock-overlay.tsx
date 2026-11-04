@@ -3,12 +3,12 @@ import type { ReactNode } from 'react';
 import type { LockOverlayProps } from '@drizztdourden08/brock-react';
 import { LockOverlay } from '@chronoki/design';
 import { openSetting } from '@app/settings-nav/open-setting';
-import { ORIGINAL_MODE_KEY } from '@app/settings-nav/settings-nav.constants';
+import { VANILLA_SAFE_KEY } from '@app/settings-nav/settings-nav.constants';
 
-const openOriginalMode = (): void => openSetting(ORIGINAL_MODE_KEY);
+const openVanillaSafe = (): void => openSetting(VANILLA_SAFE_KEY);
 
 const lockOverlay = ({ cause, children }: LockOverlayProps): ReactNode => (
-  <LockOverlay cause={cause} onOpenSettings={cause === 'vanillaSafe' ? openOriginalMode : undefined}>{children}</LockOverlay>
+  <LockOverlay cause={cause} onOpenSettings={cause === 'vanillaSafe' ? openVanillaSafe : undefined}>{children}</LockOverlay>
 );
 
 export { lockOverlay };

@@ -1,12 +1,12 @@
 /* @layer renderer-app @kind constants */
 import { DEFAULT_BASE_SETTINGS } from '@drizztdourden08/brock-core';
-import { DEFAULT_GATE_OPTIONS } from '@chronoki/features';
+import { DEFAULT_GATE_OPTIONS, DEFAULT_GATES } from '@chronoki/features';
 import type { AppSettings } from './settings.type';
 
 const DEFAULT_SETTINGS: AppSettings = {
   ...DEFAULT_BASE_SETTINGS,
-  original: true,
-  gates: [],
+  vanillaSafe: false,
+  gates: DEFAULT_GATES,
   widescreenAspect: DEFAULT_GATE_OPTIONS.widescreenAspect,
   renderScale: DEFAULT_GATE_OPTIONS.renderScale,
   steamDataImported: false,
@@ -17,7 +17,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   viewportConstraint: 'none',
   pixelPerfect: false,
   autoSaveMaxEntries: 5,
-  turboSpeed: 4,
+  turboSpeed: 2,
   saveHoldDuration: 2,
 };
 

@@ -4,17 +4,17 @@ import { FEATURES_BY_ID, FEATURE_REGISTRY, lockCauseOf, resolveFeatures, resolve
 
 const ALL = FEATURE_REGISTRY.map((feature) => feature.id);
 const STEAM = new Set(['steamData']);
-const ALLOWED_IN_ORIGINAL = ['saveStates', 'autoSave', 'saveOnQuit'];
+const ALLOWED_IN_VANILLA_SAFE = ['saveStates', 'enhancedSaveSlotShortcut', 'autoSave', 'saveOnQuit', 'turbo', 'linearFiltering'];
 
-describe('original mode', { tags: ['critical'] }, () => {
+describe('vanilla safe', { tags: ['critical'] }, () => {
   it('leaves no feature that changes the game', () => {
     const { effective } = resolveGates(ALL, { vanillaSafe: true, satisfied: STEAM });
     expect([...effective].filter((id) => FEATURES_BY_ID[id]?.affectsVanillaParity)).toEqual([]);
   });
 
-  it('keeps save states, auto-save, save on quit', () => {
+  it('keeps the save features, turbo and linear filtering', () => {
     const { effective } = resolveGates(ALL, { vanillaSafe: true, satisfied: STEAM });
-    expect([...effective].sort()).toEqual([...ALLOWED_IN_ORIGINAL].sort());
+    expect([...effective].sort()).toEqual([...ALLOWED_IN_VANILLA_SAFE].sort());
   });
 });
 

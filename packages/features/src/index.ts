@@ -1,4 +1,5 @@
 /* @layer shared @kind barrel */
+export { DEFAULT_GATES } from './default-gates';
 export { FEATURE_REGISTRY } from './feature-registry/feature-registry.constants';
 export { FEATURES_BY_ID } from './feature-registry/features-by-id.constants';
 export { DEFAULT_GATE_OPTIONS } from './gate-options/gate-options.constants';

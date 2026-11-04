@@ -1,6 +1,6 @@
 /* @layer renderer-app @kind constants */
 const GAMEPLAY_SCREEN = 'game/gameplay';
 
-const ORIGINAL_MODE_KEY = 'original';
+const VANILLA_SAFE_KEY = 'vanillaSafe';
 
-export { GAMEPLAY_SCREEN, ORIGINAL_MODE_KEY };
+export { GAMEPLAY_SCREEN, VANILLA_SAFE_KEY };

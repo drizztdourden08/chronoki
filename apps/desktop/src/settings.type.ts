@@ -5,7 +5,7 @@ import type { RenderScaleFactor, WideAspect } from '@chronoki/features';
 type ViewportMode = 'none' | 'fit' | 'fill';
 
 interface AppSettings extends BaseSettings {
-  original: boolean;
+  vanillaSafe: boolean;
   gates: string[];
   widescreenAspect: WideAspect;
   renderScale: RenderScaleFactor;

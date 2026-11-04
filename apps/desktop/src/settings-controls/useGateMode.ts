@@ -6,7 +6,7 @@ import type { AppSettings } from '@app/settings.type';
 
 const useGateMode = (): GateMode => {
   const { settings } = useSettings<AppSettings>();
-  if (settings.original) return 'original';
+  if (settings.vanillaSafe) return 'original';
   const satisfied = new Set(settings.steamDataImported ? ['steamData'] : []);
   const { effective } = resolveGates(settings.gates, { vanillaSafe: false, satisfied });
   const changesGame = [...effective].some((id) => FEATURES_BY_ID[id]?.affectsVanillaParity === true);
