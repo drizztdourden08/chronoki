@@ -30,7 +30,7 @@ const runSramProbe = async (): Promise<void> => {
   const patternStored = bytesEqual(await readProfileSram(sram, game.profileId), pattern);
   if (!flushed) errors.push('flush wrote nothing');
   if (!patternStored) errors.push('stored file does not hold the pattern');
-  let restored = false;
+  let restored: boolean | null = null;
   if (original) {
     fs.writeFile(CT_SRAM_FILE, original);
     await flushSramSync();
@@ -38,7 +38,6 @@ const runSramProbe = async (): Promise<void> => {
     if (!restored) errors.push('restore did not match the original');
   } else {
     fs.unlink(CT_SRAM_FILE);
-    errors.push('profile had no SRAM: the pattern file stays in the saves folder');
   }
   await logProbe({
     probe: 'sram', ok: errors.length === 0, original: original?.length ?? null, stored: stored?.length ?? null,

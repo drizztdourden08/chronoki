@@ -29,7 +29,7 @@ type SramProbeEntry = {
   stored: number | null;
   pattern: number;
   patternStored: boolean;
-  restored: boolean;
+  restored: boolean | null;
   errors: string[];
 };
 
