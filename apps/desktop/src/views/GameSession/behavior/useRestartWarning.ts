@@ -10,6 +10,7 @@ const useRestartWarning = (running: boolean, launchId: number | null): void => {
   const { settings } = useSettings<AppSettings>();
   const prevRef = useRef(settings);
   const shownRef = useRef(false);
+  const wasRunningRef = useRef(running);
 
   useEffect(() => {
     const prev = prevRef.current;
@@ -21,6 +22,14 @@ const useRestartWarning = (running: boolean, launchId: number | null): void => {
     shownRef.current = false;
     toast.dismiss(RESTART_TOAST_ID);
   }, [launchId]);
+
+  useEffect(() => {
+    if (wasRunningRef.current && !running) {
+      shownRef.current = false;
+      toast.dismiss(RESTART_TOAST_ID);
+    }
+    wasRunningRef.current = running;
+  }, [running]);
 };
 
 export { useRestartWarning };

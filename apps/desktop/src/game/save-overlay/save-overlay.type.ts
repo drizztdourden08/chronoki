@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind types */
 interface SaveOverlayState {
   open: boolean;
-  slot: number;
+  slot: number | null;
   holdProgress: number;
 }
 
