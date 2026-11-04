@@ -5,7 +5,7 @@ import { NO_BINDING } from '../profile-edit/profile-edit.constants';
 import type { DisplayMapping } from './controls.type';
 
 const buildDisplayMappings = (profile: InputProfile | null): DisplayMapping[] =>
-  SNES_BUTTONS.flatMap((button) => {
+  SNES_BUTTONS.flatMap((button): DisplayMapping[] => {
     const bound = (profile?.mappings ?? [])
       .map((mapping, mappingIndex) => ({ mapping, mappingIndex }))
       .filter(({ mapping }) => mapping.snesButton === button);
