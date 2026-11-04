@@ -1,6 +1,7 @@
 // Probe 2: time one oracle replay (the ct_oracle module: the vendored SNES core running the cartridge) against the
 // test ROM, for a few power-on frame counts and the scripted run, each in a fresh module. Prints ms and a framebuffer hash.
 //   node core/wasm-build/probe/oracle.mjs [--rom <sfc>] [--frames 60,300,600]
+import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -8,6 +9,13 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
+
+// JSPI is behind a flag in Node 24's V8: re-run this file with it
+if (!process.execArgv.includes('--experimental-wasm-jspi')) {
+  const r = spawnSync(process.execPath, ['--experimental-wasm-jspi', fileURLToPath(import.meta.url), ...process.argv.slice(2)], { stdio: 'inherit' });
+  process.exit(r.status ?? 1);
+}
+
 const argValue = (name, fallback) => {
   const i = process.argv.indexOf(name);
   return i >= 0 ? process.argv[i + 1] : fallback;
@@ -34,7 +42,7 @@ const replay = async (label, extra, n) => {
   const t0 = performance.now();
   let status = 0;
   try {
-    status = m.callMain(['/rom.sfc', '--frames', String(n), '--fb', '/out.fb', ...extra]) ?? 0;
+    status = (await m.callMain(['/rom.sfc', '--frames', String(n), '--fb', '/out.fb', ...extra])) ?? 0;
   } catch (e) {
     status = e && e.status !== undefined ? e.status : `threw ${e}`;
   }
