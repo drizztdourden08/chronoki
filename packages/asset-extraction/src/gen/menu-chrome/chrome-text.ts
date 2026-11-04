@@ -67,8 +67,9 @@ const tilesText = (vram: Uint8Array): string => {
             ((((vram[o + 16 + y * 2] as number) >> b) & 1) << 2) |
             ((((vram[o + 16 + y * 2 + 1] as number) >> b) & 1) << 3),
         );
+      }
     }
-    s += `  {${px.join(',')}}, /* ${hexN(t, 3)} */\n`;
+    s +=`  {${px.join(',')}}, /* ${hexN(t, 3)} */\n`;
   }
   return s;
 };
