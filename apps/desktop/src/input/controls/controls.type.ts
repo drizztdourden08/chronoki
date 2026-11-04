@@ -6,7 +6,7 @@ type ListeningTarget =
   | { type: 'snes'; button: SnesButton }
   | { type: 'function'; action: FunctionAction };
 
-type ControlsTab = 'controls' | 'shortcuts';
+type ControlsTab = 'controls' | 'shortcuts' | 'options';
 
 type CaptureHandler = (binding: InputBinding, sourceDeviceKey?: string, vendorId?: string | null, productId?: string | null) => void;
 
@@ -47,10 +47,41 @@ interface BindingListenerProps {
 
 interface BindingRowProps {
   actionLabel: string;
+  middleLabel?: string;
+  middleIconId?: string;
   binding: InputBinding;
   icon?: DisplayMapping['icon'];
   onRebind: () => void;
   onClear: () => void;
 }
 
-export type { BindingListenerProps, BindingRowProps, CaptureHandler, ControlsProps, ControlsState, ControlsTab, DisplayMapping, ListeningTarget };
+interface BindingListHeaderProps {
+  middleLabel?: string;
+}
+
+interface RequiredInput {
+  type: 'keyboard' | 'gamepad';
+  label: string;
+  iconSrc: string;
+  connected: boolean;
+}
+
+interface RequiredInputStateProps {
+  input: RequiredInput;
+}
+
+interface DeviceRowProps {
+  device: DetectedDevice;
+  onAssign: (preset: DevicePreset) => void;
+}
+
+interface DevicesPanelProps {
+  ctrl: ControlsState;
+  onApply: (preset: DevicePreset) => void;
+}
+
+interface CtrlProps {
+  ctrl: ControlsState;
+}
+
+export type { BindingListHeaderProps, CtrlProps, DeviceRowProps, DevicesPanelProps, RequiredInput, RequiredInputStateProps, BindingListenerProps, BindingRowProps, CaptureHandler, ControlsProps, ControlsState, ControlsTab, DisplayMapping, ListeningTarget };

@@ -7,6 +7,7 @@ import type { InputProfile } from '@chronoki/input-mapping';
 import { BindingListener } from './BindingListener';
 import { DevicesPanel } from './DevicesPanel';
 import { FunctionBindingsTab } from './FunctionBindingsTab';
+import { OptionsTab } from './OptionsTab';
 import { ProfilesPanel } from './ProfilesPanel';
 import { SnesBindingsTab } from './SnesBindingsTab';
 import { CONTROLS_TABS } from './controls.constants';
@@ -24,7 +25,10 @@ const ControlsSettings = ({ profileId }: ControlsProps) => {
   const [deleteTarget, setDeleteTarget] = useState<InputProfile | null>(null);
   const { presetTarget, setPresetTarget, cancelPreset, confirmPreset } = usePresetConfirm(ctrl);
 
-  const handleTabChange = useCallback((id: string) => setTab(id === 'shortcuts' ? 'shortcuts' : 'controls'), []);
+  const handleTabChange = useCallback((id: string) => {
+    const next = CONTROLS_TABS.find((t) => t.id === id);
+    if (next) setTab(next.id as ControlsTab);
+  }, []);
   const cancelDelete = useCallback(() => setDeleteTarget(null), []);
   const confirmDelete = useCallback(() => {
     if (deleteTarget) ctrl.remove(deleteTarget);
@@ -41,9 +45,9 @@ const ControlsSettings = ({ profileId }: ControlsProps) => {
           <Box className="controls-settings__main">
             <Tabs tabs={CONTROLS_TABS} activeTab={tab} onTabChange={handleTabChange} />
             <ScrollArea className="controls-settings__body">
-              {tab === 'controls'
-                ? <SnesBindingsTab ctrl={ctrl} onRebind={(button) => setListeningFor({ type: 'snes', button })} />
-                : <FunctionBindingsTab ctrl={ctrl} onRebind={(action) => setListeningFor({ type: 'function', action })} />}
+              {tab === 'controls' && <SnesBindingsTab ctrl={ctrl} onRebind={(button) => setListeningFor({ type: 'snes', button })} />}
+              {tab === 'shortcuts' && <FunctionBindingsTab ctrl={ctrl} onRebind={(action) => setListeningFor({ type: 'function', action })} />}
+              {tab === 'options' && <OptionsTab ctrl={ctrl} />}
             </ScrollArea>
           </Box>
         </SearchAnchor>

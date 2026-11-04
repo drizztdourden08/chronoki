@@ -3,9 +3,11 @@ import { useCallback } from 'react';
 import type { KeyboardEvent, MouseEvent } from 'react';
 import { Box, Icon, IconButton, Text } from '@drizztdourden08/tessera/primitives';
 import { getBindingLabel } from '@chronoki/input-mapping';
+import { InputGlyph } from '@app/compounds/InputGlyph';
 import type { BindingRowProps } from './controls.type';
+import './BindingRow.css';
 
-const BindingRow = ({ actionLabel, binding, icon, onRebind, onClear }: BindingRowProps) => {
+const BindingRow = ({ actionLabel, middleLabel, middleIconId, binding, icon, onRebind, onClear }: BindingRowProps) => {
   const isNone = binding.type === 'none';
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -22,14 +24,23 @@ const BindingRow = ({ actionLabel, binding, icon, onRebind, onClear }: BindingRo
   return (
     <Box className="binding-row" role="button" tabIndex={0} title={`Click to rebind ${actionLabel}`} onClick={onRebind} onKeyDown={handleKeyDown}>
       <Text className="binding-row__action-label">{actionLabel}</Text>
-      <Text className={`binding-row__binding-label ${isNone ? 'binding-row__binding-label--none' : ''}`}>
-        {getBindingLabel(binding, icon)}
-      </Text>
-      {!isNone && (
-        <IconButton variant="ghost" tone="danger" size="xs" className="binding-row__clear" label="Clear binding" onClick={handleClear}>
-          <Icon name="x" />
-        </IconButton>
-      )}
+      <Box className="binding-row__rest">
+        <Box className="binding-row__icon-slot">
+          {middleIconId && <InputGlyph iconId={middleIconId} label={middleLabel} showLabel={false} />}
+        </Box>
+        <Text className="binding-row__snes-label">{middleLabel ?? ''}</Text>
+        <Box className="binding-row__icon-slot">
+          {!isNone && <InputGlyph binding={binding} icon={icon} showLabel={false} />}
+        </Box>
+        <Text className={`binding-row__binding-label ${isNone ? 'binding-row__binding-label--none' : ''}`}>
+          {getBindingLabel(binding, icon)}
+        </Text>
+        {!isNone && (
+          <IconButton variant="ghost" tone="danger" size="xs" className="binding-row__clear" label="Clear binding" onClick={handleClear}>
+            <Icon name="x" />
+          </IconButton>
+        )}
+      </Box>
     </Box>
   );
 };
