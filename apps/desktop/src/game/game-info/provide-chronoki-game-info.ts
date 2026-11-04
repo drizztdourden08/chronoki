@@ -5,7 +5,7 @@ import { GAME_INFO_EMPTY_TEXT } from './game-info.constants';
 import type { ChronokiInfoSnapshot } from './game-info.type';
 import { gameInfoGate } from './game-info-gate';
 import { readChronokiInfo } from './read-chronoki-info';
-import { GAME_INFO_SECTIONS } from './sections/game-info-sections';
+import { GAME_INFO_SECTIONS } from './sections/game-info-sections.constants';
 
 const provideChronokiGameInfo = (): void => {
   provideGameInfo<ChronokiInfoSnapshot>({
