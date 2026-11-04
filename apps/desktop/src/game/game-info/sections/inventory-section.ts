@@ -3,11 +3,12 @@ import type { Block, GameInfoSection, InfoListItem } from '@drizztdourden08/broc
 import type { GameInfoItem } from '@chronoki/game-core';
 import { FILTER_KEY_ITEMS, FILTER_OTHER_ITEMS, KEY_ITEM_FIRST_ID } from '../game-info.constants';
 import type { ChronokiInfoSnapshot } from '../game-info.type';
+import { nameOr } from '../name-or';
 
 const isKey = (item: GameInfoItem): boolean => item.id >= KEY_ITEM_FIRST_ID;
 
 const listItem = (item: GameInfoItem, names: ChronokiInfoSnapshot['itemNames']): InfoListItem => ({
-  label: names[item.id] || `Item ${item.id}`,
+  label: nameOr(names[item.id], `Item ${item.id}`),
   count: item.count,
   group: isKey(item) ? FILTER_KEY_ITEMS : FILTER_OTHER_ITEMS,
 });

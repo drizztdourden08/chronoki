@@ -4,7 +4,8 @@ import { chronokiCore } from '../lifecycle/chronoki-core';
 import { LIVE_STATUSES } from './game-info.constants';
 import type { ChronokiInfoSnapshot } from './game-info.type';
 import { cachedName } from './name-cache';
-import { readItemNames, readTechNames } from './read-names';
+import { readItemNames } from './read-item-names';
+import { readTechNames } from './read-tech-names';
 
 const readChronokiInfo = (): ChronokiInfoSnapshot | null => {
   const calls = chronokiCore.calls();
