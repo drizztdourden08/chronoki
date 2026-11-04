@@ -7,12 +7,9 @@ import { buildPack } from '../tables/build-pack';
 import { mergeTablesInto } from '../ctas/table-container';
 import { parseWorkHeaders } from '../tables/pack-headers';
 import { writeTablesStorage } from '../tables/storage/storage-writer';
-import { NATIVE64_ABI, WASM32_ABI } from '../tables/table-abi.constants';
-import type { TableAbi } from '../tables/table-abi.type';
-import { createFsWorkStore } from './fs-work-store';
 
-const ABIS: Record<string, TableAbi> = { native64: NATIVE64_ABI, wasm32: WASM32_ABI };
-const USAGE = 'usage: node packages/asset-extraction/src/cli/repack.ts --work <dir> --abi native64|wasm32 --out <dir>';
+import { createFsWorkStore } from './fs-work-store';
+import { ABIS, USAGE } from './repack-main.constants';
 
 const readAssets = async (work: ReturnType<typeof createFsWorkStore>): Promise<Uint8Array> =>
   (await work.readBytes('ct_assets.dat')) ?? requireBytes(work, 'build/ct_assets.dat');

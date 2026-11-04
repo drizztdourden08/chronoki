@@ -8,7 +8,8 @@ import { createHeaders } from './c-parse/headers';
 import type { Headers } from './c-parse/headers.type';
 import { fnv64 } from './fnv64';
 import { PackError } from './pack-error';
-import { parseOrder, parseWorkHeaders } from './pack-headers';
+import { parseWorkHeaders } from './pack-headers';
+import { parseOrder } from './parse-order';
 
 const headerNames = (ctx: ImportContext): string[] => {
   if (ctx.kit?.shapes === undefined) throw new PackError('the Belthasar kit shapes are needed');

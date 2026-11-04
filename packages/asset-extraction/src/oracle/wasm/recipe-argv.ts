@@ -1,14 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { RecipeStep } from '../../recipes/recipe.type';
 import { RAW_OUT, STATE_IN, STATE_OUT } from './wasm-paths.constants';
-
-interface StepCall {
-  args: string[];
-  env: Record<string, string>;
-  needsState: boolean;
-}
-
-const SAVE = { PEEK_SAVE: STATE_OUT };
+import type { StepCall } from './recipe-argv.type';
+import { SAVE } from './recipe-argv.constants';
 
 const stepCall = (step: RecipeStep): StepCall => {
   switch (step.op) {
@@ -39,4 +33,3 @@ const stepCall = (step: RecipeStep): StepCall => {
 };
 
 export { stepCall };
-export type { StepCall };

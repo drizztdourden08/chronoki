@@ -1,26 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
-import type { CtOutcome } from './ct-invocation.type';
-import type { ModuleFactory, ModuleOptions } from './emscripten-module.type';
 import { BASE_ENV, NOT_ORACLE_STATUS, RULE_ENV, ROM_PATH } from './wasm-paths.constants';
 import { runCt } from './run-ct';
-
-interface CtCall {
-  args: string[];
-  rule: boolean;
-  env?: Record<string, string>;
-  files?: Record<string, Uint8Array>;
-  outputs?: string[];
-}
-
-type CtRunner = (call: CtCall) => Promise<CtOutcome>;
-
-interface CtRunnerSource {
-  factory: ModuleFactory;
-  instantiateWasm?: ModuleOptions['instantiateWasm'] | undefined;
-  rom: () => Uint8Array;
-}
-
-const tailOf = (outcome: CtOutcome): string => [...outcome.stdout.slice(-8), ...outcome.stderr.slice(-8)].join('\n');
+import type { CtRunner, CtRunnerSource } from './ct-runner.type';
 
 const createCtRunner =
   (source: CtRunnerSource): CtRunner =>
@@ -41,5 +22,4 @@ const createCtRunner =
     return outcome;
   };
 
-export { createCtRunner, tailOf };
-export type { CtCall, CtRunner, CtRunnerSource };
+export { createCtRunner };

@@ -1,11 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { OracleResult, OracleRun } from '../oracle-driver.type';
-import { tailOf } from './ct-runner';
-import type { CtRunner } from './ct-runner';
+import { tailOf } from './tail-of';
+import type { CtRunner } from './ct-runner.type';
 import { stepCall } from './recipe-argv';
 import { RAW_OUT, SRAM_IN, STATE_IN, STATE_OUT } from './wasm-paths.constants';
-
-const SIDECARS = ['wram', 'vram', 'oam'] as const;
+import { SIDECARS } from './run-recipe.constants';
 
 const runRecipeSteps = async (ct: CtRunner, run: OracleRun): Promise<OracleResult> => {
   let current = run.parentState;

@@ -1,11 +1,16 @@
 /* @layer shared-asset-extraction @kind logic */
-import { cpuTraceCall, owforceCall, teleportCall, toolCall } from './mode-calls';
+import { toolCall } from './mode-calls';
+import { cpuTraceCall } from './cpu-trace-call';
+import { owforceCall } from './owforce-call';
+import { teleportCall } from './teleport-call';
 import { createCtRunner } from './ct-runner';
-import { monitorCall, peekCall, peekShotsCall, powerOnCall } from './peek-calls';
+import { peekCall } from './peek-calls';
+import { powerOnCall } from './power-on-call';
+import { monitorCall } from './monitor-call';
+import { peekShotsCall } from './peek-shots-call';
 import { runRecipeSteps } from './run-recipe';
 import type { WasmOracle, WasmOracleOptions } from './wasm-oracle.type';
-
-const DEFAULT_TAG = 'chronoki-oracle-wasm';
+import { DEFAULT_TAG } from './wasm-oracle.constants';
 
 const createWasmOracle = (options: WasmOracleOptions): WasmOracle => {
   let rom: Uint8Array | null = null;
