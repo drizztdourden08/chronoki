@@ -134,6 +134,8 @@ const TALL_PATCHES = [
   [WIDE_BRANCH, TALL_BRANCH + WIDE_BRANCH, 1],
   [PRESENT, `${PRESENT}    g_ckTallT = 0;\n`, 1],
   ['free(front); free(pmask);', 'free(ckFront0); free(ckPmask0);', 1],
+  // T3: the battle
+  [BATTLE, BATTLE + BATTLE_TALL, 1],
 ];
 
 // world.c: the overworld's uncut OBJ pieces kept up to the band rows (they are what the band composes draw)
