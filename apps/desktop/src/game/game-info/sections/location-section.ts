@@ -1,7 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import type { Block, GameInfoSection } from '@drizztdourden08/brock-game-info';
 import { formatMap } from '../format-map';
-import { formatEpoch, formatPoint } from '../format-position';
+import { formatEpoch } from '../format-epoch';
+import { formatPoint } from '../format-point';
 import type { ChronokiInfoSnapshot } from '../game-info.type';
 
 const locationBlocks = ({ eraName, location }: ChronokiInfoSnapshot): Block[] => [

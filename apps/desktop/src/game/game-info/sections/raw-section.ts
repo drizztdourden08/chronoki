@@ -1,7 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import type { GameInfoSection } from '@drizztdourden08/brock-game-info';
 import type { ChronokiInfoSnapshot } from '../game-info.type';
-import { formatEpoch, formatPoint } from '../format-position';
+import { formatEpoch } from '../format-epoch';
+import { formatPoint } from '../format-point';
 
 const rawSection: GameInfoSection<ChronokiInfoSnapshot> = {
   id: 'raw',

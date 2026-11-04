@@ -12,7 +12,9 @@ const put = (heap: Uint8Array, at: number, ...bytes: number[]): void => {
   });
 };
 
-describe('readGameInfo', () => {
+const allFalse = (row: boolean[]): boolean => row.every((bit) => !bit);
+
+describe('readGameInfo basics', () => {
   it('refuses a null pointer or a short heap', { tags: ['critical'] }, () => {
     expect(readGameInfo(makeHeap(), 0)).toBeNull();
     expect(readGameInfo(new Uint8Array(0x100), PTR)).toBeNull();
@@ -45,6 +47,9 @@ describe('readGameInfo', () => {
     expect(sheet?.ko).toBe(true);
   });
 
+});
+
+describe('readGameInfo party and economy', () => {
   it('reads 24-bit gold little endian', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x2c53, 0x40, 0x42, 0x0f);
@@ -75,10 +80,13 @@ describe('readGameInfo', () => {
 
   it('reads no learned techs as all-false rows', { tags: ['critical'] }, () => {
     const techs = readGameInfo(makeHeap(), PTR)?.techs;
-    expect(techs?.single.every((row) => row.every((bit) => !bit))).toBe(true);
+    expect(techs?.single.every(allFalse)).toBe(true);
     expect(techs?.multiLearned).toBe(0);
   });
 
+});
+
+describe('readGameInfo world state', () => {
   it('reads the lead position from the object tables in pixels', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     put(heap, 0x1800, 0x00, 0x08);
