@@ -106,11 +106,13 @@ const gameArgs = (gen) => [
   ...(trace ? ['-DCK_TRACE'] : []),
   // the music tap (reconnect/music_tap.c) wraps the game's one audio entry; the real one still runs unchanged
   '-Wl,--wrap=CtAudioService',
+  // the info widget's seam (ck_info.c) sees the one CtWramCreate call field.c's fieldWram() makes: the WRAM pointer
+  '-Wl,--wrap=CtWramCreate',
   '-sINVOKE_RUN=1',            // main runs after preRun (the shell writes its files there) and parks at the first present
   '-sMODULARIZE=1', '-sEXPORT_NAME=Chronoki', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
-  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_ck_coro_entry',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,callMain,FS,ENV,HEAPU8,HEAP16,HEAP32',
   '-lm',
 ];
