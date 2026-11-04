@@ -1,21 +1,20 @@
 /* @layer bridge-wasm @kind logic */
 import { defineRandomizerGame } from '@drizztdourden08/brock-randomizer';
 import type { CtPlacement } from '@chronoki/game-core';
-import { CT_GAME, CT_OPTION_CATALOG, CT_PLACEMENT_SCHEMAS, describeCtPlacement } from '@chronoki/game-core';
-import { chronokiCoreSignal } from './chronoki-core-signal';
+import { CT_GAME, CT_OPTION_CATALOG, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA, describeCtPlacement } from '@chronoki/game-core';
+import { chronokiCore } from '../lifecycle/chronoki-core';
 import { chronokiMemoryBridge } from './chronoki-memory-bridge';
 import { chronokiPollHooks } from './chronoki-poll-hooks';
 import { CHRONOKI_RANDOMIZER_LABELS } from './chronoki-randomizer.constants';
 import { chronokiSeedApplier } from './chronoki-seed-applier';
 import { chronokiToConfig } from './chronoki-to-config';
-import { chronokiWorldStamp } from './chronoki-world-stamp';
 import { rollChronokiSeed } from './roll-chronoki-seed';
 
 const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   id: CT_GAME,
-  world: chronokiWorldStamp,
+  world: { game: CT_GAME, worldSchema: CT_WORLD_SCHEMA },
   placementSchemas: CT_PLACEMENT_SCHEMAS,
-  core: chronokiCoreSignal,
+  core: chronokiCore,
   roll: rollChronokiSeed,
   describe: describeCtPlacement,
   memory: chronokiMemoryBridge,
