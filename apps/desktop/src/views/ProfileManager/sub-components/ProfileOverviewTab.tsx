@@ -8,6 +8,7 @@ import type { ReadyRom } from '../ProfileManager.type';
 import { buildProfileFacts } from '../behavior/build-profile-facts';
 import { useProfileSettings } from '../behavior/useProfileSettings';
 import { ProfileNameField } from './ProfileNameField';
+import { ProfileMsuPackField } from './ProfileMsuPackField';
 
 const ProfileOverviewTab = ({ profile, readyRoms }: { profile: Profile; readyRoms: ReadyRom[] }) => {
   const settings = useProfileSettings(profile.id);
@@ -25,6 +26,7 @@ const ProfileOverviewTab = ({ profile, readyRoms }: { profile: Profile; readyRom
               placeholder="Select ROM..."
             />
           </Field>
+          <ProfileMsuPackField profile={profile} />
         </Stack>
       </Card>
       <Card title="Details" level={4}>

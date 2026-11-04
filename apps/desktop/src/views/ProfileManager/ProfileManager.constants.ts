@@ -22,4 +22,8 @@ const PROFILE_TEXT = {
   delete: 'Delete',
 } as const;
 
-export { DATA_TAB, OVERVIEW_TAB, PROFILE_TABS, PROFILE_TEXT, SETTINGS_TAB };
+const NO_PACK_LABEL = 'None';
+
+const PACK_FIELD_HINT = { locked: 'Vanilla Safe is on. Your choice is kept and applies again when it is off.' } as const;
+
+export { DATA_TAB, NO_PACK_LABEL, OVERVIEW_TAB, PACK_FIELD_HINT, PROFILE_TABS, PROFILE_TEXT, SETTINGS_TAB };
