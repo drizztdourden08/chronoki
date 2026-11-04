@@ -1,4 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_maps */
 import { createLeWriter } from '../buffer/le-writer';
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_MAP } from './asset-types.constants';
@@ -7,7 +7,6 @@ import { parseProps } from './map-props';
 import { sceneHeader } from './scene-header';
 import type { Packer } from './extract.type';
 
-/** The per-tile props priority plane: bit 0x40 of prop1/prop2 (the tile's upper/lower half chips are BG priority 1). */
 const priorityPlane = (md: Uint8Array, start: number, n: number): Uint8Array => {
   const tprio = new Uint8Array(n);
   let i = start;
@@ -33,12 +32,10 @@ const priorityPlane = (md: Uint8Array, start: number, n: number): Uint8Array => 
   return tprio;
 };
 
-/** OR 256 into a layer's tiles where the props say so (the flag plane is sw wide). */
 const applyAdd = (layer: number[], w: number, h: number, add: boolean[], sw: number): void => {
   for (let y = 0; y < h; y += 1) for (let x = 0; x < w; x += 1) if (add[y * sw + x]) layer[y * w + x]! |= 256;
 };
 
-/** extract_assets.pack_maps: [w1,h1,w2,h2,w3,h3,has_l3,screen,effect][L1/L2/L3 u16, +256 baked][tprio][md1..md3]. */
 const packMaps: Packer = ({ rom, tables }) => {
   const out: CtasEntry[] = [];
   const seen = new Set<number>();

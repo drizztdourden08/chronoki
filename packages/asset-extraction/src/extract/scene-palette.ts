@@ -1,17 +1,11 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python maps.scene_palette, maps.read_palette_anims */
 import { SCENE_PAL } from './asset-types.constants';
 import { u16 } from './rom-read';
 import type { Rgb } from './snes-color';
 import { snes15ToRgb } from './snes-color';
+import { PAL_ADDR, PAL_ANIM, PAL_COLOR } from './scene-palette.constants';
+import type { PaletteAnim } from './scene-palette.type';
 
-const PAL_ADDR = 0x3df9c7;
-const PAL_ANIM = 0x3dfa77;
-const PAL_COLOR = 0x367380;
-
-/** [type, color index, color count, delay, frames, colors] */
-type PaletteAnim = [typ: number, ci: number, cc: number, delay: number, frames: number[], colors: Rgb[]];
-
-/** maps.scene_palette: 16 black, then 7 rows of (black + 15 colors) = 128 colors. */
 const scenePalette = (rom: Uint8Array, pi: number): Rgb[] => {
   let p = SCENE_PAL + pi * 210;
   const cols: Rgb[] = [];
@@ -26,7 +20,6 @@ const scenePalette = (rom: Uint8Array, pi: number): Rgb[] => {
   return cols;
 };
 
-/** maps.read_palette_anims: the scene's palette-animation set (index = scene palette index). */
 const readPaletteAnims = (rom: Uint8Array, index: number): PaletteAnim[] => {
   if (index * 2 + 1 >= 0xb6) return [];
   let p = PAL_ANIM + u16(rom, PAL_ADDR + index * 2);

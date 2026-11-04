@@ -1,19 +1,12 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python script.load_script */
 import { byteAt } from '../bytes/byte-reader';
 import { lzDecompress } from '../lz-decompress';
 import { getEntries3Byte } from '../rom-read';
-
-const SCRIPT_PTRS = 0x3cf9f0;
-
-interface LoadedScript {
-  /** Per object, its 16 function pointers (rebased: minus the header size). */
-  objs: number[][];
-  body: Uint8Array;
-}
+import { SCRIPT_PTRS } from './script-load.constants';
+import type { LoadedScript } from './script-load.type';
 
 const pointerCache = new WeakMap<Uint8Array, number[]>();
 
-/** The 513 scene-script pointers (sprites.get_entries_3byte over SCRIPT_PTRS), read once per ROM. */
 const scriptPointers = (rom: Uint8Array): number[] => {
   const hit = pointerCache.get(rom);
   if (hit) return hit;
@@ -22,7 +15,6 @@ const scriptPointers = (rom: Uint8Array): number[] => {
   return ptrs;
 };
 
-/** script.load_script: a scene script decompressed to (objects' pointers, body). */
 const loadScript = (rom: Uint8Array, scriptIndex: number): LoadedScript => {
   const ptrs = scriptPointers(rom);
   const ptr = ptrs[scriptIndex];

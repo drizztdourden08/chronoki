@@ -1,4 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.snd_code_map, extract_assets.pack_sound */
 import type { CtasEntry } from '../ctas/ctas.type';
 import {
   T_SND_BOOT,
@@ -13,15 +13,14 @@ import {
 import { byteAt, wordAt } from './bytes/byte-reader';
 import { concatBytes, createBlobWriter } from './bytes/blob-writer';
 import type { Packer } from './extract.type';
+import { FD } from './pack-sound.constants';
 
 const C7 = 0x70000;
-const FD = 0x3d0000;
 
 const p24 = (rom: Uint8Array, o: number): number => ((byteAt(rom, o + 2) - 0xc0) << 16) | wordAt(rom, o);
 const u16le = (v: number): Uint8Array => Uint8Array.of(v & 0xff, (v >> 8) & 0xff);
 const sub = (rom: Uint8Array, a: number, b: number): Uint8Array => rom.subarray(a, b);
 
-/** extract_assets.snd_code_map: block 0's code map in the cost table (start, length, one bit per byte). */
 const codeMap = (timing: Uint8Array): { blo: number; blen: number; cmap: Uint8Array } => {
   const tag = String.fromCharCode(timing[0] ?? 0, timing[1] ?? 0, timing[2] ?? 0, timing[3] ?? 0);
   if (timing.length < 12 || tag !== 'SNDT') throw new Error('saves/snd_timing.bin: not a cost table');
@@ -29,7 +28,6 @@ const codeMap = (timing: Uint8Array): { blo: number; blen: number; cmap: Uint8Ar
   return { blo: wordAt(timing, 8), blen, cmap: timing.subarray(12, 12 + ((blen + 7) >> 3)) };
 };
 
-/** The six IPL upload blocks (block 0, the driver, keeps only its data when the cost table is there). */
 const bootBlocks = (rom: Uint8Array, timing: Uint8Array | null): CtasEntry[] => {
   const out: CtasEntry[] = [];
   for (let b = 0; b < 6; b += 1) {
@@ -45,7 +43,6 @@ const bootBlocks = (rom: Uint8Array, timing: Uint8Array | null): CtasEntry[] => 
   return out;
 };
 
-/** Songs (sequence + instrument list/percussion/record), samples, instrument parameters, SFX sets. */
 const songData = (rom: Uint8Array, nsong: number): CtasEntry[] => {
   const out: CtasEntry[] = [];
   for (let s = 0; s < nsong; s += 1) {
@@ -74,7 +71,6 @@ const songData = (rom: Uint8Array, nsong: number): CtasEntry[] => {
   return out;
 };
 
-/** The song-exception list and FD/C1EE's HDMA program. */
 const miscData = (rom: Uint8Array, nsong: number): CtasEntry[] => {
   const exc: number[] = [];
   for (let o = C7 + 0x0ad8; ; o += 1) {
@@ -92,7 +88,6 @@ const miscData = (rom: Uint8Array, nsong: number): CtasEntry[] => {
   ];
 };
 
-/** extract_assets.pack_sound: the SPC driver upload blocks, songs, samples, instruments, SFX sets and the loader's tables. */
 const packSound: Packer = async ({ rom, work }) => {
   const timing = await work.readBytes('saves/snd_timing.bin');
   const entries: CtasEntry[] = [];

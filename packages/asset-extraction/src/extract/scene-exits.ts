@@ -1,18 +1,8 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python maps.scene_exits */
 import { byteAt, wordAt } from './bytes/byte-reader';
+import { EXITS_BASE } from './scene-exits.constants';
+import type { SceneExit } from './scene-exits.type';
 
-const EXITS_BASE = 0x250000;
-
-interface SceneExit {
-  pos: [number, number];
-  size: [number, number];
-  kind: 'scene' | 'world';
-  dest: number;
-  dpos: [number, number];
-  facing: number;
-}
-
-/** maps.scene_exits: the scene's doors, 7-byte records between its pointer and the next scene's. */
 const sceneExits = (rom: Uint8Array, scene: number): SceneExit[] => {
   const addr = EXITS_BASE + wordAt(rom, EXITS_BASE + scene * 2);
   const nxt = scene < 511 ? EXITS_BASE + wordAt(rom, EXITS_BASE + (scene + 1) * 2) : 0x251a44;

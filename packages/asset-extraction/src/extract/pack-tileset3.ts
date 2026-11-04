@@ -1,4 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_tileset3 */
 import { createLeWriter } from '../buffer/le-writer';
 import { T_TS3 } from './asset-types.constants';
 import { decodeTiles } from './decode-tiles';
@@ -9,7 +9,6 @@ import { parseMetatiles, serMetas } from './metatiles';
 import { distinctHeaderBytes } from './scene-header';
 import type { Packer } from './extract.type';
 
-/** extract_assets.pack_tileset3: [nchips u16][nchips*64][nchips present][has_metas u8][256 metas*16?]. */
 const packTileset3: Packer = ({ rom, tables }) => {
   const { tsGfx, asm3Ptrs } = tables;
   const out: CtasEntry[] = [];

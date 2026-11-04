@@ -1,4 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_actors */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_ACTORS } from './asset-types.constants';
 import { createBlobWriter } from './bytes/blob-writer';
@@ -6,7 +6,6 @@ import { extractActors } from './script/extract-actors';
 import type { Actor } from './script/script-run.type';
 import type { Packer } from './extract.type';
 
-/** extract_assets.pack_actors: per scene [count u8] + per visible actor {obj u8, sprite u16, x u16, y u16, facing u8}. */
 const packActors: Packer = ({ rom }) => {
   const entries: CtasEntry[] = [];
   for (let s = 0; s < 512; s += 1) {

@@ -1,10 +1,7 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python maps._metatiles, extract_assets._ser_metas */
 import { createLeWriter } from '../buffer/le-writer';
+import type { Corner } from './metatiles.type';
 
-/** One meta corner: chip, palette base, flip x, flip y, priority. */
-type Corner = [chip: number, base: number, fx: boolean, fy: boolean, prio: boolean];
-
-/** maps._metatiles with sub256 false: `count` metatiles of 4 corners from the assembly bytes. */
 const parseMetatiles = (asm: Uint8Array, count: number, palMul: number): Corner[][] => {
   const out: Corner[][] = [];
   let p = 0;
@@ -24,7 +21,6 @@ const parseMetatiles = (asm: Uint8Array, count: number, palMul: number): Corner[
   return out;
 };
 
-/** extract_assets._ser_metas: {chip u16, base u8, flags u8 (fx | fy << 1 | prio << 2)} per corner, `count` metas. */
 const serMetas = (metas: Corner[][], count: number): Uint8Array => {
   const b = createLeWriter();
   const blank: Corner = [0, 0, false, false, false];

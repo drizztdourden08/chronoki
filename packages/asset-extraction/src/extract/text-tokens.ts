@@ -1,25 +1,9 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python text.load_dict, text.decode_string */
 import { at } from './lz-decompress';
 import { parseCharacter, special } from './text-codes';
+import { DICT_BASE, DICT_COUNT, DEFAULT_PB, DEFAULT_IND } from './text-tokens.constants';
+import type { DecodeOptions } from './text-tokens.type';
 
-const DICT_BASE = 0x1efa00;
-const DICT_COUNT = 128;
-const DEFAULT_PB = '\n———\n';
-const DEFAULT_IND = '   ';
-
-interface DecodeOptions {
-  /** What the page-break codes 0x0B/0x0C render to; '\f' is the packer's marker mode. */
-  pb?: string;
-  /** Name codes emit a render-time marker. */
-  namesub?: boolean;
-  /** What the indent of the break tokens expands to. */
-  ind?: string;
-}
-
-/**
- * text._decode_tokens: a token stream from `o`. With `length` null it runs to a NUL (dialogue), otherwise it
- * iterates exactly `length` tokens (dictionary substrings, no nested references).
- */
 const decodeTokens = (
   rom: Uint8Array,
   start: number,
@@ -70,7 +54,6 @@ const decodeTokens = (
   return out.join('');
 };
 
-/** text.load_dict: the 128 dictionary substrings. */
 const loadDict = (rom: Uint8Array): string[] => {
   const subs: string[] = [];
   for (let i = 0; i < DICT_COUNT; i += 1) {
@@ -81,7 +64,6 @@ const loadDict = (rom: Uint8Array): string[] => {
   return subs;
 };
 
-/** text.decode_string */
 const decodeString = (rom: Uint8Array, off: number, subs: string[], opts: DecodeOptions = {}): string =>
   decodeTokens(rom, off, subs, null, opts);
 

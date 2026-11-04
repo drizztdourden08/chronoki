@@ -1,15 +1,7 @@
-/* @layer shared-asset-extraction @kind logic */
-interface BlobWriter {
-  u8: (v: number) => void;
-  u16: (v: number) => void;
-  i16: (v: number) => void;
-  u32: (v: number) => void;
-  i32: (v: number) => void;
-  bytes: (b: ArrayLike<number>) => void;
-  toBytes: () => Uint8Array;
-}
 
-/** A growable little-endian byte sink (Python's bytearray += struct.pack), values wrapped to their width. */
+import type { BlobWriter } from './blob-writer.type';
+
+
 const createBlobWriter = (): BlobWriter => {
   let buf = new Uint8Array(256);
   let len = 0;
@@ -39,7 +31,6 @@ const createBlobWriter = (): BlobWriter => {
   };
 };
 
-/** Concatenates byte runs into one Uint8Array. */
 const concatBytes = (parts: readonly ArrayLike<number>[]): Uint8Array => {
   const w = createBlobWriter();
   for (const p of parts) w.bytes(p);

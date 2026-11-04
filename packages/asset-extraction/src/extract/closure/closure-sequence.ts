@@ -1,11 +1,9 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure.sequence_table_entries, rom_closure.sequence_tables */
 import { byteAt, wordAt } from '../bytes/byte-reader';
 import { ptr24 } from './closure-location';
 import type { RomTable } from './closure.type';
+import { SEQ_TABLE } from './closure-sequence.constants';
 
-const SEQ_TABLE = 0x3e0000;
-
-/** rom_closure.sequence_table_entries: [[x, file offset]] of the $FE:0000 table's pointers into the ROM's banks, and where it ends. */
 const sequenceTableEntries = (rom: Uint8Array): { entries: [number, number][]; first: number } => {
   const firsts: number[] = [];
   for (let x = 0; x < 0x100; x += 3) if (byteAt(rom, SEQ_TABLE + x + 2) === 0xfe) firsts.push(wordAt(rom, SEQ_TABLE + x));
@@ -18,7 +16,6 @@ const sequenceTableEntries = (rom: Uint8Array): { entries: [number, number][]; f
   return { entries, first };
 };
 
-/** rom_closure.sequence_tables: the packet table, the raw blocks $7E:36AA copies, $D2:0000's run and the gate warp's FD tables. */
 const sequenceTables = (rom: Uint8Array, rawOffsets: Set<number>): RomTable[] => {
   const { entries, first } = sequenceTableEntries(rom);
   const fe = [...new Set(entries.filter(([, o]) => o >> 16 === 0x3e).map(([, o]) => o))].sort((a, b) => a - b);

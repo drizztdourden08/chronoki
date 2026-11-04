@@ -1,21 +1,8 @@
-/* @layer shared-asset-extraction @kind logic */
-/** The scene-script WRAM: global $7F0000, local $7F0200 (cleared per scene), system $7E0000. */
-interface ScriptMem {
-  g: Uint8Array;
-  l: Uint8Array;
-  s: Uint8Array;
-  r8: (a: number) => number;
-  w8: (a: number, v: number) => void;
-  r16: (a: number) => number;
-  w16: (a: number, v: number) => void;
-}
 
-const LOC = 0x7f0200;
-const GLB = 0x7f0000;
-/** $7E2980-82 in the static resolve (src/ct_vm.c memBoot). */
-const PARTY = [0x00, 0x80, 0x80];
+import { LOC, GLB, PARTY } from './script-mem.constants';
+import type { ScriptMem } from './script-mem.type';
 
-/** script.Mem: seeded as the game start (CTViewer main.rs) and the engine's memBoot. */
+
 const createScriptMem = (): ScriptMem => {
   const g = new Uint8Array(0x200);
   const l = new Uint8Array(0x200);

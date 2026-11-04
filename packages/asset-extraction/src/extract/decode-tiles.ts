@@ -1,5 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
-/** gfx.decode_tiles: 8x8 tiles as 64 palette indices each; bpp in {2, 4}. */
+/* @layer shared-asset-extraction @kind logic @source Python gfx.decode_tiles */
 const decodeTiles = (data: Uint8Array, bpp: number): Uint8Array[] => {
   const tileBytes = 8 * bpp;
   const tiles: Uint8Array[] = [];

@@ -1,11 +1,10 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_collision */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_COLLISION } from './asset-types.constants';
 import { createBlobWriter } from './bytes/blob-writer';
 import { sceneHeader, sceneProps } from './scene-props';
 import type { Packer } from './extract.type';
 
-/** extract_assets.pack_collision: per map [w u8][h u8] + w*h shape bytes + w*h z bytes + w*h mover bytes. */
 const packCollision: Packer = ({ rom }) => {
   const entries: CtasEntry[] = [];
   const seen = new Set<number>();

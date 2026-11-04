@@ -1,16 +1,14 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure_battle.ai_section_end, rom_closure_battle.record_tables */
 import { byteAt, wordAt } from '../bytes/byte-reader';
 import type { RomTable } from './closure.type';
+import { CC, FD } from './battle-records.constants';
 
 const C1 = 0x010000;
 const C2 = 0x020000;
-const CC = 0x0c0000;
-const FD = 0x3d0000;
 const E1 = 0x210000;
 
 const hex2 = (v: number): string => v.toString(16).toUpperCase().padStart(2, '0');
 
-/** rom_closure_battle.ai_section_end: C1/AFE6's walk of one section of an AI script ($CC + p): [conditions .. FE][actions .. FE] blocks until FF. */
 const aiSectionEnd = (rom: Uint8Array, start: number): number => {
   let p = start;
   while (byteAt(rom, CC + p) !== 0xff) {
@@ -22,7 +20,6 @@ const aiSectionEnd = (rom: Uint8Array, start: number): number => {
   return p + 1;
 };
 
-/** rom_closure_battle.record_tables: the enemies', PCs', techs', items' and areas' records and the small tables, by the reading code's index ranges. */
 const recordTables = (rom: Uint8Array): RomTable[] => {
   const out: RomTable[] = [];
   const t = (name: string, a: number, n: number): void => void out.push([name, a, a + n]);

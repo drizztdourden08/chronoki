@@ -1,24 +1,12 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets._hdr, maps.scene_props */
 import { byteAt, itemAt } from './bytes/byte-reader';
 import { lzDecompress } from './lz-decompress';
 import { getEntries3Byte } from './rom-read';
+import { SCENE_HDR, MAP_PTRS } from './scene-props.constants';
+import type { SceneProps } from './scene-props.type';
 
-const SCENE_HDR = 0x360000;
-const MAP_PTRS = 0x361e00;
-
-interface SceneProps {
-  w: number;
-  h: number;
-  coll: number[];
-  zplane: number[];
-  zflags: number[];
-  mover: number[];
-}
-
-/** extract_assets._hdr: a location record (14 bytes). */
 const sceneHeader = (rom: Uint8Array, s: number): Uint8Array => rom.slice(SCENE_HDR + s * 14, SCENE_HDR + s * 14 + 14);
 
-/** maps.scene_props: the per-tile property records (3-byte RLE) of a scene's map. */
 const sceneProps = (rom: Uint8Array, scene: number): SceneProps => {
   const h = sceneHeader(rom, scene);
   const mapI = byteAt(h, 4) | (byteAt(h, 5) << 8);

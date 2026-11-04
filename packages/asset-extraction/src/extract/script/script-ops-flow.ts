@@ -1,13 +1,11 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python script._cmp */
 import { byteAt } from '../bytes/byte-reader';
 import { GLB, LOC } from './script-mem';
 import type { OpHandler } from './script-run.type';
 
-/** script._cmp. */
 const cmp = (l: number, r: number, code: number): boolean =>
   [l === r, l !== r, l > r, l < r, l >= r, l <= r, (l & r) > 0, (l | r) > 0][code & 7] as boolean;
 
-/** A conditional jump: when the test fails, nxt = addr + (the byte at `at`) + `plus`. */
 const jumpIf =
   (test: (c: Parameters<OpHandler>[0], addr: number) => boolean, at: number): OpHandler =>
   (c, addr, nxt) =>
@@ -15,7 +13,6 @@ const jumpIf =
 
 const b = (c: Parameters<OpHandler>[0], addr: number, k: number): number => byteAt(c.body, addr + k);
 
-/** The control-flow ops (jump when the condition is false) and the fn0 membership tests. */
 const FLOW_OPS: [number, OpHandler][] = [
   [0x10, (c, addr) => addr + b(c, addr, 1) + 1],
   [0x11, (c, addr) => addr - b(c, addr, 1) + 1],

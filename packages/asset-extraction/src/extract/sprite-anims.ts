@@ -1,31 +1,11 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python sprites._sprite_anim_tables, sprites._anim_set_index, sprites.build_anim, sprites.assembly_frame */
 import { byteAt, wordAt } from './bytes/byte-reader';
 import type { SpriteHeader } from './sprite-records';
-
-const SPRITE_META = 0x24ffe0;
-const ANIM_LIMIT = 0x24a800;
-/** size_flags & 3 -> [groups per frame, tiles per group]. */
-const SIZE_TABLE: [number, number][] = [
-  [1, 4],
-  [1, 8],
-  [3, 4],
-  [3, 8],
-];
-
-interface AnimTables {
-  fp: number[];
-  dp: number[];
-}
-
-interface AssemblyFrame {
-  chips: number[];
-  offs: [number, number][];
-  units: number;
-}
+import { SPRITE_META, ANIM_LIMIT, SIZE_TABLE } from './sprite-anims.constants';
+import type { AnimTables, AssemblyFrame } from './sprite-anims.type';
 
 const animTablesCache = new WeakMap<Uint8Array, AnimTables>();
 
-/** sprites._sprite_anim_tables: the frame and duration pointer tables (194 each). */
 const spriteAnimTables = (rom: Uint8Array): AnimTables => {
   const hit = animTablesCache.get(rom);
   if (hit) return hit;
@@ -39,14 +19,11 @@ const spriteAnimTables = (rom: Uint8Array): AnimTables => {
   return tables;
 };
 
-/** sprites._anim_set_index. */
 const animSetIndex = (rom: Uint8Array, spriteIndex: number): number =>
   spriteIndex < 0x100 ? byteAt(rom, 0x24f000 + spriteIndex * 5 + 3) : byteAt(rom, 0x24f600 + (spriteIndex - 256) * 10 + 3);
 
-/** The animation-set extent shared by build_anim, pack_sprites and pack_sprite_anims: the next pointer above `base`. */
 const nextAnimPointer = (fp: number[], base: number): number => Math.min(...fp.filter((a) => a > base), ANIM_LIMIT);
 
-/** sprites.build_anim: the frames of `action` for a sprite: [[U, D, L, R assembly frame], delay]. */
 const buildAnim = (rom: Uint8Array, spriteIndex: number, action: number): [number[], number][] => {
   const { fp, dp } = spriteAnimTables(rom);
   const si = animSetIndex(rom, spriteIndex);
@@ -65,7 +42,6 @@ const buildAnim = (rom: Uint8Array, spriteIndex: number, action: number): [numbe
   return frames;
 };
 
-/** sprites.assembly_frame: one frame -> chips (unit-major TL, TR, BL, BR), the units' signed offsets, the unit count. */
 const assemblyFrame = (rom: Uint8Array, asmPtrs: number[], h: SpriteHeader, frame: number): AssemblyFrame => {
   const [groups, tpg] = SIZE_TABLE[h.size & 3] as [number, number];
   const units = groups * tpg;

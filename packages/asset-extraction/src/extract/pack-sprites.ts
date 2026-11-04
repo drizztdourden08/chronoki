@@ -1,4 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_sprites */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_SPRITE } from './asset-types.constants';
 import { decodeTiles } from './decode-tiles';
@@ -8,7 +8,6 @@ import type { AssemblyFrame } from './sprite-anims';
 import { parseTables, readHeader, readSpriteGraphics, readSpritePalette } from './sprite-records';
 import type { Packer } from './extract.type';
 
-/** The anim count bounding a sprite's frames (2 when the tables can't be read). */
 const animBound = (rom: Uint8Array, si: number): number => {
   try {
     const { fp } = spriteAnimTables(rom);
@@ -22,7 +21,6 @@ const animBound = (rom: Uint8Array, si: number): number => {
   }
 };
 
-/** extract_assets.pack_sprites body for one sprite; throws wherever Python raises (the caller skips the sprite). */
 const spriteBlob = (rom: Uint8Array, si: number, staticMax: number | undefined): Uint8Array => {
   const { gfxPtrs, palPtrs, asmPtrs } = parseTables(rom);
   const h = readHeader(rom, si);
@@ -64,7 +62,6 @@ const spriteBlob = (rom: Uint8Array, si: number, staticMax: number | undefined):
   return w.toBytes();
 };
 
-/** extract_assets.pack_sprites: per used sprite its decoded tiles, palette and assembly frames. */
 const packSprites: Packer = ({ rom, tables }) => {
   const entries: CtasEntry[] = [];
   for (const si of [...tables.usedSprites].sort((a, b) => a - b)) {

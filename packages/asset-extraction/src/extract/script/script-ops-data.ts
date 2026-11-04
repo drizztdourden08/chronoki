@@ -3,14 +3,12 @@ import { byteAt } from '../bytes/byte-reader';
 import { GLB, LOC } from './script-mem';
 import type { OpHandler, RunCtx } from './script-run.type';
 
-/** C0:FF20 / C0:FF28: the bit masks ops 0x63/0x64 index. */
 const MASKS = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f];
 const ARITH = [0x5b, 0x5e, 0x5f, 0x60, 0x61, 0x63, 0x64, 0x67, 0x69, 0x6b, 0x6f];
 
 const b = (c: RunCtx, addr: number, k: number): number => byteAt(c.body, addr + k);
 const w = (c: RunCtx, addr: number, k: number): number => b(c, addr, k) | (b(c, addr, k + 1) << 8);
 
-/** ctFlatAddr24: the 24-bit pointer of ops 0x48/0x49 as a Mem address (null = not WRAM). */
 const flat24 = (bank: number, off: number): number | null => {
   if (bank === 0x7e) return 0x7e0000 + off;
   if (bank === 0x7f) return 0x7f0000 + off;
@@ -18,7 +16,6 @@ const flat24 = (bank: number, off: number): number | null => {
   return null;
 };
 
-/** move.c CtVmLocalArithFamily: 8-bit except 0x5E/0x60 (16-bit); 0x60 is four bytes. */
 const localArith = (c: RunCtx, op: number, addr: number): void => {
   const o1 = b(c, addr, 1);
   let src: number;
@@ -86,7 +83,6 @@ const setBit =
     return nxt;
   };
 
-/** A handler that only writes memory. */
 const store =
   (f: (c: RunCtx, addr: number) => void): OpHandler =>
   (c, addr, nxt) => {
@@ -100,7 +96,6 @@ const counter = (delta: number): OpHandler =>
     c.mem.w8(i, c.mem.r8(i) + delta);
   });
 
-/** The data / math / bit ops, all on the local (and global) variable grid. */
 const DATA_OPS: [number, OpHandler][] = [
   [0x4f, store((c, a) => c.mem.w8(LOC + b(c, a, 2) * 2, b(c, a, 1)))],
   [0x50, store((c, a) => c.mem.w16(LOC + b(c, a, 3) * 2, w(c, a, 1)))],

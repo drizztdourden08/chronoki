@@ -1,17 +1,14 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure_battle.small_tables, rom_closure_battle.battle_message, rom_closure_battle.anim_free_scan, rom_closure_battle.misc_tables */
 import { byteAt, wordAt } from '../bytes/byte-reader';
 import { ANIM_OPS, animHandler } from './battle-anim';
 import { byteSpans, romLabel } from './byte-spans';
 import type { RomTable } from './closure.type';
+import { CC, CD, CE } from './battle-misc.constants';
 
 const C1 = 0x010000;
-const CC = 0x0c0000;
-const CD = 0x0d0000;
-const CE = 0x0e0000;
 const D1 = 0x110000;
 const E1 = 0x210000;
 
-/** rom_closure_battle.small_tables: CC:F38C-FC3F, the battle engine's small tables, each by its reader's index. */
 const smallTables = (rom: Uint8Array): RomTable[] => {
   const out: RomTable[] = [];
   const t = (name: string, a: number, n: number): void => void out.push([name, a, a + n]);
@@ -38,7 +35,6 @@ const smallTables = (rom: Uint8Array): RomTable[] => {
   return out;
 };
 
-/** rom_closure_battle.battle_message: a posted message to its 00; 12 takes one operand byte. */
 const battleMessage = (rom: Uint8Array, start: number, seen: Set<number>): void => {
   let a = start;
   for (let i = 0; i < 256; i += 1) {
@@ -53,7 +49,6 @@ const battleMessage = (rom: Uint8Array, start: number, seen: Set<number>): void 
   }
 };
 
-/** rom_closure_battle.anim_free_scan: battleAscOpFree's walk of the handler C1/h (four tail-call hops at most). */
 const animFreeScan = (rom: Uint8Array, h: number, seen: Set<number>): void => {
   let hb = C1 + h;
   for (let hop = 0; hop < 4; hop += 1) {
@@ -74,7 +69,6 @@ const animFreeScan = (rom: Uint8Array, h: number, seen: Set<number>): void => {
   }
 };
 
-/** rom_closure_battle.misc_tables: the posted messages, the handler scans, the HUD's setup tables and the boss arenas. */
 const miscTables = (rom: Uint8Array): RomTable[] => {
   const out: RomTable[] = [];
   const t = (name: string, a: number, n: number): void => void out.push([name, a, a + n]);

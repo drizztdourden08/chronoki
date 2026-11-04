@@ -1,30 +1,13 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python sprites.parse_tables, sprites.read_header, sprites.read_sprite_graphics, sprites.read_sprite_palette */
 import { byteAt, itemAt, wordAt } from './bytes/byte-reader';
 import { getEntries2Byte, getEntries3Byte } from './rom-read';
 import { lzDecompress } from './lz-decompress';
 import { snes15ToRgb } from './snes-color';
-
-const HEADER_BASE = 0x24f000;
-const PTR_TABLE = 0x24ffe0;
-const ENEMY_RECORDS = 0x24f600;
-
-interface SpriteHeader {
-  bitmap: number;
-  assembly: number;
-  palette: number;
-  anim: number;
-  size: number;
-}
-
-interface SpriteTables {
-  gfxPtrs: number[];
-  palPtrs: number[];
-  asmPtrs: number[];
-}
+import { HEADER_BASE, PTR_TABLE, ENEMY_RECORDS } from './sprite-records.constants';
+import type { SpriteHeader, SpriteTables } from './sprite-records.type';
 
 const tablesCache = new WeakMap<Uint8Array, SpriteTables>();
 
-/** sprites.parse_tables (the three lists the packers use). */
 const parseTables = (rom: Uint8Array): SpriteTables => {
   const hit = tablesCache.get(rom);
   if (hit) return hit;
@@ -38,7 +21,6 @@ const parseTables = (rom: Uint8Array): SpriteTables => {
   return tables;
 };
 
-/** sprites.read_header: an NPC/PC record (5 bytes) or, from 0x100, an enemy record (10 bytes) at $E4:F600. */
 const readHeader = (rom: Uint8Array, index: number): SpriteHeader => {
   const o = index >= 0x100 ? ENEMY_RECORDS + (index - 0x100) * 10 : HEADER_BASE + index * 5;
   return {
@@ -50,7 +32,6 @@ const readHeader = (rom: Uint8Array, index: number): SpriteHeader => {
   };
 };
 
-/** sprites.read_sprite_graphics: the 7 PCs' are raw, the rest LZ. */
 const readSpriteGraphics = (rom: Uint8Array, gfxPtrs: number[], bitmapIndex: number): Uint8Array => {
   const off = itemAt(gfxPtrs, bitmapIndex);
   if (bitmapIndex <= 6) {
@@ -61,7 +42,6 @@ const readSpriteGraphics = (rom: Uint8Array, gfxPtrs: number[], bitmapIndex: num
   return lzDecompress(rom, off);
 };
 
-/** sprites.read_sprite_palette: colour 0 transparent, 12 ROM colours at 1..12, 13..15 black. */
 const readSpritePalette = (rom: Uint8Array, palPtrs: number[], paletteIndex: number): [number, number, number][] => {
   const off = itemAt(palPtrs, paletteIndex);
   const cols: [number, number, number][] = [[0, 0, 0]];

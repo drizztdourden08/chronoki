@@ -5,10 +5,6 @@ import { snes15ToRgb } from './snes-color';
 import { tilePixel4 } from './tile-pixel';
 import type { Packer } from './extract.type';
 
-/**
- * extract_assets.pack_portraits: the 7 PC name-entry portraits, 48x48 RGB. Per char-id the base tile is $FF:CE70+id and
- * the palette pointer $FF:CE78+id*2; 6x6 tiles row-major from the base tile; 4bpp graphics at $FF:0000, tile N at (N-1)*32.
- */
 const packPortraits: Packer = ({ rom }) => {
   const B = BANK_FF;
   return Array.from({ length: 7 }, (_, c) => {

@@ -6,7 +6,6 @@ import { buildPackTables } from './build-pack-tables';
 import { PACKERS } from './packers';
 import type { PackContext } from './extract.type';
 
-/** setup.py "extracting the assets": assets/extract_assets.py build(), the 24 packers into ct_assets.dat (CTAS v3). */
 const extractAssetsStage: StageRun = async (ctx) => {
   const pack: PackContext = {
     rom: ctx.rom,

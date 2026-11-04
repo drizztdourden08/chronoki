@@ -5,7 +5,6 @@ import { snes15ToRgb } from './snes-color';
 import { tilePixel4 } from './tile-pixel';
 import type { Packer } from './extract.type';
 
-/** A crop (cx, cy, w, h) of the 16x16 sprite (4 sequential tiles TL, TR, BL, BR) as [w][h] + w*h RGBA. */
 const spriteCrop = (rom: Uint8Array, pal: number[][], gfx: number, cx: number, cy: number, w: number, h: number): Uint8Array => {
   const out = new Uint8Array(2 + w * h * 4);
   out[0] = w;
@@ -23,10 +22,6 @@ const spriteCrop = (rom: Uint8Array, pal: number[][], gfx: number, cx: number, c
   return out;
 };
 
-/**
- * extract_assets.pack_namesprites: the name-entry cursor sprites from the ROM (OBJ 4bpp, palette 0 at $FF:9DF0, colour 0
- * transparent). id 0 = the grid hand 16x16 at $FF:9CF0; id 1 = the name-cursor triangle at $FF:9D70, cropped to 11x12.
- */
 const packNamesprites: Packer = ({ rom }) => {
   const pal = Array.from({ length: 16 }, (_, i) => [...snes15ToRgb(u16(rom, BANK_FF + 0x9df0 + i * 2)), i === 0 ? 0 : 255]);
   return [

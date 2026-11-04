@@ -1,18 +1,13 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure.objvm_walk, rom_closure.animvm_walk */
 import { byteAt, itemAt, wordAt } from '../bytes/byte-reader';
 import { handlerLengths } from './handler-lengths';
+import { OBJVM_ENDS } from './vm-walk.constants';
+import type { Span, Mem7f } from './vm-walk.type';
 
 const C2 = 0x020000;
-/** The object VM's end ops: 06 and 41 return 0 for ever, 37 returns, 52 frees the block. */
-const OBJVM_ENDS = new Set([0x06, 0x37, 0x41, 0x52]);
-
-type Span = [number, number];
-/** A $7F script image: (64 KB image, [lo, hi) the packet that holds it). */
-type Mem7f = [Uint8Array, [number, number]];
 
 const signed = (r: number): number => (r >= 0x80 ? r - 256 : r);
 
-/** rom_closure.objvm_walk: ([start, end) of the ROM script bytes, [start, end) of the ROM data ops 03 / 04 name) from `entries` [bank, pc]. */
 const objvmWalk = (rom: Uint8Array, entries: [number, number][], mem7f: Mem7f | null = null): [Span[], Span[]] => {
   const L = handlerLengths(rom, 0x0f91, 0x53);
   const spans: Span[] = [];
@@ -69,7 +64,6 @@ const objvmWalk = (rom: Uint8Array, entries: [number, number][], mem7f: Mem7f | 
   return [spans, data];
 };
 
-/** rom_closure.animvm_walk: the anim sub-VM's bank-C2 scripts (table C2:0E4A, 8 ops) from `entries`: bytecode and the frames op 4 names. */
 const animvmWalk = (rom: Uint8Array, entries: number[]): Span[] => {
   const L = handlerLengths(rom, 0x0e4a, 8);
   const out: Span[] = [];

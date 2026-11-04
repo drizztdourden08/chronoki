@@ -1,11 +1,10 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.build */
 import type { SpriteUsage } from './extract.type';
 import { extractActors } from './script/extract-actors';
 import type { Actor } from './script/script-run.type';
 import { loadScript } from './script/script-load';
 import { opLen } from './script/script-oplen';
 
-/** Sweeps one scene's whole body for 0xAC operands and script-loaded sprites (ops 0x80-0x83); a failure ends the sweep. */
 const sweepBody = (rom: Uint8Array, scene: number, sprites: Set<number>, usage: SpriteUsage): void => {
   try {
     const h = rom.slice(0x360000 + scene * 14, 0x360000 + scene * 14 + 14);
@@ -30,7 +29,6 @@ const sweepBody = (rom: Uint8Array, scene: number, sprites: Set<number>, usage: 
   }
 };
 
-/** extract_assets.build() prelude: sprites referenced by placed actors or loaded by scripts, and each sprite's max 0xAC frame. */
 const scanSpriteUsage = (rom: Uint8Array): SpriteUsage => {
   const usage: SpriteUsage = { usedSprites: new Set(), staticMax: new Map() };
   for (let s = 0; s < 512; s += 1) {

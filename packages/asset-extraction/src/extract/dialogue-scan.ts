@@ -1,13 +1,10 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python text.read_textbox_table, text.read_dialogue_table, text.scan_dialogue_tables */
 import { lzDecompress } from './lz-decompress';
 import { getEntries3Byte } from './rom-read';
 import { decodeString } from './text-tokens';
 import type { DecodeOptions } from './text-tokens';
+import { MAX_STRINGS, MAX_LEN } from './dialogue-scan.constants';
 
-const MAX_STRINGS = 256;
-const MAX_LEN = 512;
-
-/** text.read_textbox_table: strings until consecutive pointers stop looking like string bounds (the packer's B8 filter only). */
 const readTextboxTable = (rom: Uint8Array, addr: number, subs: string[], opts: DecodeOptions): string[] => {
   const page = addr & 0xff0000;
   const out: string[] = [];
@@ -20,7 +17,6 @@ const readTextboxTable = (rom: Uint8Array, addr: number, subs: string[], opts: D
   return out;
 };
 
-/** text.read_dialogue_table: string i is the u16 at table + 2*i in the table's bank; all 256 indices. */
 const readDialogueTable = (rom: Uint8Array, addr: number, subs: string[], opts: DecodeOptions): string[] => {
   const page = addr & 0xff0000;
   const out: string[] = [];
@@ -30,7 +26,6 @@ const readDialogueTable = (rom: Uint8Array, addr: number, subs: string[], opts: 
   return out;
 };
 
-/** text.scan_dialogue_tables: op 0xB8 (set string table) + a 24-bit pointer in each scene script -> {file addr: strings}. */
 const scanDialogueTables = (rom: Uint8Array, subs: string[], opts: DecodeOptions): Map<number, string[]> => {
   const tables = new Map<number, string[]>();
   for (const sp of getEntries3Byte(rom, 0x3cf9f0, 513)) {

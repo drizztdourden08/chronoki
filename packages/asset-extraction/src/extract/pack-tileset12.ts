@@ -10,7 +10,6 @@ import { parseMetatiles, serMetas } from './metatiles';
 import { distinctHeaderBytes } from './scene-header';
 import type { PackTables, Packer } from './extract.type';
 
-/** 6 chipset slots of 128 chips each: [768 * 64 chips] and the 768 present flags. */
 const readChips = (rom: Uint8Array, chipsets: Uint8Array, tsGfx: number[]): [Uint8Array, Uint8Array] => {
   const chips = new Uint8Array(768 * 64);
   const present = new Uint8Array(768);
@@ -27,7 +26,6 @@ const readChips = (rom: Uint8Array, chipsets: Uint8Array, tsGfx: number[]): [Uin
   return [chips, present];
 };
 
-/** The animated chip graphics (chipset slot 6) and the animation descriptors. */
 const readChipAnims = (rom: Uint8Array, ts: number, cs6: number, t: PackTables): [number, Uint8Array, Uint8Array] => {
   const anim = createLeWriter();
   const desc = createLeWriter();
@@ -47,10 +45,6 @@ const readChipAnims = (rom: Uint8Array, ts: number, cs6: number, t: PackTables):
   return [nanim, anim.toBytes(), desc.toBytes()];
 };
 
-/**
- * extract_assets.pack_tileset12: [768*64 chips][768 present][512 metas*16][nanim u16][nanim*64][dlen u16][chipanim].
- * Chip words rebase to the scene chip space: word 0x0100 = chips12[0]; words < 0x100 become the 0xFFFF sentinel.
- */
 const packTileset12: Packer = ({ rom, tables }) => {
   const out: CtasEntry[] = [];
   for (const ts of distinctHeaderBytes(rom, 1)) {

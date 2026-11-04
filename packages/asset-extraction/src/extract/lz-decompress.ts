@@ -1,11 +1,9 @@
-/* @layer shared-asset-extraction @kind logic */
-/** A ROM read as Python does it: past the end it raises (the callers that catch Exception rely on it). */
+/* @layer shared-asset-extraction @kind logic @source Python lz.lz_decompress */
 const at = (data: Uint8Array, i: number): number => {
   if (i < 0 || i >= data.length) throw new RangeError('index out of range');
   return data[i]!;
 };
 
-/** lz.lz_decompress: the Chrono Trigger LZ block whose size header is at `start`. */
 const lzDecompress = (data: Uint8Array, start: number): Uint8Array => {
   const compressedSize = (at(data, start + 1) << 8) | at(data, start);
   let bytePos = start + 2;

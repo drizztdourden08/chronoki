@@ -1,5 +1,4 @@
-/* @layer shared-asset-extraction @kind logic */
-/** maps.parse_props: the per-tile "add 256 chip" flags of layer 1 and 2 from the 3-byte RLE records. */
+/* @layer shared-asset-extraction @kind logic @source Python maps.parse_props */
 const parseProps = (data: Uint8Array, off: number, n: number): [boolean[], boolean[]] => {
   const l1: boolean[] = [];
   const l2: boolean[] = [];

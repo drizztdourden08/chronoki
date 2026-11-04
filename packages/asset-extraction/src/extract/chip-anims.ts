@@ -1,15 +1,8 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python maps.chip_anim_data, maps.parse_chip_anims */
 import { u16 } from './rom-read';
+import { ANIM_PTRS, ANIM_REL, ANIM_END, CHIP_DUR } from './chip-anims.constants';
+import type { ChipAnim } from './chip-anims.type';
 
-const ANIM_PTRS = 0x3df290;
-const ANIM_REL = 0x3df310;
-const ANIM_END = 0x3df9cc;
-const CHIP_DUR: Record<number, number> = { 0x10: 16, 0x20: 12, 0x40: 8, 0x80: 4 };
-
-/** [dest chip, source chip per frame, ticks per frame] */
-type ChipAnim = [dest: number, srcs: number[], durs: number[]];
-
-/** maps.chip_anim_data: the raw chip-animation block for tileset `index`. */
 const chipAnimData = (rom: Uint8Array, index: number): Uint8Array => {
   const addrs: number[] = [];
   for (let i = 0; i < 64; i += 1) addrs.push(u16(rom, ANIM_PTRS + i * 2) + ANIM_REL);
@@ -19,7 +12,6 @@ const chipAnimData = (rom: Uint8Array, index: number): Uint8Array => {
   return n > 0 ? rom.slice(a, a + n) : new Uint8Array(0);
 };
 
-/** maps.parse_chip_anims: each anim covers 4 chips. */
 const parseChipAnims = (data: Uint8Array): ChipAnim[] => {
   const anims: ChipAnim[] = [];
   let i = 0;

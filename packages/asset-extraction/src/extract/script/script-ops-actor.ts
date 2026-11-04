@@ -1,9 +1,8 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python script._pos_words, script._pc_lead_arm */
 import { byteAt } from '../bytes/byte-reader';
 import { LOC, PARTY } from './script-mem';
 import type { OpHandler, RunCtx } from './script-run.type';
 
-/** The seven one-byte PC loaders that hardwire their char id (the mapping is not monotonic in the opcode). */
 const PC_LOADERS: [number, number][] = [
   [0x57, 0],
   [0x5c, 1],
@@ -16,7 +15,6 @@ const PC_LOADERS: [number, number][] = [
 
 const b = (c: RunCtx, addr: number, k: number): number => byteAt(c.body, addr + k);
 
-/** script._pos_words: the placement's WRAM words ($1800/$1880 + 2 obj, low then high). */
 const posWords = (c: RunCtx, wx: number, wy: number): void => {
   const x = c.obj * 2;
   c.mem.s[0x1800 + x] = wx & 0xff;
@@ -25,7 +23,6 @@ const posWords = (c: RunCtx, wx: number, wy: number): void => {
   c.mem.s[0x1881 + x] = (wy >> 8) & 0xff;
 };
 
-/** script._pc_lead_arm: C0/42B3 STX $97 and the lead's arrival arm (tile from $0102/$0103, half-tile bytes from $0104). */
 const pcLeadArm = (c: RunCtx): void => {
   const { s } = c.mem;
   const x = c.obj * 2;
@@ -38,7 +35,6 @@ const pcLeadArm = (c: RunCtx): void => {
   s[0x1800 + x] = b4 & 0x04 ? 0x00 : 0x80;
 };
 
-/** Op 0x80 and the seven PC loaders: define the sprite; an in-party slot 0 also arms the lead. */
 const loadChar =
   (fixed: number | null): OpHandler =>
   (c, addr, nxt) => {
@@ -53,7 +49,6 @@ const loadChar =
     return nxt;
   };
 
-/** Ops 0x81-0x83, the NPC/monster loaders: they do not write the visibility byte. */
 const loadSprite =
   (plus: number): OpHandler =>
   (c, addr, nxt) => {
@@ -86,7 +81,6 @@ const selfDraw =
     return nxt;
   };
 
-/** The actor-state ops: sprite loads, coordinates, facing, draw state. Animation ops (0xAA..0xB7) change nothing the packers read. */
 const ACTOR_OPS: [number, OpHandler][] = [
   ...PC_LOADERS.map(([op, id]): [number, OpHandler] => [op, loadChar(id)]),
   [0x80, loadChar(null)],

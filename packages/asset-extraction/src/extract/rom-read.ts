@@ -1,8 +1,6 @@
-/* @layer shared-asset-extraction @kind logic */
-/** sprites.u16: a little-endian word. */
+/* @layer shared-asset-extraction @kind logic @source Python sprites.u16, sprites.get_entries_3byte, sprites.get_entries_2byte */
 const u16 = (d: Uint8Array, o: number): number => d[o]! | (d[o + 1]! << 8);
 
-/** sprites.get_entries_3byte: 3-byte SNES pointers -> file offsets: 0x10000*(bank-0xC0)+ptr. */
 const getEntries3Byte = (rom: Uint8Array, tableAddr: number, count: number): number[] => {
   const out: number[] = [];
   for (let i = 0; i < count; i += 1) {
@@ -14,7 +12,6 @@ const getEntries3Byte = (rom: Uint8Array, tableAddr: number, count: number): num
   return out;
 };
 
-/** sprites.get_entries_2byte: 2-byte local pointers -> offsets within the table's bank. */
 const getEntries2Byte = (rom: Uint8Array, tableAddr: number, count: number): number[] => {
   const bankStart = tableAddr & 0xff0000;
   const out: number[] = [];

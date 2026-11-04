@@ -3,11 +3,6 @@ import { T_FONT } from './asset-types.constants';
 import { createBlobWriter } from './bytes/blob-writer';
 import type { Packer } from './extract.type';
 
-/**
- * extract_assets.pack_font: dialogue VWF font chars 0xA0-0xF3 (84 glyphs, 12x12, 2bpp). The left 8 px are 24-byte cells
- * (0x3F2060 + ch*24), the right 4 px nibble-packed per char pair (0x3F3860 + (ch>>1)*24). Widths at 0x0260E6.
- * Blob: 84 widths + per glyph 12 rows x {plane0 u16, plane1 u16}.
- */
 const packFont: Packer = ({ rom }) => {
   const w = createBlobWriter();
   w.bytes(rom.subarray(0x0260e6, 0x0260e6 + 84));

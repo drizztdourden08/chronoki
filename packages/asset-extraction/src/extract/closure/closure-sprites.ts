@@ -1,26 +1,13 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python rom_closure.sprite_fields, rom_closure.sprite_meta, rom_closure.sprite_pointers, rom_closure.blocks, rom_closure.sprite_tables, rom_closure.party_tables */
 import { byteAt, wordAt } from '../bytes/byte-reader';
 import { ptr24 } from './closure-location';
 import type { RomTable } from './closure.type';
-
-const E4 = 0x240000;
-/** [base, stride, count] of the PCs'/NPCs' and the enemies' sprite records. */
-const SPRITE_RECS: [number, number, number][] = [
-  [E4 + 0xf000, 5, Math.floor((0xf600 - 0xf000) / 5)],
-  [E4 + 0xf600, 10, Math.floor((0xffe0 - 0xf600) / 10)],
-];
+import { E4, SPRITE_RECS } from './closure-sprites.constants';
+import type { SpriteFields } from './closure-sprites.type';
 
 const hex = (v: number, width: number): string => v.toString(16).toUpperCase().padStart(width, '0');
 const maxOf = (values: Iterable<number>): number => Math.max(...values);
 
-interface SpriteFields {
-  g: Set<number>;
-  a: Set<number>;
-  p: Set<number>;
-  n: Set<number>;
-}
-
-/** rom_closure.sprite_fields: the gfx, assembly, palette and anim ids any sprite record names. */
 const spriteFields = (rom: Uint8Array): SpriteFields => {
   const r: SpriteFields = { g: new Set(), a: new Set(), p: new Set(), n: new Set() };
   for (const [base, stride, count] of SPRITE_RECS) {
@@ -35,13 +22,11 @@ const spriteFields = (rom: Uint8Array): SpriteFields => {
   return r;
 };
 
-/** rom_closure.sprite_meta: the gfx, assembly, frame and duration pointer tables' offsets. */
 const spriteMeta = (rom: Uint8Array): [number, number, number, number] => {
   const at = (k: number): number => E4 + wordAt(rom, E4 + 0xffe0 + 2 * k);
   return [at(0), at(1), at(2), at(3)];
 };
 
-/** rom_closure.sprite_pointers: ({gfx id: offset}, {asm id: offset}) of every id the records name. */
 const spritePointers = (rom: Uint8Array): [Map<number, number>, Map<number, number>] => {
   const [gfxT, asmT] = spriteMeta(rom);
   const { g, a } = spriteFields(rom);
@@ -56,7 +41,6 @@ const spritePointers = (rom: Uint8Array): [Map<number, number>, Map<number, numb
   return [pick(g, gfxT), pick(a, asmT)];
 };
 
-/** rom_closure.blocks: each offset to the next one in its own 64 KB bank (or the bank's end), the raw data a pointer table names. */
 const blocks = (offsets: Iterable<number>): [number, number][] => {
   const srt = [...new Set(offsets)].sort((x, y) => x - y);
   return srt.map((o, i) => {
@@ -66,7 +50,6 @@ const blocks = (offsets: Iterable<number>): [number, number][] => {
   });
 };
 
-/** rom_closure.sprite_tables: the sprite system's tables (records, meta, pointer tables, palettes, frames, raw tiles, assemblies). */
 const spriteTables = (rom: Uint8Array, rawOffsets: Set<number>): RomTable[] => {
   const [gfxT, asmT, fpT, dpT] = spriteMeta(rom);
   const { g, a, p, n } = spriteFields(rom);
@@ -92,7 +75,6 @@ const spriteTables = (rom: Uint8Array, rawOffsets: Set<number>): RomTable[] => {
   return out;
 };
 
-/** rom_closure.party_tables: the walk-anim jump table and handlers, the triple-tech tables, the PC bit table and the weapon palettes. */
 const partyTables = (rom: Uint8Array): RomTable[] => {
   const cd6cec = 0x0d6cec;
   return [

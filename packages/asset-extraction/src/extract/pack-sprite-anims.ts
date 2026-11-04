@@ -1,11 +1,10 @@
-/* @layer shared-asset-extraction @kind logic */
+/* @layer shared-asset-extraction @kind logic @source Python extract_assets.pack_sprite_anims */
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_SPRITEANIM } from './asset-types.constants';
 import { createBlobWriter } from './bytes/blob-writer';
 import { animSetIndex, buildAnim, nextAnimPointer, spriteAnimTables } from './sprite-anims';
 import type { Packer } from './extract.type';
 
-/** The anim count of a sprite: its set's extent in 4-byte rows / 4, within 1..64 (1 when the tables can't be read). */
 const animCount = (rom: Uint8Array, si: number): number => {
   try {
     const { fp } = spriteAnimTables(rom);
@@ -19,7 +18,6 @@ const animCount = (rom: Uint8Array, si: number): number => {
   }
 };
 
-/** extract_assets.pack_sprite_anims: per sprite [nAnims u8] + per anim [n u8] + n x {U,D,L,R assembly idx, delay}. */
 const packSpriteAnims: Packer = ({ rom, tables }) => {
   const entries: CtasEntry[] = [];
   const extra = [...tables.usedSprites].filter((s) => s >= 256).sort((a, b) => a - b);
