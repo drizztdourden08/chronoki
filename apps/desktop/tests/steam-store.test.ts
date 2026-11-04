@@ -1,6 +1,9 @@
 /* @layer tests @kind test */
 import { describe, expect, it, vi } from 'vitest';
 import type { FileStore } from '@drizztdourden08/brock-core';
+import { steamSatisfied } from '@app/settings-controls/steam-satisfied';
+import { normaliseSettings } from '@app/settings-effects/normalise-settings';
+import { DEFAULT_SETTINGS } from '@app/settings.constants';
 import { hasSteamData } from '@app/storage/steam-store/has-steam-data';
 import { onSteamDataChanged } from '@app/storage/steam-store/on-steam-data-changed';
 import { parseSteamMarker } from '@app/storage/steam-store/parse-steam-marker';
@@ -44,6 +47,15 @@ const syntheticWide = (margins: number): Uint8Array => {
   view.setUint32(8, margins, true);
   return bytes;
 };
+
+describe('the derived Steam flag', { tags: ['critical'] }, () => {
+  it('satisfies steamData only when imported, and drops the old stored key', () => {
+    expect(steamSatisfied(true).has('steamData')).toBe(true);
+    expect(steamSatisfied(false).has('steamData')).toBe(false);
+    const stored = { ...DEFAULT_SETTINGS, steamDataImported: true };
+    expect('steamDataImported' in normaliseSettings(stored, stored)).toBe(false);
+  });
+});
 
 describe('the Steam data marker', { tags: ['critical'] }, () => {
   it('accepts a version 3 marker and refuses anything else', () => {

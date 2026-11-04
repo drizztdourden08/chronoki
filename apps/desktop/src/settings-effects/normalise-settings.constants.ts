@@ -7,4 +7,6 @@ const ALWAYS_ON_GATES: readonly string[] = ['saveStates'];
 
 const LEGACY_ASPECT_CHOICES: readonly AspectRatioChoice[] = ['16:9', '16:10', '21:9'];
 
-export { ALWAYS_ON_GATES, LEGACY_ASPECT_CHOICES, NEW_DEFAULT_GATES };
+const RETIRED_SETTING_KEYS: readonly string[] = ['steamDataImported'];
+
+export { ALWAYS_ON_GATES, LEGACY_ASPECT_CHOICES, NEW_DEFAULT_GATES, RETIRED_SETTING_KEYS };

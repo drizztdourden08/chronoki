@@ -15,7 +15,6 @@ interface AppSettings extends BaseSettings {
   customAspectW: number;
   customAspectH: number;
   renderScale: RenderScaleFactor;
-  steamDataImported: boolean;
   autoSaveIntervalSeconds: number;
   masterMuted: boolean;
   volumeScale?: number;

@@ -1,5 +1,6 @@
 /* @layer renderer-app @kind logic */
 import type { AppSettings } from '@app/settings.type';
+import { dropRetiredKeys } from './drop-retired-keys';
 import { migrateAspect } from './migrate-aspect';
 import { ALWAYS_ON_GATES, NEW_DEFAULT_GATES } from './normalise-settings.constants';
 import type { RawSettings } from './normalise-settings.type';
@@ -14,7 +15,7 @@ const normaliseSettings = (settings: AppSettings, stored?: RawSettings | null): 
   const gates = withIds(fromOldConfig ? withIds(rest.gates, NEW_DEFAULT_GATES) : rest.gates, ALWAYS_ON_GATES);
   const legacyAspect = raw.aspectRatio === undefined ? (raw.widescreenAspect ?? widescreenAspect) : undefined;
   const aspectRatio = migrateAspect(rest.aspectRatio, legacyAspect, gates);
-  return { ...rest, vanillaSafe: vanillaSafe === true, gates, aspectRatio };
+  return dropRetiredKeys({ ...rest, vanillaSafe: vanillaSafe === true, gates, aspectRatio });
 };
 
 export { normaliseSettings };
