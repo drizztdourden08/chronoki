@@ -1,4 +1,5 @@
 /* @layer shared-input @kind barrel */
+import type {} from '@drizztdourden08/brock-core/augment';
 export { KEYBOARD_DEFAULT } from './keyboard-default';
 export { buildConsoleDefaultMappings } from './build-console-defaults';
 export { axisEndLabel } from './axis-end-label';
