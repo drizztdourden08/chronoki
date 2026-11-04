@@ -6,4 +6,12 @@ interface RomInfo {
   assetSize: number | null;
 }
 
-export type { RomInfo };
+interface RomDetailInfo {
+  verdict: 'known' | 'unknown' | 'refused';
+  hash: string;
+  identity: string | null;
+  size: number | null;
+  refusal: string | null;
+}
+
+export type { RomDetailInfo, RomInfo };

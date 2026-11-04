@@ -1,10 +1,10 @@
 /* @layer renderer-app @kind component */
 import type { ScreenMeta } from '@drizztdourden08/brock-react';
-import { Library } from '@app/views/Library';
+import { Roms } from '@app/views/Roms';
 
-const meta: ScreenMeta = { title: 'Library', icon: 'gamepad-2', order: 1, keywords: ['rom', 'import', 'sfc', 'smc', 'cartridge'] };
+const meta: ScreenMeta = { title: 'ROMs', icon: 'gamepad-2', showHeader: true, fill: true, order: 2, keywords: ['rom', 'import', 'extract', 'assets', 'rebuild', 'sfc', 'smc', 'cartridge', 'library'] };
 
-const LibraryPage = () => <Library />;
+const RomsPage = () => <Roms />;
 
-export default LibraryPage;
+export default RomsPage;
 export { meta };
