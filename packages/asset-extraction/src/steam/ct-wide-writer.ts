@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { createLeWriter } from '../buffer/le-writer';
-import type { ResolvedMargin, CtWide } from './ct-wide-writer.type';
+import type { CtWide } from './ct-wide-writer.type';
 
 const byKey = <T>(m: Map<number, T>): [number, T][] => [...m.entries()].sort((a, b) => a[0] - b[0]);
 

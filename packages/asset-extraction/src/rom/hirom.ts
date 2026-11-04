@@ -1,5 +1,4 @@
 /* @layer shared-asset-extraction @kind logic */
-import { romRegion } from './rom-region';
 
 const hiromOffset = (addr: number, romSize: number): number | null => {
   const bank = (addr >> 16) & 0xff;

@@ -2,8 +2,8 @@
 import { createLeWriter } from '../buffer/le-writer';
 import type { CtasEntry } from '../ctas/ctas.type';
 import { T_TABLE, T_TABLE_DEFINES, T_TABLE_HEADER, T_TABLE_POOL } from '../ctas/ctas.constants';
-import { tableContainer } from '../ctas/table-container';
-import { pointerOffsets } from './c-types';
+import { tableContainer } from '../ctas/table-container-pack';
+import { pointerOffsets } from './pointer-offsets';
 import { fnv64 } from './fnv64';
 import { createInitWriter } from './init-writer';
 import { PackError } from './pack-error';

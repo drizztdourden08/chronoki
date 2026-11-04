@@ -2,7 +2,7 @@
 import type { Headers } from '../c-parse/headers.type';
 import { PackError } from '../pack-error';
 import type { PackDefine, PackToken } from '../pack.type';
-import { COMPILED_IN, DIM_REASON } from './storage-defines.constants';
+import { COMPILED_IN } from './storage-defines.constants';
 
 type DefineCType = 'int' | 'unsigned';
 

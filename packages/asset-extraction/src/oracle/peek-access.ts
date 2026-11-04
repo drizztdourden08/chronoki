@@ -1,8 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-
 import type { PeekOracle } from './peek.type';
-import { teleportState } from './teleport-state';
 
 const peekOracle = (ctx: ImportContext): PeekOracle => {
   const driver = ctx.oracle as (typeof ctx.oracle & Partial<PeekOracle>) | null;

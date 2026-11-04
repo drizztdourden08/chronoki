@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { StageRun } from '../pipeline/stage.type';
-import { writeText } from '../pipeline/work-files';
+import { writeText } from '../pipeline/write-text';
 import { genBattleTrig } from './battle-trig';
 import { genCollSlope } from './coll-slope';
 import { genCtRegroup } from './ct-regroup';

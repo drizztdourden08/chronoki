@@ -1,10 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
-import { locationStreams } from './closure-locations';
+import { locationStreams } from './location-streams';
 import { sequenceStreams } from './sequence-streams';
-import { spriteStreams, stageStreams } from './closure-world';
+import { spriteStreams } from './closure-world';
+import { stageStreams } from './stage-streams';
 import { worldStreams } from './world-streams';
 import { menuStreams } from './menu-streams';
-import { lzPackStage } from './lz-pack-stage';
 
 const sources = (rom: Uint8Array): Map<string, Set<number>>[] => [
   locationStreams(rom),

@@ -2,7 +2,6 @@
 import { inflate } from './inflate';
 import type { Rgba } from './steam-image.type';
 import { PNG_MAGIC, CHANNELS } from './steam-image.constants';
-import { halve } from './halve';
 
 const unfilter = (raw: Uint8Array, w: number, h: number, ch: number): Uint8Array[] => {
   const stride = w * ch;

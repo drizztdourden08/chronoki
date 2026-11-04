@@ -1,7 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import { CAPTURE_RUNNERS } from '../captures/capture-runners.constants';
 import type { StageRun } from '../pipeline/stage.type';
-import { writeText } from '../pipeline/work-files';
+import { writeText } from '../pipeline/write-text';
 import { requireBytes } from '../pipeline/require-bytes';
 import { genAnimengPc } from './animeng-pc';
 import { genBattleHudChrome } from './battle-hud-chrome';

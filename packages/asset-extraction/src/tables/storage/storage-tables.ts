@@ -2,7 +2,7 @@
 import type { Headers } from '../c-parse/headers.type';
 import { layoutOf } from '../layout-of';
 import type { CStruct } from '../c-type.type';
-import { pointerOffsets } from '../c-types';
+import { pointerOffsets } from '../pointer-offsets';
 import { elementOf } from '../element-of';
 import { fnv64 } from '../fnv64';
 import type { PackTable } from '../pack.type';

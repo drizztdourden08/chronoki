@@ -7,7 +7,8 @@ import { countElements } from '../count-elements';
 import { PackError } from '../pack-error';
 
 import { parseInitializer } from './initializer';
-import { isCharScalar, parseTypeSpec } from './type-spec';
+import { parseTypeSpec } from './type-spec';
+import { isCharScalar } from './is-char-scalar';
 import { parseDims } from './parse-dims';
 import type { ParseEnv } from './type-spec.type';
 import type { DeclSink } from './declaration.type';

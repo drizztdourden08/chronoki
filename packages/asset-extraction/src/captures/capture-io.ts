@@ -1,9 +1,7 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { OracleDriver } from '../oracle/oracle-driver.type';
 import type { ToolOracle } from '../oracle/oracle-capture.type';
-
 import type { ImportContext } from '../pipeline/import-context.type';
-import { runTool } from './run-tool';
 
 const toolOracle = (ctx: ImportContext): ToolOracle => {
   const o = ctx.oracle as (OracleDriver & Partial<ToolOracle>) | null;

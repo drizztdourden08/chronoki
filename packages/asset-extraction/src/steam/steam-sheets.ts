@@ -1,7 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { readEntry } from './steam-archive';
 import type { SteamArchive, SteamFiles } from './steam-archive.type';
-import { steamPalette } from './steam-palette';
 
 const chipSet = async (archive: SteamArchive, files: SteamFiles, s: number): Promise<Uint8Array | null> => {
   const e = files.get(`Game/field/map_bin/cg${s}.bin`);

@@ -1,6 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { Generator, ManifestFile } from './manifest.type';
-import { stageOf } from './stage-of';
 
 const baseName = (path: string): string => path.slice(Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\')) + 1);
 

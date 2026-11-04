@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { StageRun } from '../pipeline/stage.type';
-import { writeText } from '../pipeline/work-files';
+import { writeText } from '../pipeline/write-text';
 import { makeXlat } from './xlat/xlat-make';
 
 /** tools/gen/xlat_all.py <name>: one translated ROM program, written as src/xlat/<name>.c into the workdir. */

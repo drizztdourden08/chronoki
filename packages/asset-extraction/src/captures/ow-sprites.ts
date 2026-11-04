@@ -5,7 +5,8 @@ import type { PeekDump } from '../oracle/peek.type';
 import type { StageRun } from '../pipeline/stage.type';
 import { runTool } from './run-tool';
 import { cgramOf } from './cgram-of';
-import { cgramWords, decode16 } from './ow-decode16';
+import { cgramWords } from './ow-decode16';
+import { decode16 } from './decode16';
 import { sprFrames } from './spr-frames';
 import { GULL_NAMES, GULL_PAL, BALLOON_FRAME, EXPL } from './ow-sprites.constants';
 

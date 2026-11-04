@@ -7,7 +7,7 @@ import { parseDeclaration } from './declaration';
 import type { DeclSink } from './declaration.type';
 import { evaluateExpr } from './expr';
 import type { DefineMap } from './expr.type';
-import { tokenize } from './lexer';
+import { tokenize } from './tokenize';
 import { blankDirectives } from './preprocess';
 import type { DefineLog } from './preprocess.type';
 import { stripComments } from './strip-comments';

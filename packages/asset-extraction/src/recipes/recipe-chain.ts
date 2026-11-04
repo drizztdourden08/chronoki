@@ -1,6 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { Recipe, RecipeSet } from './recipe.type';
-import { depsOf } from './deps-of';
 
 const chainOf = (recipes: RecipeSet, name: string): Recipe[] => {
   const seq: Recipe[] = [];

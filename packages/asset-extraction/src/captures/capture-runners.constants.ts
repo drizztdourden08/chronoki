@@ -1,11 +1,13 @@
 /* @layer shared-asset-extraction @kind constants */
 import type { StageRun } from '../pipeline/stage.type';
-import { ctNameMsgStage, ctNameWinStage } from './ct-name';
+import { ctNameMsgStage } from './ct-name';
+import { ctNameWinStage } from './ct-name-win-stage';
 import { ctWindowStage } from './ct-window';
 import { lzPackStage } from './lz-pack-stage';
 import { owSpritesStage } from './ow-sprites';
 import { owWorldStage } from './ow-world';
-import { animOpLenStage, sndTimingStage } from './simple-tools';
+import { animOpLenStage } from './simple-tools';
+import { sndTimingStage } from './snd-timing-stage';
 
 const CAPTURE_RUNNERS: Record<string, StageRun> = {
   snd_timing: sndTimingStage,

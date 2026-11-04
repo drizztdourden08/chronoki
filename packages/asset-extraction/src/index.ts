@@ -6,7 +6,8 @@ export type { PackagePlaceholder };
 
 export { buildPack } from './tables/build-pack';
 export { createCtasBuilder } from './ctas/ctas-builder';
-export { mergeTablesInto, tableContainer } from './ctas/table-container';
+export { mergeTablesInto } from './ctas/table-container';
+export { tableContainer } from './ctas/table-container-pack';
 export { readCtas } from './ctas/read-ctas';
 export { NATIVE64_ABI, WASM32_ABI } from './tables/table-abi.constants';
 export { createImportContext } from './pipeline/create-import-context';

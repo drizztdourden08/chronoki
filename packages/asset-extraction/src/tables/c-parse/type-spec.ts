@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { CType } from '../c-type.type';
-import { makeStruct } from '../c-types';
+import { makeStruct } from '../make-struct';
 import { makePointer } from '../make-pointer';
 import { PackError } from '../pack-error';
 
@@ -8,8 +8,7 @@ import { SCALAR_TYPES } from '../scalars.constants';
 import type { ParseEnv } from './type-spec.type';
 import { SCALAR_WORDS, UNSUPPORTED_WORDS } from './type-spec.constants';
 import { parseDims } from './parse-dims';
-
-const isCharScalar = (t: CType): boolean => t.tag === 'scalar' && t.kind === 'c8';
+import { isCharScalar } from './is-char-scalar';
 
 const parseStructBody = (env: ParseEnv): CType => {
   const { cur } = env;
@@ -73,4 +72,4 @@ const parseTypeSpec = (env: ParseEnv): { type: CType; isConst: boolean; anon?: b
   return { type: SCALAR_TYPES[key] as CType, isConst };
 };
 
-export { isCharScalar, parseTypeSpec };
+export { parseTypeSpec };

@@ -1,6 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { StageDef, StageGroupId, StageNeed, StageStatus } from './stage.type';
-import { quietStage } from './quiet-stage';
 
 const stage = (
   id: string,
