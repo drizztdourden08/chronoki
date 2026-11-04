@@ -13,7 +13,7 @@ export default defineBrockConfig({
     linuxCategory: 'Game',
     window: { titleBar: { mobile: false } },
     artifactPrefix: 'chronoki-',
-    dataDirs: ['assets', 'roms', 'profiles', 'config', 'input'],
+    dataDirs: ['assets', 'roms', 'msu', 'profiles', 'config', 'input'],
     icons: { brand: 'chronoki', wordmark: { src: './logos/wordmark.svg', rendering: 'pixelated' } },
     profilesRoute: 'data/profiles',
   },

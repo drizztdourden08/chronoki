@@ -6,8 +6,9 @@ import { featureIdOf } from './feature-id-of';
 
 const hasUnmetRequires = (key: string, settings: AppSettings): boolean => {
   const id = featureIdOf(key);
+  if (id === null) return false;
   const enabled = effectiveGatesOf(settings);
-  return (id === null ? undefined : FEATURES_BY_ID[id])?.requires.some((required) => !enabled.has(required)) === true;
+  return FEATURES_BY_ID[id]?.requires.some((required) => !enabled.has(required)) === true;
 };
 
 export { hasUnmetRequires };
