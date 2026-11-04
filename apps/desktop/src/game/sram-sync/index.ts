@@ -1,6 +1,9 @@
 /* @layer bridge-wasm @kind barrel */
 export { flushSramSync } from './flush-sram-sync';
 export { pauseSramSync } from './pause-sram-sync';
+export { removeProfileSram } from './remove-profile-sram';
+export { restoreSramBackup } from './restore-sram-backup';
 export { resumeSramSync } from './resume-sram-sync';
+export { sramBackupPathOf } from './sram-paths';
 export { startSramSync } from './start-sram-sync';
 export { stopSramSync } from './stop-sram-sync';

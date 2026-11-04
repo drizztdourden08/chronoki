@@ -14,11 +14,10 @@ type StateProbeEntry = { probe: 'state'; save: string; load: string };
 type InputProbeEntry = {
   probe: 'input';
   ok: boolean;
-  buttons: string[];
+  mode: 'press' | 'none';
+  frame: number;
+  hash: string;
   masks: number[];
-  screenStatic: boolean;
-  before: string;
-  after: string;
   errors: string[];
 };
 
@@ -29,7 +28,8 @@ type SramProbeEntry = {
   stored: number | null;
   pattern: number;
   patternStored: boolean;
-  restored: boolean | null;
+  restored: boolean | 'removed';
+  identical: boolean;
   errors: string[];
 };
 
