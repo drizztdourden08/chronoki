@@ -22,7 +22,7 @@ const SaveStateOverlay = () => {
     if (!running) closeSaveOverlay();
   }, [running]);
 
-  useCancelOnOtherInput(open, closeSaveOverlay);
+  useCancelOnOtherInput(open && highlighted !== null, closeSaveOverlay);
 
   const { visible, exiting } = useOverlayPresence(open);
   if (!visible) return null;
@@ -54,7 +54,7 @@ const SaveStateOverlay = () => {
             </Box>
           ))}
         </Box>
-        {highlighted >= 0 && (
+        {highlighted !== null && (
           <OverlayHints actions={holdProgress > 0 ? HOLDING_HINTS : IDLE_HINTS} slot={highlighted} holdProgress={holdProgress} />
         )}
       </Box>

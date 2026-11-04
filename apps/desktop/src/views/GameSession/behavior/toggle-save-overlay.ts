@@ -2,7 +2,6 @@
 import { hostGate } from '@chronoki/game-core';
 import { closeSaveOverlay, openSaveOverlay, saveOverlayStore } from '@app/game/save-overlay';
 import { SAVE_STATES_GATE } from '../GameSession.constants';
-import { currentSlot } from './current-slot';
 import { stateContext } from './state-context';
 
 const toggleSaveOverlay = (): void => {
@@ -10,7 +9,7 @@ const toggleSaveOverlay = (): void => {
     closeSaveOverlay();
     return;
   }
-  if (hostGate(SAVE_STATES_GATE) && stateContext()) openSaveOverlay(currentSlot());
+  if (hostGate(SAVE_STATES_GATE) && stateContext()) openSaveOverlay(null);
 };
 
 export { toggleSaveOverlay };
