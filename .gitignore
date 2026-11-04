@@ -30,3 +30,6 @@ out/
 target/
 .turbo/
 *.log
+
+# Plan pages (published as artifacts)
+/plans/
