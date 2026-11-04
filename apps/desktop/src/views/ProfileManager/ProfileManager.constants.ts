@@ -26,4 +26,6 @@ const NO_PACK_LABEL = 'None';
 
 const PACK_FIELD_HINT = { locked: 'Vanilla Safe is on. Your choice is kept and applies again when it is off.' } as const;
 
-export { DATA_TAB, NO_PACK_LABEL, OVERVIEW_TAB, PACK_FIELD_HINT, PROFILE_TABS, PROFILE_TEXT, SETTINGS_TAB };
+const PACK_IMPORT_TEXT = { button: 'Import folder', title: 'Import a music pack from a folder', progress: 'Importing' } as const;
+
+export { DATA_TAB, PACK_IMPORT_TEXT, NO_PACK_LABEL, OVERVIEW_TAB, PACK_FIELD_HINT, PROFILE_TABS, PROFILE_TEXT, SETTINGS_TAB };
