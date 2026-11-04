@@ -2,9 +2,10 @@
 import { Field, Grid, SegmentedControl, Select, Stack, Text, TextInput } from '@drizztdourden08/tessera/primitives';
 import { WizardReview } from '@drizztdourden08/tessera/composites';
 import type { WizardApi } from '@drizztdourden08/tessera/composites';
-import { MODE_LABELS, MODE_OPTIONS } from '../../ProfileManager.constants';
+import { PRESET_HINTS, PRESET_OPTIONS } from '@app/profiles/presets';
 import type { ProfileWizardValues, ReadyRom } from '../../ProfileManager.type';
-import { MODE_HINTS, STEP_IDS, STEP_LABELS } from './ProfileCreateWizard.constants';
+import { STEP_IDS, STEP_LABELS } from './ProfileCreateWizard.constants';
+import { presetLabelOf } from './behavior/preset-label-of';
 
 const ProfileStepBody = ({ wizard, readyRoms }: { wizard: WizardApi<ProfileWizardValues>; readyRoms: ReadyRom[] }) => {
   const { values, update } = wizard;
@@ -24,14 +25,11 @@ const ProfileStepBody = ({ wizard, readyRoms }: { wizard: WizardApi<ProfileWizar
               placeholder="Select ROM..."
             />
           </Field>
+          <Stack gap="md">
+            <SegmentedControl label="Preset" value={values.preset} options={PRESET_OPTIONS} onChange={(preset) => update({ preset })} />
+            <Text variant="body">{PRESET_HINTS[values.preset]}</Text>
+          </Stack>
         </Grid>
-      );
-    case STEP_IDS.mode:
-      return (
-        <Stack gap="md">
-          <SegmentedControl label="Mode" value={values.mode} options={MODE_OPTIONS} onChange={(mode) => update({ mode })} />
-          <Text variant="body">{MODE_HINTS[values.mode]}</Text>
-        </Stack>
       );
     case STEP_IDS.review:
       return (
@@ -42,7 +40,7 @@ const ProfileStepBody = ({ wizard, readyRoms }: { wizard: WizardApi<ProfileWizar
             rows: [
               { label: 'Profile Name', value: values.name.trim() },
               { label: 'ROM', value: values.rom, title: values.rom },
-              { label: 'Mode', value: MODE_LABELS[values.mode] },
+              { label: 'Preset', value: presetLabelOf(values.preset) },
             ],
           }]}
           disabled={wizard.busy}

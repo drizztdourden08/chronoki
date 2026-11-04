@@ -1,2 +1,2 @@
 /* @layer shared-types @kind barrel */
-export type { AppState, CreateProfileOptions, CreateProfileResult, Profile, ProfileMode } from './profile.type';
+export type { AppState, CreateProfileOptions, CreateProfileResult, Profile } from './profile.type';
