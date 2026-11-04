@@ -4,14 +4,13 @@
   inset: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   overflow: hidden;
-  background: var(--c-surface);
+  background: var(--c-bg);
   pointer-events: none;
 }
 
 .game-backdrop__mark {
   height: 160%;
-  margin-right: calc(-4 * var(--size-4));
   opacity: 0.1;
 }

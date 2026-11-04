@@ -5,6 +5,7 @@ import type { HeroProps, ScreenMeta } from '@drizztdourden08/brock-react';
 import { HeroLastSaveTile, HeroTools } from '@app/compounds/ProfileHero';
 import { HubGameControls } from '@app/compounds/HubGameControls';
 import { useGateMode } from '@app/settings-controls/useGateMode';
+import GameBackdrop from './game.backdrop';
 import { useGameSession } from '@app/views/GameSession';
 import { HomeDialogs, HomeTab, MODE_LABELS, buildProfileFacts, romFileOf, useHomeSramImport, useNormalSaves, useRevealProfileFolder } from '@app/views/HomeTab';
 
@@ -15,9 +16,11 @@ const meta: ScreenMeta = {
   hero: { size: 'compact' },
 };
 
+const backdrop = <GameBackdrop />;
+
 const HomeHero = (props: HeroProps) => {
   const { slots, profile } = props;
-  const { Eyebrow, Title, Art, Tools, Actions, Facts, Aside } = slots;
+  const { Eyebrow, Title, Backdrop, Art, Tools, Actions, Facts, Aside } = slots;
   const product = useProduct();
   const mode = useGateMode();
   const { running, paused, play, stop, reset, togglePause } = useGameSession();
@@ -47,6 +50,7 @@ const HomeHero = (props: HeroProps) => {
     <>
       <Eyebrow>Mode</Eyebrow>
       <Title>{MODE_LABELS[mode]}</Title>
+      <Backdrop kind="node" node={backdrop} />
       <Art kind="image" src={product.logos.mark} alt="" />
       <Actions>
         <HubGameControls

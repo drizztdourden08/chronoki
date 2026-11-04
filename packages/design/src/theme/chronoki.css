@@ -1,6 +1,13 @@
 /* @layer renderer-design-system @kind style */
-/* ChronoKi look: the Tessera "chronoki" palette (gold and dark red) and the ChronoType face (CC BY-NC-SA 3.0, credited in the Credits screen). Colours come from Tessera tokens only. */
+/* ChronoKi look: the Tessera "chronoki" palette (gold and dark red) and the ChronoType face (CC BY-NC-SA 3.0, credited in the Credits screen). Colours come from Tessera tokens only; the app surfaces drop the palette's brown seeds so they fall back to black like RotP. */
 :root {
   --font-sans: var(--font-chrono);
   --font-title: var(--font-chrono);
+}
+
+[data-palette="chronoki"] {
+  --p-bg: var(--p-pure-black);
+  --p-chrome: initial;
+  --p-panel: initial;
+  --p-surface-fill: initial;
 }
