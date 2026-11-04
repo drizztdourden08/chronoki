@@ -30,6 +30,7 @@ export { validSramSlots } from './save-file/valid-sram-slots';
 export { readSramSlotSummary } from './save-file/read-sram-slot-summary';
 export type { SramSlotSummary } from './save-file/save-file.type';
 export * from './game-info';
+export * from './randomizer/checks';
 export type { CkSettings, CkSync, CkWidescreen } from './port/core-config-ini.type';
 export type { CkPresentBox } from './port/aspect/aspect.type';
 export type { CkFrameSize } from './port/frame-size/frame-size.type';
