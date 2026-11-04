@@ -81,6 +81,7 @@ interface DeviceRowProps {
 interface DevicesPanelProps {
   ctrl: ControlsState;
   onApply: (preset: DevicePreset) => void;
+  narrow: boolean;
 }
 
 interface CtrlProps {

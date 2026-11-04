@@ -1,17 +1,20 @@
 /* @layer renderer-components @kind logic */
-import { useEffect, useState } from 'react';
-import { NARROW_FOLD_WIDTH } from './controls.constants';
+import { useCallback, useLayoutEffect, useState } from 'react';
+import { readFold } from './read-fold';
+import { writeFold } from './write-fold';
+import type { StoredFold } from './stored-fold.type';
 
-const useFoldWhenNarrow = (defaultFolded: boolean) => {
-  const [collapsed, setCollapsed] = useState(defaultFolded || window.innerWidth < NARROW_FOLD_WIDTH);
-  useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth < NARROW_FOLD_WIDTH) setCollapsed(true);
-    };
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-  return { collapsed, setCollapsed };
+const useFoldWhenNarrow = (storageKey: string, defaultFolded: boolean, narrow: boolean): StoredFold => {
+  const [collapsed, setState] = useState(() => readFold(storageKey) ?? defaultFolded);
+  const setCollapsed = useCallback((next: boolean) => {
+    setState(next);
+    writeFold(storageKey, next);
+  }, [storageKey]);
+  const expand = useCallback(() => setCollapsed(false), [setCollapsed]);
+  useLayoutEffect(() => {
+    if (narrow) setCollapsed(true);
+  }, [narrow, setCollapsed]);
+  return { collapsed, setCollapsed, expand };
 };
 
 export { useFoldWhenNarrow };

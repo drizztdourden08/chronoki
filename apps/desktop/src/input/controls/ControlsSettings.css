@@ -25,18 +25,26 @@
   flex: 1;
 }
 
-@container controls-row (max-width: 640px) {
-  .controls-settings__layout {
-    flex-direction: column;
-    overflow-y: auto;
+.controls-settings__side {
+  display: flex;
+  min-height: 0;
+}
+
+@container controls-row (width < 640px) {
+  .controls-settings__side--open {
+    position: absolute;
+    inset-block: 0;
+    z-index: var(--z-panel);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-overlay);
   }
 
-  .controls-settings__anchor {
-    flex: none;
+  .controls-settings__side--start.controls-settings__side--open {
+    inset-inline-start: 0;
   }
 
-  .controls-settings__anchor--main {
-    min-height: calc(100 * var(--size-4));
+  .controls-settings__side--end.controls-settings__side--open {
+    inset-inline-end: 0;
   }
 }
 
