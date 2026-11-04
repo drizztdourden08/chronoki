@@ -1,6 +1,6 @@
 /* Save states, host side. The engine's own scene save and load (ct_vm.c CtSceneSaveState / CtSceneLoadState, audio.c
-   CtAudioSaveState / CtAudioLoadState) work on file paths; the build patches (wasm-build/state-patches.mjs) route the two
-   paths "mem:scene" and "mem:apu" here (ck_fopen), so the bytes stay in linear memory and no file is made.
+   CtAudioSaveState / CtAudioLoadState) work on file paths; the build patches (wasm-build/state-patches.mjs) route the
+   paths "mem:scene", "mem:apu" and "mem:apuh" here (ck_fopen), so the bytes stay in linear memory and no file is made.
 
    The request is a flag. field.c's loop runs ck_host_point.inc at the top of every pass, which asks ck_state_top with the
    mode the loop is in; the request is serviced on the first pass whose mode has a section (1 = a field scene, 2 = the open
@@ -9,7 +9,9 @@
 
    The container is CKST v2 (ck_state_box.c). Sections: STMP (the stamp, "key=value" lines), CORE (the 128 KB WRAM then the
    8 KB SRAM), SCEN (the scene state, field saves only), HOST (the host mode machine, ck_state_host.c), APU (the sound
-   machine state). Overworld states are saved but refused on load until the world section exists (phase 2). */
+   machine state), APUH (the sound's host side: its FIFO, cycle carry and field parity, ck_audio_state.inc; a state without
+   it loads with the engine's reset of those). Overworld states are saved but refused on load until the world section
+   exists (phase 2). */
 #include "ck_state_internal.h"
 #include "ck_state_stamp.h"
 #include "ct_vm.h"
@@ -27,8 +29,10 @@ enum { CK_REASON_NONE, CK_REASON_NOT_A_STATE, CK_REASON_SCHEMA, CK_REASON_MODE, 
 
 typedef struct { char* buf; size_t size; } OutChan;
 
-static OutChan g_out[2];                 /* 0 scene, 1 apu: what the engine just wrote */
-static CkSpan g_in[2];                   /* what the engine reads back on a load */
+#define CK_CHANNELS 3
+static const char* const g_chanPath[CK_CHANNELS] = { "mem:scene", "mem:apu", "mem:apuh" };
+static OutChan g_out[CK_CHANNELS];       /* 0 scene, 1 apu, 2 the sound's host side: what the engine just wrote */
+static CkSpan g_in[CK_CHANNELS];         /* what the engine reads back on a load */
 static CkSpan g_inCore, g_inHost;        /* the staged state's CORE and HOST sections */
 static uint8_t* g_loadCopy = NULL;       /* the staged container the spans point into */
 static uint8_t* g_input = NULL;          /* CkStateInput's buffer */
@@ -45,7 +49,8 @@ static int g_waited = 0;
 static int g_takenMode = CK_MODE_NONE;
 
 FILE* ck_fopen(const char* path, const char* mode) {
-  int ch = !path ? -1 : !strcmp(path, "mem:scene") ? 0 : !strcmp(path, "mem:apu") ? 1 : -1;
+  int ch = -1;
+  for (int i = 0; path && i < CK_CHANNELS && ch < 0; i++) if (!strcmp(path, g_chanPath[i])) ch = i;
   if (ch < 0) return fopen(path, mode);
   if (mode[0] == 'w') {
     free(g_out[ch].buf);
@@ -57,7 +62,7 @@ FILE* ck_fopen(const char* path, const char* mode) {
 }
 
 static void clearOut(void) {
-  for (int i = 0; i < 2; i++) { free(g_out[i].buf); g_out[i].buf = NULL; g_out[i].size = 0; }
+  for (int i = 0; i < CK_CHANNELS; i++) { free(g_out[i].buf); g_out[i].buf = NULL; g_out[i].size = 0; }
 }
 
 static const char* modeTag(int mode) { return mode == CK_MODE_WORLD ? "world" : "field"; }
@@ -115,13 +120,14 @@ void ck_state_save_done(int ok, int withScene, const void* host, const CkHostFie
   size_t boxLen = 0;
   if (ok && g_core && hostBytes && (scene || !withScene)) {
     ck_host_encode(hostBytes, host, table, count);
-    CkSection s[5];
+    CkSection s[6];
     int n = 0;
     s[n++] = (CkSection){ "STMP", (const uint8_t*)stamp, (size_t)stampLen };
     s[n++] = (CkSection){ "CORE", g_core, CK_CORE_BYTES };
     if (scene) s[n++] = (CkSection){ "SCEN", (const uint8_t*)g_out[0].buf, g_out[0].size };
     s[n++] = (CkSection){ "HOST", hostBytes, hostLen };
     s[n++] = (CkSection){ "APU ", (const uint8_t*)g_out[1].buf, g_out[1].size };
+    if (g_out[2].buf && g_out[2].size > 0) s[n++] = (CkSection){ "APUH", (const uint8_t*)g_out[2].buf, g_out[2].size };
     box = ck_box_build(s, n, &boxLen);
   }
   free(hostBytes);
@@ -166,6 +172,7 @@ int ck_state_request_load(const uint8_t* p, long len) {
   memcpy(g_loadCopy, p, (size_t)len);
   g_in[0] = ck_box_find(g_loadCopy, (size_t)len, "SCEN");
   g_in[1] = ck_box_find(g_loadCopy, (size_t)len, "APU ");
+  g_in[2] = ck_box_find(g_loadCopy, (size_t)len, "APUH");
   g_inCore = ck_box_find(g_loadCopy, (size_t)len, "CORE");
   g_inHost = ck_box_find(g_loadCopy, (size_t)len, "HOST");
   g_phase = CK_WAIT_LOAD; g_status = 1; g_reason = CK_REASON_NONE; g_waited = 0;

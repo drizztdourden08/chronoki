@@ -2,7 +2,9 @@
 // core/belthasar is never edited: the patched copies are written under out/gen/ and replace the originals in the game
 // module only (the oracle keeps the unpatched ones). Every patch is an exact match with an expected count and fails the
 // build loudly when upstream's text moves.
-//  * ct_vm.c and audio.c: fopen is ck_fopen, which routes the two paths "mem:scene" and "mem:apu" to linear memory.
+//  * ct_vm.c and audio.c: fopen is ck_fopen, which routes the paths "mem:scene", "mem:apu" and "mem:apuh" to linear
+//    memory. audio.c's CtAudioSaveState / CtAudioLoadState are wrapped (reconnect/ck_audio_state.inc) to keep the
+//    sound's host side (its FIFO, cycle carry and field parity) in a state too.
 //  * field.c: main() includes ck_host_state.h (the CtHostState struct and its field table) and runs ck_host_point.inc as
 //    the first statement of its loop, the one point where every pre-loop local is in scope: it asks ck_state_top which
 //    mode the loop is in, copies the locals into CtHostState for a save and back after a load (host-fields.mjs checks the
@@ -27,6 +29,14 @@ const FIELD_PATCHES = [
   ['int f5b = dks2[SDL_SCANCODE_F5];', 'int f5b = 0;', 1],
   ['int f9b = dks2[SDL_SCANCODE_F9];', 'int f9b = 0;', 1],
 ];
+
+// audio.c: the engine's two state functions become static and ck_audio_state.inc (appended) wraps them with the host
+// side of the sound (the FIFO, the cycle carry, the field parity), which the engine's load resets.
+const AUDIO_PATCHES = [
+  ['int CtAudioSaveState(CtAudio* a, const char* path) {', 'static int ckAudioSaveEngine(CtAudio* a, const char* path) {', 1],
+  ['int CtAudioLoadState(CtAudio* a, const char* path) {', 'static int ckAudioLoadEngine(CtAudio* a, const char* path) {', 1],
+];
+const AUDIO_SUFFIX = '\n#include "ck_audio_state.inc"\n';
 
 const FUNCTION_CHECKS = {
   'ct_vm.c': ['int CtSceneSaveState(', 'int CtSceneLoadState(', 'int CtSceneStateLoc('],
@@ -67,7 +77,7 @@ const writeStatePatches = (genDir, belthasar, root) => {
   mkdirSync(dir, { recursive: true });
   const out = {
     'ct_vm.c': prefixed(belthasar, 'ct_vm.c'),
-    'audio.c': prefixed(belthasar, 'audio.c'),
+    'audio.c': applyPatches('audio.c', prefixed(belthasar, 'audio.c'), AUDIO_PATCHES) + AUDIO_SUFFIX,
     'field.c': patchedField(belthasar, root),
   };
   for (const [name, text] of Object.entries(out)) writeFileSync(join(dir, name), text);
