@@ -7,3 +7,4 @@ export { resumeSramSync } from './resume-sram-sync';
 export { sramBackupPathOf } from './sram-backup-path-of';
 export { startSramSync } from './start-sram-sync';
 export { stopSramSync } from './stop-sram-sync';
+export { writeProfileSram } from './write-profile-sram';

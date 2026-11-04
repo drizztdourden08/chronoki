@@ -1,36 +1,40 @@
 /* @layer renderer-app @kind component */
 import { useMemo } from 'react';
-import { useAppVersion, useProduct } from '@drizztdourden08/brock-react';
+import { useProduct } from '@drizztdourden08/brock-react';
 import type { HeroProps, ScreenMeta } from '@drizztdourden08/brock-react';
-import { Button, Text } from '@drizztdourden08/tessera/primitives';
-import { ModeBadge } from '@chronoki/design';
+import { HeroTools } from '@app/compounds/ProfileHero';
 import { HubGameControls } from '@app/compounds/HubGameControls';
 import { useGateMode } from '@app/settings-controls/useGateMode';
 import { useGameSession } from '@app/views/GameSession';
+import { HomeDialogs, MODE_LABELS, buildProfileFacts, romFileOf, useHomeSramImport, useRevealProfileFolder } from '@app/views/HomeTab';
 
-const meta: ScreenMeta = { title: 'Home', icon: 'house', keywords: ['start', 'overview', 'profile'] };
+const meta: ScreenMeta = {
+  title: 'Home',
+  icon: 'house',
+  keywords: ['play', 'start', 'stop', 'reset', 'saves', 'quick save', 'auto save', 'import save'],
+  hero: { size: 'compact' },
+};
 
 const HomeHero = (props: HeroProps) => {
-  const { slots, profile, open } = props;
-  const { Eyebrow, Title, Art, Tools, Actions, Facts, Aside } = slots;
+  const { slots, profile } = props;
+  const { Eyebrow, Title, Art, Tools, Actions, Facts } = slots;
   const product = useProduct();
-  const version = useAppVersion();
   const mode = useGateMode();
   const { running, paused, play, stop, reset, togglePause } = useGameSession();
-  const facts = useMemo(() => [[
-    { label: 'Profile', value: profile?.name ?? 'None' },
-    { label: 'Version', value: version, mono: true },
-  ]], [profile, version]);
+  const profileId = profile?.id ?? null;
+  const { reveal, canReveal } = useRevealProfileFolder(profileId);
+  const sramImport = useHomeSramImport(profileId);
+  const romFile = romFileOf(profile);
+  const facts = useMemo(
+    () => buildProfileFacts({ romFile, lastPlayed: profile?.lastPlayed, created: profile?.created }),
+    [romFile, profile?.lastPlayed, profile?.created],
+  );
 
   return (
     <>
-      <Eyebrow>Home</Eyebrow>
-      <Title>{product.name}</Title>
+      <Eyebrow>Mode</Eyebrow>
+      <Title>{MODE_LABELS[mode]}</Title>
       <Art kind="image" src={product.logos.mark} alt="" />
-      <Tools>
-        <ModeBadge mode={mode} />
-        <Button size="sm" variant="secondary" onClick={() => open('profiles')}>Profiles</Button>
-      </Tools>
       <Actions>
         <HubGameControls
           isGameRunning={running}
@@ -43,10 +47,11 @@ const HomeHero = (props: HeroProps) => {
           onTogglePause={togglePause}
         />
       </Actions>
+      <Tools>
+        <HeroTools canRevealFolder={canReveal} importDisabled={running || profileId === null} onOpenFolder={reveal} onImportSram={() => void sramImport.pick()} />
+      </Tools>
       <Facts rows={facts} />
-      <Aside>
-        <Text variant="body">Chrono Trigger on your computer and phone. Add your own ROM in the Library to begin.</Text>
-      </Aside>
+      <HomeDialogs sramImport={sramImport} />
     </>
   );
 };
