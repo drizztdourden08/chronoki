@@ -1,10 +1,11 @@
 /* @layer bridge-wasm @kind logic */
 import { CTAS_ENTRY_BYTES, CTAS_HEADER_BYTES, CTAS_MAGIC, CTAS_TYPE_TABLE } from './checks.constants';
+import type { RomView, TableSpan } from './create-pack-rom-view.type';
 
-type RomView = (rom: number) => number | null;
-type TableSpan = { id: number; start: number; length: number };
+const byteAt = (d: Uint8Array, o: number): number => d[o] ?? 0;
 
-const u32 = (d: Uint8Array, o: number): number => (d[o] | (d[o + 1] << 8) | (d[o + 2] << 16) | (d[o + 3] << 24)) >>> 0;
+const u32 = (d: Uint8Array, o: number): number =>
+  (byteAt(d, o) | (byteAt(d, o + 1) << 8) | (byteAt(d, o + 2) << 16) | (byteAt(d, o + 3) << 24)) >>> 0;
 
 const readTables = (pack: Uint8Array): TableSpan[] => {
   const count = u32(pack, 8);
@@ -24,9 +25,8 @@ const createPackRomView = (pack: Uint8Array): RomView | null => {
   const tables = readTables(pack);
   return (rom) => {
     const t = tables.find((s) => rom >= s.id && rom < s.id + s.length);
-    return t ? pack[t.start + rom - t.id] : null;
+    return t ? (pack[t.start + rom - t.id] ?? null) : null;
   };
 };
 
-export type { RomView };
 export { createPackRomView };

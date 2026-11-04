@@ -4,8 +4,8 @@ import {
   CHEST_BITS_BYTES, CHEST_BITS_WRAM, CHEST_ID_PREFIX, TREASURE_BANK_ROM, TREASURE_EMPTY_BIT, TREASURE_GOLD_BIT,
   TREASURE_ITEM_MASK, TREASURE_LOCATIONS, TREASURE_POINTERS_ROM, TREASURE_RECORD_BYTES,
 } from './checks.constants';
-import type { RomView } from './create-pack-rom-view';
 import { createPackRomView } from './create-pack-rom-view';
+import type { RomView } from './create-pack-rom-view.type';
 
 const wordAt = (rom: RomView, at: number): number | null => {
   const lo = rom(at);
@@ -13,7 +13,7 @@ const wordAt = (rom: RomView, at: number): number | null => {
   return lo === null || hi === null ? null : lo | (hi << 8);
 };
 
-const chestCheck = (loc: number, n: number, idx: number, tile: number, payload: number): CheckDef => ({
+const chestCheck = (loc: number, n: number, idx: number, { tile, payload }: { tile: number; payload: number }): CheckDef => ({
   id: `${CHEST_ID_PREFIX}-${loc.toString(16).padStart(3, '0')}-${n}`,
   kind: 'chest',
   locationId: loc,
@@ -33,7 +33,7 @@ const locationChecks = (rom: RomView, loc: number, base: number): CheckDef[] => 
     const tile = wordAt(rom, TREASURE_BANK_ROM + off);
     const payload = wordAt(rom, TREASURE_BANK_ROM + off + 2);
     if (tile === null || payload === null || !isItemPayload(payload)) continue;
-    checks.push(chestCheck(loc, n, (off - base) / TREASURE_RECORD_BYTES, tile, payload));
+    checks.push(chestCheck(loc, n, (off - base) / TREASURE_RECORD_BYTES, { tile, payload }));
   }
   return checks;
 };

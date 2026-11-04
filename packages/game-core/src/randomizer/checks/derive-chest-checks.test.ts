@@ -18,9 +18,14 @@ const buildPack = (tables: { id: number; data: number[] }[]): Uint8Array => {
   return Uint8Array.from(bytes);
 };
 
+const pointerFor = (loc: number): number => {
+  if (loc <= 5) return 0x100;
+  return loc === 6 ? 0x10c : 0x110;
+};
+
 const syntheticPack = (): Uint8Array => {
   const pointers: number[] = [];
-  for (let i = 0; i < 513; i += 1) pointers.push(...le16(i <= 5 ? 0x100 : i === 6 ? 0x10c : 0x110));
+  for (let i = 0; i < 513; i += 1) pointers.push(...le16(pointerFor(i)));
   const records = [
     ...le16(0x0403), ...le16(0x000a),
     ...le16(0x0505), ...le16(0x8010),
@@ -35,9 +40,9 @@ describe('deriveChestChecks', () => {
     const checks = deriveChestChecks(syntheticPack());
     expect(checks.map((c) => c.id)).toEqual(['chest-005-0', 'chest-005-2']);
     expect(checks[0]).toMatchObject({ kind: 'chest', locationId: 5, tile: { x: 3, y: 4 }, vanillaItem: 0x0a });
-    expect(checks[0].probe).toEqual({ region: 'wram', offset: 0x10001, mask: 1, compare: 'set' });
-    expect(checks[1].vanillaItem).toBe(0x1d7);
-    expect(checks[1].probe).toEqual({ region: 'wram', offset: 0x10001, mask: 4, compare: 'set' });
+    expect(checks[0]?.probe).toEqual({ region: 'wram', offset: 0x10001, mask: 1, compare: 'set' });
+    expect(checks[1]?.vanillaItem).toBe(0x1d7);
+    expect(checks[1]?.probe).toEqual({ region: 'wram', offset: 0x10001, mask: 4, compare: 'set' });
   });
 
   it('returns nothing for a buffer that is not a pack', { tags: ['critical'] }, () => {
