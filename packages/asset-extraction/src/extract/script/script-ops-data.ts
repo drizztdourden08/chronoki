@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
 import { byteAt } from '../bytes/byte-reader';
-import { GLB, LOC } from './script-mem';
+import { GLB, LOC } from './script-mem.constants';
 import type { OpHandler, RunCtx } from './script-run.type';
 
 const MASKS = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f];

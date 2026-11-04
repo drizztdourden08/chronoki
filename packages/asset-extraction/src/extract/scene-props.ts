@@ -59,5 +59,5 @@ const sceneProps = (rom: Uint8Array, scene: number): SceneProps => {
   return { w: sw, h: sh, coll, zplane, zflags, mover };
 };
 
-export { MAP_PTRS, SCENE_HDR, sceneHeader, sceneProps };
+export { sceneHeader, sceneProps };
 export type { SceneProps };

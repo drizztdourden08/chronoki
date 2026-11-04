@@ -1,3 +1,4 @@
+/* @layer shared-asset-extraction @kind logic */
 
 import type { Rgb } from './snes-color.type';
 

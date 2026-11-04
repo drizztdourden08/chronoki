@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic @source Python script._pos_words, script._pc_lead_arm */
 import { byteAt } from '../bytes/byte-reader';
-import { LOC, PARTY } from './script-mem';
+import { LOC, PARTY } from './script-mem.constants';
 import type { OpHandler, RunCtx } from './script-run.type';
 
 const PC_LOADERS: [number, number][] = [

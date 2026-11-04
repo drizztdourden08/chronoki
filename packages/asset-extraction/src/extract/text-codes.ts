@@ -1,3 +1,4 @@
+/* @layer shared-asset-extraction @kind logic */
 
 import { PUNCT, NAME_DEFAULT, CONTROL_TEXT } from './text-codes.constants';
 

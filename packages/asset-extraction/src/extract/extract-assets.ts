@@ -3,7 +3,7 @@ import { createCtasBuilder } from '../ctas/ctas-builder';
 import { ASSETS_PATH } from '../pipeline/setup-runners';
 import type { StageRun } from '../pipeline/stage.type';
 import { buildPackTables } from './build-pack-tables';
-import { PACKERS } from './packers';
+import { PACKERS } from './packers.constants';
 import type { PackContext } from './extract.type';
 
 const extractAssetsStage: StageRun = async (ctx) => {

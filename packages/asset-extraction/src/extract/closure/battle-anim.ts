@@ -54,4 +54,4 @@ const animTables = (rom: Uint8Array, lens: number[]): RomTable[] => {
   return out;
 };
 
-export { ANIM_OPS, animHandler, animTables };
+export { animHandler, animTables };

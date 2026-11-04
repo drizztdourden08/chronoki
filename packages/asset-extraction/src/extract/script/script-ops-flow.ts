@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic @source Python script._cmp */
 import { byteAt } from '../bytes/byte-reader';
-import { GLB, LOC } from './script-mem';
+import { GLB, LOC } from './script-mem.constants';
 import type { OpHandler } from './script-run.type';
 
 const cmp = (l: number, r: number, code: number): boolean =>

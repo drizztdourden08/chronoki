@@ -32,5 +32,5 @@ const loadScript = (rom: Uint8Array, scriptIndex: number): LoadedScript => {
   return { objs, body: raw.slice(1 + headerSize) };
 };
 
-export { loadScript, SCRIPT_PTRS, scriptPointers };
+export { loadScript, scriptPointers };
 export type { LoadedScript };

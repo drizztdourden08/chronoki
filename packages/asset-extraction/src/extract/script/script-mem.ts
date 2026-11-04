@@ -1,3 +1,4 @@
+/* @layer shared-asset-extraction @kind logic */
 
 import { LOC, GLB, PARTY } from './script-mem.constants';
 import type { ScriptMem } from './script-mem.type';
@@ -38,5 +39,5 @@ const createScriptMem = (): ScriptMem => {
   };
 };
 
-export { createScriptMem, GLB, LOC, PARTY };
+export { createScriptMem };
 export type { ScriptMem };

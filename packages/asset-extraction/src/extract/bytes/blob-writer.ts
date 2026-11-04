@@ -1,3 +1,4 @@
+/* @layer shared-asset-extraction @kind logic */
 
 import type { BlobWriter } from './blob-writer.type';
 

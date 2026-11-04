@@ -1,6 +1,7 @@
 /* @layer shared-asset-extraction @kind logic @source Python rom_closure_battle.small_tables, rom_closure_battle.battle_message, rom_closure_battle.anim_free_scan, rom_closure_battle.misc_tables */
 import { byteAt, wordAt } from '../bytes/byte-reader';
-import { ANIM_OPS, animHandler } from './battle-anim';
+import { animHandler } from './battle-anim';
+import { ANIM_OPS } from './battle-anim.constants';
 import { byteSpans, romLabel } from './byte-spans';
 import type { RomTable } from './closure.type';
 import { CC, CD, CE } from './battle-misc.constants';
