@@ -1,0 +1,52 @@
+/* @layer shared-input @kind types */
+import type { ButtonIcon, ButtonMapping, DeviceFamily, InputApi } from '../bindings/bindings.type';
+
+interface AssignedDevice {
+  vendorId: string;
+  productId: string;
+  displayName: string;
+  deviceFamily: DeviceFamily;
+}
+
+interface InputProfile {
+  id: string;
+  name: string;
+  deviceType: 'gamepad' | 'keyboard';
+  deviceFamily: DeviceFamily;
+  mappings: ButtonMapping[];
+  isDefault: boolean;
+  assignedDevice: AssignedDevice | null;
+  createdAt: number;
+  modifiedAt: number;
+}
+
+interface DetectedDevice {
+  id: string;
+  type: 'gamepad' | 'keyboard';
+  rawId: string;
+  vendorId: string | null;
+  productId: string | null;
+  deviceFamily: DeviceFamily;
+  displayName: string;
+  sdlType: string | null;
+  connected: boolean;
+  activated: boolean;
+  brandLogoKey: string | null;
+  inputApi: InputApi;
+  hasRumble: boolean;
+  hasGyro: boolean;
+}
+
+interface DevicePreset {
+  id: string;
+  name: string;
+  family: DeviceFamily;
+  inputApi: InputApi;
+  vendorIds: string[];
+  productIds: string[];
+  defaultMappings: ButtonMapping[];
+  brandLogoKey: string | null;
+  buttonIcons: Partial<Record<string, ButtonIcon>>;
+}
+
+export type { AssignedDevice, DetectedDevice, DevicePreset, InputProfile };

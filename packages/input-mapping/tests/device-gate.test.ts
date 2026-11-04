@@ -1,0 +1,73 @@
+/* @layer test @kind test */
+import { describe, it, expect } from 'vitest';
+import type { ButtonMapping, DeviceScopedMap, InputProfile, SnesButton } from '../src';
+import { ANY_DEVICE, SNES_BUTTON_BITS, allowedDevices, computeBitmask } from '../src';
+
+const gamepadBinding = (snes: SnesButton, index: number, vid: string, pid: string): ButtonMapping => ({
+  snesButton: snes,
+  binding: { type: 'gamepad-button', index },
+  icon: null,
+  sourceVid: vid,
+  sourcePid: pid,
+});
+
+const makeProfile = (mappings: ButtonMapping[], assigned: InputProfile['assignedDevice']): InputProfile => ({
+  id: 'p1', name: 'Test', deviceType: 'gamepad', deviceFamily: 'xbox',
+  mappings, isDefault: false, assignedDevice: assigned, createdAt: 0, modifiedAt: 0,
+});
+
+describe('allowedDevices', { tags: ['critical'] }, () => {
+  it('collects binding sources and the assigned device as vid:pid keys', () => {
+    const profile = makeProfile(
+      [gamepadBinding('A', 0, '045e', '02ff')],
+      { vendorId: '045e', productId: '02ff', displayName: 'Xbox', deviceFamily: 'xbox' },
+    );
+    const allowed = allowedDevices(profile);
+    expect(allowed.keyboard).toBe(false);
+    expect([...allowed.gamepadKeys]).toEqual(['045e:02ff']);
+  });
+
+  it('flags keyboard when the map has a keyboard binding', () => {
+    const profile = makeProfile(
+      [{ snesButton: 'A', binding: { type: 'keyboard', code: 'KeyZ' }, icon: null }],
+      null,
+    );
+    expect(allowedDevices(profile).keyboard).toBe(true);
+  });
+});
+
+describe('computeBitmask device gate', { tags: ['critical'] }, () => {
+  const gamepadButtonMap = new Map([[ANY_DEVICE, new Map<number, SnesButton>([[0, 'A']])]]);
+  const noKeys = new Map<string, boolean>();
+  const noKeyboardMap = new Map<string, SnesButton>();
+  const noButtonMap: DeviceScopedMap<number, SnesButton> = new Map();
+  const noAxisMap: DeviceScopedMap<string, SnesButton> = new Map();
+
+  it('passes input from a device in the active profile map', () => {
+    const allowed = { keyboard: false, gamepadKeys: new Set(['057e:2009']) };
+    const hidStates = new Map([['057e:2009', { buttons: [true], axes: [] }]]);
+    const mask = computeBitmask({
+      keyStates: noKeys, keyboardMap: noKeyboardMap, gamepadButtonMap, gamepadAxisMap: noAxisMap, hidStates, allowed,
+    });
+    expect(mask).toBe(1 << SNES_BUTTON_BITS.A);
+  });
+
+  it('drops input from a connected device that is NOT in the map', () => {
+    const allowed = { keyboard: false, gamepadKeys: new Set(['045e:02ff']) };
+    const hidStates = new Map([['057e:2009', { buttons: [true], axes: [] }]]);
+    const mask = computeBitmask({
+      keyStates: noKeys, keyboardMap: noKeyboardMap, gamepadButtonMap, gamepadAxisMap: noAxisMap, hidStates, allowed,
+    });
+    expect(mask).toBe(0);
+  });
+
+  it('ignores keyboard input when the profile has no keyboard bindings', () => {
+    const allowed = { keyboard: false, gamepadKeys: new Set<string>() };
+    const keyStates = new Map([['KeyZ', true]]);
+    const keyboardMap = new Map<string, SnesButton>([['KeyZ', 'A']]);
+    const mask = computeBitmask({
+      keyStates, keyboardMap, gamepadButtonMap: noButtonMap, gamepadAxisMap: noAxisMap, hidStates: new Map(), allowed,
+    });
+    expect(mask).toBe(0);
+  });
+});

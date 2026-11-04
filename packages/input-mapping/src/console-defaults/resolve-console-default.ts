@@ -1,0 +1,13 @@
+/* @layer shared-input @kind logic */
+import type { DisplayContext } from '@drizztdourden08/brock-input';
+import type { SdlButtonName } from '@drizztdourden08/brock-input';
+import type { SnesButton } from '../snes/snes.type';
+import { GENERIC_DEFAULTS, SNES_CONSOLE_DEFAULTS } from './snes-console-defaults.constants';
+
+const resolveConsoleDefault = (ctx: DisplayContext, position: SdlButtonName): SnesButton | undefined => {
+  const family = SNES_CONSOLE_DEFAULTS.get(ctx.family);
+  if (family?.unbound?.includes(position)) return undefined;
+  return family?.buttons[position] ?? GENERIC_DEFAULTS.buttons[position];
+};
+
+export { resolveConsoleDefault };
