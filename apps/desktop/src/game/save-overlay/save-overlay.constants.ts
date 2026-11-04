@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind constants */
 import type { SaveOverlayState } from './save-overlay.type';
 
-const HOLD_TO_SAVE_MS = 1000;
+const HOLD_TO_SAVE_MS = 2000;
 
 const TAP_TO_LOAD_MS = 180;
 

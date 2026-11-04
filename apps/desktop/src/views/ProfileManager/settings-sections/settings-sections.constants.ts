@@ -11,6 +11,8 @@ const times: SettingFormat = (value) => (typeof value === 'number' ? `${value}x`
 
 const seconds: SettingFormat = (value) => (typeof value === 'number' ? `${value} s` : 'Default');
 
+const turbo: SettingFormat = (value) => (typeof value === 'number' ? `${Number(value.toFixed(2))}x` : 'Default');
+
 const count: SettingFormat = (value) => (Array.isArray(value) ? String(value.length) : '0');
 
 const PICTURE_SECTION: SettingsSection = {
@@ -44,7 +46,8 @@ const GAMEPLAY_SECTION: SettingsSection = {
     { key: 'original', label: 'Original Mode' },
     { key: 'autoSaveIntervalSeconds', label: 'Auto-Save Interval', format: seconds },
     { key: 'autoSaveMaxEntries', label: 'Max Auto-Save Entries' },
-    { key: 'turboSpeed', label: 'Turbo Speed', format: times },
+    { key: 'turboSpeed', label: 'Turbo Speed', format: turbo },
+    { key: 'saveHoldDuration', label: 'Hold to Save Duration', format: seconds },
   ],
 };
 

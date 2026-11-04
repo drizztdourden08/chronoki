@@ -9,6 +9,8 @@ const meta: ScreenMeta = {
   keywords: ['gameplay', 'original', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward'],
 };
 
+const asSeconds = (value: number): string => `${value} s`;
+
 const asCount = (value: number): string => String(value);
 
 const sections: Section[] = [
@@ -16,7 +18,22 @@ const sections: Section[] = [
     id: 'game-flow',
     title: 'Game Flow',
     subsections: [
-      { id: 'save-states', title: 'Save States', items: [gateItem('saveStates')] },
+      {
+        id: 'save-states',
+        title: 'Save States',
+        items: [
+          gateItem('saveStates'),
+          gateItem('enhancedSaveSlotShortcut'),
+          {
+            key: 'saveHoldDuration',
+            label: 'Hold to Save Duration',
+            description: 'How long to hold the key to save (seconds).',
+            hint: 'Needs Enhanced Save Slot Shortcut.',
+            keywords: 'save hold duration time seconds',
+            control: { kind: 'range', min: 1, max: 5, step: 0.5, format: asSeconds },
+          },
+        ],
+      },
       {
         id: 'save-auto',
         title: 'Auto-Save',

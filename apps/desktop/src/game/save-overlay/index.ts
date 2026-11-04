@@ -5,6 +5,8 @@ export { openSaveOverlay } from './open-save-overlay';
 export { endSaveHold } from './end-save-hold';
 export { isHolding } from './is-holding';
 export { startSaveHold } from './start-save-hold';
+export { holdDuration } from './hold-duration.state';
+export { setSaveHoldDuration } from './set-save-hold-duration';
 export { HOLD_TO_SAVE_MS, TAP_TO_LOAD_MS } from './save-overlay.constants';
 export { saveOverlayStore } from './save-overlay-store';
 export type { SaveOverlayState } from './save-overlay.type';

@@ -9,6 +9,7 @@ interface CoreSettings {
   autoSaveIntervalSeconds: number;
   autoSaveMaxEntries: number;
   turboSpeed: number;
+  saveHoldDuration: number;
 }
 
 export type { CoreSettings };
