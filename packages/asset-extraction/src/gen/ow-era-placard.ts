@@ -1,7 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peek, recipeState, requireTools, rgbOfFb } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { requireTools } from './ctgen/require-tools';
+import { peek } from './ctgen/peek';
+import { rgbOfFb } from './ctgen/rgb-of-fb';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 import { renderPlacards } from './ow-era-placard-text';
 import type { Placard } from './ow-era-placard-text';
 

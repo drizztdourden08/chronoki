@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { hx } from './ctgen/text-file';
+import { hx } from './ctgen/hx';
 
 const PUNCT: Record<number, string> = {
   0xde: '!',

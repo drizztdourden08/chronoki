@@ -1,6 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-import { x5 } from './ctgen/menugfx';
-import { hx } from './ctgen/text-file';
+import { x5 } from './ctgen/x5';
+import { hx } from './ctgen/hx';
 
 const ICON_BASE = 0x3fe55c;
 const ICON_PAL = 0x3fcc84;

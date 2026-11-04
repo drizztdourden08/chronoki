@@ -1,7 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { recipeState, wramOfState } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { wramOfState } from './ctgen/wram-of-state';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 import { itemFx, N } from './menu-itemuse-fx';
 
 const join = (v: number[]): string => v.join(', ');

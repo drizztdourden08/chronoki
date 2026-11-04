@@ -1,7 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { cgWord, x5 } from './ctgen/menugfx';
-import { crlf, hx } from './ctgen/text-file';
+import { cgWord } from './ctgen/cg-word';
+import { x5 } from './ctgen/x5';
+import { hx } from './ctgen/hx';
+import { crlf } from './ctgen/crlf';
 import { iconBlock, numeralBlock, toneBlock } from './menu-loader-art';
 import type { LoaderCapture } from './menu-loader-capture';
 import { captureLoader } from './menu-loader-capture';

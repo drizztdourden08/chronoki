@@ -1,8 +1,11 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { block16, rgb } from './ctgen/menugfx';
-import { cgramOf, peek, recipeState } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { block16 } from './ctgen/block16';
+import { rgb } from './ctgen/rgb';
+import { peek } from './ctgen/peek';
+import { cgramOf } from './ctgen/cgram-of';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 
 const icon = (vram: Uint8Array, cg: Uint8Array, t: number): number[] =>
   block16(vram, 0x8000, t, t + 1, t + 16, t + 17).flatMap((i) => (i === 0 ? [0, 0, 0, 0] : [...rgb(cg, 128 + i), 255]));

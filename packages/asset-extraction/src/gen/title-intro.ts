@@ -1,6 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { chunks, crlf, hx } from './ctgen/text-file';
+import { chunks } from './ctgen/chunks';
+import { hx } from './ctgen/hx';
+import { crlf } from './ctgen/crlf';
 import { captureTitle } from './title-intro-capture';
 import type { TitleCapture } from './title-intro.type';
 

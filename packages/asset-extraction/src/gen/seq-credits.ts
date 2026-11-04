@@ -1,7 +1,9 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peek, requireTools } from './ctgen/require-tools';
-import { chunks, hx } from './ctgen/text-file';
+import { requireTools } from './ctgen/require-tools';
+import { peek } from './ctgen/peek';
+import { chunks } from './ctgen/chunks';
+import { hx } from './ctgen/hx';
 
 /**
  * A plain boot plays the title to its end and falls into the attract; boot frame 2840 is 82 frames into the credits'

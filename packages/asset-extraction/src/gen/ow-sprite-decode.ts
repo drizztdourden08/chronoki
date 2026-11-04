@@ -1,5 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
-import { x5 } from './ctgen/menugfx';
+import { x5 } from './ctgen/x5';
 
 /** tools/gen/ow_sprites.py spr_frames: the pixel blocks of a .spr atlas (count byte, then 7-byte headers + w*h*4 RGBA). */
 const sprFrames = (data: Uint8Array): Uint8Array[] => {

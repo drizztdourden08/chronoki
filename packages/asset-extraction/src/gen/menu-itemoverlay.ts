@@ -1,7 +1,8 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { peek, recipeState } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { peek } from './ctgen/peek';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 
 /** menu_audit_cmp.py itemuse: X@4, R@50, A@80, Down@110, A@130, A@150, A@170; peeked at 172 + 2. */
 const DRIVE = '0:4,200:2,0:44,80:2,0:28,100:2,0:28,20:2,0:18,100:2,0:18,100:2,0:18,100:2,0:2';

@@ -1,8 +1,12 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { block16, rgba, tile4 } from './ctgen/menugfx';
-import { cgramOf, peek, recipeState } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { block16 } from './ctgen/block16';
+import { rgba } from './ctgen/rgba';
+import { tile4 } from './ctgen/tile4';
+import { peek } from './ctgen/peek';
+import { cgramOf } from './ctgen/cgram-of';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 
 const DRIVE = '80:2,0:4,80:2,0:4,80:2,0:4,0:6,100:2,0:12';
 

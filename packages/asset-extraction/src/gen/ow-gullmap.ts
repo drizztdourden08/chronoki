@@ -1,8 +1,10 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
 import { requireBytes } from '../pipeline/work-files';
-import { cgramOf, peek, recipeState } from './ctgen/require-tools';
-import { hx } from './ctgen/text-file';
+import { peek } from './ctgen/peek';
+import { cgramOf } from './ctgen/cgram-of';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
 import { decode16, sprFrames } from './ow-sprite-decode';
 
 /** C3:E6A2's op-4 descriptors E77A/E77F/E784. */

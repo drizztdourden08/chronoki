@@ -1,8 +1,12 @@
 /* @layer shared-asset-extraction @kind logic */
 import type { ImportContext } from '../pipeline/import-context.type';
-import { cgWord, x5 } from './ctgen/menugfx';
-import { cgramOf, peek, recipeState } from './ctgen/require-tools';
-import { crlf, hx } from './ctgen/text-file';
+import { cgWord } from './ctgen/cg-word';
+import { x5 } from './ctgen/x5';
+import { peek } from './ctgen/peek';
+import { cgramOf } from './ctgen/cgram-of';
+import { recipeState } from './ctgen/recipe-state';
+import { hx } from './ctgen/hx';
+import { crlf } from './ctgen/crlf';
 
 /** The ribbon moves to opt5 (Save). */
 const RIGHT5 = `0:20${',80:2,0:8'.repeat(5)},0:40`;
