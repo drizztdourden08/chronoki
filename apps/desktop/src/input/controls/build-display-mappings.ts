@@ -10,7 +10,7 @@ const buildDisplayMappings = (profile: InputProfile | null): DisplayMapping[] =>
       .map((mapping, mappingIndex) => ({ mapping, mappingIndex }))
       .filter(({ mapping }) => mapping.snesButton === button);
     if (bound.length === 0) return [{ button, mappingIndex: -1, binding: NO_BINDING, icon: null }];
-    return bound.map(({ mapping, mappingIndex }) => ({ button, mappingIndex, binding: mapping.binding, icon: mapping.icon }));
+    return bound.map(({ mapping, mappingIndex }) => ({ button, mappingIndex, binding: mapping.binding, icon: mapping.icon, sourceVid: mapping.sourceVid, sourcePid: mapping.sourcePid }));
   });
 
 export { buildDisplayMappings };

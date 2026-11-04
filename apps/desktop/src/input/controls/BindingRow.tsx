@@ -1,13 +1,13 @@
 /* @layer renderer-components @kind component */
 import { useCallback } from 'react';
 import type { KeyboardEvent, MouseEvent } from 'react';
-import { Box, Icon, IconButton, Text } from '@drizztdourden08/tessera/primitives';
+import { Box, Icon, IconButton, Image, Text } from '@drizztdourden08/tessera/primitives';
 import { getBindingLabel } from '@chronoki/input-mapping';
 import { InputGlyph } from '@app/compounds/InputGlyph';
 import type { BindingRowProps } from './controls.type';
 import './BindingRow.css';
 
-const BindingRow = ({ actionLabel, middleLabel, middleIconId, binding, icon, onRebind, onClear }: BindingRowProps) => {
+const BindingRow = ({ actionLabel, middleLabel, middleIconId, binding, icon, deviceIconSrc, onRebind, onClear }: BindingRowProps) => {
   const isNone = binding.type === 'none';
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -35,6 +35,9 @@ const BindingRow = ({ actionLabel, middleLabel, middleIconId, binding, icon, onR
         <Text className={`binding-row__binding-label ${isNone ? 'binding-row__binding-label--none' : ''}`}>
           {getBindingLabel(binding, icon)}
         </Text>
+        <Box className="binding-row__icon-slot">
+          {!isNone && deviceIconSrc && <Image src={deviceIconSrc} alt="" className="binding-row__device-icon" />}
+        </Box>
         {!isNone && (
           <IconButton variant="ghost" tone="danger" size="xs" className="binding-row__clear" label="Clear binding" onClick={handleClear}>
             <Icon name="x" />

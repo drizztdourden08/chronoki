@@ -25,11 +25,21 @@ const SHORTCUT_ACTIONS: readonly FunctionAction[] = [
   'load-state-1', 'load-state-2', 'load-state-3', 'load-state-4',
   'load-state-5', 'load-state-6', 'load-state-7', 'load-state-8',
   'load-state-9', 'load-state-10', 'load-state-11', 'load-state-12',
+  'save-state', 'load-state', 'slot-next', 'slot-prev',
   'pause', 'reset',
   'fullscreen', 'turbo',
   'profile-next', 'profile-prev',
-  'toggle-debug-capture',
+  'toggle-debug-capture', 'screenshot',
 ];
+
+const SNES_ACTION_LABELS: Record<SnesButton, string> = {
+  A: 'Confirm / Talk', B: 'Cancel / Run', X: 'Menu', Y: 'Y Button', L: 'L Bumper', R: 'R Bumper',
+  Start: 'Pause', Select: 'Select',
+  Up: 'Move Up', Down: 'Move Down', Left: 'Move Left', Right: 'Move Right',
+};
+
+const NARROW_FOLD_WIDTH = 1100;
+const PROFILES_DEFAULT_FOLDED = true;
 
 const SNES_ICON_IDS: Record<SnesButton, string> = {
   A: 'snes-a', B: 'snes-b', X: 'snes-x', Y: 'snes-y', L: 'snes-l', R: 'snes-r',
@@ -52,5 +62,6 @@ const SDL_TYPE_ICON: Record<string, string> = {
 
 export {
   CANCEL_ARM_DELAY_MS, CONTROLS_TABS, DEVICE_FAMILY_ICON, GENERIC_DEVICE_ICON, KEYBOARD_DEVICE_ICON,
-  LISTEN_ARM_DELAY_MS, MODIFIER_CODES, SDL_TYPE_ICON, SHORTCUT_ACTIONS, SIDE_PANEL_SIZE, SNES_ICON_IDS,
+  LISTEN_ARM_DELAY_MS, MODIFIER_CODES, NARROW_FOLD_WIDTH, PROFILES_DEFAULT_FOLDED, SDL_TYPE_ICON, SHORTCUT_ACTIONS,
+  SIDE_PANEL_SIZE, SNES_ACTION_LABELS, SNES_ICON_IDS,
 };

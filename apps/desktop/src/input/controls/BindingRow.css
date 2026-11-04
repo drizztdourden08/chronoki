@@ -96,6 +96,13 @@
   opacity: 1;
 }
 
+.binding-row__device-icon {
+  width: var(--size-20);
+  height: var(--size-20);
+  object-fit: contain;
+  opacity: 0.8;
+}
+
 .binding-row--reserved {
   pointer-events: none;
   opacity: 0.6;
