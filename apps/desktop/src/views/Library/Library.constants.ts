@@ -8,7 +8,10 @@ const LIBRARY_TEXT = {
   dropHint: 'A .sfc or .smc file',
   listTitle: 'Your ROMs',
   empty: 'No ROM added yet',
-  pending: 'ROM import is not available yet.',
+  working: 'Importing the ROM and building the game assets. This can take a while.',
+  ready: 'Ready',
+  notBuilt: 'Assets not built',
+  imported: 'ROM added and the game assets are ready.',
 };
 
 export { LIBRARY_TEXT, ROM_ACCEPT };
