@@ -1,6 +1,7 @@
 /* @layer renderer-appshell @kind hook */
 import { useCallback, useMemo, useState } from 'react';
 import { useCoreState } from '@drizztdourden08/brock-port-kit/renderer';
+import { nav } from '@drizztdourden08/brock-react';
 import { activeGameHolder, chronokiCore } from '@app/game/lifecycle';
 import { getInputManager } from '@app/input/input-manager/get-input-manager';
 import { NOTICE_NO_PROFILE, NOTICE_NO_ROM } from '../GameSession.constants';
@@ -39,6 +40,7 @@ const useGameSessionValue = (): GameSessionValue => {
     void resolveLaunch(profile, id).then((next) => {
       setNotice(next ? null : NOTICE_NO_ROM);
       setLaunch(next);
+      if (next) nav.close();
     });
   }, [profile, counter]);
 
