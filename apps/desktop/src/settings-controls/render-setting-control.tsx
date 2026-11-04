@@ -8,12 +8,16 @@ import { RenderScaleControl } from './RenderScaleControl';
 import { VolumeRow } from './audio/VolumeRow';
 import { DetectedPackSummary } from './audio/DetectedPackSummary';
 import { openProfilesPage } from './audio/open-profiles-page';
+import { AspectRatioRow } from './display/AspectRatioRow';
+import { withAspectCascade } from './display/with-aspect-cascade';
 import { GATE_KEY_PREFIX } from './gate-keys.constants';
 
 const renderSettingControl = (key: string, settings: AppSettings, onChange: SettingsPatch<AppSettings>): ReactNode | null => {
   if (key.startsWith(GATE_KEY_PREFIX)) {
-    return <GateToggle id={key.slice(GATE_KEY_PREFIX.length)} settings={settings} onChange={onChange} />;
+    const cascaded: SettingsPatch<AppSettings> = (patch) => onChange(withAspectCascade(patch, settings));
+    return <GateToggle id={key.slice(GATE_KEY_PREFIX.length)} settings={settings} onChange={cascaded} />;
   }
+  if (key === 'aspectRatio') return <AspectRatioRow settings={settings} onChange={onChange} />;
   if (key === 'renderScale') return <RenderScaleControl settings={settings} onChange={onChange} />;
   if (key === 'turboSpeed') return <TurboSpeedControl settings={settings} onChange={onChange} />;
   if (key === 'masterVolume') return <VolumeRow settingKey="masterVolume" settings={settings} onChange={onChange} />;
