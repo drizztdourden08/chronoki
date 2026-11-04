@@ -4,7 +4,7 @@
 // --out-app <dir> (default apps/desktop/public/wasm) gets the game and oracle .js/.wasm flat plus ck_kit.json (kit-json CLI,
 // from --belthasar <dir>, default X:/chronoki-ref/belthasar; skipped with a warning when absent). The oracle is an ES module
 // in out/oracle/ (own package.json); the game stays CommonJS in out/.
-// Output (git-ignored): core/wasm-build/out/chronoki-core.{js,wasm}  (factory ChronoKiCore, the game: JSPI)
+// Output (git-ignored): core/wasm-build/out/chronoki.{js,wasm}  (factory Chronoki, the game: JSPI)
 //                       core/wasm-build/out/chronoki-oracle.{js,wasm} (factory ChronoKiOracle, the full ct tool: JSPI)
 import { spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -91,7 +91,7 @@ const gameArgs = (gen) => [
   ...gen.gameFiles,
   ...reconnectSources,
   ...hostSources,
-  '-o', join(outDir, 'chronoki-core.js'),
+  '-o', join(outDir, 'chronoki.js'),
   // JSPI: field.c's blocking main() suspends at each present (ck_loop.c); the sound program's coroutine is a JSPI
   // stack of its own, entered through ck_coro_entry (reconnect/coro_wasm.c)
   '-sJSPI', '-sJSPI_EXPORTS=main,ck_coro_entry',
@@ -102,7 +102,7 @@ const gameArgs = (gen) => [
   '-fwasm-exceptions', '-sSUPPORT_LONGJMP=wasm', '-sWASM_LEGACY_EXCEPTIONS=1',
   ...(trace ? ['-DCK_TRACE'] : []),
   '-sINVOKE_RUN=1',            // main runs after preRun (the shell writes its files there) and parks at the first present
-  '-sMODULARIZE=1', '-sEXPORT_NAME=ChronoKiCore', '-sENVIRONMENT=web,worker,node',
+  '-sMODULARIZE=1', '-sEXPORT_NAME=Chronoki', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
   '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkSaveState,_CkLoadState,_CkStateStatus,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_ck_coro_entry',
@@ -135,7 +135,7 @@ const oracleArgs = (gen) => [
 const deliverToApp = () => {
   mkdirSync(outApp, { recursive: true });
   const files = [
-    [join(outDir, 'chronoki-core.js'), 'chronoki-core.js'], [join(outDir, 'chronoki-core.wasm'), 'chronoki-core.wasm'],
+    [join(outDir, 'chronoki.js'), 'chronoki.js'], [join(outDir, 'chronoki.wasm'), 'chronoki.wasm'],
     [join(oracleDir, 'chronoki-oracle.js'), 'chronoki-oracle.js'], [join(oracleDir, 'chronoki-oracle.wasm'), 'chronoki-oracle.wasm'],
   ];
   for (const [from, name] of files) {

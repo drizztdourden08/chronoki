@@ -28,7 +28,7 @@ const assets = argValue('--assets', 'X:/chronoki-ref/out/ct_assets.dat');
 const tables = argValue('--tables', join(dirname(assets), 'ct_tables.dat'));
 const sram = argValue('--sram', null);
 
-const glue = join(here, '..', 'out', 'chronoki-core.js');
+const glue = join(here, '..', 'out', 'chronoki.js');
 if (!existsSync(glue)) {
   console.error('not built: node core/wasm-build/build.mjs');
   process.exit(1);
