@@ -67,7 +67,7 @@ const useGameSessionValue = (): GameSessionValue => {
   useLaunchProbes(launch);
   useSessionRecorder(launch?.profileId ?? null, running);
   useSyncCorePause(running);
-  useMsuSession(profile?.msuPack ?? null, launch?.id ?? null, running, core.gates);
+  useMsuSession(profile, launch, running, core.gates);
   useRestartWarning(running, launch?.id ?? null);
 
   return useMemo(

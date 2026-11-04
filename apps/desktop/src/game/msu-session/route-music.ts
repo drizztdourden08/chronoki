@@ -1,10 +1,9 @@
 /* @layer bridge-wasm @kind logic */
 import { FADE_CTRL_BASE } from '@chronoki/game-core';
 import { resolveMsuTrack } from '@chronoki/game-data';
+import { KEEP } from './route-music.constants';
 import { STOP_CUE } from './msu-session.constants';
 import type { MsuRoute } from './msu-session.type';
-
-const KEEP: MsuRoute = { cue: null, packPlaying: null };
 
 const routeTrack = (trackNum: number, fallback: number | undefined, has: (track: number) => boolean, chip: boolean): MsuRoute => {
   if (has(trackNum)) return { cue: trackNum, packPlaying: true };

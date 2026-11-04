@@ -5,7 +5,7 @@ import { FULL_VOLUME, PER_GROUP_GATE } from './msu-session.constants';
 
 const groupVolume = (read: (settings: AppSettings) => number): number => {
   const live = msuLiveState.current;
-  if (!live || !live.gates.has(PER_GROUP_GATE)) return FULL_VOLUME;
+  if (!live?.gates.has(PER_GROUP_GATE)) return FULL_VOLUME;
   return read(live.settings);
 };
 
