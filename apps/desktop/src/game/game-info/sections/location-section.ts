@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { Block, GameInfoSection } from '@drizztdourden08/brock-game-info';
-import { MAP_ID_WIDTH } from '../game-info.constants';
+import { formatMap } from '../format-map';
+import { formatPoint } from '../format-point';
 import type { ChronokiInfoSnapshot } from '../game-info.type';
 
 const locationBlocks = ({ eraName, location }: ChronokiInfoSnapshot): Block[] => [
@@ -8,7 +9,7 @@ const locationBlocks = ({ eraName, location }: ChronokiInfoSnapshot): Block[] =>
     kind: 'rows',
     rows: [
       { label: 'Era', value: eraName ?? 'Unknown' },
-      { label: 'Map', value: { id: location.id, width: MAP_ID_WIDTH }, mono: true },
+      { label: 'Map', value: formatMap(location.id), mono: true },
     ],
   },
 ];
@@ -16,9 +17,8 @@ const locationBlocks = ({ eraName, location }: ChronokiInfoSnapshot): Block[] =>
 const detailBlock = ({ location }: ChronokiInfoSnapshot): Block => ({
   kind: 'rows',
   rows: [
-    { label: 'Previous map', value: { id: location.returnId, width: MAP_ID_WIDTH }, mono: true },
-    { label: 'Lead position', value: `${location.leadX}, ${location.leadY}`, mono: true },
-    { label: 'Epoch', value: `${location.epochX}, ${location.epochY}${location.epochBoarded ? ' (boarded)' : ''}`, mono: true },
+    { label: 'Previous map', value: formatMap(location.returnId), mono: true },
+    { label: 'Lead position', value: formatPoint(location.leadX, location.leadY), mono: true },
   ],
 });
 

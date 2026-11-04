@@ -14,18 +14,31 @@ const learnedItems = (snapshot: ChronokiInfoSnapshot, id: number, row: readonly 
     return [{ label: nameOr(snapshot.techNames[techId], `Tech ${techId}`), group: characterName(snapshot, id) }];
   });
 
-const techBlocks = (snapshot: ChronokiInfoSnapshot): Block[] => [
-  {
-    kind: 'progress',
-    items: snapshot.techs.single.map((row, id) => ({
-      label: characterName(snapshot, id),
-      done: row.filter(Boolean).length,
-      total: row.length,
-    })),
-  },
-  { kind: 'list', items: snapshot.techs.single.flatMap((row, id) => learnedItems(snapshot, id, row)) },
-  { kind: 'rows', rows: [{ label: 'Dual and triple techs learned', value: snapshot.techs.multiLearned }] },
-];
+const inPartyRows = ({ party, techs }: ChronokiInfoSnapshot) => {
+  const ids = new Set([...party.active, ...party.reserve].filter((id): id is number => id !== null));
+  return techs.single.map((row, id) => ({ row, id })).filter(({ id }) => ids.has(id));
+};
+
+const techBlocks = (snapshot: ChronokiInfoSnapshot): Block[] => {
+  const rows = inPartyRows(snapshot);
+  const items = rows.flatMap(({ row, id }) => learnedItems(snapshot, id, row));
+  const multiRow = { label: 'Dual and triple techs learned', value: snapshot.techs.multiLearned };
+  if (items.length === 0 && snapshot.techs.multiLearned === 0) {
+    return [{ kind: 'rows', rows: [{ label: 'Techs', value: 'No techs learned' }] }];
+  }
+  return [
+    {
+      kind: 'progress',
+      items: rows.map(({ row, id }) => ({
+        label: characterName(snapshot, id),
+        done: row.filter(Boolean).length,
+        total: row.length,
+      })),
+    },
+    { kind: 'list', items },
+    { kind: 'rows', rows: [multiRow] },
+  ];
+};
 
 const techsSection: GameInfoSection<ChronokiInfoSnapshot> = {
   id: 'techs',

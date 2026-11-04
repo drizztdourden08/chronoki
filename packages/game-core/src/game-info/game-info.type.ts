@@ -6,12 +6,12 @@ type GameInfoLocation = {
   readonly lastInsideId: number;
   readonly arrivalX: number;
   readonly arrivalY: number;
-  readonly leadX: number;
-  readonly leadY: number;
-  readonly epochX: number;
-  readonly epochY: number;
-  readonly epochBoarded: boolean;
+  readonly leadX: number | null;
+  readonly leadY: number | null;
+  readonly epoch: GameInfoEpoch | null;
 };
+
+type GameInfoEpoch = { readonly x: number; readonly y: number; readonly boarded: boolean };
 
 type GameInfoSheet = {
   readonly id: number;
@@ -66,6 +66,6 @@ type GameInfoSnapshot = {
 };
 
 export type {
-  GameInfoClock, GameInfoItem, GameInfoLocation, GameInfoParty, GameInfoSheet, GameInfoSnapshot, GameInfoStory,
+  GameInfoClock, GameInfoEpoch, GameInfoItem, GameInfoLocation, GameInfoParty, GameInfoSheet, GameInfoSnapshot, GameInfoStory,
   GameInfoTechs,
 };

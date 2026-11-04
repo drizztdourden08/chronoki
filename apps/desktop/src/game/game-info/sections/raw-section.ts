@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { GameInfoSection } from '@drizztdourden08/brock-game-info';
 import type { ChronokiInfoSnapshot } from '../game-info.type';
+import { formatPoint } from '../format-point';
 
 const rawSection: GameInfoSection<ChronokiInfoSnapshot> = {
   id: 'raw',
@@ -14,8 +15,7 @@ const rawSection: GameInfoSection<ChronokiInfoSnapshot> = {
         { label: 'Return id', value: location.returnId, mono: true },
         { label: 'Last inside id', value: location.lastInsideId, mono: true },
         { label: 'Arrival', value: `${location.arrivalX}, ${location.arrivalY}`, mono: true },
-        { label: 'Lead', value: `${location.leadX}, ${location.leadY}`, mono: true },
-        { label: 'Epoch', value: `${location.epochX}, ${location.epochY}${location.epochBoarded ? ' (boarded)' : ''}`, mono: true },
+        { label: 'Lead', value: formatPoint(location.leadX, location.leadY), mono: true },
         { label: 'Story counter', value: story.counter, mono: true },
         { label: 'Joined mask', value: party.joinedMask, mono: true },
         { label: 'Song (field)', value: songField, mono: true },
