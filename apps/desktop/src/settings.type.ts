@@ -11,6 +11,8 @@ interface AppSettings extends BaseSettings {
   autoSaveIntervalSeconds: number;
   masterMuted: boolean;
   showFps: boolean;
+  autoSaveMaxEntries: number;
+  turboSpeed: number;
 }
 
 export type { AppSettings };

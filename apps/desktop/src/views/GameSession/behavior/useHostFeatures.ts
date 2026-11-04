@@ -1,21 +1,16 @@
 /* @layer renderer-appshell @kind hook */
 import { useEffect } from 'react';
-import { bindDeveloperTools } from '@drizztdourden08/brock-react';
-import { hostGate, onHostGatesChange, setHostGates } from '@chronoki/game-core';
-import { setAutoSaveInterval } from '@app/game/auto-save';
-import { setTurboVolume } from '@app/game/turbo';
-import { DEVELOPER_TOOLS_GATE } from '../GameSession.constants';
+import { setHostGates } from '@chronoki/game-core';
+import { setAutoSaveInterval, setAutoSaveMaxEntries } from '@app/game/auto-save';
+import { setTurboSpeed, setTurboVolume } from '@app/game/turbo';
 import type { useCoreSettings } from './useCoreSettings';
 
-const useHostFeatures = ({ gates, volume, autoSaveIntervalSeconds }: ReturnType<typeof useCoreSettings>): void => {
+const useHostFeatures = ({ gates, volume, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed }: ReturnType<typeof useCoreSettings>): void => {
   useEffect(() => { setHostGates(gates); }, [gates]);
   useEffect(() => { setAutoSaveInterval(autoSaveIntervalSeconds); }, [autoSaveIntervalSeconds]);
+  useEffect(() => { setAutoSaveMaxEntries(autoSaveMaxEntries); }, [autoSaveMaxEntries]);
+  useEffect(() => { setTurboSpeed(turboSpeed); }, [turboSpeed]);
   useEffect(() => { setTurboVolume(volume); }, [volume]);
-  useEffect(() => bindDeveloperTools({
-    get: () => hostGate(DEVELOPER_TOOLS_GATE),
-    set: () => undefined,
-    subscribe: onHostGatesChange,
-  }), []);
 };
 
 export { useHostFeatures };

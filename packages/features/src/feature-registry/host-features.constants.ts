@@ -32,11 +32,6 @@ const HOST_FEATURES: FeatureDef[] = [
     userMessage: 'Saves a state when you leave the game.',
     group: 'Saves', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: false, live: true,
   },
-  {
-    id: 'developerTools', label: 'Developer tools', description: 'Opens the developer tools.',
-    userMessage: 'Opens the developer tools.',
-    group: 'Dev', kind: 'dev', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: false, live: true,
-  },
 ];
 
 export { HOST_FEATURES };

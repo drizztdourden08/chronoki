@@ -5,22 +5,29 @@ import { searchIndex } from './search';
 import { meta as creditsCardMeta } from '../src/screens/credits.card';
 import { meta as dataLibraryLibraryPageMeta } from '../src/screens/data/library/library.page';
 import { meta as dataLibraryProfilesPageMeta } from '../src/screens/data/library/profiles.page';
-import GameEnhancementsSettings, { meta as gameEnhancementsSettingsMeta } from '../src/screens/game/enhancements.settings';
+import { meta as dataStoragePageMeta } from '../src/screens/data/storage.page';
+import GameAppContributingSettings, { meta as gameAppContributingSettingsMeta } from '../src/screens/game/app/contributing.settings';
+import GameGameplayAudioSettings, { meta as gameGameplayAudioSettingsMeta } from '../src/screens/game/gameplay/audio.settings';
 import { meta as gameGameplayControlsCustomMeta } from '../src/screens/game/gameplay/controls.custom';
-import GameGeneralSettings, { meta as gameGeneralSettingsMeta } from '../src/screens/game/general.settings';
+import GameGameplayGameplaySettings, { meta as gameGameplayGameplaySettingsMeta } from '../src/screens/game/gameplay/gameplay.settings';
 import { meta as gameHomeHeroMeta } from '../src/screens/game/home.hero';
-import { meta as gameStoragePageMeta } from '../src/screens/game/storage.page';
+import GameVideoPictureSettings, { meta as gameVideoPictureSettingsMeta } from '../src/screens/game/video/picture.settings';
+import GameVideoWindowSettings, { meta as gameVideoWindowSettingsMeta } from '../src/screens/game/video/window.settings';
 import { meta as gameViewBaseMeta } from '../src/screens/game-view.base';
 
 const screenTree = buildScreenTree(config, [
   { kind: 'card', id: 'credits', component: lazyComponent(() => import('../src/screens/credits.card')), meta: creditsCardMeta },
   { kind: 'page', bucket: 'data', group: 'library', id: 'library', component: lazyComponent(() => import('../src/screens/data/library/library.page')), meta: dataLibraryLibraryPageMeta },
   { kind: 'page', bucket: 'data', group: 'library', id: 'profiles', component: lazyComponent(() => import('../src/screens/data/library/profiles.page')), meta: dataLibraryProfilesPageMeta },
-  { kind: 'settings', bucket: 'game', id: 'enhancements', sections: GameEnhancementsSettings, meta: gameEnhancementsSettingsMeta },
+  { kind: 'page', bucket: 'data', id: 'storage', component: lazyComponent(() => import('../src/screens/data/storage.page')), meta: dataStoragePageMeta },
+  { kind: 'settings', bucket: 'game', group: 'app', id: 'contributing', sections: GameAppContributingSettings, meta: gameAppContributingSettingsMeta },
+  { kind: 'backdrop', bucket: 'game', id: 'game', component: lazyComponent(() => import('../src/screens/game/game.backdrop')) },
+  { kind: 'settings', bucket: 'game', group: 'gameplay', id: 'audio', sections: GameGameplayAudioSettings, meta: gameGameplayAudioSettingsMeta },
   { kind: 'custom', bucket: 'game', group: 'gameplay', id: 'controls', component: lazyComponent(() => import('../src/screens/game/gameplay/controls.custom')), meta: gameGameplayControlsCustomMeta },
-  { kind: 'settings', bucket: 'game', id: 'general', sections: GameGeneralSettings, meta: gameGeneralSettingsMeta },
+  { kind: 'settings', bucket: 'game', group: 'gameplay', id: 'gameplay', sections: GameGameplayGameplaySettings, meta: gameGameplayGameplaySettingsMeta },
   { kind: 'hero', bucket: 'game', id: 'home', component: lazyComponent(() => import('../src/screens/game/home.hero')), meta: gameHomeHeroMeta },
-  { kind: 'page', bucket: 'game', id: 'storage', component: lazyComponent(() => import('../src/screens/game/storage.page')), meta: gameStoragePageMeta },
+  { kind: 'settings', bucket: 'game', group: 'video', id: 'picture', sections: GameVideoPictureSettings, meta: gameVideoPictureSettingsMeta },
+  { kind: 'settings', bucket: 'game', group: 'video', id: 'window', sections: GameVideoWindowSettings, meta: gameVideoWindowSettingsMeta },
   { kind: 'base', id: 'game-view', component: lazyComponent(() => import('../src/screens/game-view.base')), meta: gameViewBaseMeta },
 ], searchIndex);
 

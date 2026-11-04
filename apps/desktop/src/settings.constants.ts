@@ -13,6 +13,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   autoSaveIntervalSeconds: 300,
   masterMuted: false,
   showFps: false,
+  autoSaveMaxEntries: 5,
+  turboSpeed: 4,
 };
 
 export { DEFAULT_SETTINGS };

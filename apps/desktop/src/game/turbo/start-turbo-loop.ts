@@ -2,14 +2,15 @@
 import { hostGate } from '@chronoki/game-core';
 import { chronokiCore } from '../lifecycle/chronoki-core';
 import { setTurboHeld } from './set-turbo-held';
-import { TURBO_EXTRA_FRAMES, TURBO_GATE } from './turbo.constants';
+import { turboConfig } from './turbo-config';
+import { TURBO_GATE } from './turbo.constants';
 import { turboState } from './turbo-state';
 
 const runExtraFrames = (): void => {
   const runFrame = chronokiCore.definition.core.exports.runFrame;
   const calls = chronokiCore.calls();
   if (!runFrame || !calls || chronokiCore.state().status !== 'running') return;
-  for (let i = 0; i < TURBO_EXTRA_FRAMES; i += 1) {
+  for (let i = 0; i < turboConfig.speed - 1; i += 1) {
     calls.call(runFrame);
     turboState.extraFrames += 1;
   }

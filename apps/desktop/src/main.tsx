@@ -20,6 +20,7 @@ import { chronokiBugReport } from './bug-report/chronoki-bug-report';
 import { chronokiShellModule } from './shell/chronoki-shell-module';
 import { DEVELOPER_TOOLS, SETTINGS, VOLUME } from './main.constants';
 import { LEGAL_TEXT } from './legal.constants';
+import { CHRONOKI_DATA_DOMAINS } from './storage/data-domains.constants';
 import { product } from './product';
 import type { AppSettings } from './settings.type';
 
@@ -35,6 +36,7 @@ createRoot(root).render(
       restoreNavigation={false}
       volume={VOLUME}
       developerTools={DEVELOPER_TOOLS}
+      dataDomains={CHRONOKI_DATA_DOMAINS}
       bugReport={chronokiBugReport}
       screenTree={screenTree}
       modules={[...rendererModules, chronokiShellModule]}
