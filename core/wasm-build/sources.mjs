@@ -78,6 +78,6 @@ const reconnectSources = [
   'ck_state_box.c', 'ck_state_host.c', 'music_tap.c',
 ].map((f) => join(root, 'core', 'reconnect', f));
 
-const hostSources = ['ck_api.c', 'ck_loop.c'].map((f) => join(here, f));
+const hostSources = ['ck_api.c', 'ck_loop.c', 'ck_info.c'].map((f) => join(here, f));
 
 export { belthasar, gameSources, ctSources, hostSources, reconnectSources, root }
