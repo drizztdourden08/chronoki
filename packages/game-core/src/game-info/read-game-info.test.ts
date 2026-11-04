@@ -12,7 +12,7 @@ const put = (heap: Uint8Array, at: number, ...bytes: number[]): void => {
   });
 };
 
-const allFalse = (row: boolean[]): boolean => row.every((bit) => !bit);
+const allFalse = (row: readonly boolean[]): boolean => row.every((bit) => !bit);
 
 describe('readGameInfo basics', () => {
   it('refuses a null pointer or a short heap', { tags: ['critical'] }, () => {
