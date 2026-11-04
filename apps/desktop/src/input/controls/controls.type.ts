@@ -15,6 +15,8 @@ interface DisplayMapping {
   mappingIndex: number;
   binding: InputBinding;
   icon: InputProfile['mappings'][number]['icon'];
+  sourceVid?: string | null;
+  sourcePid?: string | null;
 }
 
 interface ControlsState {
@@ -51,6 +53,7 @@ interface BindingRowProps {
   middleIconId?: string;
   binding: InputBinding;
   icon?: DisplayMapping['icon'];
+  deviceIconSrc?: string;
   onRebind: () => void;
   onClear: () => void;
 }

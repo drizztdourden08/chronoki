@@ -14,7 +14,7 @@ const DeviceRow = ({ device, onAssign }: DeviceRowProps) => {
       <ListItemRow
         icon={<DeviceIcon src={deviceIconUrl(device)} family={device.deviceFamily} ready={device.connected} />}
         name={device.displayName}
-        meta={device.connected ? 'Connected' : 'Not connected'}
+        meta={device.connected ? 'Ready' : 'Unavailable'}
         onClick={device.connected ? handleClick : undefined}
       />
     </Box>

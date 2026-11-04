@@ -5,7 +5,8 @@ import { SNES_BUTTON_LABELS } from '@chronoki/input-mapping';
 import { BindingListHeader } from './BindingListHeader';
 import { BindingRow } from './BindingRow';
 import { buildDisplayMappings } from './build-display-mappings';
-import { SNES_ICON_IDS } from './controls.constants';
+import { bindingDeviceIcon } from './binding-device-icon';
+import { SNES_ACTION_LABELS, SNES_ICON_IDS } from './controls.constants';
 import type { SnesBindingsTabProps } from './SnesBindingsTab.type';
 
 const SnesBindingsTab = ({ ctrl, onRebind }: SnesBindingsTabProps) => {
@@ -16,11 +17,12 @@ const SnesBindingsTab = ({ ctrl, onRebind }: SnesBindingsTabProps) => {
       {mappings.map((mapping) => (
         <BindingRow
           key={`${mapping.button}-${mapping.mappingIndex}`}
-          actionLabel={SNES_BUTTON_LABELS[mapping.button]}
-          middleLabel={mapping.button}
+          actionLabel={SNES_ACTION_LABELS[mapping.button]}
+          middleLabel={SNES_BUTTON_LABELS[mapping.button]}
           middleIconId={SNES_ICON_IDS[mapping.button]}
           binding={mapping.binding}
           icon={mapping.icon}
+          deviceIconSrc={bindingDeviceIcon(mapping.binding, mapping.sourceVid, mapping.sourcePid, ctrl.devices)}
           onRebind={() => onRebind(mapping.button)}
           onClear={() => ctrl.clearSnes(mapping.button, mapping.mappingIndex)}
         />

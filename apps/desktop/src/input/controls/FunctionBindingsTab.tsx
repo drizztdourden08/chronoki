@@ -6,6 +6,7 @@ import { FUNCTION_ACTION_LABELS } from '@chronoki/input-mapping';
 import type { FunctionMapping } from '@chronoki/input-mapping';
 import { BindingListHeader } from './BindingListHeader';
 import { BindingRow } from './BindingRow';
+import { bindingDeviceIcon } from './binding-device-icon';
 import { SHORTCUT_ACTIONS } from './controls.constants';
 import type { FunctionBindingsTabProps } from './FunctionBindingsTab.type';
 
@@ -36,6 +37,7 @@ const FunctionBindingsTab = ({ ctrl, onRebind }: FunctionBindingsTabProps) => {
             actionLabel={FUNCTION_ACTION_LABELS[mapping.action]}
             binding={mapping.binding}
             icon={mapping.icon}
+            deviceIconSrc={bindingDeviceIcon(mapping.binding, mapping.sourceVid, mapping.sourcePid, ctrl.devices)}
             onRebind={() => onRebind(mapping.action)}
             onClear={() => ctrl.clearFunction(mapping.action)}
           />
