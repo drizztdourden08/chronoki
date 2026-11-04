@@ -50,6 +50,9 @@ describe('validSramSlots', { tags: ['critical'] }, () => {
   it('reads the summary of a valid slot only', () => {
     const bytes = makeSave();
     expect(readSramSlotSummary(bytes, 0)?.leadId).toBe(2);
+    bytes.set([0xab, 0xce, 0xbc, 0xbc, 0xef, 0xff], 0x05b0 + 2 * 6);
+    sealSlot(bytes, 0);
+    expect(readSramSlotSummary(bytes, 0)?.leadName).toBe('Lucc');
     bytes[0x0100] ^= 0x01;
     expect(readSramSlotSummary(bytes, 0)).toBeNull();
   });

@@ -4,7 +4,7 @@ import type { HeroProgressFile } from '@app/compounds/ProfileHero';
 
 const progressFileOf = (summary: SramSlotSummary): HeroProgressFile => ({
   slot: summary.slot,
-  lead: `Character ${summary.leadId + 1}`,
+  lead: summary.leadName ?? `Character ${summary.leadId + 1}`,
   level: summary.level,
   playTime: `${summary.hours}h ${String(summary.minutes).padStart(2, '0')}m`,
   saveNumber: summary.saveNumber,

@@ -2,6 +2,7 @@
 interface SramSlotSummary {
   slot: number;
   leadId: number;
+  leadName: string | null;
   level: number;
   saveNumber: number;
   locationId: number;
