@@ -2,7 +2,7 @@
 import type { ImportContext } from '../pipeline/import-context.type';
 import { peekOracle, recipeState } from '../oracle/peek-access';
 import { hetakeText } from './battle-hetake/hetake-emit';
-import type { Cell, Cluster } from './battle-hetake/hetake-emit';
+import type { Cell, Cluster } from './battle-hetake/hetake-emit.type';
 import type { GenFiles } from './oracle-gen-stage';
 import { cgramOf } from './shared/fb-decode';
 import { decodeOam, oamBlob } from './shared/oam-decode';
@@ -55,7 +55,7 @@ const genBattleHetake = async (ctx: ImportContext): Promise<GenFiles> => {
     const first = cur[0];
     cursors.push(first ? [first.x, first.y] : [0, 0]);
   }
-  return { 'battle_hetake.h': hetakeText(idle.vram, cgramOf(idle.oam), clusters, atkAsm, atk.vram, cursors) };
+  return { 'battle_hetake.h': hetakeText({ idleV: idle.vram, idleCg: cgramOf(idle.oam), clusters, atkAsm, atkV: atk.vram, cursors }) };
 };
 
 export { genBattleHetake };

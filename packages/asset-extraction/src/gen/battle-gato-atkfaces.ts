@@ -4,7 +4,7 @@ import { peekOracle, recipeState } from '../oracle/peek-access';
 import type { PeekDump } from '../oracle/peek.type';
 import { hex } from './c-text';
 import { atkFacesText } from './battle-gato-atkfaces/atkfaces-emit';
-import type { Face, Pose } from './battle-gato-atkfaces/atkfaces-emit';
+import type { Face, Pose } from './battle-gato-atkfaces/atkfaces-emit.type';
 import type { GenFiles } from './oracle-gen-stage';
 import { BRACKET_TILE, bodyMd5, gatoFoot, tileSheet } from './shared/gato-bake';
 import { decodeOam, oamBlob } from './shared/oam-decode';
