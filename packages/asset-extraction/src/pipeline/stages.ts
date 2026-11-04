@@ -1,4 +1,5 @@
 /* @layer shared-asset-extraction @kind logic */
+import { EXTRACT_RUNNERS } from '../extract/extract-runners';
 import { GEN_RUNNERS } from '../gen/gen-runners';
 import { SETUP_RUNNERS } from './setup-runners';
 import { CAPTURE_STAGES } from './stage-defs/captures.stages';
@@ -8,7 +9,7 @@ import { SETUP_STAGES } from './stage-defs/setup.stages';
 import { TAIL_STAGES } from './stage-defs/tail.stages';
 import type { ImportStage, StageDef, StageRun } from './stage.type';
 
-const RUNNERS: Record<string, StageRun> = { ...SETUP_RUNNERS, ...GEN_RUNNERS };
+const RUNNERS: Record<string, StageRun> = { ...SETUP_RUNNERS, ...EXTRACT_RUNNERS, ...GEN_RUNNERS };
 
 const bind = (def: StageDef): ImportStage => {
   const run = RUNNERS[def.id] ?? null;
