@@ -14,6 +14,7 @@ import { useCoreSettings } from './useCoreSettings';
 import { useGameProfile } from './useGameProfile';
 import { useHostFeatures } from './useHostFeatures';
 import { useLaunchProbes } from './useLaunchProbes';
+import { useSessionRecorder } from './useSessionRecorder';
 import { useSyncCorePause } from './useSyncCorePause';
 
 const useGameSessionValue = (): GameSessionValue => {
@@ -59,6 +60,7 @@ const useGameSessionValue = (): GameSessionValue => {
 
   useAutoLaunch(loaded && profile !== null, play);
   useLaunchProbes(launch);
+  useSessionRecorder(launch?.profileId ?? null, running);
   useSyncCorePause(running);
 
   return useMemo(
