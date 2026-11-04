@@ -6,7 +6,7 @@ const meta: ScreenMeta = {
   title: 'Gameplay',
   icon: 'gamepad-2',
   order: 1,
-  keywords: ['gameplay', 'original', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward'],
+  keywords: ['gameplay', 'vanilla safe', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward'],
 };
 
 const asSeconds = (value: number): string => `${value} s`;
@@ -37,6 +37,7 @@ const sections: Section[] = [
             key: 'autoSaveMaxEntries',
             label: 'Max Auto-Save Entries',
             description: 'Maximum number of auto-saves to keep (oldest are pruned)',
+            hint: 'Needs Enable Auto-Save.',
             keywords: 'auto save max limit entries prune keep',
             control: { kind: 'range', min: 1, max: 20, step: 1, format: asCount },
           },
@@ -47,13 +48,12 @@ const sections: Section[] = [
         id: 'save-shortcuts',
         title: 'Quick Save Shortcuts',
         items: [
-          gateItem('saveStates'),
           gateItem('enhancedSaveSlotShortcut'),
           {
             key: 'saveHoldDuration',
             label: 'Hold to Save Duration',
             description: 'How long to hold the key to save (seconds)',
-            hint: 'Needs Hold Save for Slot Picker.',
+            hint: 'Needs Enhanced Save Slot Shortcut.',
             keywords: 'save hold duration time seconds',
             control: { kind: 'range', min: 1, max: 5, step: 0.5, format: asSeconds },
           },
@@ -76,13 +76,14 @@ const sections: Section[] = [
     ],
   },
   {
-    id: 'mode',
-    title: 'Original Mode',
+    id: 'vanilla-safe',
+    title: 'Vanilla Safe',
     items: [
       {
-        key: 'original',
-        label: 'Original Mode',
+        key: 'vanillaSafe',
+        label: 'Vanilla Safe',
         description: 'Forces off every enhancement, so the game plays exactly as released. Your choices are kept for when you turn it off.',
+        keywords: 'vanilla safe parity original stock speedrun race lock',
       },
     ],
   },

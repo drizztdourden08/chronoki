@@ -11,7 +11,6 @@ export default defineScreens({
       groups: [
         { id: 'video', label: 'Video' },
         { id: 'gameplay', label: 'Gameplay' },
-        { id: 'extras', label: 'Extras' },
         { id: 'app', label: 'App' },
       ],
     },
