@@ -34,6 +34,7 @@ counted in setup.py's "progress K/N". Ported 10, pending 55. Python paths are re
 | menu_desc | gen/menu_desc.py | generate | pending (text.py, compile) |
 | menu_equip, menu_techrom, animeng_pc, battle_hud_chrome | gen/<name>.py | generate | pending (ROM only, next to port) |
 | the other 37 gens (title_intro, seq_*, battle_*, ct_*, ow_*, dlg_cursor, menu_*) | gen/<name>.py, gen/xlat_all.py | generate | pending (oracle power-on) |
+| P4b-E (18): ct_ng_pan, dlg_cursor, menu_arrow/chrome/configgrid/icons/itemdetail/itemoverlay/itemuse/loader/opt0/saveform/shop/tech, ow_era_placard, ow_gullmap, seq_credits, title_intro | gen/<name>.py | generate | ported (`gen/<name>.ts`, runners in `gen/oracle-gen-runners-b.ts`; oracle calls beyond runRecipe go through `gen/ctgen/oracle-tools.type.ts`) |
 | pack-tables | gen/pack_tables.py pack | tail | pending (needs the C parser) |
 | steam-margins | steam_wide.py | tail | pending |
 | write-player-assets | gen/pack_tables.py into | tail | ported |
