@@ -1,8 +1,8 @@
 /* @layer renderer-lib @kind logic */
 import { createPack } from '@drizztdourden08/brock-msu/packs';
 import { platformFiles } from '../platform-files';
-import { chronokiMsuConfig } from './chronoki-msu-config';
+import { ctMsuConfig } from '@chronoki/game-core';
 
-const createMsuPack = (pack: string): Promise<void> => createPack(chronokiMsuConfig, platformFiles(), pack);
+const createMsuPack = (pack: string): Promise<void> => createPack(ctMsuConfig, platformFiles(), pack);
 
 export { createMsuPack };

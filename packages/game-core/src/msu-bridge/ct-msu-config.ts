@@ -2,8 +2,10 @@
 import { defineMsuGame } from '@drizztdourden08/brock-msu';
 import { MSU_TITLE_SONGS, MSU_TRACK_LABELS } from '@chronoki/game-data';
 import { classifyCtMusic } from './classify-ct-music';
+import { ctSidecarPath } from './ct-sidecar-path';
+import { slotRefOf } from './slot-ref-of';
 import {
-  CT_MSU_GAME_ID, CT_MSU_PACK_ROOT, CT_MSU_RESUME_SUFFIX, CT_MSU_SOUND_CHANNELS, CT_MSU_SOUND_ID_COUNT,
+  CT_MSU_GAME_ID, CT_MSU_PACK_ROOT, CT_MSU_SOUND_CHANNELS, CT_MSU_SOUND_ID_COUNT,
 } from './ct-msu-config.constants';
 
 const ctMsuConfig = defineMsuGame({
@@ -15,7 +17,7 @@ const ctMsuConfig = defineMsuGame({
   classifyMusic: classifyCtMusic,
   musicLabels: MSU_TRACK_LABELS,
   isTitleScene: (scene) => MSU_TITLE_SONGS.includes(scene),
-  resumePath: (profile, slotKind, slotId) => `${profile}/${slotKind}-${slotId}${CT_MSU_RESUME_SUFFIX}`,
+  resumePath: (profile, slotKind, slotId) => ctSidecarPath(profile, slotRefOf(slotKind, slotId)),
 });
 
 export { ctMsuConfig };
