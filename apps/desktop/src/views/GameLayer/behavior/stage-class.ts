@@ -1,9 +1,13 @@
 /* @layer renderer-components @kind logic */
-const stageClass = (visible: boolean, gates: ReadonlySet<string>): string => {
+import type { StageClassArgs } from '../GameLayer.type';
+
+const stageClass = ({ visible, gates, viewport, pixelPerfect }: StageClassArgs): string => {
   const classes = ['game-layer__stage'];
   if (!visible) classes.push('game-layer__stage--idle');
-  if (gates.has('linearFiltering')) classes.push('game-layer__stage--smooth');
-  if (gates.has('scaleStretch')) classes.push('game-layer__stage--stretch');
+  if (gates.has('linearFiltering') && !pixelPerfect) classes.push('game-layer__stage--smooth');
+  if (viewport === 'fill') classes.push('game-layer__stage--stretch');
+  if (viewport === 'fit') classes.push('game-layer__stage--fit');
+  if (pixelPerfect) classes.push('game-layer__stage--pixel-perfect');
   return classes.join(' ');
 };
 

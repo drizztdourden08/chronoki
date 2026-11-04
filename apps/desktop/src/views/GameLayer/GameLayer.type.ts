@@ -1,5 +1,6 @@
 /* @layer renderer-components @kind types */
 import type { RefObject } from 'react';
+import type { ViewportMode } from '@app/settings.type';
 import type { GameLaunch } from '@app/views/GameSession';
 
 interface GameBootArgs {
@@ -7,4 +8,11 @@ interface GameBootArgs {
   launch: GameLaunch | null;
 }
 
-export type { GameBootArgs };
+interface StageClassArgs {
+  visible: boolean;
+  gates: ReadonlySet<string>;
+  viewport: ViewportMode;
+  pixelPerfect: boolean;
+}
+
+export type { GameBootArgs, StageClassArgs };
