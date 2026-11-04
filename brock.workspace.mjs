@@ -8,7 +8,6 @@ const STAGED_DATA = ['test-roms', 'data'];
 const STAGED_PACK = 'ct_assets.dat';
 const PACK_EXTENSION = '.dat';
 
-// The app (and copyAssetBlob) read Data/assets/<ROM stem>.dat; the repack CLI writes ct_assets.dat, so stage it under the ROM's name.
 const stageRepackedPack = (worktree) => {
   const pack = join(worktree.main, ...STAGED_DATA, 'assets', STAGED_PACK);
   const romFile = snesVerb.romFileOf(worktree);
