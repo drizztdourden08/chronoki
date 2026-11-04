@@ -1,5 +1,6 @@
 /* @layer renderer-appshell @kind hook */
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { setHostGates } from '@chronoki/game-core';
 import { activeGameHolder } from '@app/game/lifecycle';
 import { NOTICE_NO_PROFILE, NOTICE_NO_ROM } from '../GameSession.constants';
 import type { GameLaunch, GameSessionValue } from '../GameSession.type';
@@ -14,6 +15,7 @@ import { useLaunchProbes } from './useLaunchProbes';
 const useGameSessionValue = (): GameSessionValue => {
   const { profile, loaded } = useGameProfile();
   const core = useCoreSettings();
+  useEffect(() => { setHostGates(core.gates); }, [core.gates]);
   const [launch, setLaunch] = useState<GameLaunch | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [counter, setCounter] = useState(0);

@@ -1,4 +1,14 @@
 /* @layer renderer-appshell @kind constants */
+import type { FunctionAction } from '@chronoki/input-mapping';
+
+const FUNCTION_ACTION_GATES: Partial<Record<FunctionAction, string>> = {
+  'save-state': 'saveStates',
+  'load-state': 'saveStates',
+  'slot-next': 'saveStates',
+  'slot-prev': 'saveStates',
+  'fast-forward': 'turbo',
+};
+
 const NOTICE_NO_PROFILE = 'Create a profile first.';
 
 const NOTICE_NO_ROM = 'Add a ROM in the Library first.';
@@ -36,6 +46,6 @@ const FRAME_HEIGHT_EXPORT = 'CkFrameHeight';
 export {
   INPUT_PROBE_BOOT_FRAMES, INPUT_PROBE_BUTTONS, INPUT_PROBE_GAP_FRAMES, INPUT_PROBE_HOLD_FRAMES, INPUT_PROBE_HASH_FRAME,
   SRAM_PROBE_DEFAULT_BYTES, SRAM_PROBE_FRAMES,
-  DEFAULT_SCREENSHOT_FRAMES, FRAME_COUNT_EXPORT, FRAME_HEIGHT_EXPORT, FRAME_WAIT_TIMEOUT_MS, FRAME_WIDTH_EXPORT, NOTICE_NO_PROFILE,
+  DEFAULT_SCREENSHOT_FRAMES, FUNCTION_ACTION_GATES, FRAME_COUNT_EXPORT, FRAME_HEIGHT_EXPORT, FRAME_WAIT_TIMEOUT_MS, FRAME_WIDTH_EXPORT, NOTICE_NO_PROFILE,
   NOTICE_NO_ROM, SETTLE_AFTER_STATE_MS, STATE_PROBE_FRAMES, STATE_PROBE_SLOT,
 };

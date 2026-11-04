@@ -15,6 +15,7 @@ interface GameSessionValue {
   config: string;
   settings: CkSettings;
   volume: number;
+  gates: ReadonlySet<string>;
   play: () => void;
   stop: () => void;
   onStarted: () => void;
