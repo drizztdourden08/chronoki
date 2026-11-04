@@ -6,7 +6,6 @@ import { combatant, holdScript } from '../battle-anim/anim-sprites';
 import { decodeOam, oamBlob } from '../shared/oam-decode';
 import type { Sprite } from '../shared/oam-decode';
 
-/** (pal, pose, repF, ...extra): T1 extra = [bobState]; T2 extra = [relStart, relEnd]. */
 type Spec = [pal: number, pose: string, repF: number, ...extra: number[]];
 
 const CRONO_IDLE_KEYS: Spec[] = [
@@ -36,7 +35,6 @@ interface AddGroup {
   tiles: Uint8Array[][];
 }
 
-/** battle_anim_add.py bake_group: one hold-driver peek per spec, the combatant's OAM and its tiles. */
 const bakeGroup = async (ctx: ImportContext, state: Uint8Array, specs: Spec[]): Promise<AddGroup> => {
   const oracle = peekOracle(ctx);
   const kfs: AddKf[] = [];

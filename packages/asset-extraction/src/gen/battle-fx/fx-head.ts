@@ -10,7 +10,6 @@ const MISS_BASE = 0x19a;
 const MISS_NTILE = 2;
 const FLASH_FRAME = 480;
 
-/** The popup's vertical offset from its rest row, per render frame (index 0 = birth). */
 const RISE_DY = [7, -1, -7, -10, -12, -13, -14, -15, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0];
 const HOLD_FRAMES = 32;
 const LIFETIME = RISE_DY.length + HOLD_FRAMES;
@@ -20,7 +19,6 @@ const tileRow = (vram: Uint8Array, tile: number): string => {
   return Array.from({ length: 32 }, (_, i) => hexByte(vram[o + i] as number)).join(',');
 };
 
-/** Header, defines, the digit tiles and the MISS tiles. */
 const headText = (vram: Uint8Array): string => {
   const out: string[] = [];
   const W = (s: string): void => {

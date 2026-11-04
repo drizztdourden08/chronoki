@@ -1,6 +1,5 @@
 /* @layer shared-asset-extraction @kind constants */
 
-/** disasm65816._T: opcode -> "mnemonic:addressing-mode", the full 65816 matrix in opcode order. */
 const OPCODE_ROWS =
   'BRK:imm8 ORA:idx COP:imm8 ORA:sr TSB:dp ORA:dp ASL:dp ORA:idl ' +
   'PHP:imp ORA:immM ASL:acc PHD:imp TSB:abs ORA:abs ASL:abs ORA:abl ' +
@@ -35,7 +34,6 @@ const OPCODE_ROWS =
   'BEQ:rel SBC:idy SBC:idp SBC:isy PEA:abs SBC:dpx INC:dpx SBC:idly ' +
   'SED:imp SBC:aby PLX:imp XCE:imp JSR:iax SBC:abx INC:abx SBC:alx';
 
-/** disasm65816.FIXLEN: operand length by addressing mode (immM / immX are resolved per instruction). */
 const FIXED_LENGTH: Record<string, number> = {
   imp: 0, acc: 0, imm8: 1, dp: 1, dpx: 1, dpy: 1, idp: 1, idx: 1, idy: 1, idl: 1, idly: 1, sr: 1, isy: 1, rel: 1,
   abs: 2, abx: 2, aby: 2, ind: 2, iax: 2, ial: 2, rell: 2, bm: 2, abl: 3, alx: 3,

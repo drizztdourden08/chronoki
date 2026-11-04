@@ -5,7 +5,6 @@ import { DIGIT_PAL, FLASH_FRAME, FLASH_PAL, RISE_DY } from './fx-head';
 const word = (cg: Uint8Array, i: number): number => (cg[i * 2] as number) | ((cg[i * 2 + 1] as number) << 8);
 const w4 = (w: number): string => hex(w, 4);
 
-/** Python's bytes.count(sub): non-overlapping occurrences. */
 const countOf = (data: Uint8Array, at: number, len: number): number => {
   let n = 0;
   const first = data[at] as number;
@@ -26,7 +25,6 @@ const countOf = (data: Uint8Array, at: number, len: number): number => {
   return n;
 };
 
-/** The digit palette (OBJ pal0), then the heal/restore palette block read from the ROM's D1/4D80 and D1/4D88. */
 const palText = (rom: Uint8Array, cgram: Uint8Array): string => {
   const out: string[] = [];
   const W = (s: string): void => {
@@ -65,7 +63,6 @@ const palText = (rom: Uint8Array, cgram: Uint8Array): string => {
   return out.join('');
 };
 
-/** The flash palette (OBJ pal4), the rise table and the closing comments. */
 const tailText = (fpal: Uint8Array): string => {
   const out: string[] = [];
   const W = (s: string): void => {

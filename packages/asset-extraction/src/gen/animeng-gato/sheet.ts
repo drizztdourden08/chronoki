@@ -4,7 +4,6 @@ import { hex } from '../c-text';
 const SHEET_N = 0x160;
 const WRAM_SIZE = 0x20000;
 
-/** The 128 KB of WRAM in a gato_inbattle state (a LakeSnes state: WRAM at +69 of the CTLS-unwrapped payload). */
 const wramOf = (state: Uint8Array): Uint8Array => {
   if (state.length === WRAM_SIZE) return state;
   const isCtls = state[0] === 0x43 && state[1] === 0x54 && state[2] === 0x4c && state[3] === 0x53;
@@ -12,7 +11,6 @@ const wramOf = (state: Uint8Array): Uint8Array => {
   return payload.subarray(69, 69 + WRAM_SIZE);
 };
 
-/** tools/gen/animeng_gato.py w_sheet: the $7F8000 sprite sheet fixture as src/data/animeng_sheet_gato.h. */
 const writeSheet = (state: Uint8Array): string => {
   const wram = wramOf(state);
   const sheet = wram.subarray(0x18000, 0x18000 + SHEET_N * 0x20);

@@ -1,5 +1,4 @@
 /* @layer shared-asset-extraction @kind logic */
-/** The stage-2 (attack/hurt/song) block of animeng_gato.py w_e4: constant text, ends with the blank line. */
 const E4_STAGE2: string[] = [
   '// STAGE 2 (attack/hurt/song) -- the E3 assembly INDICES the CD action script selects, pinned this',
   '// session from the ROM + the corpus captures + the retired bakes (all byte-exact). See w_e4()/generator.',

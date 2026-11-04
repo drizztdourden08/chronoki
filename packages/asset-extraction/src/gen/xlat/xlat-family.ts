@@ -2,13 +2,8 @@
 
 const hx = (value: number, digits: number): string => value.toString(16).toUpperCase().padStart(digits, '0');
 
-/** Python's text-mode iteration: lines with their "\n" kept (a final unterminated line too). */
 const linesKept = (text: string): string[] => text.replaceAll('\r\n', '\n').match(/[^\n]*\n|[^\n]+$/g) ?? [];
 
-/**
- * xlat_all.make "family": the lines of the family's own address range out of every trace, each (address, bytes, P)
- * first seen once. Returns the new trace text and the line count.
- */
 const familyTrace = (name: string, traces: string[], range: [number, number]): { text: string; count: number } => {
   const [lo, hi] = range;
   const seen = new Set<string>();

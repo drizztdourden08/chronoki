@@ -6,7 +6,6 @@ type Seq = Map<number, number[]>;
 const at = (seq: Seq, n: number): number[] => seq.get(n) as number[];
 const fmt = (k: number): string => `(${k % 32}, ${Math.floor(k / 32)})`;
 
-/** The dissolve's start: the last frame before the first clear whose content is otherwise unchanged. */
 const findStart = (seq: Seq, frames: number[]): number => {
   for (let i = 1; i < frames.length; i += 1) {
     const a = at(seq, frames[i - 1] as number);
@@ -18,7 +17,6 @@ const findStart = (seq: Seq, frames: number[]): number => {
   throw new Error(`battle_dissolve: no dissolve in peek frames ${frames[0]}..${frames[frames.length - 1]}`);
 };
 
-/** measure(seq): (S, dither[8][8]) from the per-frame sprites. */
 const measure = (seq: Seq): { start: number; dither: number[][] } => {
   const frames = [...seq.keys()].sort((a, b) => a - b);
   const lastFrame = frames[frames.length - 1] as number;
@@ -53,7 +51,6 @@ const measure = (seq: Seq): { start: number; dither: number[][] } => {
   return { start, dither: dither as number[][] };
 };
 
-/** verify(): every frame from the start predicted from (the tiles at S + the table); the mismatch count. */
 const verifyBad = (seq: Seq, start: number, dither: number[][]): { bad: number; tot: number } => {
   const base = at(seq, start);
   let bad = 0;

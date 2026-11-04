@@ -37,7 +37,6 @@ const HEAD = [
   '                 uint16_t strikeOff; uint8_t strikeN; uint8_t strikeTile; } CtGatoAtkFace;\n\n',
 ].join('');
 
-/** The whole battle_gato_atkfaces.h. */
 const atkFacesText = (poses: Pose[], faces: Face[]): string => {
   const out: string[] = [HEAD, 'static const CtGatoAtkCell ctGatoAtkCell[] = {\n'];
   const offs: [number, number][] = [];

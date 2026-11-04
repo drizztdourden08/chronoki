@@ -23,11 +23,9 @@ interface Collected {
   cgram: Uint8Array;
 }
 
-/** The first NTILE 8x8 tiles of a VRAM dump, 32 bytes each. */
 const bakeTiles = (vram: Uint8Array): Uint8Array[] =>
   Array.from({ length: NTILE }, (_, t) => vram.slice(t * 32, t * 32 + 32));
 
-/** battle_anim.py collect(): one peek per distinct (driver, repFrame), the combatant's OAM and tiles per keyframe. */
 const collect = async (ctx: ImportContext, state: Uint8Array): Promise<Collected> => {
   const oracle = peekOracle(ctx);
   const dumps = new Map<string, PeekDump>();

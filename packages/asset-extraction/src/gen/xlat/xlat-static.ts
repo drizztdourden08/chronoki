@@ -4,7 +4,6 @@ import type { Site, Sites, XlatInput } from './xlat-site.type';
 
 const BRANCH = new Set([0x10, 0x30, 0x50, 0x70, 0x90, 0xb0, 0xd0, 0xf0]);
 const ENDS = new Set([0x60, 0x6b, 0x40, 0x6c, 0x7c, 0xdc, 0x80, 0x82, 0x4c, 0x5c, 0x00, 0x02, 0xdb, 0xcb, 0x42]);
-/** At most this many instructions a static chain. */
 const STATIC_RUN = 48;
 const NOT_CODE = new Set([0x00, 0x02, 0xdb, 0xcb, 0x42]);
 
@@ -16,7 +15,6 @@ interface Successors {
   x: number;
 }
 
-/** xlat.py succ(): (targets, falls-through, next address, widths after) of one instruction. */
 const successors = (adr: number, s: Site): Successors => {
   const { op, bytes: b, len } = s;
   const k = adr >> 16;
@@ -54,7 +52,6 @@ interface Work {
   image: string;
 }
 
-/** A byte of the program as the static decoder sees it (undefined where there is no code store). */
 const memByte = (input: XlatInput, image: string, adr: number): number | undefined => {
   const k = adr >> 16;
   const p = adr & 0xffff;
@@ -78,10 +75,6 @@ const decode = (input: XlatInput, image: string, adr: number, m: number, x: numb
   return { op: b0, bytes, len };
 };
 
-/**
- * xlat.py "the static extension": only inside a routine, the untaken side of each executed branch, followed until it
- * rejoins executed code, returns or jumps. Returns how many instructions it added.
- */
 const extendStatically = (input: XlatInput, sites: Sites): number => {
   const work: Work[] = [];
   for (const [adr, s] of [...sites]) {
@@ -94,11 +87,11 @@ const extendStatically = (input: XlatInput, sites: Sites): number => {
   for (let w = work.pop(); w !== undefined; w = work.pop()) {
     if (sites.has(w.adr) || input.stops.has(w.adr) || w.depth >= STATIC_RUN) continue;
     const d = decode(input, w.image, w.adr, w.m, w.x);
-    if (d === null || NOT_CODE.has(d.op)) continue; // not code a stage runs: leave the miss to the runtime
+    if (d === null || NOT_CODE.has(d.op)) continue;
     const site: Site = { ...d, m: w.m, x: w.x, traced: false, smc: false, variants: new Set([d.bytes.join(',')]), image: w.image };
     sites.set(w.adr, site);
     added += 1;
-    if (d.op === 0x28 || d.op === 0xfb) continue; // PLP / XCE: the widths after are not known here
+    if (d.op === 0x28 || d.op === 0xfb) continue;
     const r = successors(w.adr, site);
     if (BRANCH.has(d.op) || d.op === 0x80 || d.op === 0x82) {
       for (const t of r.targets) work.push({ adr: t, m: r.m, x: r.x, depth: w.depth + 1, image: w.image });

@@ -6,12 +6,11 @@ const TRACE_LINE = /^([0-9A-F]{2}):([0-9A-F]{4}) ((?:[0-9A-F?]{2}){4}) .* P=(\S{
 
 const hex6 = (adr: number): string => adr.toString(16).toUpperCase().padStart(6, '0');
 
-/** xlat.py "the executed instructions": every address the traces ran, with its bytes and its M / X widths. */
 const collectExecuted = (input: XlatInput): Sites => {
   const sites: Sites = new Map();
   const { starts, stops } = input;
   for (const { text, image } of input.traces) {
-    let live = starts.size === 0; // --from K:PPPP: the program begins at its first run
+    let live = starts.size === 0;
     for (const ln of text.split(/\r?\n/)) {
       if (ln.startsWith('-- frame')) continue;
       const mo = TRACE_LINE.exec(ln);
@@ -22,7 +21,6 @@ const collectExecuted = (input: XlatInput): Sites => {
         live = true;
       }
       if (stops.has(adr)) {
-        // ...and ends where it hands control back; with --from it then waits for the next entry
         if (starts.size === 0) break;
         live = false;
         continue;
@@ -53,7 +51,7 @@ const collectExecuted = (input: XlatInput): Sites => {
       }
     }
   }
-  for (const st of stops) sites.delete(st); // an exit is the host's, not the program's
+  for (const st of stops) sites.delete(st);
   return sites;
 };
 

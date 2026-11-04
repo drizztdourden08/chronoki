@@ -4,7 +4,6 @@ import { H, W } from './frames';
 const BTN0 = '0:8';
 const BTN1 = '0:6,20:2,0:40';
 
-/** atbsel.py emit: the header up to the patch (the typewriter block follows). */
 const emitMain = (
   pal: number[],
   idx0: number[][],

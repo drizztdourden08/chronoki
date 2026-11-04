@@ -4,7 +4,6 @@ const WIDTH_TBL = 0xc260e6 - 0xc00000;
 const INDENT = 8;
 const TEXT_X = 32;
 
-/** pen_rows: [row][line] -> the pen positions, one entry per drawn frame (2 chars each). */
 const penRows = (rom: Uint8Array): number[][][] => {
   const out: number[][][] = [];
   for (const row of [0, 1]) {
@@ -38,7 +37,6 @@ const penRows = (rom: Uint8Array): number[][][] => {
 
 const pyStr = (v: number | undefined): string => (v === undefined ? 'None' : String(v));
 
-/** emit_typewriter: the pen tables and the empty text box. */
 const emitTypewriter = (
   pens: number[][][],
   empty: (number | undefined)[][],

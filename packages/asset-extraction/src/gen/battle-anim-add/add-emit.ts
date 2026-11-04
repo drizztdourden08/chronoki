@@ -6,7 +6,6 @@ import { dec } from '../shared/py-format';
 import type { AddGroup } from './add-bake';
 import { GATO_V2_F0 } from './add-idle';
 
-/** battle_anim_add.py _emit_group: the OBJ list, keyframe table and tiles of one group. */
 const emitGroup = (arr: string, g: AddGroup, doc: string): string => {
   const up = arr.toUpperCase();
   const o: string[] = [];
@@ -36,7 +35,6 @@ const emitGroup = (arr: string, g: AddGroup, doc: string): string => {
   return o.join('');
 };
 
-/** battle_anim_add.py emit(): the whole src/data/battle_anim_add.h text. */
 const emitAdd = (cidle: AddGroup, gswipe: AddGroup, v2: GatoStep[]): string => {
   const o: string[] = [];
   const W = (s: string): void => {

@@ -3,7 +3,6 @@ import { dec } from '../shared/py-format';
 import { CRONO_REF, GATO_REF } from './anim-consts';
 import type { BobStep, CronoStep, GatoStep } from './anim-tables';
 
-/** The three per-frame trajectory tables of battle_anim.h (Crono attack, GATO idle, Crono idle bob). */
 const emitTraj = (cronoTab: CronoStep[], bobTab: BobStep[], gidleTab: GatoStep[]): string => {
   const o: string[] = [];
   const W = (s: string): void => {

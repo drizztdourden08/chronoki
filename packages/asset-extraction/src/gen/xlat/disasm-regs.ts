@@ -1,6 +1,5 @@
 /* @layer shared-asset-extraction @kind constants */
 
-/** disasm65816.REGS: the SNES hardware register names, by address. */
 const REGS: Record<number, string> = {};
 const names = (from: number, list: string): void => {
   list.split(' ').forEach((name, i) => {
@@ -20,7 +19,6 @@ const DMA_NAMES: Record<number, string> = {
   0: 'DMAP', 1: 'BBAD', 2: 'A1TL', 3: 'A1TH', 4: 'A1B', 5: 'DASL', 6: 'DASH', 7: 'DASB', 8: 'A2AL', 9: 'A2AH', 10: 'NTRL',
 };
 
-/** disasm65816.regname: the name of a register address, or null. */
 const regName = (address: number): string | null => {
   const eff = address & 0xffff;
   const plain = REGS[eff];

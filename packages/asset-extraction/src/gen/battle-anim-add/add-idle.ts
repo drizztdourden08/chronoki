@@ -8,18 +8,12 @@ import type { GatoStep } from '../battle-anim/anim-tables';
 
 const GATO_V2_F0 = 67;
 const GATO_V2_F1 = 186;
-/** GATO's two action slots emptied (gato_noatk = the 400-frame idle state + this). */
 const NOATK_POKE = 'AFAC=FF,AFB1=FF';
 const SAVED_STATE = 'gato_idle400.state';
 
-/**
- * The oracle driver extras this one generator needs beyond PeekOracle: a peek whose env PEEK_SAVE makes it hand back
- * the final state (PeekDump.state), and a monitor that takes env (PEEK_POKE).
- */
 type SavingDump = PeekDump & { state?: Uint8Array };
 type PokeMonitorRequest = MonitorRequest & { env?: Record<string, string> };
 
-/** make_gato_noatk: the hold run to frame 400, saved as a state. */
 const makeIdleState = async (ctx: ImportContext, state: Uint8Array): Promise<Uint8Array> => {
   const dump: SavingDump = await peekOracle(ctx).peek({
     state,
@@ -30,7 +24,6 @@ const makeIdleState = async (ctx: ImportContext, state: Uint8Array): Promise<Uin
   return dump.state;
 };
 
-/** gato_idle_v2: the steady (no-attack) idle: body bob +-1px, arm A-dominant, footDY 0. */
 const gatoIdleV2 = async (ctx: ImportContext, state: Uint8Array): Promise<GatoStep[]> => {
   const idle = await makeIdleState(ctx, state);
   const req: PokeMonitorRequest = {

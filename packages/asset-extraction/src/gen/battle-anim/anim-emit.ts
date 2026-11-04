@@ -9,7 +9,6 @@ import type { BobStep, CronoStep, GatoStep } from './anim-tables';
 
 const hexBytes = (b: Uint8Array): string => Array.from(b, (x) => `0x${hex(x, 2)}`).join(',');
 
-/** battle_anim.py emit(): the whole src/data/battle_anim.h text. */
 const emitBattleAnim = (c: Collected, cronoTab: CronoStep[], bobTab: BobStep[], gidleTab: GatoStep[]): string => {
   const o: string[] = [];
   const W = (s: string): void => {

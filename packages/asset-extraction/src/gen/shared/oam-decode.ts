@@ -1,5 +1,4 @@
 /* @layer shared-asset-extraction @kind logic */
-/** One decoded OAM entry (ctlib/oam.py decode). */
 interface Sprite {
   idx: number;
   x: number;
@@ -16,7 +15,6 @@ interface Sprite {
 
 const OAM_SIZE = 544;
 
-/** ctlib/oam.load: the 544-byte blob (512 low table + 32 high table) from a ct.exe --peek .oam sidecar (1056 or 1568 bytes) or a 544-byte blob. */
 const oamBlob = (sidecar: Uint8Array): Uint8Array => {
   if (sidecar.length === OAM_SIZE) return sidecar;
   if (sidecar.length !== 1056 && sidecar.length !== 1568) {
@@ -28,11 +26,9 @@ const oamBlob = (sidecar: Uint8Array): Uint8Array => {
   return out;
 };
 
-/** ctlib/oam.load_cgram: the 512-byte CGRAM of a 1568-byte sidecar, else null. */
 const oamCgram = (sidecar: Uint8Array): Uint8Array | null =>
   sidecar.length === 1568 ? sidecar.slice(1056, 1568) : null;
 
-/** ctlib/oam.decode: 128 sprites from the 544-byte blob. */
 const decodeOam = (data: Uint8Array): Sprite[] => {
   if (data.length < OAM_SIZE) throw new Error(`OAM blob must be ${OAM_SIZE} bytes, got ${data.length}`);
   const sprites: Sprite[] = [];

@@ -17,7 +17,6 @@ interface Cluster {
   cells: Cell[];
 }
 
-/** Measured leap-arc trajectory (dx,dy vs home 104,35), OAM-shadow monitor forest HOLD f85-147. */
 const TRAJ: [number, number][] = [
   [0, -15], [2, -17], [4, -21], [6, -22], [8, -24], [10, -26], [12, -25], [14, -25], [16, -25], [18, -24],
   [20, -22], [22, -20], [24, -17], [26, -13], [28, -11], [27, 4], [29, 4], [24, 10], [20, 5], [16, 3],
@@ -38,7 +37,6 @@ const palWord = (cg: Uint8Array, c: number): number => {
   return (cg[i * 2] as number) | ((cg[i * 2 + 1] as number) << 8);
 };
 
-/** The whole battle_hetake.h. */
 const hetakeText = (
   idleV: Uint8Array,
   idleCg: Uint8Array,

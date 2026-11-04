@@ -8,7 +8,6 @@ type CronoStep = [F: number, dx: number | null, dy: number | null, pose: number]
 type GatoStep = [F: number, dx: number, dy: number, arm: number, footDY: number];
 type BobStep = [F: number, dx: number, dy: number, state: number];
 
-/** crono_attack_table: (F, dx, dy, poseId) over the attack window, poseId keyed to the Crono KEYS (P0 idle = -1). */
 const cronoAttackTable = (mon: Mon): CronoStep[] => {
   const keysig = new Map<string | null, number>();
   KEYS.filter((key) => key.name === 'Crono').forEach((key, pid) => {
@@ -29,7 +28,6 @@ const cronoAttackTable = (mon: Mon): CronoStep[] => {
   return rows;
 };
 
-/** gato_idle_table: arm 0=rest 1=swap (tile 0x68 dy > 25), footDY = 0. */
 const gatoIdleTable = (mon: Mon): GatoStep[] => {
   const armState = (sprites: Sprite[]): number => {
     const c = sprites.filter((s) => s.tile === 0x68 && s.pal === 1);
@@ -51,7 +49,6 @@ const gatoIdleTable = (mon: Mon): GatoStep[] => {
   return rows;
 };
 
-/** crono_bob_table: the active-idle bob, state 0 rest / 1 down / 2 side. */
 const cronoBobTable = (mon: Mon): BobStep[] => {
   const rows: BobStep[] = [];
   for (let F = 400; F < 505; F += 1) {

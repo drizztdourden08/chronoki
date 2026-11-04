@@ -2,10 +2,8 @@
 const W = 256;
 const H = 224;
 
-/** A colour packed as (R<<16)|(G<<8)|B. */
 type Frame = number[][];
 
-/** load_fb: the true 256x224 grid of an oracle fb (512x480, 2x doubled, [pad,B,G,R] per px). */
 const loadFb = (d: Uint8Array): Frame => {
   const px: Frame = [];
   for (let y = 0; y < H; y += 1) {
@@ -19,7 +17,6 @@ const loadFb = (d: Uint8Array): Frame => {
   return px;
 };
 
-/** build_palette: the colours in first-seen order, and colour -> index. */
 const buildPalette = (frames: Frame[]): { pal: number[]; idxmap: Map<number, number> } => {
   const pal: number[] = [];
   const idxmap = new Map<number, number>();
@@ -39,7 +36,6 @@ const buildPalette = (frames: Frame[]): { pal: number[]; idxmap: Map<number, num
 const toIdx = (fr: Frame, idxmap: Map<number, number>): number[][] =>
   fr.map((row) => row.map((c) => idxmap.get(c) as number));
 
-/** diff_bbox: [x0, x1, y0, y1] of the differing pixels, or null. */
 const diffBbox = (a: number[][], b: number[][]): [number, number, number, number] | null => {
   let x0 = Infinity;
   let x1 = -Infinity;

@@ -2,14 +2,12 @@
 import { regName } from './disasm-regs';
 import { FIXED_LENGTH, OPCODE_ROWS } from './disasm-table';
 
-/** disasm65816.TABLE: opcode -> [mnemonic, addressing mode]. */
 const TABLE: ReadonlyArray<readonly [string, string]> = OPCODE_ROWS.split(' ').map((row) => {
   const [mnemonic, mode] = row.split(':');
   return [mnemonic as string, mode as string] as const;
 });
 if (TABLE.length !== 256) throw new Error(`disasm65816: ${TABLE.length} opcodes`);
 
-/** disasm65816.oplen: the operand length of a mode under the M / X widths. */
 const opLen = (mode: string, m: number, x: number): number => {
   if (mode === 'immM') return m ? 1 : 2;
   if (mode === 'immX') return x ? 1 : 2;
@@ -25,7 +23,6 @@ interface Operand {
 
 const plain = (o: string): Operand => ({ o, t: null });
 
-/** The operand text of one mode (disasm65816.fmt's if-chain); `rel` and `rell` also return the branch target. */
 const operandText = (mode: string, k: number, pc: number, ob: number[], val: number): Operand => {
   const h2 = hex(val, 2);
   const h4 = hex(val, 4);
@@ -66,7 +63,6 @@ const operandText = (mode: string, k: number, pc: number, ob: number[], val: num
   }
 };
 
-/** disasm65816.fmt (dp = 0): [text, target of a relative branch or null, hardware register name or null]. */
 const fmt = (mnem: string, mode: string, k: number, pc: number, ob: number[]): [string, number | null, string | null] => {
   let val = 0;
   ob.forEach((by, i) => {

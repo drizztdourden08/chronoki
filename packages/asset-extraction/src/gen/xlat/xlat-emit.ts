@@ -5,14 +5,12 @@ import { successors } from './xlat-static';
 
 const hx = (value: number, digits: number): string => value.toString(16).toUpperCase().padStart(digits, '0');
 
-/** xlat.py ram_code(): an address in WRAM, whose bytes the generated code re-checks at run time. */
 const ramCode = (adr: number): boolean => {
   const k = adr >> 16;
   const p = adr & 0xffff;
   return k === 0x7e || k === 0x7f || ((k < 0x40 || (k >= 0x80 && k < 0xc0)) && p < 0x2000);
 };
 
-/** The C comment of one instruction. */
 const comment = (adr: number, s: Site): string => {
   const [mnem, mode] = TABLE[s.op] as readonly [string, string];
   const [plain, tgt, reg] = fmt(mnem, mode, adr >> 16, adr & 0xffff, s.bytes.slice(1));
@@ -20,7 +18,6 @@ const comment = (adr: number, s: Site): string => {
   return text + (reg ? `  ; ${reg}` : '') + (s.traced ? '' : '  [static]') + (s.smc ? '  [SMC operand]' : '');
 };
 
-/** One `L_xxxxxx:` line. */
 const siteLine = (adr: number, s: Site, sites: Sites, stops: Set<number>): string => {
   const pad = [...s.bytes];
   while (pad.length < 4) pad.push(0);
@@ -40,7 +37,6 @@ const siteLine = (adr: number, s: Site, sites: Sites, stops: Set<number>): strin
   return `L_${hx(adr, 6)}: X_BOUNDARY(0x${hx(adr, 6)}); ${ex}${flow}  // ${comment(adr, s)}`;
 };
 
-/** xlat.py "emit": the translated program as C source (LF line endings, a final newline). */
 const emitProgram = (name: string, sites: Sites, stops: Set<number>, staticCount: number, tracedCount: number): string => {
   const smcCount = [...sites.values()].filter((s) => s.smc).length;
   const order = [...sites.keys()].sort((a, b) => a - b);

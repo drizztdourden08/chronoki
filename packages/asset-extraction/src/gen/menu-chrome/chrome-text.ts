@@ -103,7 +103,6 @@ interface ChromeCaps {
   exc: number[];
 }
 
-/** The whole header text (menu_chrome.py's `text`), with "\n" line ends. */
 const chromeText = (c: ChromeCaps): string =>
   HEAD +
   paletteText(c.cg0) +

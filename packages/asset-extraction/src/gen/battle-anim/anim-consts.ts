@@ -1,9 +1,6 @@
 /* @layer shared-asset-extraction @kind logic */
-/** 8x8 tiles 0x00..0x9F cover Crono(0x08..)/Marle(0x20..)/GATO(0x68..0x9F). */
 const NTILE = 0xa0;
-/** The pulsing white active-PC selection bracket: its own asset (battle_bracket.h), never a combatant. */
 const BRACKET_TILE = 0x006;
-/** The recipe both battle_anim and battle_anim_add start from. */
 const ANIM_RECIPE = 'battle_gato_press_action';
 
 const CRONO_REF: [number, number] = [109, 108];
@@ -29,7 +26,6 @@ const k = (driver: 'mash' | 'hold', pal: number, name: string, pose: string, r: 
   endF: e,
 });
 
-/** (driver, pal, name, pose, repFrame, startF, endF); repFrame = mid-dwell. */
 const KEYS: Key[] = [
   k('mash', 5, 'Crono', 'A1_approach', 450, 447, 452),
   k('mash', 5, 'Crono', 'A2_gather', 455, 453, 457),
