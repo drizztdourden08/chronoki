@@ -19,7 +19,7 @@ const PartyPicker = ({ value, onChange, frozen = false, spriteUrlOf }: PartyPick
         ))}
       </Box>
       <Box className="party-picker__bar">
-        <Button size="sm" disabled={frozen || value.length === 0} onClick={clear}>{PARTY_PICKER_LABELS.clear}</Button>
+        <Button size="sm" disabled={frozen || value.length <= 1} onClick={clear}>{PARTY_PICKER_LABELS.clear}</Button>
         <Text className="party-picker__count">{`Picked ${value.length} of ${CT_CHARACTERS.length}`}</Text>
       </Box>
       <PartySlotList value={value} />

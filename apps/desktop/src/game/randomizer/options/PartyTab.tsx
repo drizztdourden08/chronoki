@@ -8,6 +8,8 @@ import { partyOfValue } from './party-of-value';
 const PartyTab = ({ values, overrides, onChange, frozen, romFile }: OptionTabProps) => {
   const spriteUrlOf = usePartySprites(romFile);
   const set = (key: string, value: unknown) => onChange?.({ ...overrides, [key]: value });
+  const setMode = (next: string) => onChange?.({ ...overrides, partyMode: next, ...(next === 'custom' && partyOfValue(values.startingParty).length === 0 ? { startingParty: 'crono' } : {}) });
+  const picked = partyOfValue(values.startingParty);
   const mode = values.partyMode === 'custom' ? 'custom' : 'random';
   return (
     <Box>
@@ -16,7 +18,7 @@ const PartyTab = ({ values, overrides, onChange, frozen, romFile }: OptionTabPro
         value={mode}
         options={PARTY_MODE_OPTIONS}
         disabled={frozen}
-        onChange={(next) => set('partyMode', next)}
+        onChange={setMode}
       />
       {mode === 'random' ? (
         <SegmentedControl
@@ -29,10 +31,10 @@ const PartyTab = ({ values, overrides, onChange, frozen, romFile }: OptionTabPro
         />
       ) : (
         <PartyPicker
-          value={partyOfValue(values.startingParty)}
+          value={picked}
           frozen={frozen}
           spriteUrlOf={spriteUrlOf}
-          onChange={(next) => set('startingParty', next.join(','))}
+          onChange={(next) => next.length > 0 && set('startingParty', next.join(','))}
         />
       )}
     </Box>
