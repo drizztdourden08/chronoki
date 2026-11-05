@@ -1,29 +1,18 @@
 /* @layer renderer-app @kind types */
 import type { BugReportSectionProps } from '@drizztdourden08/brock-react';
-import type { CaptureSummary } from '@app/bug-report/debug-capture/debug-capture.type';
+import type { DebugCaptureSessionSummary } from '@app/debug-report';
 
 type BugReportRecordingsProps = BugReportSectionProps;
 
-interface RecordingsPickerProps {
-  profileId: string;
-  setExtras: BugReportSectionProps['setExtras'];
-  disabled: boolean;
-}
-
-interface IncludeButtonProps {
-  included: boolean;
-  name: string;
-  disabled: boolean;
-  tabIndex?: number;
-  onToggle: () => void;
-}
-
 interface RecordingsModel {
-  sessions: CaptureSummary[];
+  sessions: DebugCaptureSessionSummary[];
   loading: boolean;
   selected: ReadonlySet<string>;
+  showSent: boolean;
+  error: string | null;
   toggleSession: (sessionKey: string) => void;
+  toggleShowSent: (showSent: boolean) => void;
   deleteSession: (sessionKey: string) => void;
 }
 
-export type { BugReportRecordingsProps, IncludeButtonProps, RecordingsModel, RecordingsPickerProps };
+export type { BugReportRecordingsProps, RecordingsModel };

@@ -1,17 +1,16 @@
 /* @layer renderer-lib @kind logic */
 import { activeGameHolder } from '@app/game/lifecycle';
 import { captureAllowed } from './capture-allowed.state';
-import { captureRun } from './debug-capture.state';
-import { startDebugCapture } from './start-debug-capture';
-import { stopDebugCapture } from './stop-debug-capture';
+import { useDebugCaptureStore } from './useDebugCaptureStore';
 
-const toggleDebugCapture = async (): Promise<void> => {
-  if (captureRun.current) {
-    await stopDebugCapture();
+const toggleDebugCapture = (): void => {
+  const store = useDebugCaptureStore.getState();
+  if (store.isCapturing) {
+    store.stop();
     return;
   }
   const profileId = activeGameHolder.current?.profileId;
-  if (profileId && captureAllowed.current) startDebugCapture(profileId);
+  if (profileId && captureAllowed.current) store.start(profileId);
 };
 
 export { toggleDebugCapture };

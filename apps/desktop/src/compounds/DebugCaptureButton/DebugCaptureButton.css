@@ -1,0 +1,49 @@
+/* @layer renderer-components @kind style */
+
+.debug-capture-glow {
+  position: relative;
+  width: var(--size-48);
+  height: var(--size-48);
+  border-radius: 50%;
+  background: transparent;
+}
+
+.debug-capture-glow__layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  background: inherit;
+  transform: translate(-50%, -50%);
+}
+
+.debug-capture-glow .debug-capture-button.debug-round-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.debug-capture-glow--active .debug-capture-glow__layer--1 {
+  filter: blur(calc(7 * var(--size-1)));
+}
+
+.debug-capture-glow--active .debug-capture-glow__layer--2 {
+  filter: blur(var(--size-14));
+}
+
+.debug-capture-glow--active {
+  background: linear-gradient(var(--c-secondary), var(--c-primary-bright), var(--c-secondary-bright));
+  animation: debug-capture-glow-rotate 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes debug-capture-glow-rotate {
+  0% { filter: hue-rotate(-20deg); }
+  100% { filter: hue-rotate(20deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .debug-capture-glow--active { animation: none; }
+}

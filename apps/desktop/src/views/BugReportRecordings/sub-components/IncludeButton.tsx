@@ -1,6 +1,6 @@
 /* @layer renderer-app @kind component */
 import { Icon, IconButton } from '@drizztdourden08/tessera/primitives';
-import type { IncludeButtonProps } from '../BugReportRecordings.type';
+import type { IncludeButtonProps } from './RecordingsPicker.type';
 
 const IncludeButton = (props: IncludeButtonProps) => {
   const { included, name, disabled, tabIndex, onToggle } = props;
@@ -9,7 +9,7 @@ const IncludeButton = (props: IncludeButtonProps) => {
       size="sm"
       variant="ghost"
       active={included}
-      label={`Include the debug capture from ${name}`}
+      label={`Include the recording from ${name}`}
       aria-pressed={included}
       disabled={disabled}
       tabIndex={tabIndex}

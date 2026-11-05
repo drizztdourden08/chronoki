@@ -20,7 +20,7 @@ export default defineBrockConfig({
     window: { titleBar: { mobile: false } },
     artifactPrefix: 'chronoki-',
     dataDirs: ['assets', 'roms', 'msu', 'profiles', 'config', 'input', 'sprites'],
-    schemes: [{ scheme: 'app-sprite', dir: 'sprites' }],
+    schemes: [{ scheme: 'app-sprite', dir: 'sprites' }, { scheme: 'app-debug-capture', stream: true }],
     icons: { brand: 'chronoki', wordmark: { src: './logos/wordmark.svg', rendering: 'pixelated' } },
     profilesRoute: 'data/profiles',
   },

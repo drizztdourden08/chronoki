@@ -10,6 +10,9 @@ const APP_CHANNELS = defineChannels({
   steamDetectStatus: invoke<AppInvoke['steam:detectStatus']>()('steam:detectStatus'),
   steamPick: invoke<AppInvoke['steam:pick']>()('steam:pick'),
   steamReadRange: invoke<AppInvoke['steam:readRange']>()('steam:readRange'),
+  finalizeDebugCaptureSession: invoke<AppInvoke['debug-capture:finalizeSession']>()('debug-capture:finalizeSession'),
+  listDebugCaptureSessions: invoke<AppInvoke['debug-capture:listSessions']>()('debug-capture:listSessions'),
+  deleteDebugCaptureSession: invoke<AppInvoke['debug-capture:deleteSession']>()('debug-capture:deleteSession'),
 });
 
 const APP_INVOKE_MAP = APP_CHANNELS.maps.invoke;
