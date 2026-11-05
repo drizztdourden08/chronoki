@@ -35,6 +35,7 @@ type CtOptionKey =
   | 'unlockedMagic' | 'lockedCharacters' | 'addCyrusGraveSpot' | 'addOzzieSpot' | 'vanillaRoboRibbon'
   | 'partyMode' | 'partySize' | 'startingParty' | 'epochFail' | 'shopPrices' | 'tabsanity' | 'techOrder'
   | 'chronosanity' | 'mysterySeed' | 'bossRando' | 'gearRando' | 'healingRando' | 'techDamageRando' | 'characterRando' | 'duplicateCharacters'
+  | 'duplicateCap' | 'duplicateAllSlots'
   | 'elementRando' | 'bucketList' | 'objectiveCount' | 'objectivesNeeded'
   | 'powerTabMin' | 'powerTabMax' | 'magicTabMin' | 'magicTabMax' | 'speedTabMin' | 'speedTabMax';
 

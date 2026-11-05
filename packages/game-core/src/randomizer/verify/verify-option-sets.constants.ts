@@ -31,7 +31,11 @@ const bucketSets: VerifyOptionSet[] = CT_OPTION_CATALOG.some((option) => option.
 
 const duplicateSets: VerifyOptionSet[] = ['characterRando', 'duplicateCharacters']
   .every((key) => CT_OPTION_CATALOG.some((option) => option.key === key && option.implemented))
-  ? [{ name: 'cross:characterRando+duplicateCharacters', options: { characterRando: true, duplicateCharacters: true } }]
+  ? [{ name: 'cross:characterRando+duplicateCharacters', options: { characterRando: true, duplicateCharacters: true } },
+    {
+      name: 'cross:characterRando+duplicateCharacters+cap2+allSlots',
+      options: { characterRando: true, duplicateCharacters: true, duplicateCap: '2', duplicateAllSlots: true },
+    }]
   : [];
 
 const VERIFY_OPTION_SETS: readonly VerifyOptionSet[] = [

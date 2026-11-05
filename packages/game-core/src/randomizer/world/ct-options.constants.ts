@@ -37,6 +37,15 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
     key: 'duplicateCharacters', label: 'Duplicate characters', jotFlag: 'dupchars', default: false, section: 'Randomization', implemented: true,
     hint: 'Only with character randomization: a recruit spot can hand out a kind you already have.',
   },
+  {
+    key: 'duplicateCap', label: 'Copies per character', jotFlag: '-', default: 'none', choices: ['none', '2', '3'],
+    section: 'Randomization', implemented: true, hint: 'Only with duplicate characters: the most copies of one character in the party of 7.',
+    choiceLabels: { none: 'No limit', '2': 'At most 2', '3': 'At most 3' },
+  },
+  {
+    key: 'duplicateAllSlots', label: 'Duplicates on Crono and Magus', jotFlag: '-', default: false, section: 'Randomization', implemented: true,
+    hint: 'Only with duplicate characters: Crono and Magus can also turn into another character.',
+  },
   { key: 'disableGlitches', label: 'Disable glitches', jotFlag: 'g', default: false, section: 'Rules', implemented: true, mystery: 0.25 },
   { key: 'earlyPendantCharge', label: 'Early pendant charge', jotFlag: 'p', default: false, section: 'Rules', implemented: true, mystery: 0.3 },
   { key: 'unlockedMagic', label: 'Unlocked magic', jotFlag: 'm', default: false, section: 'Rules', implemented: true, mystery: 0.3 },
