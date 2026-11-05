@@ -30,7 +30,7 @@ const readStems = (src: string): Set<string> => {
 const writtenKeys = (): string[] => {
   const keys: string[] = [];
   let section = '';
-  for (const line of buildCoreConfigIni().split('\n')) {
+  for (const line of buildCoreConfigIni({ sightscope: true, visibleTechs: true }).split('\n')) {
     const header = /^\[(\w+)\]$/.exec(line);
     if (header) section = header[1] ?? '';
     else if (line.includes('=')) keys.push(`${section}.${line.slice(0, line.indexOf('='))}`);
