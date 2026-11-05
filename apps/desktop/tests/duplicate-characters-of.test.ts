@@ -10,6 +10,7 @@ const profileOf = (options: ProfileOptions): Profile => ({
   name: 'profile',
   created: 0,
   lastPlayed: 0,
+  romFile: 'ct.sfc',
   randomizer: { mode: 'local', seed: 'seed', options },
 });
 
