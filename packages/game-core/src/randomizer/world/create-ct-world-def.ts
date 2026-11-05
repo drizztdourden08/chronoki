@@ -17,6 +17,7 @@ import { poolFillerOf } from './pool-filler-of';
 import { ruleMapsOfRegions } from './rule-maps-of-regions';
 import { sealedRulesOf } from './sealed-rules-of';
 import { keyItemsOf } from './epoch-fail/key-items-of';
+import { pinRoboRibbon } from './pin-robo-ribbon';
 import { treasureOnly } from './treasure-only';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
@@ -27,9 +28,11 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const specs = applyStartPartyToRegions(
     epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, input.startParty ?? LEGACY_PARTY,
   );
-  const { regions, treasure } = joinCtChecks(input, specs, mode.excludeDroppedTreasure === true);
+  const vanillaRoboRibbon = options.vanillaRoboRibbon === true;
+  const joinInput = vanillaRoboRibbon ? { ...input, checks: pinRoboRibbon(input.checks) } : input;
+  const { regions, treasure } = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true);
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
-  const keyItems = keyItemsOf(mode, epochFail);
+  const keyItems = keyItemsOf(mode, epochFail, vanillaRoboRibbon);
   const rest = treasure.flatMap((location): CtItem[] =>
     (location.vanillaItem === undefined ? [] : [location.vanillaItem]));
   return {

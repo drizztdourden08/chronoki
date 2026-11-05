@@ -2,7 +2,9 @@
 import type { CtKeyItem } from '../ct-world-keys.type';
 import type { CtModeDef } from '../modes/ct-mode-def.type';
 
-const keyItemsOf = (mode: CtModeDef, epochFail: boolean): readonly CtKeyItem[] =>
-  (epochFail ? [...mode.keyItems, 'jets-of-time'] : mode.keyItems);
+const keyItemsOf = (mode: CtModeDef, epochFail: boolean, vanillaRoboRibbon = false): readonly CtKeyItem[] => {
+  const base = vanillaRoboRibbon ? mode.keyItems.filter((item) => item !== 'robo-ribbon') : mode.keyItems;
+  return epochFail ? [...base, 'jets-of-time'] : base;
+};
 
 export { keyItemsOf };
