@@ -12,8 +12,9 @@ import { buildStartBlock } from './build-start-block';
 import { partyPokes } from './party-pokes';
 import { planStartState } from './plan-start-state';
 import { LEGACY_PARTY } from './legacy-party.constants';
-import { INTRO_JUMP } from './start-block.constants';
-import { CT_RECRUIT_FLAGS } from './recruit-flags.constants';
+import { INTRO_JUMP, START_BLOCK_MAX_BYTES } from './start-block.constants';
+import { coalescePokes } from './coalesce-pokes';
+import { StartBlockTooLongError } from './start-block-too-long.error';
 import { STANDARD_START } from './standard-start.constants';
 
 const { POKE, RETURN, buildScript, entryBytes, packOf } = spliceFixture;
@@ -34,7 +35,7 @@ describe('planStartState', () => {
     const s = STANDARD_START;
     const expected = [
       ...join(s.flags.map((f) => encodeSetBits(f.at, f.bits))),
-      ...join([...s.pokes, ...partyPokes([0, 1])].map((p) => encodePoke(p.at, p.value, p.width))),
+      ...join(coalescePokes([...s.pokes, ...partyPokes([0, 1])]).map((p) => encodePoke(p.at, p.value, p.width))),
       ...join((s.clear ?? []).map((f) => encodeClearBits(f.at, f.bits))),
     ];
     expect(block.slice(0, -5)).toEqual(expected);
@@ -67,50 +68,56 @@ describe('planStartState', () => {
 const hasBytes = (block: number[], needle: number[]): boolean =>
   block.some((_, i) => needle.every((byte, j) => block[i + j] === byte));
 
-const rosterOf = (party: CtStartParty): number[] => {
-  const block = [...buildStartBlock(STANDARD_START, party, INTRO_JUMP)];
-  return partyPokes(partyIdsOf(party)).map((p) => (hasBytes(block, join([encodePoke(p.at, p.value, p.width)])) ? p.value : -1));
-};
+const ALL: CtStartParty = ['crono', 'marle', 'lucca', 'robo', 'frog', 'ayla', 'magus'];
+const lengthOf = (party: CtStartParty): number => buildStartBlock(STANDARD_START, party, INTRO_JUMP).length;
+const OLD_BLOCK_BYTES = 83;
 
 describe('start block party', () => {
-  it('pokes 9 roster slots in order and the joined mask', { tags: ['critical'] }, () => {
-    const pokes = partyPokes([4, 5, 3, 1]);
-    expect(pokes.slice(0, 9).map((p) => [p.at, p.value])).toEqual([
-      [0x7e2980, 4], [0x7e2981, 5], [0x7e2982, 3], [0x7e2983, 1], [0x7e2984, 0x80], [0x7e2985, 0x80], [0x7e2986, 0x80], [0x7e2987, 0x80], [0x7e2988, 0x80],
-    ]);
-    expect(pokes[9]).toEqual({ at: 0x7e29af, value: 0x5c, width: 1 });
+  it('pokes only roster slots that differ from the boot state, plus the mask', { tags: ['critical'] }, () => {
+    expect(partyPokes([0, 1]).map((p) => [p.at, p.value])).toEqual([[0x7e2981, 1], [0x7e29af, 0xc0]]);
+    expect(partyPokes([0])).toEqual([]);
+    expect(partyPokes([4, 5, 3]).map((p) => [p.at, p.value])).toEqual([[0x7e2980, 4], [0x7e2981, 5], [0x7e2982, 3], [0x7e29af, 0x0c]]);
   });
 
-  it('puts every roster poke into the decoded block', { tags: ['critical'] }, () => {
-    const party: CtStartParty = ['frog', 'ayla', 'robo', 'lucca'];
-    expect(rosterOf(party)).toEqual(partyPokes(partyIdsOf(party)).map((p) => p.value));
-  });
-
-  it('writes no recruit done flags while they are off', { tags: ['critical'] }, () => {
-    const block = join([buildStartBlock(STANDARD_START, ['marle', 'frog', 'ayla'], INTRO_JUMP)]);
-    const flagged = Object.values(CT_RECRUIT_FLAGS).flat().filter((f) => hasBytes(block, join([encodeSetBits(f.at, f.bits)])));
-    expect(flagged).toEqual([]);
-  });
-
-  it('legacy default gives roster Crono, Marle, then empty slots and mask 0xC0', { tags: ['critical'] }, () => {
-    const pokes = partyPokes(partyIdsOf(LEGACY_PARTY));
-    expect(pokes.slice(0, 9).map((p) => p.value)).toEqual([0, 1, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80]);
-    expect(pokes[9]?.value).toBe(0xc0);
-  });
-
-  it('Crono absent: slot 0 is not Crono and the mask bit 0x80 is clear', { tags: ['critical'] }, () => {
+  it('Crono absent: slot 0 is poked and the mask bit 0x80 is clear', { tags: ['critical'] }, () => {
     const pokes = partyPokes(partyIdsOf(['marle']));
-    expect(pokes[0]?.value).not.toBe(0);
-    expect((pokes[9]?.value ?? 0) & 0x80).toBe(0);
-    expect(pokes[9]?.value).toBe(0x40);
+    expect(pokes[0]).toEqual({ at: 0x7e2980, value: 1, width: 1 });
+    expect(pokes[pokes.length - 1]).toEqual({ at: 0x7e29af, value: 0x40, width: 1 });
   });
 
-  it('7 starters give 3 active and 4 reserve', { tags: ['critical'] }, () => {
-    const all: CtStartParty = ['crono', 'marle', 'lucca', 'robo', 'frog', 'ayla', 'magus'];
-    const pokes = partyPokes(partyIdsOf(all));
-    expect(pokes.slice(0, 3).map((p) => p.value)).toEqual([0, 1, 2]);
-    expect(pokes.slice(3, 7).map((p) => p.value)).toEqual([3, 4, 5, 6]);
-    expect(pokes.slice(7, 9).map((p) => p.value)).toEqual([0x80, 0x80]);
-    expect(pokes[9]?.value).toBe(0xfe);
+  it('stores consecutive changed bytes as words', { tags: ['critical'] }, () => {
+    expect(coalescePokes([{ at: 10, value: 1, width: 1 }, { at: 11, value: 2, width: 1 }, { at: 12, value: 3, width: 1 }])).toEqual([
+      { at: 10, value: 0x0201, width: 2 }, { at: 12, value: 3, width: 1 },
+    ]);
+  });
+
+  it('writes no recruit done flags in any block', { tags: ['critical'] }, () => {
+    const withParty = join([buildStartBlock(STANDARD_START, ALL, INTRO_JUMP)]);
+    const flags = [[0x7f00a1, 0x04], [0x7f00ff, 0x10], [0x7f01df, 0x04], [0x7f0160, 0x07]];
+    expect(flags.filter(([at, bits]) => hasBytes(withParty, join([encodeSetBits(at ?? 0, bits ?? 0)])))).toEqual([]);
+  });
+
+  it('legacy block stays within the budget and grows by the two party pokes only', { tags: ['critical'] }, () => {
+    const length = lengthOf(LEGACY_PARTY);
+    expect(length).toBeLessThanOrEqual(START_BLOCK_MAX_BYTES);
+    expect(length).toBeLessThanOrEqual(OLD_BLOCK_BYTES + 10);
+  });
+
+  it('7 characters with Crono first fit the budget', { tags: ['critical'] }, () => {
+    expect(lengthOf(ALL)).toBeLessThanOrEqual(START_BLOCK_MAX_BYTES);
+    expect(() => planStartState(STANDARD_START, ALL)).not.toThrow();
+  });
+
+  it('every Crono-first subset fits, in canonical order', { tags: ['critical'] }, () => {
+    for (let mask = 1; mask < 128; mask += 1) {
+      const party = ALL.filter((_id, bit) => mask & (1 << bit));
+      expect(() => planStartState(STANDARD_START, party)).not.toThrow();
+    }
+  });
+
+  it('refuses a 7-character party with Crono in a later slot instead of writing a block the game refuses', { tags: ['critical'] }, () => {
+    const party: CtStartParty = ['marle', 'crono', 'lucca', 'robo', 'frog', 'ayla', 'magus'];
+    expect(lengthOf(party)).toBeGreaterThan(START_BLOCK_MAX_BYTES);
+    expect(() => planStartState(STANDARD_START, party)).toThrow(StartBlockTooLongError);
   });
 });
