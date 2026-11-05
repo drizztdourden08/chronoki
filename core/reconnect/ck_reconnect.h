@@ -55,7 +55,7 @@ int  ck_edge_env_valid(void);
 enum { CK_OP_NONE = 0, CK_OP_SAVE = 1, CK_OP_LOAD = 2 };
 typedef struct { const char* name; uint32_t offset; uint32_t size; } CkHostField;   /* one CtHostState field (ck_host_state.h) */
 typedef struct { const char* name; void* ptr; uint32_t size; } CkPtrField;   /* one WRLD record: a live object by name and size */
-int  ck_state_top(int mode, void* wram, const uint8_t* sram);   /* once per pass; mode 0 none, 1 field scene, 2 overworld, 3 menu over a field, 4 menu over the overworld; returns a CK_OP_* */
+int  ck_state_top(int mode, void* wram, const uint8_t* sram);   /* once per pass; mode 0 none, 1 field scene, 2 overworld, 3 menu over a field, 4 menu over the overworld, 5 a fight; returns a CK_OP_* */
 void ck_state_save_done(int ok, int withScene, const void* host, const CkHostField* table, int count);   /* after a CK_OP_SAVE */
 const uint8_t* ck_state_load_core(void);   /* the staged state's 128 KB WRAM image (CORE), NULL if it has none */
 int  ck_state_load_host(void* host, const CkHostField* table, int count);   /* overlays the HOST section on host; 0 if there is none */
@@ -71,6 +71,13 @@ int  ck_state_load_menu_get(const char* name, void* dst, uint32_t size);   /* on
 int  ck_state_load_menu(const CkPtrField* table, int count, uint8_t* fb, size_t npx);   /* writes the MENU records, and unpacks MPIC into fb (npx pixels) when fb is given; 0 if malformed */
 int  ckMenuStatics(CkPtrField* out, int max);   /* menu.c's cross-frame statics (ck_menu_state.inc is appended to the patched menu.c) */
 void ckMenuAfterLoad(const uint8_t* wram);      /* after the MENU records are written: re-derives menu.c's pointers (the char-select view of the WRAM) */
+void ck_state_save_battle(const CkPtrField* table, int count);   /* before ck_state_save_done in a fight: stages the BATL section */
+int  ck_state_load_has_battle(void);   /* the staged state was taken in a fight (it has a BATL section) */
+int  ck_state_load_battle_check(const CkPtrField* table, int count);   /* the BATL section holds exactly these records (name and size) */
+int  ck_state_load_battle_get(const char* name, void* dst, uint32_t size);   /* one BATL record copied out by name, no live object touched */
+int  ck_state_load_battle(const CkPtrField* table, int count);         /* writes the BATL records into the live objects; 0 if malformed */
+int  ckBattleStatics(CkPtrField* out, int max);   /* battle.c's cross-frame statics (ck_battle_state.inc is appended to the patched battle.c) */
+void ckBattleAfterLoad(void);                    /* after the BATL records are written: clears battle.c's per-frame line cuts */
 void ck_state_load_result(int r);      /* after a CK_OP_LOAD: what CtSceneLoadState answered */
 int  ck_state_save_pending(void);      /* a save request is waiting for a safe point */
 int  ck_state_load_in_sequence(void);  /* the staged state was taken inside a sequence (its HOST says so) */

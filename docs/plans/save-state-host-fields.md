@@ -83,7 +83,7 @@ The refusal reasons are unchanged: not a state, corrupt, schema, mode, not now.
   `world.c` are still not saved, as in phase 0.
 - **Later phases:**
   - the overworld struct `wd` and its statics, phase 2;
-  - battle (`liveHost`), phase 4;
+  - battle (`liveHost`), phase 4: see "Battle section" below;
   - the gate-warp pointer `gwN` and the sequence and race windows, phase 5.
 - **SRAM.** SRAM is saved in CORE but not restored on load, as in phase 0.
 - **Size.** The host list is larger than the plan's estimate of 80 to 150, because inclusion was conservative. Anything
@@ -487,3 +487,56 @@ The classes:
 | atbSelRow | `int` | host | text box, choice and naming state: a save mid-dialogue resumes the box |
 | atbTypeStep | `int` | host | text box, choice and naming state: a save mid-dialogue resumes the box |
 | powerOnLoad | `int` | host | mode machine state read across frames |
+
+## Battle section (phase 4, BATL)
+
+A state taken in a fight (mode 5, tag `battle`) carries BATL beside CORE, SCEN, HOST and APU; never WRLD or MENU. The safe
+window (`ck_host_point.inc`) is a fight past its boot (`battleBootPostAt < 0`), with the field page saved at `$7F:2000`
+(`g_battleObjSaved`), not in its exit poll or tail, no reset pending, no fade, door or menu. Outside it a request waits
+and gives up with "not now", as for the sequence windows (I-103).
+
+Records are written by field table (`ck_battle_table.inc`), named `bh.<member>`, `field.<static>`, `battle.<static>`, and the
+load fails on a state whose record names or sizes differ from this build's, before anything is touched. A build
+without BATL refuses a battle state by its schema stamp (a section it does not know). The load enters the location from
+CORE with the field's object page (`$7F:2000`) and map (`g_ckBattleMap`) put back, restores the scene, WRAM, sound and HOST
+as a field state does, overlays BATL, re-derives `liveHost.mem/glb` from the live scene (`frame`, `ctx` NULL), and rebuilds the
+field's picture and collision under the fight with `fieldMapFromWram` over the fight's WRAM plus the saved map. The
+guards: `core/wasm-build/battle-fields.mjs` and `battle-statics.mjs`.
+
+**CtBattleHost** (`battle.h`): all 374 non-pointer members are state (`ck_battle_fields.h`). Pointers, never saved:
+`mem`, `glb`, `frame`, `ctx`.
+
+**field.c statics**
+
+| Name | Class | Why |
+|---|---|---|
+| g_battleSndFrames | state | the fight's sound frame count, read across frames |
+| g_battleObjSaved | state | C0/0918's field page copy at `$7F:2000` is live; the load puts the page back from it |
+| g_battleEndFeet, g_battleEndFeetOn | state | the party's feet at the fight's end, read at the return |
+| prevPort | state | the pad's last NMI read (auto-read latch); made file scope by a state patch |
+| g_ckBattleMap | state | ChronoKi's copy of the field map `$7E:3000..AFFF` at the fight's entry (state patch); WRAM-like bytes |
+| g_fieldVram, g_fieldCgram, g_bg3Plane, g_fieldVramFillPending | state | the PPU image the fight draws from and returns to |
+| g_bBoxRow, g_bDrawOnly, g_bMotCanvas, g_bObjPalCur, g_bObjPalMask, g_bObjPrioMask, g_bWorld, g_bwBand, g_bwFb, g_bwPre, g_bwW, g_bwX, g_bwXc, g_bhudStripDy | scratch | render scratch rewritten by every compose |
+| g_bhudShotBand | debug | shot bookkeeping |
+| g_stagedRecs | harness | test staging |
+| g_padAutoRead, g_padNow | scratch | rewritten by every NMI from `prevPort` and the port |
+
+**battle.c statics and globals**
+
+| Name | Class | Why |
+|---|---|---|
+| gDeathScanPend | state | a death scan queued for a later frame |
+| gBattleNmiLine, gBattleNmiPad | state | the NMI's line and pad latch, read the next tick |
+| g_btRevalid | state | a pending revalidation of the fight's targets |
+| g_fxPalArmedPreNmi | state | an FX palette armed for the next NMI |
+| g_fxProgStops | state | the FX program's stop list across frames |
+| gBattleFxFixCarry (global) | state | the FX fixed-point carry across frames |
+| gRom, gRomLen, gRomEmpty | rom | the cartridge image, set once |
+| gBattleSnd, gBattleSndOn | config | the sound sink, set once per session |
+| g_stripHost | pointer | an address |
+| g_fxTeardownPreNmi, gBattleLineCutOn, gBattleLineAt | scratch | reset by the NMI service each tick; zeroed after a load (`ckBattleAfterLoad`) |
+| gBattleLineCutRam, gBattleFxRow | scratch | line-cut and FX row images rebuilt by the compose |
+| gBattleFxRowModelled, gBattleFxArenaRows, gBattleFxFront, gBattleFxFrontMath, gBattleFxCutSnap, gBattleFxCutLine, gBattleFxCutN (globals) | scratch | rewritten by each compose or tick; `gBattleFxCutN` zeroed after a load |
+| g_btStatusTimedUnported, gBtAiReduceNonTerm | trace | diagnostics |
+
+Function-local statics in battle.c are trace, harness or within-call scratch; none carries state across frames.
