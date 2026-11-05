@@ -97,7 +97,7 @@ describe('element spoiler rows', { tags: ['critical'] }, () => {
     expect(elementRowsOf(undefined)).toEqual([]);
     const rows = elementRowsOf(FIXED);
     expect(rows).toHaveLength(8);
-    expect(rows[0]).toEqual({ label: 'Element', value: 'Crono → Fire' });
-    expect(rows[5]).toEqual({ label: 'Element', value: 'Robo (Laser Spin) → Water' });
+    expect(rows[0]).toEqual({ label: 'Element', value: 'Crono -> Fire' });
+    expect(rows[5]).toEqual({ label: 'Element', value: 'Robo (Laser Spin) -> Water' });
   });
 });
