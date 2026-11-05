@@ -6,13 +6,12 @@ import { ctTrackName } from './ct-track-name';
 import { NO_SOUNDS } from './no-sounds.constants';
 import type { ChronokiMsuStudioGame } from './msu-studio.type';
 
-// brock-msu's page, provider and store take MsuStudioGame<never, never>; previewContext: Ctx leaves no concrete Ctx comparable to it.
-const chronokiMsuStudio = defineMsuStudio({
+const chronokiMsuStudio: ChronokiMsuStudioGame = defineMsuStudio<never, never>({
   config: ctMsuConfig,
   trackName: ctTrackName,
   baseTrackCount: MSU_TRACK_COUNT,
   sounds: NO_SOUNDS,
-  previewContext: undefined,
-}) as unknown as ChronokiMsuStudioGame;
+  previewContext: undefined as never,
+});
 
 export { chronokiMsuStudio };
