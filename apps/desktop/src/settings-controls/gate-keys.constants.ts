@@ -14,6 +14,7 @@ const OPTION_KEY_FEATURE: Record<string, string> = {
   dialogHoldSpeed: 'dialogControls',
   dialogHoldToAccelerate: 'dialogControls',
   dialogFillOnB: 'dialogControls',
+  dialogAutoSkip: 'dialogControls',
 };
 
 export { GATE_KEY_PREFIX, OPTION_KEY_FEATURE };

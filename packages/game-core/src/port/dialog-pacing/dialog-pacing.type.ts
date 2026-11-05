@@ -4,6 +4,7 @@ interface CkDialogPacing {
   holdQ4: number;
   hold: boolean;
   fill: boolean;
+  autoSkip: boolean;
 }
 
 interface DialogPacingSettings {
@@ -11,6 +12,7 @@ interface DialogPacingSettings {
   dialogHoldSpeed: number;
   dialogHoldToAccelerate: boolean;
   dialogFillOnB: boolean;
+  dialogAutoSkip: boolean;
 }
 
 export type { CkDialogPacing, DialogPacingSettings };
