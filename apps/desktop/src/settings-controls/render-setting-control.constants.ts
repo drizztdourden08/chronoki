@@ -1,6 +1,8 @@
 /* @layer renderer-app @kind data */
 import type { ComponentType } from 'react';
 import { AudioBufferControl } from './audio/AudioBufferControl';
+import { AudioChannelsControl } from './audio/AudioChannelsControl';
+import { AudioSampleRateControl } from './audio/AudioSampleRateControl';
 import { TurboSpeedControl } from './TurboSpeedControl';
 import { RenderScaleControl } from './RenderScaleControl';
 import { DetectedPackControl } from './detected-pack-control';
@@ -14,6 +16,8 @@ const CONTROL_OF_KEY: Readonly<Record<string, ComponentType<SettingControlProps>
   renderScale: RenderScaleControl,
   turboSpeed: TurboSpeedControl,
   audioSamples: AudioBufferControl,
+  audioFreq: AudioSampleRateControl,
+  audioChannels: AudioChannelsControl,
   dialogSpeed: DialogSpeedControl,
   dialogHoldSpeed: DialogHoldSpeedControl,
   detectedPack: DetectedPackControl,

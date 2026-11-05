@@ -42,6 +42,8 @@ interface AppSettings extends BaseSettings {
   packReplaceSfx: boolean;
   vsync: boolean;
   audioSamples: number;
+  audioFreq: number;
+  audioChannels: number;
 }
 
 export type { AppSettings, MsuConfigMode, MsuFormat, ViewportMode };
