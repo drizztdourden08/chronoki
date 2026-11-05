@@ -10,6 +10,8 @@ import type { CtStartParty } from '../../world/party/ct-party.type';
 import { partyIdsOf } from '../../world/party/party-ids-of';
 import { buildStartBlock } from './build-start-block';
 import { partyPokes } from './party-pokes';
+import { fitPartyToState } from './fit-party-to-state';
+import { fitStartParty } from './fit-start-party';
 import { planStartState } from './plan-start-state';
 import { LEGACY_PARTY } from './legacy-party.constants';
 import { INTRO_JUMP, START_BLOCK_MAX_BYTES } from './start-block.constants';
@@ -116,10 +118,27 @@ describe('start block party', () => {
     }
   });
 
-  it('refuses a 7-character party with Crono in a later slot instead of writing a block the game refuses', { tags: ['critical'] }, () => {
-    const party: CtStartParty = ['marle', 'crono', 'lucca', 'robo', 'frog', 'ayla', 'magus'];
-    expect(lengthOf(party)).toBeGreaterThan(START_BLOCK_MAX_BYTES);
-    expect(() => planStartState(STANDARD_START, party)).toThrow(StartBlockTooLongError);
+  const LATE_CRONO: CtStartParty = ['marle', 'crono', 'lucca', 'robo', 'frog', 'ayla', 'magus'];
+
+  it('keeps a 7-character party with Crono in a later slot as written when it fits', { tags: ['critical'] }, () => {
+    expect(lengthOf(LATE_CRONO)).toBeLessThanOrEqual(START_BLOCK_MAX_BYTES);
+    expect(fitPartyToState(LATE_CRONO, STANDARD_START)).toBe(LATE_CRONO);
+    expect(planStartState(STANDARD_START, LATE_CRONO).replace).toEqual(buildStartBlock(STANDARD_START, LATE_CRONO, INTRO_JUMP));
+  });
+
+  it('puts Crono first, others in order, when the early pendant makes the block too long', { tags: ['critical'] }, () => {
+    const state = withOptionFlags(STANDARD_START, { earlyPendantCharge: true });
+    expect(buildStartBlock(state, LATE_CRONO, INTRO_JUMP).length).toBeGreaterThan(START_BLOCK_MAX_BYTES);
+    const fitted = fitPartyToState(LATE_CRONO, state);
+    expect(fitted).toEqual(['crono', 'marle', 'lucca', 'robo', 'frog', 'ayla', 'magus']);
+    expect(fitStartParty(LATE_CRONO, { earlyPendantCharge: true })).toEqual(fitted);
+    expect(planStartState(state, LATE_CRONO).replace).toEqual(buildStartBlock(state, fitted, INTRO_JUMP));
+  });
+
+  it('still refuses a block above the budget after the reorder', { tags: ['critical'] }, () => {
+    const flags = Array.from({ length: 8 }, (_, n) => ({ at: 0x7f0100 + n, bits: 0x01 }));
+    const big = { ...STANDARD_START, flags: [...STANDARD_START.flags, ...flags] };
+    expect(() => planStartState(big, ALL)).toThrow(StartBlockTooLongError);
   });
 });
 
