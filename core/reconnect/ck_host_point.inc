@@ -45,6 +45,19 @@
              : (!selftest && f.vm && !battlePhase && !inWorld && !gameOver && ckMenuSafe && menuStashOw == 0) ? 3
              : (!selftest && !f.vm && inWorld && !battlePhase && ckOwSafe && ckMenuSafe && menuStashOw == 1) ? 4 : 0;
   int ckOp = ck_state_top(ckMode, fieldWram(), fieldSram());
+  /* I-103 trace: every brightness and colour-math input of the field picture, one line at a save and on the load's pass
+     plus the 8 passes after it, so a picture that differs after a load names the input that differs. Print only. */
+  static int ckTraceLeft = 0;
+#define CK_BRI_TRACE(tag, r) do { if (f.vm) { const uint8_t* ckW = CtSceneMem7E(f.vm); int ckMt = -1, ckSt = -1, ckMe = -1; \
+      unsigned ckCs = 0, ckCh = 0; for (int ckI = 0; ckI < 0x200; ckI++) { ckCs += ckW[0x2200 + ckI]; ckCh += g_fieldCgram[ckI]; } \
+      if (f.sd) CtFieldSceneScreenLayers(f.sd, &ckMt, &ckSt, &ckMe); \
+      printf("ckbright %s: f%d loc %X r %d bright %d $0119 %02X fadeBri %d fade %d ramp %d hold %d ffPro %d menu %d/%d seq %d " \
+             "battle %d go %d cold %d $0BE0 %02X $0121 %02X $0118 %02X $0139 %02X $0146 %02X $0BCA %02X $01BB %02X TM %02X TS %02X " \
+             "bake %X/%X/%X bg3Plane %d colWin %d bgWin %d cgram %X/%X\n", tag, frameNo, scene, r, CtSceneBright(f.vm), ckW[0x0119], \
+             fadeBri, fade, loadRamp, loadHold, ffPro, menuPhase, menuT, seqOpen, battlePhase, gameOver, coldResetHold, ckW[0x0BE0], \
+             ckW[0x0121], ckW[0x0118], ckW[0x0139], ckW[0x0146], ckW[0x0BCA], ckW[0x01BB], ckW[0x11520], ckW[0x11521], ckMt, ckSt, \
+             ckMe, g_bg3Plane, g_colWinOn, g_bgWinOn, ckCs, ckCh); } } while (0)
+  if (ckTraceLeft > 0 && ckOp == CK_OP_NONE) { ckTraceLeft--; CK_BRI_TRACE("after", 0); }
   if (ckOp != CK_OP_NONE) {
 #define CK_HOST(t, n, d) memcpy(&ckHost.n, &n, sizeof ckHost.n);
 #include "ck_host_fields.h"
@@ -59,6 +72,7 @@
     if (menuPhase) {
 #include "ck_menu_save.inc"
     }
+    CK_BRI_TRACE("save", ckScene);
     ck_state_save_done(f.vm ? ckScene : 1, ckScene, &ckHost, ckHostFields, CK_HOST_COUNT);
   } else if (ckOp == CK_OP_LOAD) {
     int ckMenuOk = 1, ckR = 0;
@@ -112,6 +126,8 @@
       }
     }
 #include "ck_menu_finish.inc"
+    CK_BRI_TRACE("load", ckR); ckTraceLeft = 8;
     ck_state_load_result(ckR);
   }
+#undef CK_BRI_TRACE
 }
