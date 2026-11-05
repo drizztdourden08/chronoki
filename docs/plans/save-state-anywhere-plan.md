@@ -172,6 +172,9 @@ classification work (which statics and locals are state) is valid either way.
 - `CtBattleHost liveHost` by field table (skip mem/glb/frame/ctx), battle.c's group (c) statics (death scan,
   NMI line, sound sink state, FX rows if not derivable), the field state underneath (the battle returns to
   it). Load: the battle's own boot from a WRAM image, then overlay. Largest risk of hidden state; see 7.
+- Built (I-68): BATL holds liveHost, the field.c and battle.c statics classified in
+  docs/plans/save-state-host-fields.md ("Battle section") and a copy of the field map taken at the fight's entry; the load
+  enters the location from the pre-fight WRAM instead of the battle's own boot, then overlays.
 
 **Phase 5: cutscenes and transitions** (`seq` section, or declared windows)
 - Title intro, seq_entry*/seq_ending/race/gate warp, door and world fades (`pendKind`, `fade`). Each one

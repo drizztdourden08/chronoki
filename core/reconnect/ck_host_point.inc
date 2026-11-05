@@ -16,6 +16,10 @@
    state then also carries MENU (mSave, the menu statics, the caller's stash) and, over a field, MPIC (the frozen frame). The
    load enters the underlying mode from the CORE with the stash put back (ck_menu_load.inc), then overlays the menu
    (ck_menu_finish.inc). A MENU state that does not match this build exactly is refused before anything is touched.
+   A fight (phase 4) is mode 5: it runs inside this loop over the frozen field scene, so its state is the field's (CORE, SCEN,
+   HOST, the sound) plus BATL (ck_battle_save.inc: liveHost and the battle's statics), and only on a settled module frame
+   (ckBattleSafe below). The load enters the location from the field's own WRAM under the fight (ck_battle_load.inc), restores
+   the scene and HOST as for a field state, then overlays BATL (ck_battle_finish.inc).
    The picture after such an entry is baked once more, right after the entry fill: fieldLoad bakes the location's asset map
    before the object init, and the fill then rebuilds the layers from the WRAM map with obj0's slot-1 tile copies on it (loc
    002's curtains). A door's fade-in re-bakes through the colour page every frame; a load has no fade, the menu's close re-bakes
@@ -40,10 +44,17 @@
     && !menuSaveRowsHold && !menuSavePanelHold && !menuSavePromptHold
     && (!menuShopOn || (menuShop.sub >= 1 && menuShop.sub <= 3))
     && (!menuExchOn || menuExch68 == 1 || menuExch68 == 2) && (!menuNameOn || menuName68 == 1 || menuName68 == 2);
+  /* a fight is a save point only between module ticks that hand nothing to the field: not in the boot's wait for its sound
+     post (battleBootPostAt), not in the exit (the SPC poll, the tail, the ack and the return all run on the field's own
+     frames: battleExitPoll, battleTailLeft), not with the module's cold reset asked (resetReq), and only once the fight has
+     its WRAM and the field's page copy (C0/0918). The request is held until such a frame. */
+  int ckBattleSafe = battlePhase && liveHost.mem && liveHost.glb && g_battleObjSaved && battleBootPostAt < 0 && !battleExitPoll
+    && battleTailLeft <= 0 && !liveHost.resetReq;
   int ckMode = (!selftest && f.vm && !battlePhase && !menuPhase && !inWorld && !gameOver && !fade && !pendKind) ? 1
              : (!selftest && !f.vm && inWorld && !battlePhase && !menuPhase && !fade && !pendKind && ckOwSafe) ? 2
              : (!selftest && f.vm && !battlePhase && !inWorld && !gameOver && ckMenuSafe && menuStashOw == 0) ? 3
-             : (!selftest && !f.vm && inWorld && !battlePhase && ckOwSafe && ckMenuSafe && menuStashOw == 1) ? 4 : 0;
+             : (!selftest && !f.vm && inWorld && !battlePhase && ckOwSafe && ckMenuSafe && menuStashOw == 1) ? 4
+             : (!selftest && f.vm && !menuPhase && !inWorld && !gameOver && !fade && !pendKind && ckBattleSafe) ? 5 : 0;
   /* I-103. A sequence (the title, the attract's stages, the race, the ending's, the gate warp) runs on machines a state
      does not carry (seq_*.c's and field.c's stage statics, the title's sound clock, g_stagePic), so a state taken inside
      one cannot resume it: such a save is held (and given up as "not now", the same rule as any unsafe window), and such
@@ -72,6 +83,9 @@
     if (menuPhase) {
 #include "ck_menu_save.inc"
     }
+    if (battlePhase) {
+#include "ck_battle_save.inc"
+    }
     if (ckHost.fadeBri < 15 && CK_FADE_IDLE()) ckHost.fadeBri = 15;   /* the stored copy only: the live frame is untouched */
     ck_state_save_done(f.vm ? ckScene : 1, ckScene, &ckHost, ckHostFields, CK_HOST_COUNT);
   } else if (ckOp == CK_OP_LOAD && ck_state_load_in_sequence()) {
@@ -81,11 +95,12 @@
     const uint8_t* ckEntry = NULL;
     static uint8_t ckEntryBuf[CK_STATE_WRAM_BYTES], ckStashBuf[CK_M_STASH_BYTES];
 #include "ck_menu_load.inc"
-    int ckLoc = (ck_state_load_has_world() || !ckMenuOk) ? -1 : CtSceneStateLoc("mem:scene", NULL);
+#include "ck_battle_load.inc"
+    int ckLoc = (ck_state_load_has_world() || !ckMenuOk || !ckBattleOk) ? -1 : CtSceneStateLoc("mem:scene", NULL);
     if (ck_state_load_has_world() && ckMenuOk) {
 #include "ck_world_load.inc"
     }
-    if (ckLoc >= 0 && (ckLoc != scene || !f.vm || menuPhase || ck_state_load_has_menu())) {
+    if (ckLoc >= 0 && (ckLoc != scene || !f.vm || menuPhase || ck_state_load_has_menu() || battlePhase || ck_state_load_has_battle())) {
       const uint8_t* ckCore = ckEntry ? ckEntry : ck_state_load_core();
       if (ckCore) memcpy(CtWramSys(fieldWram()), ckCore, CK_STATE_WRAM_BYTES);
       fieldFree(&f);
@@ -111,7 +126,7 @@
       int ckIdx = tbLastIdx, ckTbl = tbLastTbl;
       ckR = CtSceneLoadState(f.vm, "mem:scene", ckPlr);
       if (ckR) {
-        fieldMapFromWram(&f, CtSceneMem7E(f.vm), "ckload");
+        if (!ck_state_load_has_battle()) fieldMapFromWram(&f, CtSceneMem7E(f.vm), "ckload");   /* (a fight's: ck_battle_finish.inc) */
         if (g_fieldAudio) CtAudioLoadState(g_fieldAudio, "mem:apu");
       }
       if (ckR && ck_state_load_host(&ckHost, ckHostFields, CK_HOST_COUNT)) {
@@ -129,6 +144,7 @@
         px = ckAx; py = ckAy; pfac = ckFa; pz = CtSceneMem7E(f.vm)[0x0155] & 3;
       }
     }
+#include "ck_battle_finish.inc"
 #include "ck_menu_finish.inc"
     ck_state_load_result(ckR);
   }

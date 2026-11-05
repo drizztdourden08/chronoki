@@ -18,8 +18,13 @@
 //    char-select pointer); mSave, menuStash, menuFb and the g_str* / g_cfg* statics are all in scope at the safe point, so
 //    field.c's one patch for it (MENU_FIELD_PATCHES, a list of its own) is the close's re-bake. menu-fields.mjs and menu-statics.mjs check
 //    mSave, the field.c and menu.c statics and the stash sizes against core/reconnect/ck_menu_*.h before patching.
+//  * the battle section (phase 4): field.c's prevPort becomes file scope and the fight's entry keeps a copy of the field's
+//    map (BATTLE_FIELD_PATCHES, a list of its own); battle.c (already copied by patches/sightscope.mjs) gets
+//    reconnect/ck_battle_state.inc appended there. battle-fields.mjs checks CtBattleHost and field.c's battle statics against
+//    core/reconnect/ck_battle_fields.h and ck_battle_fstat.h after patching; battle-statics.mjs checks battle.c's.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { checkBattleFields } from './battle-fields.mjs';
 import { checkHostFields } from './host-fields.mjs';
 import { LOOP_HEAD, MAIN_HEAD } from './main-locals.mjs';
 import { checkMenuFields } from './menu-fields.mjs';
@@ -75,6 +80,30 @@ const MENU_FIELD_PATCHES = [
 // menu.c gets reconnect/ck_menu_state.inc appended: it hands out the addresses of the statics the section keeps.
 const MENU_SUFFIX = '\n#include "ck_menu_state.inc"\n';
 
+// phase 4 (the battle section), a list of its own so the lists above merge without it. fieldPadNmi's prevPort (the pad's
+// previous NMI read, the auto-read latch) is a function-local static the safe point cannot reach: it becomes file scope.
+// The fight's entry overwrites the field's map ($7E:3000..AFFF) with its arena and blocks; the real game decompresses the
+// map again at the return (C0/A33B), but a state taken mid-fight must enter its location with that map, so the entry
+// keeps a copy of it (g_ckBattleMap, saved in BATL like WRAM) beside C0/0918's object-page copy.
+const BATTLE_FIELD_PATCHES = [
+  [
+    'static void fieldPadNmi(uint16_t serial) {\n  static uint16_t prevPort = 0;\n',
+    'static uint16_t prevPort = 0;   /* [chronoki] file scope: the battle section keeps it */\nstatic void fieldPadNmi(uint16_t serial) {\n',
+    1,
+  ],
+  [
+    'static int g_battleObjSaved = 0;',
+    'static uint8_t g_ckBattleMap[0x8000];   /* [chronoki] the field map ($7E:3000..AFFF) at the fight\'s entry */\nstatic int g_battleObjSaved = 0;',
+    1,
+  ],
+  [
+    'memcpy(s + 0x12000, s + 0x0920, 0x14E0); g_battleObjSaved = 1; g_battleEndFeetOn = 0;',
+    'memcpy(s + 0x12000, s + 0x0920, 0x14E0); g_battleObjSaved = 1; g_battleEndFeetOn = 0;'
+      + ' memcpy(g_ckBattleMap, s + 0x3000, sizeof g_ckBattleMap);   /* [chronoki] */',
+    1,
+  ],
+];
+
 // audio.c: the engine's two state functions become static and ck_audio_state.inc (appended) wraps them with the host
 // side of the sound (the FIFO, the cycle carry, the field parity), which the engine's load resets.
 const AUDIO_PATCHES = [
@@ -116,7 +145,10 @@ const patchedField = (belthasar, root) => {
   checkWorldFields(text, belthasar, root);
   const patched = applyPatches('field.c', `#include "ck_reconnect.h"\n${text}`, FIELD_PATCHES);
   checkMenuFields(text, root);
-  return applyPatches('field.c', applyPatches('field.c', patched, WORLD_FIELD_PATCHES), MENU_FIELD_PATCHES);
+  const menu = applyPatches('field.c', applyPatches('field.c', patched, WORLD_FIELD_PATCHES), MENU_FIELD_PATCHES);
+  const battle = applyPatches('field.c', menu, BATTLE_FIELD_PATCHES);
+  checkBattleFields(battle, belthasar, root);
+  return battle;
 };
 
 const patchedWorld = (belthasar, root) => {

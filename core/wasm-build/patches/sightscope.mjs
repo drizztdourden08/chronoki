@@ -5,9 +5,14 @@
 //  * With the option off every inserted branch must be the original code. B4 fills SIGHTSCOPE_PATCHES; empty = identical.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { checkBattleStatics } from '../battle-statics.mjs';
+import { root } from '../sources.mjs';
 
 // [what to find, what to put, how many times it must occur]
 const SIGHTSCOPE_PATCHES = [];
+// the save-state battle section (phase 4, docs/plans/save-state-anywhere-plan.md): reconnect/ck_battle_state.inc hands out
+// the addresses of the battle.c statics the section keeps; battle-statics.mjs checks them against the original text.
+const BATTLE_STATE_SUFFIX = '\n#include "ck_battle_state.inc"\n';
 
 const occurrences = (text, find) => (find ? text.split(find).length - 1 : 0);
 
@@ -29,7 +34,8 @@ const writeSightscope = (genDir, belthasar) => {
   mkdirSync(dir, { recursive: true });
   const battle = join(dir, 'battle.c');
   const text = readFileSync(join(belthasar, 'src', 'battle.c'), 'utf8').replace(/\r\n/g, '\n');
-  writeFileSync(battle, `#include "ck_reconnect.h"\n${applyPatches('battle.c', text, SIGHTSCOPE_PATCHES)}`);
+  checkBattleStatics(text, root);
+  writeFileSync(battle, `#include "ck_reconnect.h"\n${applyPatches('battle.c', text, SIGHTSCOPE_PATCHES)}${BATTLE_STATE_SUFFIX}`);
   return { patches: SIGHTSCOPE_PATCHES.length, files: [battle], replaced: ['src/battle.c'] };
 };
 
