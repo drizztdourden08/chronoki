@@ -7,8 +7,10 @@ const TAB_AMOUNT_CHOICES: readonly number[] = Array.from(
   { length: TAB_MAX_AMOUNT - TAB_VANILLA_AMOUNT + 1 }, (_, i) => TAB_VANILLA_AMOUNT + i,
 );
 
+const TAB_MYSTERY_WEIGHTS: Readonly<Record<string, number>> = { 1: 5, 2: 2, 3: 2, 4: 1, 5: 1 };
+
 const rangeOption = (key: CtOptionKey, label: string): CtOptionDef => ({
-  key, label, jotFlag: '-', default: TAB_VANILLA_AMOUNT, choices: TAB_AMOUNT_CHOICES, section: 'Tabs', implemented: true,
+  key, label, jotFlag: '-', default: TAB_VANILLA_AMOUNT, choices: TAB_AMOUNT_CHOICES, section: 'Tabs', implemented: true, mystery: TAB_MYSTERY_WEIGHTS,
 });
 
 const TAB_RANGE_OPTIONS: readonly CtOptionDef[] = [

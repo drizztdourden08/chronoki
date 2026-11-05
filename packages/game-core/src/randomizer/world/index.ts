@@ -17,6 +17,7 @@ export { CT_REGIONS } from './regions/ct-regions.constants';
 export { CT_GAME, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA } from './ct-world.constants';
 export { rollCtPlacement } from './roll-ct-placement';
 export { describeCtPlacement } from './describe-ct-placement';
+export { resolveMysteryOptions } from './mystery/resolve-mystery-options';
 export { resolveStartParty } from './party/resolve-start-party';
 export { CT_CHARACTERS } from './party/ct-party.constants';
 export { treasureRomIdOf } from './treasure-rom-id-of';

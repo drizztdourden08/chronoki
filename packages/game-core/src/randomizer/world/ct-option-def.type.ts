@@ -12,6 +12,7 @@ type CtOptionDef = {
   section: string;
   implemented: boolean;
   hint?: string;
+  mystery?: number | Readonly<Record<string, number>>;
   choiceLabels?: Readonly<Record<string, string>>;
 };
 
