@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind logic */
-import type { MemoryBridge, MemoryView } from '@drizztdourden08/brock-randomizer/memory';
+import type { MemoryBridge } from '@drizztdourden08/brock-randomizer/memory';
+import type { HeadlessGrants } from './create-headless-grants.type';
 import { createCtMemoryBridge } from '../../memory/create-ct-memory-bridge';
 import { createCtWramWriter } from '../../memory/create-ct-wram-writer';
 import type { CtMemoryOptions } from '../../memory/ct-memory-options.type';
@@ -9,9 +10,6 @@ import { createStartMagicGrant } from '../../session/create-start-magic-grant';
 import { HARD_START_GOLD } from '../../world/treasure-tiers/treasure-tiers.constants';
 import type { CtOptionValues } from '../../world/ct-world-input.type';
 
-type HeadlessGrants = { observe(): void; started(): boolean; goldGranted(): boolean; magicGranted(): boolean; view(): MemoryView | null };
-
-// The same hooks the desktop runs (create-start-hooks.ts), over the wasm RAM instead of the app's core.
 const createHeadlessGrants = (options: CtOptionValues, memory: CtMemoryOptions): HeadlessGrants => {
   const bridge: MemoryBridge = createCtMemoryBridge(memory);
   const write = createCtWramWriter(memory, bridge);
@@ -34,4 +32,3 @@ const createHeadlessGrants = (options: CtOptionValues, memory: CtMemoryOptions):
 };
 
 export { createHeadlessGrants };
-export type { HeadlessGrants };

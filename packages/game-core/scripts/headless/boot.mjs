@@ -1,9 +1,9 @@
+/* @layer tooling-scripts @kind logic */
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-// Loads the wasm core with the seeded pack in memory and the randomizer switched on (same files the app writes).
 const bootEngine = async (wasmDir, packBytes) => {
   const lines = [];
   const state = { stopped: null };
