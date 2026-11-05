@@ -4,6 +4,7 @@ import { deriveGiftChecks } from '../checks/derive-gift-checks';
 import type { ApplyOptions, ApplyResult, PackEdit, Placement } from './apply-seed.type';
 import { planChestEdits } from './plan-chest-edits';
 import { planEnemyOptionEdits } from './enemy-difficulty/plan-enemy-option-edits';
+import { planBossSwapEdits } from './boss-rando/plan-boss-swap-edits';
 import { planJetsItemEdits } from './jets/plan-jets-item-edits';
 import { planShopPriceEdits } from './shop-prices/plan-shop-price-edits';
 import { planGiftEdits } from './plan-gift-edits';
@@ -30,10 +31,12 @@ const applySeedToPack = (
   const jetsPlan = options.epochFail === true ? planJetsItemEdits(pack) : { edits: [], failed: [] };
   const spotPlan = planSpotGiftSplices(placement, options.spotGifts);
   const tabPlan = options.tabAmounts ? planTabNameEdits(pack, options.tabAmounts) : { edits: [], failed: [] };
+  const bossPlan = options.bossRando ? planBossSwapEdits(pack, options.bossRando) : { edits: [], failed: [] };
   const edits = [...chestPlan.edits, ...giftPlan.edits, ...planEnemyOptionEdits(pack, options), ...jetsPlan.edits, ...tabPlan.edits,
+    ...bossPlan.edits,
     ...(options.shopPrices === undefined ? [] : planShopPriceEdits(pack, options.shopPrices))];
   const failed = [...new Set([
-    ...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...spotPlan.failed, ...tabPlan.failed,
+    ...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...spotPlan.failed, ...tabPlan.failed, ...bossPlan.failed,
     ...stale(pack, edits),
   ])];
   if (failed.length > 0) return { ok: false, failed };

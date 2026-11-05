@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind type */
 import type { CtSpotId } from '../world/ct-world-keys.type';
 import type { TabAmounts } from '../world/tabs/tab-amounts.type';
+import type { BossAssignment } from './boss-rando/boss-rando.type';
 import type { ShopPriceOption } from './shop-prices/shop-prices.type';
 import type { ItemDifficulty } from '../world/treasure-tiers/treasure-tier.type';
 
@@ -14,6 +15,7 @@ type ApplyOptions = {
   shopPrices?: ShopPriceOption;
   spotGifts?: readonly CtSpotId[];
   tabAmounts?: TabAmounts;
+  bossRando?: BossAssignment;
 };
 
 type PackEdit = { at: number; old: number; next: number; why: string };
