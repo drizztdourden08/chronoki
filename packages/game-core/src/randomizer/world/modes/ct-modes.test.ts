@@ -11,26 +11,38 @@ import { modeOf } from './mode-of';
 
 const standard = modeOf();
 
+const found = <T>(value: T | undefined): T => {
+  if (value === undefined) throw new Error('Expected a value.');
+  return value;
+};
+
+const expectUnavailable = (mode: CtModeDef): void => {
+  expect(() => modeOf({ gameMode: mode.id })).toThrow(/not available yet/);
+};
+
+const firstExit = (): { from: string; to: string } => {
+  const spec = found(CT_REGIONS.find((candidate) => candidate.exits.length > 0));
+  return { from: spec.id, to: found(spec.exits[0]).to };
+};
+
 describe('modeOf', () => {
-  it('defaults to standard', () => {
+  it('defaults to standard', { tags: ['critical'] }, () => {
     expect(modeOf().id).toBe('standard');
     expect(modeOf({ gameMode: 'standard' })).toBe(standard);
   });
 
-  it('refuses unknown and unimplemented modes instead of falling back', () => {
+  it('refuses unknown and unimplemented modes instead of falling back', { tags: ['critical'] }, () => {
     expect(() => modeOf({ gameMode: 'nope' })).toThrow(/Unknown game mode/);
-    for (const mode of CT_MODES.filter((candidate) => !candidate.implemented)) {
-      expect(() => modeOf({ gameMode: mode.id })).toThrow(/not available yet/);
-    }
+    CT_MODES.filter((candidate) => !candidate.implemented).forEach(expectUnavailable);
   });
 });
 
 describe('applyModeToRegions', () => {
-  it('leaves the regions as they are for standard', () => {
+  it('leaves the regions as they are for standard', { tags: ['critical'] }, () => {
     expect(applyModeToRegions(CT_REGIONS, standard)).toEqual(CT_REGIONS);
   });
 
-  it('drops regions of other eras with their exits', () => {
+  it('drops regions of other eras with their exits', { tags: ['critical'] }, () => {
     const noFuture: CtModeDef = { ...standard, eras: standard.eras.filter((era) => era !== 'future') };
     const result = applyModeToRegions(CT_REGIONS, noFuture);
     expect(result.some((spec) => spec.era === 'future')).toBe(false);
@@ -38,8 +50,8 @@ describe('applyModeToRegions', () => {
     expect(result.flatMap((spec) => spec.exits).some((exit) => dropped.has(exit.to))).toBe(false);
   });
 
-  it('patches an exit rule by name and adds extra exits', () => {
-    const exit = CT_REGIONS.flatMap((spec) => spec.exits.map((to) => ({ from: spec.id, to: to.to })))[0]!;
+  it('patches an exit rule by name and adds extra exits', { tags: ['critical'] }, () => {
+    const exit = firstExit();
     const rule = CT_KIT.has('gate-key');
     const patched: CtModeDef = {
       ...standard,
@@ -47,17 +59,17 @@ describe('applyModeToRegions', () => {
       extraExits: [{ from: 'present', to: 'end-of-time', rule }],
     };
     const result = applyModeToRegions(CT_REGIONS, patched);
-    const from = result.find((spec) => spec.id === exit.from)!;
+    const from = found(result.find((spec) => spec.id === exit.from));
     expect(from.exits.find((candidate) => candidate.to === exit.to)?.rule).toBe(rule);
-    const present = result.find((spec) => spec.id === 'present')!;
+    const present = found(result.find((spec) => spec.id === 'present'));
     expect(present.exits.at(-1)).toEqual({ to: 'end-of-time', rule });
   });
 });
 
 describe('gameMode option', () => {
-  const option = CT_OPTION_CATALOG.find((candidate) => candidate.key === 'gameMode')!;
+  const option = found(CT_OPTION_CATALOG.find((candidate) => candidate.key === 'gameMode'));
 
-  it('is not frozen and lists only implemented modes', () => {
+  it('is not frozen and lists only implemented modes', { tags: ['critical'] }, () => {
     expect(option.frozen).not.toBe(true);
     expect(option.choices).toEqual(CT_MODES.filter((mode) => mode.implemented).map((mode) => mode.id));
     expect(option.choices).toContain('standard');

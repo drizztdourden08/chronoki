@@ -1,6 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { GameWorldDef, ItemRule } from '@drizztdourden08/brock-randomizer/world';
-import { goalOf } from './ct-goal';
+import { goalOf } from './goal-of';
 import { CT_HELPERS } from './ct-helpers.constants';
 import { ctOptionValues } from './ct-option-values';
 import { CT_GAME, CT_OPTION_SCHEMAS, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA } from './ct-world.constants';
