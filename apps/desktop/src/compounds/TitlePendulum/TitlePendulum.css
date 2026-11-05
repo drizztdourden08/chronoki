@@ -1,0 +1,46 @@
+/* @layer renderer-components @kind style */
+.title-pendulum {
+  --title-pendulum-amplitude: var(--angle-title-pendulum);
+  --title-pendulum-half-period: var(--duration-title-pendulum);
+  --title-pendulum-rest: var(--offset-title-pendulum);
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--c-bg);
+  pointer-events: none;
+}
+
+.title-pendulum__arm {
+  position: absolute;
+  bottom: var(--title-pendulum-rest);
+  left: 50%;
+  display: flex;
+  translate: -50% 0;
+  transform-origin: 50% 0;
+  transform: rotate(calc(var(--title-pendulum-amplitude) * -1));
+  animation: title-pendulum-swing var(--title-pendulum-half-period) var(--ease-in-out) infinite alternate;
+  will-change: transform;
+}
+
+.title-pendulum__bob {
+  display: block;
+  image-rendering: pixelated;
+}
+
+@keyframes title-pendulum-swing {
+  from {
+    transform: rotate(calc(var(--title-pendulum-amplitude) * -1));
+  }
+
+  to {
+    transform: rotate(var(--title-pendulum-amplitude));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title-pendulum__arm {
+    transform: none;
+    animation: none;
+  }
+}

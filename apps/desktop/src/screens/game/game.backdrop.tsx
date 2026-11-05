@@ -3,11 +3,11 @@ import { useProduct } from '@drizztdourden08/brock-react';
 import { Box, Image } from '@drizztdourden08/tessera/primitives';
 import './game.backdrop.css';
 
-const GameBackdrop = () => {
+const GameBackdrop = ({ bare = false }: { bare?: boolean }) => {
   const product = useProduct();
   return (
     <Box className="game-backdrop" aria-hidden="true">
-      <Image className="game-backdrop__mark" src={product.logos.mark} alt="" />
+      {bare ? null : <Image className="game-backdrop__mark" src={product.logos.mark} alt="" />}
     </Box>
   );
 };

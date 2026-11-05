@@ -7,3 +7,4 @@ export { useHomeSramImport } from './behavior/useHomeSramImport';
 export { useNormalSaves } from './behavior/useNormalSaves';
 export { useProfileProgress } from './behavior/useProfileProgress';
 export { useRevealProfileFolder } from './behavior/useRevealProfileFolder';
+export { useTitlePendulum } from './behavior/useTitlePendulum';

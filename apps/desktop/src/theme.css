@@ -1,2 +1,8 @@
 /* @layer renderer-app @kind style */
 @import url('@chronoki/design/chronoki.css');
+
+:root {
+  --angle-title-pendulum: 16deg;
+  --duration-title-pendulum: 1.22s;
+  --offset-title-pendulum: 6%;
+}
