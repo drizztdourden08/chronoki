@@ -19,4 +19,12 @@ interface MarkerPainter {
   dispose: () => void;
 }
 
-export type { MarkerPainter, TierMarkerLayerProps, TierMarkerSpot };
+interface MarkerShape {
+  ctx: CanvasRenderingContext2D;
+  x: number;
+  y: number;
+  size: number;
+  color: string;
+}
+
+export type { MarkerPainter, MarkerShape, TierMarkerLayerProps, TierMarkerSpot };

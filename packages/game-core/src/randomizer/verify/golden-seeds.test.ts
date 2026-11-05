@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { goldenPlacementOf } from './golden-placement-of';
-import { GOLDEN_CASES } from './golden-seeds.cases';
+import { GOLDEN_CASES } from './golden-seeds.constants';
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), 'golden-fixtures');
 const WRITE = process.env.GOLDEN_SEEDS_WRITE === '1';

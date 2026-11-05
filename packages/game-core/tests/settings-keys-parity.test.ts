@@ -9,7 +9,7 @@ const withReference = settingsC ? it : it.skip;
 
 const CONTROL_KEY = /^(key|key2|pad)_(\w+)$/;
 const HOST_READ_KEYS = new Set(['video.wide_width', 'video.tall_lines', 'video.camera_lock',
-  'chronoki.sightscope', 'chronoki.visible_techs']);
+  'chronoki.sightscope', 'chronoki.visible_techs', 'game.randomizer', 'game.disable_glitches']);
 
 const readLoadedKeys = (src: string): Set<string> => {
   const body = src.slice(src.indexOf('static void setKey'), src.indexOf('int CtSettingsLoad'));

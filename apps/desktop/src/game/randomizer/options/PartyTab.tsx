@@ -5,8 +5,8 @@ import { PartyPicker, usePartySprites } from '../../../compounds/PartyPicker';
 import { PARTY_MODE_OPTIONS, PARTY_SIZE_OPTIONS, PARTY_TAB_LABELS } from './party-tab.constants';
 import { partyOfValue } from './party-of-value';
 
-const PartyTab = ({ values, overrides, onChange, frozen, romFile }: OptionTabProps) => {
-  const spriteUrlOf = usePartySprites(romFile);
+const PartyTab = ({ values, overrides, onChange, frozen }: OptionTabProps) => {
+  const spriteUrlOf = usePartySprites(null);
   const set = (key: string, value: unknown) => onChange?.({ ...overrides, [key]: value });
   const setMode = (next: string) => onChange?.({ ...overrides, partyMode: next, ...(next === 'custom' && partyOfValue(values.startingParty).length === 0 ? { startingParty: 'crono' } : {}) });
   const picked = partyOfValue(values.startingParty);

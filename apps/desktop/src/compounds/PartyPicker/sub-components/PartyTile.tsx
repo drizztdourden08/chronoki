@@ -15,7 +15,7 @@ const PartyTile = ({ id, slot, disabled, spriteUrl, onToggle }: PartyTileProps) 
       aria-pressed={picked}
       onClick={() => onToggle(id)}
     >
-      {picked && <Badge className={`party-tile__badge ${tone}`}>{slot + 1}</Badge>}
+      {picked && <Badge variant="inline" value={slot + 1} className={`party-tile__badge ${tone}`} />}
       {spriteUrl && <Image frame fit="contain" pixelated src={spriteUrl} alt={name} fallback="?" className="party-tile__thumb" />}
       <Text className="party-tile__label">{name}</Text>
       {id === 'magus' && <Text className="party-tile__note">{PARTY_PICKER_LABELS.experimental}</Text>}

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import type { CheckDef } from '../../randomizer/checks/check.type';
 import { itemRomFixture } from '../../randomizer/world/treasure-tiers/item-rom.fixture';
 import { KEY_IDS } from '../../randomizer/world/treasure-tiers/key-ids.constants';
-import { markersOfChecks } from './build-chest-markers';
+import { markersOfChecks } from './markers-of-checks';
 import { chestTierOf } from './chest-tier-of';
 
 const fixture = itemRomFixture();

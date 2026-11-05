@@ -1,8 +1,6 @@
 /* @layer renderer-components @kind logic */
-import { BOB_PERIOD_MS, BOB_PX, GLOW_COLORS, STAR_COLORS } from './TierMarkerLayer.constants';
-import type { TierMarkerSpot } from './TierMarkerLayer.type';
-
-const STAR_POINTS = 5;
+import { BOB_PERIOD_MS, BOB_PX, GLOW_COLORS, STAR_COLORS, STAR_POINTS } from './TierMarkerLayer.constants';
+import type { MarkerShape, TierMarkerSpot } from './TierMarkerLayer.type';
 
 const starPath = (ctx: CanvasRenderingContext2D, x: number, y: number, outer: number): void => {
   ctx.beginPath();
@@ -14,7 +12,7 @@ const starPath = (ctx: CanvasRenderingContext2D, x: number, y: number, outer: nu
   ctx.closePath();
 };
 
-const drawStar = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, color: string): void => {
+const drawStar = ({ ctx, x, y, size, color }: MarkerShape): void => {
   starPath(ctx, x, y, size / 2);
   ctx.fillStyle = color;
   ctx.fill();
@@ -23,7 +21,7 @@ const drawStar = (ctx: CanvasRenderingContext2D, x: number, y: number, size: num
   ctx.stroke();
 };
 
-const drawGlow = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, color: string): void => {
+const drawGlow = ({ ctx, x, y, size, color }: MarkerShape): void => {
   const gradient = ctx.createRadialGradient(x, y, 0, x, y, size / 2);
   gradient.addColorStop(0, '#ffffff');
   gradient.addColorStop(0.35, color);
@@ -39,8 +37,8 @@ const drawTierMarker = (ctx: CanvasRenderingContext2D, spot: TierMarkerSpot, tim
   const y = spot.y + bob;
   const star = STAR_COLORS[spot.tier];
   const glow = GLOW_COLORS[spot.tier];
-  if (star) drawStar(ctx, spot.x, y, spot.size, star);
-  else if (glow) drawGlow(ctx, spot.x, y, spot.size * 1.3, glow);
+  if (star) drawStar({ ctx, x: spot.x, y, size: spot.size, color: star });
+  else if (glow) drawGlow({ ctx, x: spot.x, y, size: spot.size * 1.3, color: glow });
 };
 
 export { drawTierMarker };
