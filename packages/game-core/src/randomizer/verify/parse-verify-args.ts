@@ -1,10 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import { readFileSync } from 'node:fs';
 import { VERIFY_OPTION_SETS } from './verify-option-sets.constants';
-import type { VerifySeedsRequest } from './verify-seeds.type';
+import type { VerifyCliArgs } from './verify-cli-args.type';
 import { VERIFY_DEFAULT_BASE, VERIFY_DEFAULT_SEEDS } from './verify.constants';
-
-type VerifyCliArgs = { request: VerifySeedsRequest; json: boolean };
 
 const valueOf = (argv: readonly string[], flag: string): string | undefined => {
   const index = argv.indexOf(flag);
@@ -32,4 +30,3 @@ const parseVerifyArgs = (argv: readonly string[]): VerifyCliArgs => {
 };
 
 export { parseVerifyArgs };
-export type { VerifyCliArgs };
