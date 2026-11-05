@@ -20,6 +20,11 @@ const wideLine = (s: CkSettings): string[] => (s.widescreen === 'off' ? [] : [`w
 const lockLine = (s: CkSettings): string[] =>
   s.tallLines > 0 || s.widescreen !== 'off' ? [`camera_lock=${flag(s.cameraLock)}`] : [];
 
+const chronokiLines = (s: CkSettings): string[] =>
+  s.sightscope || s.visibleTechs
+    ? ['[chronoki]', `sightscope=${flag(s.sightscope)}`, `visible_techs=${flag(s.visibleTechs)}`, '']
+    : [];
+
 const videoLines = (s: CkSettings): string[] => [
   '[video]',
   'backend=sdl',
@@ -65,10 +70,7 @@ const buildCoreConfigIni = (settings: Partial<CkSettings> = {}): string => {
     `sync=${s.sync}`,
     `instant_sound_uploads=${flag(s.instantSoundUploads)}`,
     '',
-    '[chronoki]',
-    `sightscope=${flag(s.sightscope)}`,
-    `visible_techs=${flag(s.visibleTechs)}`,
-    '',
+    ...chronokiLines(s),
   ].join('\n');
 };
 
