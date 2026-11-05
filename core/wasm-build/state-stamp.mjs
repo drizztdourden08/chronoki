@@ -6,19 +6,21 @@
 //    it carries (`sections=CORE:<id>,SCEN:<id>,...`) and loads when each one equals this build's id, so a change to one
 //    section refuses only the states that carry it (a field state never carries WRLD or MENU), and a version bump with no
 //    layout change refuses nothing. CORE: the sizes of the WRAM and SRAM images. SCEN: the engine's own scene state version
-//    (CT_STATE_VERSION in the pinned ct_vm.c). HOST, WRLD, MENU: their field lists (ck_host_fields.h; the three world lists;
-//    the three menu lists and the stash size), so adding, removing or retyping a field changes that section's id;
+//    (CT_STATE_VERSION in the pinned ct_vm.c). HOST, WRLD, MENU, BATL: their field lists (ck_host_fields.h; the three world lists;
+//    the three menu lists and the stash size; the three battle lists), so adding, removing or retyping a field changes that
+//    section's id (a retyped battle member changes only its size, which the BATL load refuses by record);
 //  * the whole-state schema: a hash over all the section ids, the build's identity (the app's capture drift check);
 //  * the past layouts (state-past.mjs): states from cores before per-section ids, which stamped only the whole-state hash.
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { battleFieldListText } from './battle-fields.mjs';
 import { hostFieldList } from './host-fields.mjs';
 import { menuFieldListText } from './menu-fields.mjs';
 import { PAST_LAYOUTS } from './state-past.mjs';
 import { worldFieldListText } from './world-fields.mjs';
 
-const CORE_VERSION = '0.4.1';
+const CORE_VERSION = '0.5.0';
 const CONTAINER_VERSION = 2;
 const WRAM_BYTES = 0x20000;
 const SRAM_BYTES = 0x2000;
@@ -42,6 +44,7 @@ const sectionTexts = (belthasar, root) => {
     ['HOST', 'HOST', `HOST.1;${host}`],
     ['WRLD', 'WRLD', `WRLD.1;${worldFieldListText(root)}`],
     ['MENU', 'MENU', `MENU.1;${menuFieldListText(root)};stash=${MENU_STASH_BYTES}`],
+    ['BATL', 'BATL', `BATL.1;${battleFieldListText(root)};map=32768`],
     ['MPIC', 'MPIC', 'MPIC.1;rle3'],
     ['APU ', 'APU', 'APU.1'],
     ['APUH', 'APUH', 'APUH.1'],

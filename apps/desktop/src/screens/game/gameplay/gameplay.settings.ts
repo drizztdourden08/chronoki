@@ -6,7 +6,7 @@ const meta: ScreenMeta = {
   title: 'Gameplay',
   icon: 'gamepad-2',
   order: 1,
-  keywords: ['gameplay', 'vanilla safe', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward', 'randomizer', 'seed'],
+  keywords: ['gameplay', 'vanilla safe', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward'],
 };
 
 const asSeconds = (value: number): string => `${value} s`;
@@ -60,11 +60,6 @@ const sections: Section[] = [
         ],
       },
       {
-        id: 'randomizer',
-        title: 'Randomizer',
-        items: [gateItem('randomizer')],
-      },
-      {
         id: 'turbo',
         title: 'Turbo',
         items: [
@@ -78,6 +73,19 @@ const sections: Section[] = [
           },
         ],
       },
+    ],
+  },
+  {
+    id: 'quality-of-life',
+    title: 'Quality of Life',
+    items: [
+      gateItem('sightscope'),
+      gateItem('sightscopeBosses'),
+      gateItem('visibleTechList'),
+      gateItem('fastTabs'),
+      gateItem('treasureTierMarkers'),
+      gateItem('zenanAltMusic'),
+      gateItem('deathPeakAltMusic'),
     ],
   },
   {

@@ -39,15 +39,29 @@ int  ck_randomizer(void);
 /* settings_reconnect.c: [game] disable_glitches, 0 or 1, default 0: with randomizer, the save-flag-reset patch
    (wasm-build/patches/save-flag-reset.mjs) clears the save-point flag at a location change (JoT flag g). */
 int  ck_disable_glitches(void);
+/* settings_reconnect.c: [chronoki] sightscope and visible_techs, 0 or 1, default 0 (off = the original game). */
+int  ck_sightscope(void);
+int  ck_visible_techs(void);
 int  ck_view_black(int which);
 int  ck_view_scene(void);
+/* edge_env_reconnect.c: the Edge Effect's environment picture (the shown field frame without its sprites, captions or
+   boxes; built by the patched field.c, wasm-build/patches/edge-env.mjs). On only while the host's Edge Effect draws
+   (CkSetEdgeEnv); off = nothing built. begin hands out the RGBA buffer for a w x h picture (NULL: refused), publish marks it
+   shown (0: no picture this frame). */
+int  ck_edge_env_on(void);
+void ck_edge_env_set(int on);
+uint8_t* ck_edge_env_begin(int w, int h);
+void ck_edge_env_publish(int valid);
+const uint8_t* ck_edge_env_ptr(void);
+void ck_edge_env_size(int* w, int* h);
+int  ck_edge_env_valid(void);
 /* ck_state.c: save states (see its header comment). field.c reaches the ck_state_top .. ck_state_load_result group through
    ck_host_point.inc, the safe point the build includes at the top of its main loop. */
 #define CK_STATE_WRAM_BYTES 0x20000
 enum { CK_OP_NONE = 0, CK_OP_SAVE = 1, CK_OP_LOAD = 2 };
 typedef struct { const char* name; uint32_t offset; uint32_t size; } CkHostField;   /* one CtHostState field (ck_host_state.h) */
 typedef struct { const char* name; void* ptr; uint32_t size; } CkPtrField;   /* one WRLD record: a live object by name and size */
-int  ck_state_top(int mode, void* wram, const uint8_t* sram);   /* once per pass; mode 0 none, 1 field scene, 2 overworld, 3 menu over a field, 4 menu over the overworld; returns a CK_OP_* */
+int  ck_state_top(int mode, void* wram, const uint8_t* sram);   /* once per pass; mode 0 none, 1 field scene, 2 overworld, 3 menu over a field, 4 menu over the overworld, 5 a fight; returns a CK_OP_* */
 void ck_state_save_done(int ok, int withScene, const void* host, const CkHostField* table, int count);   /* after a CK_OP_SAVE */
 const uint8_t* ck_state_load_core(void);   /* the staged state's 128 KB WRAM image (CORE), NULL if it has none */
 int  ck_state_load_host(void* host, const CkHostField* table, int count);   /* overlays the HOST section on host; 0 if there is none */
@@ -63,7 +77,17 @@ int  ck_state_load_menu_get(const char* name, void* dst, uint32_t size);   /* on
 int  ck_state_load_menu(const CkPtrField* table, int count, uint8_t* fb, size_t npx);   /* writes the MENU records, and unpacks MPIC into fb (npx pixels) when fb is given; 0 if malformed */
 int  ckMenuStatics(CkPtrField* out, int max);   /* menu.c's cross-frame statics (ck_menu_state.inc is appended to the patched menu.c) */
 void ckMenuAfterLoad(const uint8_t* wram);      /* after the MENU records are written: re-derives menu.c's pointers (the char-select view of the WRAM) */
+void ck_state_save_battle(const CkPtrField* table, int count);   /* before ck_state_save_done in a fight: stages the BATL section */
+int  ck_state_load_has_battle(void);   /* the staged state was taken in a fight (it has a BATL section) */
+int  ck_state_load_battle_check(const CkPtrField* table, int count);   /* the BATL section holds exactly these records (name and size) */
+int  ck_state_load_battle_get(const char* name, void* dst, uint32_t size);   /* one BATL record copied out by name, no live object touched */
+int  ck_state_load_battle(const CkPtrField* table, int count);         /* writes the BATL records into the live objects; 0 if malformed */
+int  ckBattleStatics(CkPtrField* out, int max);   /* battle.c's cross-frame statics (ck_battle_state.inc is appended to the patched battle.c) */
+void ckBattleAfterLoad(void);                    /* after the BATL records are written: clears battle.c's per-frame line cuts */
 void ck_state_load_result(int r);      /* after a CK_OP_LOAD: what CtSceneLoadState answered */
+int  ck_state_save_pending(void);      /* a save request is waiting for a safe point */
+int  ck_state_load_in_sequence(void);  /* the staged state was taken inside a sequence (its HOST says so) */
+void ck_state_load_refuse_mode(void);  /* ends a taken load as refused, reason "mode", nothing touched */
 FILE* ck_fopen(const char* path, const char* mode);   /* fopen, except "mem:scene" and "mem:apu" (ct_vm.c and audio.c are built with fopen = ck_fopen) */
 int  ck_state_request_save(void);      /* 0 if a request is open */
 int  ck_state_request_load(const uint8_t* bytes, long len);   /* 0 if one is open or the container is refused (reason set) */

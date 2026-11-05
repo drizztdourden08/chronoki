@@ -17,6 +17,8 @@ interface CkSettings {
   mute: boolean;
   sync: CkSync;
   instantSoundUploads: boolean;
+  sightscope: boolean;
+  visibleTechs: boolean;
 }
 
 type CkGameFlags = { randomizer: boolean; disableGlitches: boolean };

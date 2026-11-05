@@ -16,6 +16,9 @@ import { writeCameraLock } from './patches/camera-lock.mjs';
 import { writeEraGauge } from './patches/era-gauge.mjs';
 import { writeSaveFlagReset } from './patches/save-flag-reset.mjs';
 import { writeNewGameWorld } from './patches/new-game-world.mjs';
+import { writeEdgeEnv } from './patches/edge-env.mjs';
+import { writeSightscope } from './patches/sightscope.mjs';
+import { writeVisibleTechs } from './patches/visible-techs.mjs';
 import { writeTallField } from './patches/tall-field.mjs';
 import { writeShapes } from './shapes.mjs';
 import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
@@ -94,10 +97,11 @@ const gameArgs = (gen) => [
   ...common,
   '-DCT_DATAFREE', '-DCT_XLAT_NO_GWARP', '-DCT_AUDIO_SPC_DEFAULT=1',
   '-I', abs('src'), '-I', abs('snes'), '-I', join(root, 'core', 'reconnect'), '-I', abs('src/tables'), '-I', gen.dir,
-  ...gameSources().filter((f) => !gen.state.replaced.includes(f) && !gen.gains.replaced.includes(f)).map(abs),
+  ...gameSources().filter((f) => !gen.state.replaced.includes(f) && !gen.gains.replaced.includes(f) && !gen.sight.replaced.includes(f)).map(abs),
   ...gen.gameFiles,
   ...gen.state.files,
   ...gen.gains.files,
+  ...gen.sight.files,
   ...reconnectSources,
   ...hostSources,
   '-o', join(outDir, 'chronoki.js'),
@@ -118,7 +122,7 @@ const gameArgs = (gen) => [
   '-sMODULARIZE=1', '-sEXPORT_NAME=Chronoki', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
-  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkViewWidth,_CkViewHeight,_CkViewBlackTop,_CkViewBlackBottom,_CkViewBlackLeft,_CkViewBlackRight,_CkViewScene,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkViewWidth,_CkViewHeight,_CkViewBlackTop,_CkViewBlackBottom,_CkViewBlackLeft,_CkViewBlackRight,_CkViewScene,_CkSetEdgeEnv,_CkEnvValid,_CkEnvPtr,_CkEnvWidth,_CkEnvHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,callMain,FS,ENV,HEAPU8,HEAP16,HEAP32',
   '-lm',
 ];
@@ -185,6 +189,9 @@ const main = () => {
   gen.world = writeNewGameWorld(gen.state);           // New Game: only world 0 is the intro pan (patches/new-game-world.mjs)
   gen.eraGauge = writeEraGauge(gen.state);            // randomizer: the Epoch's gauge offers only eras in the 7 WRAM slots (patches/era-gauge.mjs)
   gen.saveFlag = writeSaveFlagReset(gen.state);       // randomizer + disable_glitches: the save-point flag is cleared at a location change (patches/save-flag-reset.mjs)
+  gen.edge = writeEdgeEnv(gen.state);                 // the Edge Effect's environment picture, gated by CkSetEdgeEnv (patches/edge-env.mjs)
+  gen.visible = writeVisibleTechs(gen.state);         // Visible Techs, gated by visible_techs (patches/visible-techs.mjs)
+  gen.sight = writeSightscope(gen.dir, belthasar);    // Sightscope, gated by sightscope; battle.c replaced in the game module (patches/sightscope.mjs)
   if (!gen.tables32) {
     const missing = join(outDir, 'tables32', 'tables_storage.c');
     if (!allowMissingTables) {

@@ -2,9 +2,8 @@
 import type { RandomizerProfileConfig } from '@drizztdourden08/brock-randomizer';
 import type { FileStore } from '@drizztdourden08/brock-core';
 import type { CtPlacement } from '@chronoki/game-core';
-import { hostGate } from '@chronoki/game-core';
 import { gateRandomizerBoot, pendingBoot } from '@drizztdourden08/brock-randomizer/session';
-import { BOOT_REFUSALS, LOCAL_MODE, RANDOMIZER_GATE } from './chronoki-randomizer.constants';
+import { BOOT_REFUSALS, LOCAL_MODE } from './chronoki-randomizer.constants';
 import { checksOfPack } from './checks-of-pack';
 import { localRunHolder } from './local-run-holder';
 import { randomizerConfigOf } from './randomizer-config-of';
@@ -17,17 +16,15 @@ const refuse = (reason: string): SeededAssets => {
   return { ok: false, reason };
 };
 
-const gateRefusalOf = (config: RandomizerProfileConfig): string | null => {
-  if (!hostGate(RANDOMIZER_GATE)) return BOOT_REFUSALS.gateOff;
-  return config.mode === LOCAL_MODE ? null : BOOT_REFUSALS.notLocal;
-};
+const modeRefusalOf = (config: RandomizerProfileConfig): string | null =>
+  config.mode === LOCAL_MODE ? null : BOOT_REFUSALS.notLocal;
 
 const prepareSeededAssets = async (profileId: string | null, assets: Uint8Array, files: FileStore): Promise<SeededAssets> => {
   localRunHolder.applied = null;
   const config = profileId === null ? undefined : randomizerConfigOf(profileId);
   if (profileId === null || config === undefined) return { ok: true, assets };
-  const gateRefusal = gateRefusalOf(config);
-  if (gateRefusal !== null) return refuse(gateRefusal);
+  const modeRefusal = modeRefusalOf(config);
+  if (modeRefusal !== null) return refuse(modeRefusal);
   const checks = checksOfPack(assets);
   if (checks.length === 0) return refuse(BOOT_REFUSALS.noChecks);
   const gate = await gateRandomizerBoot(profileId, config);

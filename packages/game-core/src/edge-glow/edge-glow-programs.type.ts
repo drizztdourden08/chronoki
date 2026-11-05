@@ -33,6 +33,7 @@ interface EdgeGlowPipeline {
   uniforms: EdgeGlowUniforms;
   quadBuffer: WebGLBuffer;
   gameTexture: WebGLTexture;
+  cleanTexture: WebGLTexture;
   draw: DrawQuadOptions;
   settings: EdgeGlowSettings;
 }
@@ -52,7 +53,10 @@ interface EdgeGlowState {
   fboB: FBO;
 }
 
+type CleanFrame = { data: Uint8Array; width: number; height: number };
+
 export type {
+  CleanFrame,
   EdgeGlowPrograms,
   EdgeGlowPipeline,
   EdgeGlowState,

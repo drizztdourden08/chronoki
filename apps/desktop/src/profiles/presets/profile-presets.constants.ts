@@ -5,6 +5,7 @@ import type { ProfilePresetId } from './profile-presets.type';
 
 const VANILLA_CONFIG_OVERRIDES: Partial<AppSettings> = {
   vanillaSafe: true,
+  gates: [...DEFAULT_GATES],
 };
 
 const ENHANCED_EXTRA_GATES: readonly string[] = ['autoSave', 'widescreen', 'sceneAdjust', 'wideSteamMargins', 'fillBottomLine', 'renderScale', 'interpolate'];

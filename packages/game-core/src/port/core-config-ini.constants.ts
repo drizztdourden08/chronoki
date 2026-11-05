@@ -15,6 +15,8 @@ const DEFAULT_CK_SETTINGS: CkSettings = {
   mute: false,
   sync: 'frame_perfect',
   instantSoundUploads: false,
+  sightscope: false,
+  visibleTechs: false,
 };
 
 const VANILLA_GAME_FLAGS: CkGameFlags = { randomizer: false, disableGlitches: false };

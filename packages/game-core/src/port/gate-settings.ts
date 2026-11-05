@@ -27,6 +27,8 @@ const gateSettings = (
     sceneAdjustments: effective.has('sceneAdjust'),
     sync: effective.has('freeSync') ? 'free' : 'frame_perfect',
     instantSoundUploads: effective.has('instantUploads'),
+    sightscope: effective.has('sightscope'),
+    visibleTechs: effective.has('visibleTechList'),
   };
 };
 

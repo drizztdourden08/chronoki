@@ -1,8 +1,26 @@
 /* @layer renderer-design-system @kind style */
-/* ChronoKi look: the Tessera "chronoki" palette (gold and dark red) and the ChronoType face (CC BY-NC-SA 3.0, credited in the Credits screen). Colours come from Tessera tokens only; the app surfaces drop the palette's brown seeds so they fall back to black like RotP. */
+/* ChronoKi look: the Tessera "chronoki" palette (gold and dark red) and the ChronoType face for titles (CC BY-NC-SA 3.0, credited in the Credits screen). Colours come from Tessera tokens only; the app surfaces drop the palette's brown seeds so they fall back to black like RotP. */
+
+/* ChronoTypeUI: Tessera's ChronoType file re-declared with metrics tuned for UI text. The font is a 16-pixel-per-em pixel face (upm 1024, 64 units per pixel; hhea ascent 768, descent -64, cap height 512), so its default line box puts the capitals 0.094em below the box centre and it renders small and blurry at 12 to 14px. size-adjust 133.333% makes 12px text exactly 1 screen pixel per font pixel (crisp) and the 14px base 18.7px. The overrides are in unscaled em divided by the size-adjust: ascent 62.5% and descent 12.5% of the em (so ascent minus descent equals the cap height, centring capitals in the line box); gap 0. */
+@font-face {
+  font-family: ChronoTypeUI;
+  src:
+    url('../../node_modules/@drizztdourden08/tessera/fonts/chronotype/chronotype-ext.woff2') format('woff2'),
+    url('../../node_modules/@drizztdourden08/tessera/fonts/chronotype/chronotype-ext.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+  size-adjust: 133.333%;
+  ascent-override: 46.875%;
+  descent-override: 9.375%;
+  line-gap-override: 0%;
+}
+
+/* Same split as RotP (owner, 2026-11-05): menus and body text keep Tessera's Inter (--font-sans untouched), titles take
+   ChronoType in place of Chakra Petch, and game text uses ChronoType as RotP uses its game font there. */
 :root {
-  --font-sans: var(--font-chrono);
-  --font-title: var(--font-chrono);
+  --font-title: ChronoTypeUI, var(--font-sans);
+  --font-game: ChronoType, var(--font-mono);
 }
 
 [data-palette="chronoki"] {

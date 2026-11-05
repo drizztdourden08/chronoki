@@ -41,6 +41,24 @@ int ck_host_decode(void* host, const CkHostField* table, int count, CkSpan secti
   return 1;
 }
 
+/* One int record of a HOST section by name, read without a CtHostState (ck_state_load_in_sequence). */
+int ck_host_get_int(CkSpan section, const char* name, int* out) {
+  const size_t want = strlen(name);
+  size_t at = 0;
+  while (at < section.len) {
+    size_t n = section.data[at];
+    if (at + 5 + n > section.len) return 0;
+    uint32_t size = ck_get32(section.data + at + 1 + n);
+    if (size > section.len - at - 5 - n) return 0;
+    if (n == want && size == sizeof(int) && !memcmp(section.data + at + 1, name, n)) {
+      memcpy(out, section.data + at + 5 + n, sizeof(int));
+      return 1;
+    }
+    at += 5 + n + size;
+  }
+  return 0;
+}
+
 /* The WRLD section (overworld) uses the same records over live objects: CkPtrField gives each one's address, so a World
    field, a world.c static and a field.c static are all written by name and size. Unlike HOST, a load is strict: the
    section must hold exactly the table's records (ck_fields_check, run before the load touches anything) and a record
@@ -61,7 +79,7 @@ size_t ck_fields_encode(uint8_t* out, const CkPtrField* table, int count) {
   return at;
 }
 
-#define CK_FIELDS_MAX 160
+#define CK_FIELDS_MAX 512
 
 static int fieldIndex(const CkPtrField* table, int count, const uint8_t* name, size_t n) {
   for (int i = 0; i < count; i++)

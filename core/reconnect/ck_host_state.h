@@ -10,6 +10,7 @@
 #include "ck_reconnect.h"
 #include "ck_world_state.h"   /* owIdle, and the overworld section's record count */
 #include "ck_menu_state.h"    /* the menu section's sizes */
+#include "ck_battle_state.h"  /* the battle section's record count */
 
 typedef struct CtHostState {
 #define CK_HOST(t, n, d) t n d;

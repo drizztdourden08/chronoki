@@ -25,6 +25,7 @@ int ck_schema_accepts(const uint8_t* box, size_t len, CkSpan stamp);   /* every 
 /* ck_state_host.c: the HOST section, one record per field: u8 name length, the name, u32 size, the bytes */
 size_t ck_host_encode(uint8_t* out, const void* host, const CkHostField* table, int count);   /* out NULL: the size only */
 int ck_host_decode(void* host, const CkHostField* table, int count, CkSpan section);          /* 0 if malformed */
+int ck_host_get_int(CkSpan section, const char* name, int* out);                             /* one int record by name; 0 if absent */
 
 /* ck_state_host.c: the WRLD section, the same records over live objects (strict on load) */
 size_t ck_fields_encode(uint8_t* out, const CkPtrField* table, int count);   /* out NULL: the size only */
