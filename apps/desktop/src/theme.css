@@ -7,4 +7,5 @@
   --offset-title-pendulum: 4%;
   --pivot-title-pendulum: 73%;
   --length-title-pendulum: 3;
+  --mode-badge-d: calc(80 * var(--size-1));
 }

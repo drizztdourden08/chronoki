@@ -1,18 +1,19 @@
 /* @layer renderer-components @kind component */
 import { Button, Flex, Icon, Stack, Status, Text, Title } from '@drizztdourden08/tessera/primitives';
+import { MODE_BADGE_LABELS } from '@app/compounds/ModeBadge';
 import { PROFILE_TEXT } from '../ProfileManager.constants';
 import type { ProfileDetailHeaderProps } from '../ProfileManager.type';
 import { ProfileFolderButton } from './ProfileFolderButton';
 
 const ProfileDetailHeader = (props: ProfileDetailHeaderProps) => {
-  const { profile, modeLabel, onOpen, onDelete } = props;
+  const { profile, mode, onOpen, onDelete } = props;
 
   return (
-    <Flex justify="between" align="start" gap="md" wrap>
-      <Stack gap="2xs">
+    <Flex className="profile-detail__header" justify="between" align="start" gap="md" wrap>
+      <Stack gap="2xs" className="profile-detail__heading">
         <Flex gap="sm" align="center" wrap>
           <Title level={3}>{profile.name}</Title>
-          <Status tone="primary" variant="pill">{modeLabel}</Status>
+          <Status tone="primary" variant="pill">{MODE_BADGE_LABELS[mode]}</Status>
         </Flex>
         <Text variant="caption" tone="muted">{profile.romFile}</Text>
       </Stack>
