@@ -1,6 +1,6 @@
 /* @layer renderer-components @kind component */
 import { useRef } from 'react';
-import { useProduct } from '@drizztdourden08/brock-react';
+import { useProduct, useSetAppContext } from '@drizztdourden08/brock-react';
 import { Box, Image, Text } from '@drizztdourden08/tessera/primitives';
 import { GameLayer } from '@app/views/GameLayer';
 import { useGameSession } from '@app/views/GameSession';
@@ -11,6 +11,7 @@ import { LocationBannerLayer } from '@app/views/LocationBannerLayer';
 import { RandomizerOverlays } from '@app/views/RandomizerOverlays';
 import { SaveStateOverlay, useSaveOverlay } from '@app/views/SaveStateOverlay';
 import { useDockBleed } from './behavior/useDockBleed';
+import { GAME_CONTEXT } from './GameView.constants';
 import './GameView.css';
 
 const GameView = () => {
@@ -20,6 +21,7 @@ const GameView = () => {
   const viewRef = useRef<HTMLDivElement | null>(null);
   const profileId = launch?.profileId ?? null;
   useDockBleed(viewRef);
+  useSetAppContext(GAME_CONTEXT, running);
   return (
     <Box ref={viewRef} className="game-view">
       <GameLayer />
