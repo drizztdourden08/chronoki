@@ -16,6 +16,7 @@ import { INTRO_JUMP, START_BLOCK_MAX_BYTES } from './start-block.constants';
 import { coalescePokes } from './coalesce-pokes';
 import { StartBlockTooLongError } from './start-block-too-long.error';
 import { STANDARD_START } from './standard-start.constants';
+import { withOptionFlags } from './with-option-flags';
 
 const { POKE, RETURN, buildScript, entryBytes, packOf } = spliceFixture;
 const join = (parts: Uint8Array[]): number[] => parts.flatMap((p) => [...p]);
@@ -119,5 +120,19 @@ describe('start block party', () => {
     const party: CtStartParty = ['marle', 'crono', 'lucca', 'robo', 'frog', 'ayla', 'magus'];
     expect(lengthOf(party)).toBeGreaterThan(START_BLOCK_MAX_BYTES);
     expect(() => planStartState(STANDARD_START, party)).toThrow(StartBlockTooLongError);
+  });
+});
+
+describe('withOptionFlags', () => {
+  it('leaves the state, and so the start block, untouched with the options off', { tags: ['critical'] }, () => {
+    expect(withOptionFlags(STANDARD_START, {})).toBe(STANDARD_START);
+    expect(withOptionFlags(STANDARD_START, { earlyPendantCharge: false, unlockedMagic: false })).toBe(STANDARD_START);
+  });
+
+  it('adds the charged-pendant bit with the early option', { tags: ['critical'] }, () => {
+    const state = withOptionFlags(STANDARD_START, { earlyPendantCharge: true });
+    expect(state.flags).toContainEqual({ at: 0x7f00f4, bits: 0x40 });
+    const grew = planStartState(state).replace.length - planStartState(STANDARD_START).replace.length;
+    expect(grew).toBe(encodeSetBits(0x7f00f4, 0x40).length);
   });
 });
