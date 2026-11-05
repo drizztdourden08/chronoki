@@ -15,18 +15,20 @@ type CtEra = 'present' | 'middle-ages' | 'future' | 'prehistory' | 'dark-ages' |
 
 type CtRegionId =
   | 'present' | 'middle-ages' | 'giants-claw' | 'magus-castle' | 'future' | 'death-peak' | 'black-omen'
-  | 'prehistory' | 'tyrano-lair' | 'end-of-time' | 'dark-ages' | 'ocean-palace' | 'lavos' | 'unsorted';
+  | 'prehistory' | 'tyrano-lair' | 'end-of-time' | 'dark-ages' | 'ocean-palace' | 'lavos' | 'unsorted'
+  | 'northern-ruins' | 'ozzies-fort';
 
 type CtSpotId =
   | 'ki-zenan-bridge' | 'ki-denadoro-mts' | 'ki-frogs-burrow' | 'ki-giants-claw' | 'ki-kings-trial'
   | 'ki-fionas-shrine' | 'ki-snail-stop' | 'ki-carpenters-wife' | 'ki-taban' | 'ki-melchior-sun-stone'
-  | 'ki-reptite-lair' | 'ki-arris-dome' | 'ki-sun-palace' | 'ki-geno-dome' | 'ki-mt-woe';
+  | 'ki-reptite-lair' | 'ki-arris-dome' | 'ki-sun-palace' | 'ki-geno-dome' | 'ki-mt-woe'
+  | 'ki-sunken-desert' | 'ki-cyrus-grave' | 'ki-ozzies-fort';
 
-type CtHelperName = 'sun-stone-charged' | 'go-mode';
+type CtHelperName = 'sun-stone-charged' | 'go-mode' | 'sealed-open';
 
 type CtOptionKey =
   | 'gameMode' | 'itemDifficulty' | 'enemyDifficulty' | 'disableGlitches' | 'bossScaling' | 'earlyPendantCharge'
-  | 'unlockedMagic' | 'lockedCharacters';
+  | 'unlockedMagic' | 'lockedCharacters' | 'addCyrusGraveSpot' | 'addOzzieSpot';
 
 type CtWorldKeys = {
   item: CtItem;

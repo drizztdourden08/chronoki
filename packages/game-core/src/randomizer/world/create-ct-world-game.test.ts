@@ -29,7 +29,7 @@ const replaySweep = (input: CtWorldInput, seed: string, locations: readonly [str
 describe('createCtWorldGame', () => {
   it('fills a fixed seed and the sweep reaches the goal', { tags: ['critical'] }, () => {
     const placement = generate(createCtWorldGame(INPUT), { seed: SEED });
-    expect(placement.locations).toHaveLength(15 + 42);
+    expect(placement.locations).toHaveLength(18 + 42);
     expect(replaySweep(INPUT, SEED, placement.locations)).toBe(true);
   });
 

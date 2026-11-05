@@ -10,6 +10,14 @@ const CT_HELPERS: readonly HelperDefinition<World<CtWorldKeys>>[] = [
       state.has('moon-stone') && state.canReachRegion('prehistory') && state.canReachRegion('future'),
   },
   {
+    name: 'sealed-open',
+    params: [],
+    body: (state) =>
+      state.has('pendant')
+      && (state.world.readOption('earlyPendantCharge') === true
+        || state.canReachRegion('tyrano-lair') || state.canReachRegion('magus-castle')),
+  },
+  {
     name: 'go-mode',
     params: [],
     body: (state) => state.canReachRegion('lavos'),

@@ -28,7 +28,6 @@ const PRESENT: CtRegionSpec = {
   events: [
     { id: 'crono' },
     { id: 'marle' },
-    { id: 'lucca' },
     { id: 'kings-trial-done', rule: all(region('middle-ages'), has('prism-shard'), has('marle')) },
     { id: 'masamune', rule: all(has('bent-sword'), has('bent-hilt')) },
   ],
