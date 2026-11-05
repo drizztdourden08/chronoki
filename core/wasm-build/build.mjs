@@ -24,6 +24,9 @@ import { writeVisibleTechs } from './patches/visible-techs.mjs';
 import { writeTallField } from './patches/tall-field.mjs';
 import { writeDialogPacing } from './patches/dialog-pacing.mjs';
 import { writeWideSideSprites } from './patches/wide-side-sprites.mjs';
+import { writeApForeignItem } from './patches/ap-foreign-item.mjs';
+import { writeApDeathLink } from './patches/ap-death-link.mjs';
+import { writeApSaveBytes } from './patches/ap-save-bytes.mjs';
 import { writeShapes } from './shapes.mjs';
 import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
 
@@ -126,7 +129,7 @@ const gameArgs = (gen) => [
   '-sMODULARIZE=1', '-sEXPORT_NAME=Chronoki', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
-  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkSetDimFlashes,_CkSetDialogPacing,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkViewWidth,_CkViewHeight,_CkViewBlackTop,_CkViewBlackBottom,_CkViewBlackLeft,_CkViewBlackRight,_CkViewScene,_CkViewOriginX,_CkViewOriginY,_CkSetEdgeEnv,_CkEnvValid,_CkEnvPtr,_CkEnvWidth,_CkEnvHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkSetDimFlashes,_CkSetDialogPacing,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkViewWidth,_CkViewHeight,_CkViewBlackTop,_CkViewBlackBottom,_CkViewBlackLeft,_CkViewBlackRight,_CkViewScene,_CkViewOriginX,_CkViewOriginY,_CkSetEdgeEnv,_CkEnvValid,_CkEnvPtr,_CkEnvWidth,_CkEnvHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkSetApOnline,_CkSetApDeathLink,_CkApForeignItemId,_CkSetForeignName,_CkClearForeignNames,_CkApTakeEvents,_CkApKillParty,_CkSetApKillLanding,_CkGetApReceivedIndex,_CkSetApReceivedIndex,_CkGetApRoomHash,_CkSetApRoomHash,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,callMain,FS,ENV,HEAPU8,HEAP16,HEAP32',
   '-lm',
 ];
@@ -201,6 +204,11 @@ const main = () => {
   // Sightscope, gated by sightscope; battle.c replaced in the game module (patches/sightscope.mjs). Duplicate characters'
   // battle side takes its battle.c and adds move.c (patches/duplicate-chars-battle.mjs): the same { files, replaced } shape.
   gen.sight = writeDuplicateCharsBattle(writeSightscope(gen.dir, belthasar), gen.dir, belthasar);
+  // Multiworld (I-117 C4), every hook gated by ck_ap_online(): the foreign item in chests and gifts (field.c, ct_vm.c),
+  // death link (field.c, battle.c), the received index and room hash in the save slot's spare tail (menu.c).
+  gen.apForeign = writeApForeignItem(gen.state);          // patches/ap-foreign-item.mjs
+  gen.apDeath = writeApDeathLink(gen.state, gen.sight);  // patches/ap-death-link.mjs
+  gen.apSave = writeApSaveBytes(gen.state);               // patches/ap-save-bytes.mjs
   if (!gen.tables32) {
     const missing = join(outDir, 'tables32', 'tables_storage.c');
     if (!allowMissingTables) {

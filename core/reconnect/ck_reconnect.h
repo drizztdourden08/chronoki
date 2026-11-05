@@ -3,6 +3,7 @@
 #define CK_RECONNECT_H
 #include <stdint.h>
 #include <stdio.h>
+#include "ck_ap.h"   /* multiworld hooks (ap_reconnect.c), called by the ap-*.mjs patched engine files */
 #ifdef __cplusplus
 extern "C" {
 #endif

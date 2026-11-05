@@ -69,3 +69,21 @@ EMSCRIPTEN_KEEPALIVE void CkSetVoiceGains(int music, int sfx) {
   g_ckGain[0] = music < 0 ? 0 : music > 256 ? 256 : music;
   g_ckGain[1] = sfx < 0 ? 0 : sfx > 256 ? 256 : sfx;
 }
+/* Multiworld (reconnect/ap_reconnect.c, ck_ap.h). Every hook is off until CkSetApOnline(1); death link also needs
+   CkSetApDeathLink(1). CkApTakeEvents returns a CkApEventsT snapshot (chests opened, 0xCA gifts run, game overs with their
+   cause) and empties the ring; read it after CkRunFrame. CkSetForeignName(kind, loc, key, text): kind 0 the default line,
+   1 a chest (loc, record n), 2 a gift (loc, patchAt); "" removes. CkApKillParty arms a death-link kill (0 = refused, gate
+   off); CkSetApKillLanding(0 next battle frame, 1 also a field game over at once). The received index (u16) and room hash
+   (u32, 0 = no room) live in the save slot's spare SRAM tail and the save-state stamp. */
+EMSCRIPTEN_KEEPALIVE void CkSetApOnline(int on) { ck_ap_set_online(on); }
+EMSCRIPTEN_KEEPALIVE void CkSetApDeathLink(int on) { ck_ap_set_death_link(on); }
+EMSCRIPTEN_KEEPALIVE int CkApForeignItemId(void) { return CK_AP_FOREIGN_ITEM; }
+EMSCRIPTEN_KEEPALIVE void CkSetForeignName(int kind, int loc, int key, const char* text) { ck_ap_set_foreign_name(kind, loc, key, text); }
+EMSCRIPTEN_KEEPALIVE void CkClearForeignNames(void) { ck_ap_clear_foreign_names(); }
+EMSCRIPTEN_KEEPALIVE const void* CkApTakeEvents(void) { return ck_ap_take_events(); }
+EMSCRIPTEN_KEEPALIVE int CkApKillParty(void) { return ck_ap_kill_party(); }
+EMSCRIPTEN_KEEPALIVE void CkSetApKillLanding(int mode) { ck_ap_set_kill_landing(mode); }
+EMSCRIPTEN_KEEPALIVE int CkGetApReceivedIndex(void) { return (int)ck_ap_received_index(); }
+EMSCRIPTEN_KEEPALIVE void CkSetApReceivedIndex(int v) { ck_ap_set_received_index((unsigned)v); }
+EMSCRIPTEN_KEEPALIVE unsigned CkGetApRoomHash(void) { return ck_ap_room_hash(); }
+EMSCRIPTEN_KEEPALIVE void CkSetApRoomHash(unsigned v) { ck_ap_set_room_hash((uint32_t)v); }

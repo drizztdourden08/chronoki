@@ -181,6 +181,7 @@ void ck_state_save_done(int ok, int withScene, const void* host, const CkHostFie
     s[n++] = (CkSection){ "APU ", (const uint8_t*)g_out[1].buf, g_out[1].size };
     if (g_out[2].buf && g_out[2].size > 0) s[n++] = (CkSection){ "APUH", (const uint8_t*)g_out[2].buf, g_out[2].size };
     int stampLen = ck_schema_stamp(stamp, sizeof stamp, modeTag(g_takenMode), s + 1, n - 1, 0);
+    stampLen += ck_ap_stamp_put(stamp + stampLen, (int)sizeof stamp - stampLen);   /* multiworld only: "ap=index,hash" */
     s[0] = (CkSection){ "STMP", (const uint8_t*)stamp, (size_t)stampLen };
     box = ck_box_build(s, n, &boxLen);
   }
@@ -218,6 +219,7 @@ int ck_state_load_menu(const CkPtrField* table, int count, uint8_t* fb, size_t n
 
 void ck_state_load_result(int r) {
   if (g_phase != CK_LOAD_TAKEN) return;
+  if (r) ck_ap_stamp_apply();             /* multiworld only: the state's received index and room hash */
   finish(r != 0, CK_REASON_FAILED);
 }
 
@@ -273,6 +275,7 @@ int ck_state_request_load(const uint8_t* p, long len) {
   g_inMenu = ck_box_find(g_loadCopy, (size_t)len, "MENU");
   g_inMpic = ck_box_find(g_loadCopy, (size_t)len, "MPIC");
   g_inBattle = ck_box_find(g_loadCopy, (size_t)len, "BATL");
+  ck_ap_stamp_stage(stamp.data, stamp.len);
   g_phase = CK_WAIT_LOAD; g_status = 1; g_reason = CK_REASON_NONE; g_waited = 0;
   return 1;
 }
