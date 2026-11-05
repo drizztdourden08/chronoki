@@ -9,6 +9,7 @@ import type { GameStartWatch } from './watch.type';
 const createGameStartWatch = (): GameStartWatch => {
   let last: number | null = null;
   let latched = false;
+  let fresh = false;
 
   const jumpedForward = (view: MemoryView): boolean => {
     const now = playSecondsOf(view);
@@ -22,15 +23,18 @@ const createGameStartWatch = (): GameStartWatch => {
     const loaded = jumpedForward(view);
     const newGame = view.byte(CT_WRAM_REGION, NEW_GAME_FLAG) === NEW_GAME_CHOSEN;
     latched = loaded || newGame;
+    fresh = newGame && !loaded;
     return latched;
   };
 
   return {
     observe,
     started: () => latched,
+    newGame: () => latched && fresh,
     reset: () => {
       last = null;
       latched = false;
+      fresh = false;
     },
   };
 };
