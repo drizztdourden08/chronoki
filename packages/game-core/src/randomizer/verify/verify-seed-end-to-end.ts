@@ -25,7 +25,7 @@ const verifySeedEndToEnd = (pack: Uint8Array, options: CtOptionValues, party: Ct
     const placement: CtPlacement = rollCtPlacement(input, seed);
     const placedParty = placement.startParty ?? party;
     const plan = planPackPlacement(placement, input.checks);
-    const written = applySeedToPack(pack, plan.pack, verifyStartSplicesOf(options, placedParty), applyOptionsOf(options, placement.spheres));
+    const written = applySeedToPack(pack, plan.pack, verifyStartSplicesOf(options, placedParty), applyOptionsOf(options, placement.spheres, seed));
     if (!written.ok) return failedWith(swept, `apply refused ${written.failed.length}: ${written.failed.slice(0, VERIFY_SAMPLE).join(', ')}`);
     const mismatches = comparePackToPlacement(written.bytes, placement, {
       checks: realignGiftChecks(pack, written.bytes, input.checks), startState: startStateOf(options), party: placedParty,

@@ -8,6 +8,7 @@ import { planJetsItemEdits } from './jets/plan-jets-item-edits';
 import { planGiftEdits } from './plan-gift-edits';
 import type { ScriptSplice } from './script/script-splice.type';
 import { spliceSceneScripts } from './script/splice-scene-scripts';
+import { planTechOrderEdits } from './tech-order/plan-tech-order-edits';
 
 const stale = (pack: Uint8Array, edits: PackEdit[]): string[] =>
   edits.filter((e) => pack[e.at] !== e.old).map((e) => e.why);
@@ -25,8 +26,9 @@ const applySeedToPack = (
   const chestPlan = planChestEdits(pack, chests, placement, options);
   const giftPlan = planGiftEdits(pack, gifts, placement);
   const jetsPlan = options.epochFail === true ? planJetsItemEdits(pack) : { edits: [], failed: [] };
-  const edits = [...chestPlan.edits, ...giftPlan.edits, ...planEnemyOptionEdits(pack, options), ...jetsPlan.edits];
-  const failed = [...new Set([...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...stale(pack, edits)])];
+  const techPlan = options.techOrder === undefined ? { edits: [], failed: [] } : planTechOrderEdits(pack, options.techOrder, options.seed ?? '');
+  const edits = [...chestPlan.edits, ...giftPlan.edits, ...planEnemyOptionEdits(pack, options), ...jetsPlan.edits, ...techPlan.edits];
+  const failed = [...new Set([...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...techPlan.failed, ...stale(pack, edits)])];
   if (failed.length > 0) return { ok: false, failed };
   const edited = pack.slice();
   edits.forEach((e) => {
