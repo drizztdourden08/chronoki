@@ -7,12 +7,12 @@ import { GameSessionContext } from '@app/views/GameSession/GameSession.context';
 import type { AppSettings } from '@app/settings.type';
 import { useFpsReadout } from './useFpsReadout';
 
-const useFpsAndRefreshRate = (): { showFps: boolean; fps: number; refreshHz: number | null } => {
+const useFpsAndRefreshRate = (): { displayPerfInTitle: boolean; fps: number; refreshHz: number | null } => {
   const { settings } = useSettings<AppSettings>();
   const session = useContext(GameSessionContext);
-  const showFps = settings.showFps;
-  const fps = useFpsReadout(showFps && (session?.running ?? false));
-  return { showFps, fps, refreshHz: effectiveHz(useRefreshRate()) };
+  const displayPerfInTitle = settings.displayPerfInTitle;
+  const fps = useFpsReadout(displayPerfInTitle && (session?.running ?? false));
+  return { displayPerfInTitle, fps, refreshHz: effectiveHz(useRefreshRate()) };
 };
 
 export { useFpsAndRefreshRate };

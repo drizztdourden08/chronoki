@@ -25,7 +25,7 @@ const PICTURE_SECTION: SettingsSection = {
     gateRow('sceneAdjust'),
     gateRow('wideSteamMargins'),
     gateRow('fillBottomLine'),
-    { key: 'showFps', label: 'Show FPS' },
+    { key: 'displayPerfInTitle', label: 'Show FPS' },
     gateRow('interpolate'),
     gateRow('freeSync'),
   ],
