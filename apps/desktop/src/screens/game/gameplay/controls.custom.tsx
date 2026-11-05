@@ -1,7 +1,7 @@
 /* @layer renderer-app @kind component */
 import { useProfiles } from '@drizztdourden08/brock-react';
 import type { PageProps, ScreenMeta, SearchEntrySeed } from '@drizztdourden08/brock-react';
-import { ControlsSettings } from '@app/input/controls/ControlsSettings';
+import { ChronokiControls } from '@app/input/controls/ChronokiControls';
 
 const meta: ScreenMeta = { title: 'Controls', icon: 'keyboard', showHeader: true, order: 4, fill: true, keywords: ['controls', 'bindings', 'keys', 'gamepad', 'controller', 'buttons'] };
 
@@ -15,7 +15,7 @@ const searchEntries: SearchEntrySeed[] = [
 const ControlsPage = (props: PageProps) => {
   const { active } = useProfiles();
   const profileId = active?.id ?? props.profile?.id ?? '';
-  return <ControlsSettings profileId={profileId} />;
+  return <ChronokiControls profileId={profileId} />;
 };
 
 export default ControlsPage;

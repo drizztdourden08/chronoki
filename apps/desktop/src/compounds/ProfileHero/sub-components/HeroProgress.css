@@ -47,6 +47,15 @@
 .hero-progress__key--taken::before { background: var(--c-secondary); }
 .hero-progress__key--available::before { background: var(--c-warning); }
 
+.hero-progress__count {
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  color: var(--c-text-muted);
+}
+
+.hero-progress__count--taken { color: var(--c-secondary); }
+.hero-progress__count--available { color: var(--c-warning); }
+
 .hero-progress__empty {
   font-size: var(--text-sm);
   color: var(--c-text-muted);

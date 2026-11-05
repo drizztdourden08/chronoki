@@ -14,12 +14,25 @@ interface HeroLastSave {
   onLoad: () => void;
 }
 
+interface HeroChecks {
+  taken: number;
+  available: number | null;
+  left: number;
+  total: number;
+}
+
 interface HeroProgressFile {
   slot: number;
   lead: string;
   level: number;
   playTime: string;
   saveNumber: number;
+  checks?: HeroChecks;
 }
 
-export type { HeroLastSave, HeroProgressFile, HeroToolsProps };
+interface HeroProgressProps {
+  files: HeroProgressFile[];
+  checks?: HeroChecks | null;
+}
+
+export type { HeroChecks, HeroLastSave, HeroProgressFile, HeroProgressProps, HeroToolsProps };

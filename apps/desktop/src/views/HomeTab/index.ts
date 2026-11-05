@@ -1,8 +1,13 @@
 /* @layer renderer-components @kind barrel */
 export { HomeDialogs } from './HomeDialogs';
 export { HomeTab } from './HomeTab';
+export { RandomizedProgress } from './RandomizedProgress';
 export { buildProfileFacts } from './behavior/build-profile-facts';
+export { buildRandomizerFacts } from './behavior/build-randomizer-facts';
 export { romFileOf } from './behavior/rom-file-of';
+export { useHomeRandomizerStatus } from './behavior/useHomeRandomizerStatus';
+export { useHeroFacts } from './behavior/useHeroFacts';
+export { useHeroLastSave } from './behavior/useHeroLastSave';
 export { useHomeSramImport } from './behavior/useHomeSramImport';
 export { useNormalSaves } from './behavior/useNormalSaves';
 export { useProfileProgress } from './behavior/useProfileProgress';

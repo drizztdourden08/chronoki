@@ -12,8 +12,8 @@ import { chronokiTracker } from './tracker/chronoki-tracker';
 import { CHRONOKI_RANDOMIZER_LABELS } from './chronoki-randomizer.constants';
 import { chronokiSeedApplier } from './chronoki-seed-applier';
 import { chronokiToConfig } from './chronoki-to-config';
-import { ctOptionTabs } from './options/ct-option-tabs';
 import { rollChronokiSeed } from './roll-chronoki-seed';
+import { ASIDE_LABEL, CT_LOG_RULES, CT_RUN_PANELS, CtOptionsAside, ctImpactOptionTabs } from './views';
 
 const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   id: CT_GAME,
@@ -31,7 +31,14 @@ const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   labels: CHRONOKI_RANDOMIZER_LABELS,
   tracker: chronokiTracker,
   inventory: CHRONOKI_INVENTORY,
-  views: { optionTabs: ctOptionTabs, checksWidget: { settings: ChecksNotifySettings } },
+  views: {
+    optionTabs: ctImpactOptionTabs,
+    optionsAside: CtOptionsAside,
+    optionsAsideLabel: ASIDE_LABEL,
+    runPanels: CT_RUN_PANELS,
+    logRules: CT_LOG_RULES,
+    checksWidget: { settings: ChecksNotifySettings },
+  },
 });
 
 export { chronokiRandomizerGame };
