@@ -59,20 +59,26 @@ describe('key-item spot gifts', { tags: ['critical'] }, () => {
   it('binds the settled spots to the gift or chest that gives their item', () => {
     const bound = spotChecksOf(CHECKS);
     expect(bound?.get('ki-zenan-bridge')).toBe('gift-078-o15-0');
-    expect(bound?.get('ki-taban')).toBe('gift-004-o8-2');
+    expect(bound?.get('ki-taban')).toBe('gift-004-o8-0');
     expect(bound?.get('ki-melchior-sun-stone')).toBe('gift-1b8-o23-1');
     expect(bound?.get('ki-frogs-burrow')).toBe('chest-08d-0');
   });
 
   it('leaves the sibling gifts of a bound function as their own checks', () => {
-    const siblings = [giftOf('gift-004-o8-0', 0x7a), giftOf('gift-078-o15-1', 0xcd), giftOf('gift-1b8-o23-0', 0xbb)];
+    const siblings = [giftOf('gift-004-o8-2', 0x79), giftOf('gift-078-o15-1', 0xcd), giftOf('gift-1b8-o23-0', 0xbb)];
     const treasure = joinCtChecks({ checks: [...CHECKS, ...siblings], spotChecks: spotChecksOf(CHECKS) }).treasure;
     expect(treasure.map((location) => location.key)).toEqual(siblings.map((check) => check.id));
   });
 
-  it('skips a pinned spot that holds its vanilla item: not packed, not virtual', () => {
-    const plan = planPackPlacement(placementFixture([['ki-giants-claw', 'prism-shard'], ['ki-sunken-desert', 'c-trigger']]), CHECKS);
-    expect(plan).toEqual({ pack: {}, items: new Map(), virtual: [], unbound: 0 });
+  it('skips a pinned source that holds its vanilla item: not packed, not virtual', () => {
+    const sources = [giftOf('gift-1d0-o0', 0xd9), giftOf('gift-1b8-o2', 0xd8)];
+    const placement = placementFixture([['gift-1d0-o0', 'c-trigger'], ['gift-1b8-o2', 'prism-shard']]);
+    expect(planPackPlacement(placement, [...CHECKS, ...sources])).toEqual({ pack: {}, items: new Map(), virtual: [], unbound: 0 });
+  });
+
+  it('no longer treats a giver-less spot as pinned', () => {
+    const plan = planPackPlacement(placementFixture([['ki-sunken-desert', 'c-trigger']]), CHECKS);
+    expect(plan.virtual).toEqual([['ki-sunken-desert', 'c-trigger']]);
   });
 
   it('still reports another item on an unbound spot as virtual', () => {

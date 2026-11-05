@@ -12,6 +12,7 @@ import { planChestEdits } from './plan-chest-edits';
 import { planGiftEdits } from './plan-gift-edits';
 import { planShopPriceEdits } from './shop-prices/plan-shop-price-edits';
 import type { SeedPlanContext, SeedPlanStep } from './seed-plan-step.type';
+import { planTabanOrderEdits } from './taban/plan-taban-order-edits';
 import { planTabNameEdits } from './tabs/plan-tab-name-edits';
 import { planTechDamageEdits } from './tech-damage/plan-tech-damage-edits';
 import { planTechOrderEdits } from './tech-order/plan-tech-order-edits';
@@ -23,6 +24,7 @@ const always = (): boolean => true;
 const SEED_PLAN_STEPS: readonly SeedPlanStep[] = [
   { key: 'chest', when: always, plan: (pack, options, ctx) => planChestEdits(pack, ctx.chests, ctx.placement, options) },
   { key: 'gift', when: always, plan: (pack, _options, ctx) => planGiftEdits(pack, ctx.gifts, ctx.placement) },
+  { key: 'taban', when: always, plan: (pack, _options, ctx) => planTabanOrderEdits(pack, ctx.gifts, ctx.placement) },
   { key: 'enemy', when: always, plan: (pack, options) => ({ edits: planEnemyOptionEdits(pack, options), failed: [] }) },
   { key: 'jets', when: (options) => options.epochFail === true, plan: (pack) => planJetsItemEdits(pack) },
   { key: 'spot', when: always, plan: (_pack, _options, ctx) => ({ edits: [], failed: ctx.spotPlan.failed }) },

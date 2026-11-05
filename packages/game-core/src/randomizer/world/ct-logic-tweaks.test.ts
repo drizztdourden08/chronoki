@@ -8,6 +8,8 @@ import type { CtWorldInput } from './ct-world-input.type';
 import { keyItemsOf } from './epoch-fail/key-items-of';
 import { modeOf } from './modes/mode-of';
 import { pinRoboRibbon } from './pin-robo-ribbon';
+import { eligibleObjectivesOf } from './bucket/eligible-objectives-of';
+import { LEGACY_PARTY } from './recruits/legacy-party.constants';
 
 const RIBBON = 0xb8;
 
@@ -47,19 +49,21 @@ describe('spot gift checks', () => {
   });
 });
 
-describe('vanilla Robo Ribbon', () => {
-  it('is off by default and keeps the ribbon check, the ribbon itself pinned at Geno Dome', { tags: ['critical'] }, () => {
-    expect(ctOptionValues().vanillaRoboRibbon).toBe(false);
-    expect(createCtWorldDef(inputOf()).buildPool({} as never).progression).not.toContain('robo-ribbon');
-    expect(locationKeys(inputOf())).toContain('chest-test-1');
+describe('vanilla Robo Ribbon (superseded: always on)', () => {
+  it('keeps the ribbon out of the pool and drops a ribbon check, whatever the override', { tags: ['critical'] }, () => {
+    expect(ctOptionValues({ vanillaRoboRibbon: false }).vanillaRoboRibbon).toBe(true);
+    [inputOf(), inputOf({ vanillaRoboRibbon: false })].forEach((input) => {
+      expect(createCtWorldDef(input).buildPool({} as never).progression).not.toContain('robo-ribbon');
+      const keys = locationKeys(input);
+      expect(keys).not.toContain('chest-test-1');
+      expect(keys).toEqual(expect.arrayContaining(['chest-test-0', 'chest-test-2']));
+    });
   });
 
-  it('drops the key item and the ribbon check from the pool when on', { tags: ['critical'] }, () => {
-    const input = inputOf({ vanillaRoboRibbon: true });
-    expect(createCtWorldDef(input).buildPool({} as never).progression).not.toContain('robo-ribbon');
-    const keys = locationKeys(input);
-    expect(keys).not.toContain('chest-test-1');
-    expect(keys).toEqual(expect.arrayContaining(['chest-test-0', 'chest-test-2']));
+  it('never offers a Collect Robo Ribbon objective', { tags: ['critical'] }, () => {
+    [{}, { vanillaRoboRibbon: false }].forEach((options) => {
+      expect(eligibleObjectivesOf(options, LEGACY_PARTY).map((objective) => objective.id)).not.toContain('collect-robo-ribbon');
+    });
   });
 
   it('filters only checks that hold the ribbon', { tags: ['critical'] }, () => {
