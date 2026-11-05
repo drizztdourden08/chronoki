@@ -2,4 +2,3 @@
 export { chronokiMsuStudio } from './chronoki-msu-studio';
 export { chronokiMsuStore } from './chronoki-msu-store';
 export { confirmPackDelete } from './confirm-pack-delete';
-export type { ChronokiMsuStudioGame } from './msu-studio.type';
