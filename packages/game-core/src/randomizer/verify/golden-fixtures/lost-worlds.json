@@ -1,0 +1,41 @@
+{
+  "seed": "golden-lost-worlds",
+  "options": {
+    "gameMode": "lost-worlds"
+  },
+  "startParty": [
+    "crono",
+    "marle"
+  ],
+  "spots": {
+    "chest-verify-10": "treasure-019",
+    "chest-verify-11": "treasure-007",
+    "chest-verify-12": "treasure-00c",
+    "chest-verify-13": "treasure-028",
+    "chest-verify-17": "treasure-00e",
+    "chest-verify-18": "treasure-013",
+    "chest-verify-19": "treasure-004",
+    "chest-verify-20": "treasure-021",
+    "chest-verify-24": "treasure-020",
+    "chest-verify-25": "treasure-012",
+    "chest-verify-26": "treasure-006",
+    "chest-verify-27": "treasure-027",
+    "chest-verify-3": "treasure-015",
+    "chest-verify-31": "treasure-023",
+    "chest-verify-32": "treasure-005",
+    "chest-verify-33": "treasure-01a",
+    "chest-verify-34": "treasure-02a",
+    "chest-verify-38": "treasure-01b",
+    "chest-verify-39": "treasure-022",
+    "chest-verify-4": "treasure-00b",
+    "chest-verify-40": "treasure-029",
+    "chest-verify-41": "treasure-01c",
+    "chest-verify-5": "treasure-014",
+    "chest-verify-6": "treasure-00d",
+    "ki-arris-dome": "ruby-knife",
+    "ki-geno-dome": "pendant",
+    "ki-mt-woe": "clone",
+    "ki-reptite-lair": "c-trigger",
+    "ki-sun-palace": "dreamstone"
+  }
+}
