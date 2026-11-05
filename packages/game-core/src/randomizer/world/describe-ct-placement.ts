@@ -21,6 +21,7 @@ const describeCtPlacement = (placement: CtPlacement): PlacementSummary => {
         ? []
         : [{ label: 'Starting party', value: startPartyLabelOf(placement.startParty) }]),
       ...bossRowsOf(placement.bosses),
+      ...(placement.objectives ?? []).map((objective) => ({ label: 'Objective', value: objective.label })),
     ],
   };
 };

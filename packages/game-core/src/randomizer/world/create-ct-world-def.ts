@@ -1,5 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import type { GameWorldDef } from '@drizztdourden08/brock-randomizer/world';
+import { applyBucketToRegions } from './bucket/apply-bucket-to-regions';
+import { bucketCountsOf } from './bucket/bucket-counts-of';
+import { objectivesOf } from './bucket/objectives-of';
 import { goalOf } from './goal-of';
 import { CT_HELPERS } from './ct-helpers.constants';
 import { ctOptionValues } from './ct-option-values';
@@ -25,9 +28,10 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const options = ctOptionValues({ ...input.options, ...mode.forcedOptions });
   const epochFail = options.epochFail === true;
   const moded = applyModeToRegions(CT_REGIONS, mode);
-  const specs = applyStartPartyToRegions(
-    epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, input.startParty ?? LEGACY_PARTY,
-  );
+  const party = input.startParty ?? LEGACY_PARTY;
+  const partied = applyStartPartyToRegions(epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, party);
+  const objectives = objectivesOf(input.options, input.fillerSeed ?? '', party);
+  const specs = applyBucketToRegions(partied, objectives, bucketCountsOf(options, objectives.length).needed);
   const vanillaRoboRibbon = options.vanillaRoboRibbon === true;
   const joinInput = vanillaRoboRibbon ? { ...input, checks: pinRoboRibbon(input.checks) } : input;
   const { regions, treasure } = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true);

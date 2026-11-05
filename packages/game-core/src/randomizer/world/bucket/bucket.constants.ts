@@ -1,0 +1,16 @@
+/* @layer bridge-wasm @kind constants */
+import { WRAM_BANK_7F } from '../../../game-info/wram-map.constants';
+
+const OBJECTIVES_STREAM = ':objectives';
+const OBJECTIVE_LIMIT = 8;
+const DEFAULT_OBJECTIVE_COUNT = 5;
+const DEFAULT_OBJECTIVES_NEEDED = 4;
+const OBJECTIVE_LATCH_AT = WRAM_BANK_7F + 0x01fa;
+const OBJECTIVE_GATE_AT = WRAM_BANK_7F + 0x01fc;
+const RECRUIT_COUNTS: readonly number[] = [3, 4, 5];
+const OBJECTIVE_EVENT_PREFIX = 'objective-';
+
+export {
+  DEFAULT_OBJECTIVE_COUNT, DEFAULT_OBJECTIVES_NEEDED, OBJECTIVE_EVENT_PREFIX, OBJECTIVE_GATE_AT, OBJECTIVE_LATCH_AT, OBJECTIVE_LIMIT,
+  OBJECTIVES_STREAM, RECRUIT_COUNTS,
+};

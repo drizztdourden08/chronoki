@@ -18,7 +18,7 @@ const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_
   const magic = options.unlockedMagic === true
     ? createStartMagicGrant(createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge))
     : null;
-  const mode = createModeHooks(options, createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge), seed);
+  const mode = createModeHooks(options, createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge), seed, party, appRandomizerLog);
   const checkPoll = createStartCheckPoll(createOptionsStartCheck(options, party));
   let goalLogged = false;
   return {
