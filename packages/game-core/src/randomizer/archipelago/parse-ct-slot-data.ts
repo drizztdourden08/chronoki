@@ -1,6 +1,5 @@
 /* @layer bridge-wasm @kind logic */
 import { AP_WORLD_VERSION } from './ap-game.constants';
-import type { CtSlotData } from './ct-slot-data.type';
 import type { CtSlotReading } from './ct-slot-reading.type';
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
