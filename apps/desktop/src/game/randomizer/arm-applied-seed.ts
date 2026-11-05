@@ -5,7 +5,7 @@ import type { CtItem } from '@chronoki/game-core';
 import { armedCountsOf } from './armed-counts-of';
 import { createLocalRun } from './create-local-run';
 import type { AppliedSeed, LocalRun } from './local-run.type';
-import { receiveLocalItem } from './receive-local-item';
+import { queueLocalItem } from './queue-local-item';
 
 const armAppliedSeed = (applied: AppliedSeed, ctx: ApplyContext): { run: LocalRun; result: ApplyResult<unknown> } => {
   const run = createLocalRun(applied);
@@ -24,7 +24,7 @@ const armAppliedSeed = (applied: AppliedSeed, ctx: ApplyContext): { run: LocalRu
       armed: {
         polled,
         counts: armedCountsOf(applied, polled),
-        onCheck: (key) => receiveLocalItem(run, key, ctx.tag, ctx.log),
+        onCheck: (key, deliver) => queueLocalItem(run, key, ctx.tag, ctx.log, deliver),
       },
     },
   };

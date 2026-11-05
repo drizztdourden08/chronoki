@@ -20,12 +20,13 @@ const BOOT_REFUSALS = {
 
 const START_MISMATCH_TOAST = 'The randomizer start did not apply: this run is not the seed you rolled. See the Randomizer log.';
 
+const LOCAL_DELIVERY_SOURCE = 'local';
 const NOT_APPLIED_REFUSAL = 'the seed was not written to the game pack at boot';
 const NOT_APPLIED_RESULT: ApplyResult<unknown> = { ok: false, refusal: NOT_APPLIED_REFUSAL };
 const NO_CHECKS_ROLL = 'the game pack has no checks the randomizer can read';
 const NO_PACK_ROLL = 'The game pack for this ROM is missing, so no seed can be rolled. Open the ROM once, then try again.';
 
 export {
-  BOOT_REFUSALS, CHRONOKI_RANDOMIZER_LABELS, LOCAL_MODE, NOT_APPLIED_REFUSAL, NOT_APPLIED_RESULT, NO_CHECKS_ROLL, NO_PACK_ROLL,
+  BOOT_REFUSALS, CHRONOKI_RANDOMIZER_LABELS, LOCAL_DELIVERY_SOURCE, LOCAL_MODE, NOT_APPLIED_REFUSAL, NOT_APPLIED_RESULT, NO_CHECKS_ROLL, NO_PACK_ROLL,
   REFUSAL_TOAST_MS, REFUSED_SAMPLE, START_MISMATCH_TOAST,
 };
