@@ -1,9 +1,16 @@
 /* @layer bridge-wasm @kind type */
+import type { CtSpotId } from '../world/ct-world-keys.type';
 import type { ItemDifficulty } from '../world/treasure-tiers/treasure-tier.type';
 
 type Placement = Readonly<Record<string, number>>;
 
-type ApplyOptions = { difficulty?: ItemDifficulty; hardEnemies?: boolean; epochFail?: boolean; bossDepths?: ReadonlyMap<string, number> };
+type ApplyOptions = {
+  difficulty?: ItemDifficulty;
+  hardEnemies?: boolean;
+  epochFail?: boolean;
+  bossDepths?: ReadonlyMap<string, number>;
+  spotGifts?: readonly CtSpotId[];
+};
 
 type PackEdit = { at: number; old: number; next: number; why: string };
 

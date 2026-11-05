@@ -25,7 +25,7 @@ const prepareSeededAssets = async (profileId: string | null, assets: Uint8Array,
   if (profileId === null || config === undefined) return { ok: true, assets };
   const modeRefusal = modeRefusalOf(config);
   if (modeRefusal !== null) return refuse(modeRefusal);
-  const checks = checksOfPack(assets);
+  const checks = checksOfPack(assets, config.options);
   if (checks.length === 0) return refuse(BOOT_REFUSALS.noChecks);
   const gate = await gateRandomizerBoot(profileId, config);
   if (!gate.ok) return refuse(gate.reason);

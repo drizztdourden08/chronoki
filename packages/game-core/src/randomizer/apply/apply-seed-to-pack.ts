@@ -6,6 +6,7 @@ import { planChestEdits } from './plan-chest-edits';
 import { planEnemyOptionEdits } from './enemy-difficulty/plan-enemy-option-edits';
 import { planJetsItemEdits } from './jets/plan-jets-item-edits';
 import { planGiftEdits } from './plan-gift-edits';
+import { planSpotGiftSplices } from './plan-spot-gift-splices';
 import type { ScriptSplice } from './script/script-splice.type';
 import { spliceSceneScripts } from './script/splice-scene-scripts';
 
@@ -20,19 +21,22 @@ const applySeedToPack = (
 ): ApplyResult => {
   const chests = deriveChestChecks(pack);
   const gifts = deriveGiftChecks(pack);
-  const known = new Set([...chests, ...gifts].map((c) => c.id));
+  const known = new Set<string>([...chests, ...gifts].map((c) => c.id).concat(options.spotGifts ?? []));
   const unknown = Object.keys(placement).filter((id) => !known.has(id));
   const chestPlan = planChestEdits(pack, chests, placement, options);
   const giftPlan = planGiftEdits(pack, gifts, placement);
   const jetsPlan = options.epochFail === true ? planJetsItemEdits(pack) : { edits: [], failed: [] };
+  const spotPlan = planSpotGiftSplices(placement, options.spotGifts);
   const edits = [...chestPlan.edits, ...giftPlan.edits, ...planEnemyOptionEdits(pack, options), ...jetsPlan.edits];
-  const failed = [...new Set([...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...stale(pack, edits)])];
+  const failed = [...new Set([
+    ...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...spotPlan.failed, ...stale(pack, edits),
+  ])];
   if (failed.length > 0) return { ok: false, failed };
   const edited = pack.slice();
   edits.forEach((e) => {
     edited[e.at] = e.next;
   });
-  const spliced = spliceSceneScripts(edited, splices);
+  const spliced = spliceSceneScripts(edited, [...splices, ...spotPlan.splices]);
   if (!spliced.ok) return { ok: false, failed: [...new Set(spliced.failed)] };
   return { ok: true, bytes: spliced.bytes, edits: edits.length };
 };
