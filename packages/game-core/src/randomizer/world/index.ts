@@ -5,6 +5,8 @@ export { joinCtChecks } from './join-ct-checks';
 export { ctOptionValues } from './ct-option-values';
 export { isCtKeyItem } from './is-ct-key-item';
 export { CT_KEY_ITEMS, CT_KEY_ITEM_NAMES } from './ct-key-items.constants';
+export { CT_KEY_ITEM_ROM_IDS } from './ct-key-item-rom-ids.constants';
+export { CT_ERA_LABELS } from './ct-era-labels.constants';
 export { CT_OPTION_CATALOG } from './ct-options.constants';
 export { CT_REGIONS } from './regions/ct-regions.constants';
 export { CT_GAME, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA } from './ct-world.constants';
