@@ -6,12 +6,10 @@ import { trackerFromDef } from '@drizztdourden08/brock-randomizer/tracker';
 import { itemLabelOf } from '../item-label-of';
 import { randomizerConfigOf } from '../randomizer-config-of';
 import { checksCache } from './checks-cache';
-import type { CachedChecks } from './checks-cache';
+import type { CachedChecks } from './checks-cache.type';
+import type { Built, Current } from './chronoki-tracker.type';
 import { completedKeys } from './completed-keys';
 import { locationLabelOf } from './location-label-of';
-
-type Built = Pick<Required<TrackerProvider<CtPlacement>>, 'world' | 'vanilla' | 'sphereOf'>;
-type Current = { source: CachedChecks | null; checks: readonly CheckDef[]; built: Built };
 
 const packOf = (checks: readonly CheckDef[]): Readonly<Record<string, number>> =>
   Object.fromEntries(checks.map((check): [string, number] => [check.id, 0]));

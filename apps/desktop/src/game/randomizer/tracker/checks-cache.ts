@@ -1,7 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { CheckDef } from '@chronoki/game-core';
-
-type CachedChecks = { profileId: string; checks: readonly CheckDef[] };
+import type { CachedChecks } from './checks-cache.type';
 
 const byProfile = new Map<string, readonly CheckDef[]>();
 let latestId: string | null = null;
@@ -23,4 +22,3 @@ const checksCache = {
 };
 
 export { checksCache };
-export type { CachedChecks };
