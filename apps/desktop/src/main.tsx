@@ -25,6 +25,8 @@ import { CHRONOKI_DATA_DOMAINS } from './storage/data-domains.constants';
 import { product } from './product';
 import type { AppSettings } from './settings.type';
 
+const ownRowTree = withOwnRowTabs(screenTree);
+
 const root = document.getElementById('root');
 if (!root) throw new Error('index.html has no #root element');
 
@@ -39,7 +41,7 @@ createRoot(root).render(
       developerTools={DEVELOPER_TOOLS}
       dataDomains={CHRONOKI_DATA_DOMAINS}
       bugReport={chronokiBugReport}
-      screenTree={withOwnRowTabs(screenTree)}
+      screenTree={ownRowTree}
       modules={[...rendererModules, chronokiShellModule]}
       bootTasks={rendererBootTasks}
       widgets={appWidgets}
