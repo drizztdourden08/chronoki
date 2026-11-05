@@ -59,3 +59,7 @@ apps/desktop/public/logos/mark.svg
 
 # wasm build delivered to the renderer (build.mjs --out-app)
 apps/desktop/public/wasm/
+
+# Archipelago world build output (brock apworld)
+build/
+apps/desktop/public/archipelago/

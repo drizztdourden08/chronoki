@@ -7,3 +7,5 @@ export { CT_AP_ITEM_IDS } from './ct-ap-item-ids.constants';
 export { CT_AP_LOCATION_IDS } from './ct-ap-location-ids.constants';
 export { ctApItemUniverse } from './ct-ap-item-universe';
 export { ctApLocationUniverse } from './ct-ap-location-universe';
+export { exportCtWorld } from './export-ct-world';
+export { ctOptionRows } from './ct-option-rows';
