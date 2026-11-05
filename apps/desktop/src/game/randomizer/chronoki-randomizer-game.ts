@@ -3,6 +3,12 @@ import { defineRandomizerGame } from '@drizztdourden08/brock-randomizer';
 import type { CtPlacement } from '@chronoki/game-core';
 import { CT_GAME, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA, ctUiOptions, describeCtPlacement } from '@chronoki/game-core';
 import { chronokiCore } from '../lifecycle/chronoki-core';
+import './archipelago/chronoki-randomizer.augment.type';
+import { chronokiArchipelago } from './archipelago/chronoki-archipelago';
+import { chronokiApStateStore } from './archipelago/chronoki-ap-state-store';
+import { CHRONOKI_MODES } from './archipelago/chronoki-modes.constants';
+import { onChronokiJoined } from './archipelago/chronoki-on-joined';
+import { isCtPlacement } from './is-ct-placement';
 import { chronokiMemoryBridge } from './chronoki-memory-bridge';
 import { ChecksNotifySettings } from './checks-widget/ChecksNotifySettings';
 import { chronokiDeliverer } from './chronoki-deliverer';
@@ -21,6 +27,11 @@ const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   placementSchemas: CT_PLACEMENT_SCHEMAS,
   core: chronokiCore,
   roll: rollChronokiSeed,
+  onJoined: onChronokiJoined,
+  isPlacement: isCtPlacement,
+  apState: chronokiApStateStore,
+  archipelago: chronokiArchipelago,
+  modes: CHRONOKI_MODES,
   describe: describeCtPlacement,
   memory: chronokiMemoryBridge,
   applier: chronokiSeedApplier,
