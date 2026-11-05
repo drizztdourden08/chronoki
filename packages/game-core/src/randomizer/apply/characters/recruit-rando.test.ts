@@ -53,6 +53,12 @@ describe('recruit assignment', { tags: ['critical'] }, () => {
     expect(applyOptionsOf({ characterRando: true }, [], 's').characterRando).toEqual(rollRecruitAssignment('s'));
     expect(applyOptionsOf({ characterRando: true }, []).characterRando).toBeUndefined();
   });
+
+  it('feeds duplicateCharacters to the apply options only together with characterRando', () => {
+    expect(applyOptionsOf({ characterRando: true, duplicateCharacters: true }, [], 's').duplicateCharacters).toBe(true);
+    expect(applyOptionsOf({ duplicateCharacters: true }, [], 's').duplicateCharacters).toBeUndefined();
+    expect(applyOptionsOf({ characterRando: true }, [], 's').duplicateCharacters).toBeUndefined();
+  });
 });
 
 describe('recruit swap edits', { tags: ['critical'] }, () => {

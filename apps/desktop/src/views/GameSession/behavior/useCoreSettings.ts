@@ -16,6 +16,7 @@ import { useWindowModeReset } from '@app/settings-controls/useWindowModeReset';
 import type { AppSettings } from '@app/settings.type';
 import { disableGlitchesOf } from './disable-glitches-of';
 import { displayInputsOf } from './display-inputs-of';
+import { duplicateCharactersOf } from './duplicate-characters-of';
 import type { CoreSettings } from './useCoreSettings.type';
 
 const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = null): CoreSettings => {
@@ -32,6 +33,7 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
   const areaH = planned?.height ?? 0;
   const randomizer = profile?.randomizer !== undefined;
   const disableGlitches = disableGlitchesOf(profile);
+  const duplicateCharacters = duplicateCharactersOf(profile);
   return useMemo(() => {
     const satisfied = steamSatisfied(steamData);
     const { effective } = resolveGates(gates, { vanillaSafe, packaged: isPackaged(), satisfied });
@@ -40,7 +42,7 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
     const settings = gateSettings(effective, options, { volume, mute: muted });
     return {
       settings,
-      config: buildCoreConfigIni(settings, gameFlagsOf(randomizer, disableGlitches)),
+      config: buildCoreConfigIni(settings, gameFlagsOf(randomizer, disableGlitches, duplicateCharacters)),
       volume: muted ? 0 : volume,
       gates: effective,
       pictureRatio: pictureRatioOf(effective, options),
@@ -49,7 +51,7 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
       turboSpeed,
       saveHoldDuration,
     };
-  }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, areaW, areaH, wholePixels, steamData, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration, randomizer, disableGlitches]);
+  }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, areaW, areaH, wholePixels, steamData, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration, randomizer, disableGlitches, duplicateCharacters]);
 };
 
 export { useCoreSettings };

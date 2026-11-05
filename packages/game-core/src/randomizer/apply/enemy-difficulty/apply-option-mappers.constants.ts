@@ -46,6 +46,7 @@ const APPLY_OPTION_MAPPERS: readonly ApplyOptionMapper[] = [
     const characterRando = seed === undefined ? undefined : characterAssignmentOf(options, seed);
     return characterRando === undefined ? {} : { characterRando };
   },
+  ({ options }) => (options.characterRando === true && options.duplicateCharacters === true ? { duplicateCharacters: true } : {}),
 ];
 
 export { APPLY_OPTION_MAPPERS };
