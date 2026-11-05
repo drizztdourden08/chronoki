@@ -2,7 +2,7 @@
 import { CT_KIT } from '../ct-kit.constants';
 import type { CtCharacter, CtRegionId } from '../ct-world-keys.type';
 import type { CtStartParty } from '../party/ct-party.type';
-import { CT_RECRUIT_ORDER, CT_RECRUITS } from '../recruits/ct-recruits.constants';
+import { CT_RECRUIT_ORDER, CT_RECRUIT_SPOTS } from '../recruits/ct-recruit-spots.constants';
 import { RECRUIT_COUNTS } from './bucket.constants';
 import type { ObjectiveDef } from './objective-def.type';
 
@@ -12,7 +12,7 @@ const nameOf = (id: string): string => `${id.charAt(0).toUpperCase()}${id.slice(
 
 const recruitableIn = (party: CtStartParty, kept: ReadonlySet<CtRegionId>): CtCharacter[] =>
   CT_RECRUIT_ORDER.filter((id) => {
-    const recruit = CT_RECRUITS[id];
+    const recruit = CT_RECRUIT_SPOTS[id];
     return !party.includes(id) && recruit !== null && kept.has(recruit.region);
   });
 
