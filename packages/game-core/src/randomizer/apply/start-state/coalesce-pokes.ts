@@ -1,7 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { CtPoke } from './ct-start-state.type';
-
-type ByteAt = [number, number];
+import type { ByteAt, CtPoke } from './ct-start-state.type';
 
 const bytesOf = (poke: CtPoke): ByteAt[] =>
   poke.width === 1 ? [[poke.at, poke.value & 0xff]] : [[poke.at, poke.value & 0xff], [poke.at + 1, (poke.value >> 8) & 0xff]];

@@ -2,8 +2,9 @@
 import { describe, expect, it } from 'vitest';
 import { STANDARD_START } from '../../apply/start-state/standard-start.constants';
 import { comparePackToPlacement } from './compare-pack-to-placement';
-import { fixturePlacement, writtenPack } from './readback-pack.fixture';
+import { readbackFixture } from './readback-pack.fixture';
 
+const { fixturePlacement, writtenPack } = readbackFixture;
 const OPTIONS = { startState: STANDARD_START };
 
 const find = (hay: Uint8Array, needle: number[]): number => hay.findIndex((_, i) => needle.every((n, k) => hay[i + k] === n));

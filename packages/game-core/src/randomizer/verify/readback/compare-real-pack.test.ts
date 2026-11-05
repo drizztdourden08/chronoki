@@ -13,7 +13,7 @@ const placementPath = process.env[PLACEMENT_ENV] ?? '';
 const enabled = packPath !== '' && placementPath !== '' && existsSync(packPath) && existsSync(placementPath);
 
 describe.skipIf(!enabled)('comparePackToPlacement on a real written pack', () => {
-  it('finds no mismatch between the written pack and its placement', () => {
+  it('finds no mismatch between the written pack and its placement', { tags: ['e2e'] }, () => {
     const pack = new Uint8Array(readFileSync(packPath));
     const placement = JSON.parse(readFileSync(placementPath, 'utf8')) as CtPlacement;
     expect(comparePackToPlacement(pack, placement, { startState: STANDARD_START })).toEqual([]);

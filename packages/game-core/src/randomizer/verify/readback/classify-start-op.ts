@@ -1,8 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import { JOINED_MASK, ROSTER, ROSTER_SLOTS } from '../../apply/start-state/party-pokes.constants';
-import type { DecodedOp, MismatchKind } from './readback.type';
-
-type StartOpClass = { kind: MismatchKind; location: string };
+import type { DecodedOp, StartOpClass } from './readback.type';
 
 const hex = (value: number): string => value.toString(16);
 

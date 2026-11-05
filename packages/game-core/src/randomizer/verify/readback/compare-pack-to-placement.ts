@@ -13,7 +13,7 @@ const comparePackToPlacement = (pack: Uint8Array, placement: CtPlacement, option
   const { pack: placed } = planPackPlacement(placement, checks);
   return [
     ...compareChests(pack, placed),
-    ...compareGifts(pack, placed),
+    ...compareGifts(pack, placed, checks),
     ...(options.startState ? compareStartBlock(pack, options.startState, options.party) : []),
   ];
 };
