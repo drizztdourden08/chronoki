@@ -61,13 +61,19 @@ const battleStep = (run, progress, frame) => {
   return inBattle > PAD_FROM ? pad.input(ram, inBattle) : 0;
 };
 
+const stepInput = (run, args, progress, frame) => {
+  if (progress.battleAt < 0) return fieldStep(run, args, progress, frame);
+  if (progress.doneAt < 0) return battleStep(run, progress, frame);
+  return 0;
+};
+
 const runBattle = async (mods, args, wasmDir) => {
   const run = await createRun(mods, args, wasmDir);
   const { engine, grants, ram, prepared, report } = run;
   const progress = { startedAt: -1, mapAt: -1, battleAt: -1, doneAt: -1, lastAction: '' };
   for (let frame = 0; frame < args.frames && engine.state.stopped === null; frame++) {
     if (progress.doneAt >= 0 && frame - progress.doneAt > args.tail) break;
-    const input = progress.battleAt < 0 ? fieldStep(run, args, progress, frame) : progress.doneAt < 0 ? battleStep(run, progress, frame) : 0;
+    const input = stepInput(run, args, progress, frame);
     await stepFrame(engine, input);
     grants.observe();
     if (progress.startedAt < 0 && grants.started()) progress.startedAt = frame;

@@ -1,9 +1,4 @@
 /* @layer tooling-scripts @kind logic */
-// Headless battle probe (I-115 duplicate characters): an Epoch Fail start warped to the Guardia Forest ambush, the party
-// slots primed (XP to next level 1, TP owed --tp, first single learned), the Hetake fight played with Attack or --tech,
-// then the seats, tech lists, actions, tech casts and the sheets after the fight printed.
-//   node --experimental-wasm-jspi scripts/headless/dup-battle.mjs --pack <ct.dat> --seed <s> [--party crono,frog]
-//        [--gate] [--no-dup] [--tech] [--tp N] [--frames N] [--wasm <out dir>] [--json]
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
