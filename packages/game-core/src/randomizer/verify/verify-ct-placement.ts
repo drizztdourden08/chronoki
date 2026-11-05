@@ -3,14 +3,16 @@ import { createRng, sweepPlacementSpheres } from '@drizztdourden08/brock-randomi
 import { OBJECTIVE_EVENT_PREFIX } from '../world/bucket/bucket.constants';
 import { createCtWorldGame } from '../world/create-ct-world-game';
 import type { CtWorldInput } from '../world/ct-world-input.type';
+import { resolveMysteryOptions } from '../world/mystery/resolve-mystery-options';
 import { rollCtPlacement } from '../world/roll-ct-placement';
 import type { VerifyResult } from './verify-result.type';
 
 const optionsSummaryOf = (input: CtWorldInput): string =>
   Object.entries(input.options ?? {}).map(([key, value]) => `${key}=${String(value)}`).join(',') || 'default';
 
-const verifyCtPlacement = (input: CtWorldInput, seed: string): VerifyResult => {
-  const options = optionsSummaryOf(input);
+const verifyCtPlacement = (rawInput: CtWorldInput, seed: string): VerifyResult => {
+  const options = optionsSummaryOf(rawInput);
+  const input = { ...rawInput, options: resolveMysteryOptions(rawInput.options ?? {}, seed) };
   try {
     const placement = rollCtPlacement(input, seed);
     const startParty = placement.startParty ?? [];
