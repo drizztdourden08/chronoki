@@ -16,7 +16,7 @@ const prepareSeedPack = (pack: Uint8Array, options: CtOptionValues, party: CtSta
   const placement = rollCtPlacement(input, seed);
   const placed = placement.startParty ?? party;
   const plan = planPackPlacement(placement, input.checks);
-  const written = applySeedToPack(pack, plan.pack, planSeedSplices(options, placed), applyOptionsOf(options, placement.spheres));
+  const written = applySeedToPack(pack, plan.pack, planSeedSplices(options, placed), applyOptionsOf(options, placement.spheres, seed));
   if (!written.ok) throw new Error(`apply refused ${written.failed.length}: ${written.failed.slice(0, 5).join(', ')}`);
   return { bytes: written.bytes, party: placed, partyIds: partyIdsOf(placed), flags: startStateOf(options).flags };
 };
