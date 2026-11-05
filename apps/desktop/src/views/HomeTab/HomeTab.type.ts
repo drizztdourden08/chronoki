@@ -68,7 +68,12 @@ interface HomeSectionProps {
   running: boolean;
 }
 
+type TitlePendulumState =
+  | { status: 'loading' }
+  | { status: 'missing' }
+  | { status: 'ready'; url: string; width: number; height: number };
+
 export type {
   ArmedRow, CreateSaveFormProps, HomeDialogsProps, HomeSectionProps, HomeSramImport, HomeTabProps, NamedSavesData,
-  NormalSaves, NormalSavesSectionProps, ProfileFactsInput, SaveRowPartsInput, SlotInfo, SramDialogState,
+  NormalSaves, NormalSavesSectionProps, ProfileFactsInput, SaveRowPartsInput, SlotInfo, SramDialogState, TitlePendulumState,
 };

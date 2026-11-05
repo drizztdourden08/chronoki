@@ -3,6 +3,7 @@ import { runExtractStep } from '../extraction-client';
 import { platformFiles } from '../platform-files';
 import { errorMessage } from '../error-message';
 import { romStoreOf } from '../rom-files';
+import { buildTitlePendulum } from '../title-pendulum';
 import { readOracleInputs } from './read-oracle-inputs';
 import { storeAssets } from './store-assets';
 import type { ExtractResult } from './assets-store.type';
@@ -19,6 +20,7 @@ const extractAssets = async (romFile: string): Promise<ExtractResult> => {
       input: await readOracleInputs(),
     });
     await storeAssets(platformFiles(), romFile, blob);
+    await buildTitlePendulum(platformFiles(), romFile, blob).catch(() => null);
     return { success: true };
   } catch (err) {
     return { success: false, error: errorMessage(err) };

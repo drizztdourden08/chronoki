@@ -5,7 +5,7 @@ import type { HeroProps, ScreenMeta } from '@drizztdourden08/brock-react';
 import { HeroLastSaveTile, HeroProgress, HeroTools } from '@app/compounds/ProfileHero';
 import { HubGameControls } from '@app/compounds/HubGameControls';
 import { useProfileMode } from '@app/profiles/useProfileMode';
-import GameBackdrop from './game.backdrop';
+import GamePendulum from './game.pendulum';
 import { useGameSession } from '@app/views/GameSession';
 import { MODE_LABELS } from '@app/profiles/profile-mode-labels.constants';
 import { HomeDialogs, HomeTab, buildProfileFacts, romFileOf, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
@@ -17,8 +17,6 @@ const meta: ScreenMeta = {
   hero: { size: 'compact' },
 };
 
-const backdrop = <GameBackdrop />;
-
 const HomeHero = (props: HeroProps) => {
   const { slots, profile } = props;
   const { Eyebrow, Title, Backdrop, Art, Tools, Actions, Facts, Aside, Panel } = slots;
@@ -29,6 +27,7 @@ const HomeHero = (props: HeroProps) => {
   const { reveal, canReveal } = useRevealProfileFolder(profileId);
   const sramImport = useHomeSramImport(profileId);
   const romFile = romFileOf(profile);
+  const backdrop = useMemo(() => <GamePendulum key={romFile ?? ''} romFile={romFile} />, [romFile]);
   const facts = useMemo(
     () => buildProfileFacts({ romFile, lastPlayed: profile?.lastPlayed, created: profile?.created }),
     [romFile, profile?.lastPlayed, profile?.created],
