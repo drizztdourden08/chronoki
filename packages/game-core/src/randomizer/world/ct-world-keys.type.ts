@@ -33,7 +33,8 @@ type CtHelperName = 'sun-stone-charged' | 'go-mode' | 'sealed-open';
 type CtOptionKey =
   | 'gameMode' | 'itemDifficulty' | 'enemyDifficulty' | 'disableGlitches' | 'bossScaling' | 'earlyPendantCharge'
   | 'unlockedMagic' | 'lockedCharacters' | 'addCyrusGraveSpot' | 'addOzzieSpot'
-  | 'partyMode' | 'partySize' | 'startingParty' | 'epochFail';
+  | 'partyMode' | 'partySize' | 'startingParty' | 'epochFail' | 'tabsanity'
+  | 'powerTabMin' | 'powerTabMax' | 'magicTabMin' | 'magicTabMax' | 'speedTabMin' | 'speedTabMax';
 
 type CtWorldKeys = {
   item: CtItem;

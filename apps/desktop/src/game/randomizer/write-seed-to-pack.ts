@@ -17,7 +17,7 @@ const writeSeedToPack = ({ profileId, placement, checks, assets, options }: Writ
   } catch (error) {
     return { ok: false, reason: error instanceof Error ? error.message : String(error) };
   }
-  const written = applySeedToPack(assets, plan.pack, splices, applyOptionsOf(options, placement.spheres));
+  const written = applySeedToPack(assets, plan.pack, splices, applyOptionsOf(options, placement.spheres, placement.seed));
   if (!written.ok) {
     const sample = written.failed.slice(0, REFUSED_SAMPLE).join(', ');
     return { ok: false, reason: `The seed does not fit this game pack: ${written.failed.length} checks refused (${sample})` };

@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind constants */
 import type { CtOptionDef } from './ct-option-def.type';
 import { CT_DEFAULT_MODE, CT_MODES } from './modes/ct-modes.constants';
+import { TAB_RANGE_OPTIONS } from './tabs/tab-range-options.constants';
 
 const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   {
@@ -31,6 +32,8 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   },
   { key: 'partySize', label: 'Random party size', jotFlag: '-', default: 2, choices: [1, 2, 3, 4, 5, 6, 7], section: 'Party', implemented: true },
   { key: 'startingParty', label: 'Party', jotFlag: '-', default: 'crono,marle', section: 'Party', implemented: true },
+  { key: 'tabsanity', label: 'Tabsanity', jotFlag: 'tab', default: false, section: 'Tabs', implemented: true },
+  ...TAB_RANGE_OPTIONS,
 ];
 
 export { CT_OPTION_CATALOG };

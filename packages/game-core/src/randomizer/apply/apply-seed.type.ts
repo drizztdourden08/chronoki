@@ -1,9 +1,16 @@
 /* @layer bridge-wasm @kind type */
+import type { TabAmounts } from '../world/tabs/tab-amounts.type';
 import type { ItemDifficulty } from '../world/treasure-tiers/treasure-tier.type';
 
 type Placement = Readonly<Record<string, number>>;
 
-type ApplyOptions = { difficulty?: ItemDifficulty; hardEnemies?: boolean; epochFail?: boolean; bossDepths?: ReadonlyMap<string, number> };
+type ApplyOptions = {
+  difficulty?: ItemDifficulty;
+  hardEnemies?: boolean;
+  epochFail?: boolean;
+  bossDepths?: ReadonlyMap<string, number>;
+  tabAmounts?: TabAmounts;
+};
 
 type PackEdit = { at: number; old: number; next: number; why: string };
 
