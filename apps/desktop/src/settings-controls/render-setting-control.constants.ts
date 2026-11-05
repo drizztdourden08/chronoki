@@ -1,5 +1,6 @@
 /* @layer renderer-app @kind data */
 import type { ComponentType } from 'react';
+import { AudioBufferControl } from './audio/AudioBufferControl';
 import { TurboSpeedControl } from './TurboSpeedControl';
 import { RenderScaleControl } from './RenderScaleControl';
 import { DetectedPackControl } from './detected-pack-control';
@@ -12,6 +13,7 @@ const CONTROL_OF_KEY: Readonly<Record<string, ComponentType<SettingControlProps>
   aspectRatio: AspectRatioRow,
   renderScale: RenderScaleControl,
   turboSpeed: TurboSpeedControl,
+  audioSamples: AudioBufferControl,
   dialogSpeed: DialogSpeedControl,
   dialogHoldSpeed: DialogHoldSpeedControl,
   detectedPack: DetectedPackControl,
