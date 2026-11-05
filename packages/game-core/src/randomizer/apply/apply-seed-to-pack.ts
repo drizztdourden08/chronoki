@@ -12,6 +12,9 @@ import { planSpotGiftSplices } from './plan-spot-gift-splices';
 import { planTabNameEdits } from './tabs/plan-tab-name-edits';
 import type { ScriptSplice } from './script/script-splice.type';
 import { spliceSceneScripts } from './script/splice-scene-scripts';
+import { planGearRandoEdits } from './gear-rando/plan-gear-rando-edits';
+import { planHealingRandoEdits } from './healing-rando/plan-healing-rando-edits';
+import { planTechDamageEdits } from './tech-damage/plan-tech-damage-edits';
 import { planTechOrderEdits } from './tech-order/plan-tech-order-edits';
 
 const stale = (pack: Uint8Array, edits: PackEdit[]): string[] =>
@@ -33,12 +36,18 @@ const applySeedToPack = (
   const spotPlan = planSpotGiftSplices(placement, options.spotGifts);
   const tabPlan = options.tabAmounts ? planTabNameEdits(pack, options.tabAmounts) : { edits: [], failed: [] };
   const techPlan = options.techOrder === undefined ? { edits: [], failed: [] } : planTechOrderEdits(pack, options.techOrder, options.seed ?? '');
-  const bossPlan = options.bossRando ? planBossSwapEdits(pack, options.bossRando) : { edits: [], failed: [] };
+  const none = { edits: [], failed: [] };
+  const seed = options.seed ?? '';
+  const bossPlan = options.bossRando ? planBossSwapEdits(pack, options.bossRando) : none;
+  const gearPlan = options.gearRando === true ? planGearRandoEdits(pack, seed) : none;
+  const healPlan = options.healingRando === true ? planHealingRandoEdits(pack, seed) : none;
+  const damagePlan = options.techDamageRando === true ? planTechDamageEdits(pack, seed, techPlan.edits) : none;
   const edits = [...chestPlan.edits, ...giftPlan.edits, ...planEnemyOptionEdits(pack, options), ...jetsPlan.edits, ...tabPlan.edits,
-    ...techPlan.edits, ...bossPlan.edits, ...(options.shopPrices === undefined ? [] : planShopPriceEdits(pack, options.shopPrices))];
+    ...techPlan.edits, ...bossPlan.edits, ...gearPlan.edits, ...healPlan.edits, ...damagePlan.edits,
+    ...(options.shopPrices === undefined ? [] : planShopPriceEdits(pack, options.shopPrices))];
   const failed = [...new Set([
     ...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...spotPlan.failed, ...tabPlan.failed,
-    ...techPlan.failed, ...bossPlan.failed, ...stale(pack, edits),
+    ...techPlan.failed, ...bossPlan.failed, ...gearPlan.failed, ...healPlan.failed, ...damagePlan.failed, ...stale(pack, edits),
   ])];
   if (failed.length > 0) return { ok: false, failed };
   const edited = pack.slice();

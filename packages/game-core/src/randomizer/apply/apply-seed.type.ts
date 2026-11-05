@@ -17,6 +17,9 @@ type ApplyOptions = {
   spotGifts?: readonly CtSpotId[];
   tabAmounts?: TabAmounts;
   techOrder?: TechOrderMode;
+  gearRando?: boolean;
+  healingRando?: boolean;
+  techDamageRando?: boolean;
   seed?: string;
   bossRando?: BossAssignment;
 };
