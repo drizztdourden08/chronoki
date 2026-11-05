@@ -1,14 +1,15 @@
 /* @layer renderer-components @kind component */
-import { Button, EmptyState, Icon, IconButton, Stack } from '@drizztdourden08/tessera/primitives';
+import { Button, EmptyState, Icon, IconButton, Spinner, Stack } from '@drizztdourden08/tessera/primitives';
 import { DateText, ListItemRow } from '@drizztdourden08/tessera/composites';
 import { PROFILE_TEXT } from '../ProfileManager.constants';
 import type { ProfileListPaneProps } from '../ProfileManager.type';
 
 const ProfileListPane = (props: ProfileListPaneProps) => {
-  const { profiles, selected, creating, canCreate, onSelect, onOpen, onDelete, onCreate } = props;
+  const { profiles, selected, creating, canCreate, loadingProfile, onSelect, onOpen, onDelete, onCreate } = props;
 
   return (
     <Stack gap="xs">
+      {loadingProfile && <ListItemRow selected icon={<Spinner size="sm" />} name={`Loading profile: ${loadingProfile}...`} />}
       {canCreate && (
         <Button variant="primary" fullWidth icon={<Icon name="plus" />} disabled={creating} onClick={onCreate}>
           {PROFILE_TEXT.newProfile}

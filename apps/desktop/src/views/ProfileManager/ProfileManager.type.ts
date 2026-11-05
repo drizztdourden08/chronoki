@@ -13,12 +13,19 @@ interface ProfileManagerProps {
 
 interface ProfileDetailPanelProps {
   profile: Profile;
-  readyRoms: ReadyRom[];
   onOpen: (profile: Profile) => void;
   onDelete: (profile: Profile) => void;
 }
 
+interface ProfileDetailHeaderProps {
+  profile: Profile;
+  modeLabel: string;
+  onOpen: () => void;
+  onDelete: () => void;
+}
+
 interface ProfileListPaneProps {
+  loadingProfile: string | null;
   profiles: Profile[];
   selected: string | null;
   creating: boolean;
@@ -49,4 +56,4 @@ interface MsuFolderImport {
   importFiles: (files: File[]) => Promise<void>;
 }
 
-export type { MsuFolderImport, ProfileCreateWizardProps, ProfileDetailPanelProps, ProfileListPaneProps, ProfileManagerProps, ProfileWizardValues, ReadyRom };
+export type { MsuFolderImport, ProfileCreateWizardProps, ProfileDetailHeaderProps, ProfileDetailPanelProps, ProfileListPaneProps, ProfileManagerProps, ProfileWizardValues, ReadyRom };
