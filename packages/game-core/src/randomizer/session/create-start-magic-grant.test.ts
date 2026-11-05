@@ -1,11 +1,18 @@
 /* @layer bridge-wasm @kind test */
 import { describe, expect, it } from 'vitest';
-import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import { createStartMagicGrant } from './create-start-magic-grant';
+import { fakeView } from './memory-view.fake';
 
 const fixture = (accept = true, initial: Record<number, number> = {}) => {
-  const ram = new Map<number, number>(Object.entries(initial).map(([k, v]) => [Number(k), v]));
-  const view = { byte: (_region: string, at: number) => ram.get(at) ?? 0 } as unknown as MemoryView;
+  const store: Record<number, number> = { ...initial };
+  const view = fakeView(store);
+  const ram = {
+    get: (at: number): number | undefined => store[at],
+    set: (at: number, value: number): void => {
+      store[at] = value;
+    },
+    size: (): number => Object.keys(store).length,
+  };
   const write = (offset: number, bytes: Uint8Array): boolean => {
     if (!accept) return false;
     bytes.forEach((b, i) => ram.set(offset + i, b));
@@ -18,7 +25,7 @@ describe('createStartMagicGrant', { tags: ['critical'] }, () => {
   it('writes nothing before the game starts', () => {
     const { ram, view, write } = fixture();
     expect(createStartMagicGrant(write).observe(false, view)).toBe(false);
-    expect(ram.size).toBe(0);
+    expect(ram.size()).toBe(0);
   });
 
   it('writes the gate, levels, tech bits and TP words once started', () => {

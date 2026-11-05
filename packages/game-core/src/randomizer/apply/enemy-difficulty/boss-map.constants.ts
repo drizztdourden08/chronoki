@@ -1,36 +1,49 @@
 /* @layer bridge-wasm @kind constants */
+const HECKRAN = 169;
+const DRAGON_TANK_PARTS = [147, 148, 173];
+const YAKRA_XIII = 199;
+const GIGA_GAIA_PARTS = [209, 210, 211];
+const GUARDIAN_AND_BIT = [212, 207];
+const ZOMBOR_PARTS = [179, 180, 181, 182];
+const MASA_MUNE_PARTS = [151, 152, 153];
+const SON_OF_SUN_AND_FLAMES = [246, 247];
+const MOTHER_BRAIN_AND_DISPLAYS = [190, 183];
+const RETINITE = 58;
+const GIGASAUR = 170;
+const OZZIE_FORT_BOSSES = [160, 165, 168, 186, 187];
+const NIZBEL = 155;
 
-// Enemy ids (battle table index) of the boss fight that guards each key-item spot; multi-part bosses list every part.
 const BOSS_SPOT_ENEMIES: Readonly<Record<string, readonly number[]>> = {
-  'ki-taban': [169], // Heckran
-  'ki-kings-trial': [147, 148, 173, 199], // Dragon Tank (body, grinder, head), then Yakra XIII
-  'ki-mt-woe': [209, 210, 211], // Giga Gaia (head, hands)
-  'ki-arris-dome': [212, 207], // Guardian and its bit
-  'ki-zenan-bridge': [179, 180, 181, 182], // Zombor (controller, parts)
-  'ki-denadoro-mts': [151, 152, 153], // Masa, Mune, Masa & Mune
-  'ki-sun-palace': [246, 247], // Son of Sun and its flames
-  'ki-geno-dome': [190, 183], // Mother Brain and its displays
-  'ki-sunken-desert': [58], // Retinite
-  'ki-giants-claw': [170], // Gigasaur
-  'ki-ozzies-fort': [160, 165, 168, 186, 187], // Flea Plus, Super Slash, Great Ozzie
-  'ki-reptite-lair': [155], // Nizbel
+  'ki-taban': [HECKRAN],
+  'ki-kings-trial': [...DRAGON_TANK_PARTS, YAKRA_XIII],
+  'ki-mt-woe': GIGA_GAIA_PARTS,
+  'ki-arris-dome': GUARDIAN_AND_BIT,
+  'ki-zenan-bridge': ZOMBOR_PARTS,
+  'ki-denadoro-mts': MASA_MUNE_PARTS,
+  'ki-sun-palace': SON_OF_SUN_AND_FLAMES,
+  'ki-geno-dome': MOTHER_BRAIN_AND_DISPLAYS,
+  'ki-sunken-desert': [RETINITE],
+  'ki-giants-claw': [GIGASAUR],
+  'ki-ozzies-fort': OZZIE_FORT_BOSSES,
+  'ki-reptite-lair': [NIZBEL],
 };
 
-// Bosses that guard no key-item spot: still never treated as regular enemies.
+const YAKRA = 144;
+const GOLEM = 149;
+const AZALA = 154;
+const NIZBEL_II = 156;
+const SLASH = [157, 158];
+const FLEA = 159;
+const DALTON = [161, 162];
+const METAL_MUTE = 164;
+const OZZIE = [166, 167];
+const TYRANO_BOSSES = [188, 189];
+const ATROPOS_XR = 192;
+const GOLEM_BOSS = 243;
+const MAGUS = [249, 250];
+
 const OTHER_BOSS_IDS: readonly number[] = [
-  144, // Yakra
-  149, // Golem
-  154, // Azala
-  156, // Nizbel II
-  157, 158, // Slash
-  159, // Flea
-  161, 162, // Dalton
-  164, // Metal Mute
-  166, 167, // Ozzie
-  188, 189, // Black Tyrano, Rust Tyrano
-  192, // Atropos XR
-  243, // Golem Boss
-  249, 250, // Magus
+  YAKRA, GOLEM, AZALA, NIZBEL_II, ...SLASH, FLEA, ...DALTON, METAL_MUTE, ...OZZIE, ...TYRANO_BOSSES, ATROPOS_XR, GOLEM_BOSS, ...MAGUS,
 ];
 
 const BOSS_SPOTS: readonly string[] = Object.keys(BOSS_SPOT_ENEMIES);

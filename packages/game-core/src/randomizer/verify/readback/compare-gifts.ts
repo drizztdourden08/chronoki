@@ -3,10 +3,8 @@ import type { Placement } from '../../apply/apply-seed.type';
 import type { CheckDef } from '../../checks/check.type';
 import { CTAS_TYPE_SCRIPT, GIFT_ID_PREFIX } from '../../checks/gift-ops.constants';
 import { readPackEntries } from '../../checks/read-pack-entries';
-import type { PackEntry } from '../../checks/read-pack-entries.type';
+import type { GiftProbe } from './compare-gifts.type';
 import type { Mismatch } from './readback.type';
-
-type GiftProbe = { id: string; expected: number; spots: number[]; script?: PackEntry };
 
 const giftMismatch = (pack: Uint8Array, { id, expected, spots, script }: GiftProbe): Mismatch[] => {
   if (!script || spots.length === 0) return [{ kind: 'gift', location: id, expected, actual: null, address: -1 }];
