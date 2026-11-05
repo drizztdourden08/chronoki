@@ -13,6 +13,7 @@ const partyTileItems = (
     name: PARTY_CHARACTER_NAMES[id],
     sprite: spriteUrlOf?.(id) ?? undefined,
     checked: value.includes(id),
+    badge: value.includes(id) ? value.indexOf(id) + 1 : undefined,
   }));
 
 export { partyTileItems };

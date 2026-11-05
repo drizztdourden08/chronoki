@@ -8,7 +8,6 @@ import { partyTileItems } from './behavior/party-tile-items';
 import { usePartySelection } from './behavior/usePartySelection';
 import { PARTY_PICKER_LABELS } from './PartyPicker.constants';
 import type { PartyPickerProps } from './PartyPicker.type';
-import { PartySlotList } from './sub-components/PartySlotList';
 
 const PartyPicker = ({ value, onChange, frozen = false, spriteUrlOf }: PartyPickerProps) => {
   const { toggle, clear } = usePartySelection(value, onChange);
@@ -25,7 +24,6 @@ const PartyPicker = ({ value, onChange, frozen = false, spriteUrlOf }: PartyPick
         <Button size="sm" disabled={frozen || value.length <= 1} onClick={clear}>{PARTY_PICKER_LABELS.clear}</Button>
         <Text className="party-picker__count">{`Picked ${value.length} of ${CT_CHARACTERS.length}`}</Text>
       </Box>
-      <PartySlotList value={value} />
     </Box>
   );
 };

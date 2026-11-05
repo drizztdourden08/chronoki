@@ -6,8 +6,7 @@
 }
 
 .party-picker__hint,
-.party-picker__count,
-.party-slots__note {
+.party-picker__count {
   font-size: var(--text-xs);
   color: var(--c-text-muted);
 }
@@ -16,20 +15,4 @@
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-}
-
-.party-slots {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.party-slots__group {
-  display: flex;
-  flex-direction: column;
-}
-
-.party-slots__title {
-  font-size: var(--text-xs);
-  color: var(--c-text-muted);
 }
