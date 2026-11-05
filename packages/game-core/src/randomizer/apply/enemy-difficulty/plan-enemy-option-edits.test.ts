@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { syntheticEnemyPack } from '../enemy-table/enemy-table.fixture';
 import { bossDepthsOf } from './boss-depths-of';
+import { BOSS_SPOT_ENEMIES, OTHER_BOSS_IDS } from './boss-map.constants';
 import { planEnemyOptionEdits } from './plan-enemy-option-edits';
 
 describe('enemy option edits', () => {
@@ -15,6 +16,11 @@ describe('enemy option edits', () => {
     const edits = planEnemyOptionEdits(pack, { hardEnemies: true });
     expect(edits.length).toBeGreaterThan(0);
     edits.forEach((e) => expect(pack[e.at]).toBe(e.old));
+  });
+
+  it('no enemy id guards two spots or is also a plain boss', { tags: ['critical'] }, () => {
+    const all = [...Object.values(BOSS_SPOT_ENEMIES).flat(), ...OTHER_BOSS_IDS];
+    expect(new Set(all).size).toBe(all.length);
   });
 
   it('boss depth is the sphere index of a guarded spot', { tags: ['critical'] }, () => {
