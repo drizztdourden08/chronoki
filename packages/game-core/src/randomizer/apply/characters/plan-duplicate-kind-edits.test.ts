@@ -4,12 +4,13 @@ import type { CharacterAssignment } from '../../world/recruits/character-assignm
 import { CHARACTER_RANDO_SPOTS } from '../../world/recruits/character-rando.constants';
 import type { PackEdit } from '../apply-seed.type';
 import { namedTableOf } from '../tech-order/named-table-of';
-import { duplicatePack, synthRecord } from './duplicate-kind.fixture';
+import { duplicatePack } from './duplicate-kind.fixture';
 import { RECORD_BYTES } from './level-record.constants';
 import { planDuplicateKindEdits } from './plan-duplicate-kind-edits';
 import { findSceneScript } from '../script/find-scene-script';
 import { RECRUIT_SPOT_SCENES } from './recruit-spot-edits.constants';
 import { scriptOf } from './script-of.fixture';
+import { synthRecord } from './synth-record.fixture';
 
 const identity: CharacterAssignment = Object.fromEntries(CHARACTER_RANDO_SPOTS.map((s) => [s, s]));
 
@@ -25,6 +26,12 @@ const applied = (pack: Uint8Array, edits: readonly PackEdit[]): Uint8Array => {
 const recordOf = (pack: Uint8Array, slot: number): Uint8Array => {
   const at = namedTableOf(pack, 'ctCharBase')?.at ?? 0;
   return pack.slice(at + slot * RECORD_BYTES, at + (slot + 1) * RECORD_BYTES);
+};
+
+const sceneScriptBytes = (pack: Uint8Array, scene: number): number[] => {
+  const script = findSceneScript(pack, scene);
+  const start = script?.start ?? 0;
+  return Array.from(pack.subarray(start, start + (script?.length ?? 0)));
 };
 
 describe('planDuplicateKindEdits', { tags: ['critical'] }, () => {
@@ -52,8 +59,7 @@ describe('planDuplicateKindEdits', { tags: ['critical'] }, () => {
   it('retargets only the NPC loader operand of the spot scenes', () => {
     const pack = duplicatePack();
     const edited = applied(pack, planDuplicateKindEdits(pack, { ...identity, robo: 'ayla' }).edits);
-    const script = findSceneScript(edited, RECRUIT_SPOT_SCENES.robo?.[0] ?? 0);
-    const got = Array.from(edited.subarray(script?.start ?? 0, (script?.start ?? 0) + (script?.length ?? 0)));
+    const got = sceneScriptBytes(edited, RECRUIT_SPOT_SCENES.robo?.[0] ?? 0);
     const before = scriptOf('robo', 'robo');
     const diff = got.flatMap((b, i) => (b === before[i] ? [] : [i]));
     expect(diff).toHaveLength(1);

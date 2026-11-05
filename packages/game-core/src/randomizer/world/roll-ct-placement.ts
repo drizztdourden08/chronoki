@@ -7,6 +7,7 @@ import { objectiveRowsOf } from './bucket/objective-rows-of';
 import { createCtWorldGame } from './create-ct-world-game';
 import type { CtPlacement } from './ct-placement.type';
 import type { CtWorldInput } from './ct-world-input.type';
+import { duplicateFlagOf } from './duplicate-flag-of';
 import { resolveMysteryOptions } from './mystery/resolve-mystery-options';
 import { rollMysteryOptions } from './mystery/roll-mystery-options';
 import { resolveStartParty } from './party/resolve-start-party';
@@ -26,7 +27,7 @@ const rollCtPlacement = (rawInput: CtWorldInput, seed: string): CtPlacement => {
     startParty,
     ...(bosses === undefined ? {} : { bosses }),
     ...(characters === undefined ? {} : { characters }),
-    ...(characters !== undefined && options.duplicateCharacters === true ? { duplicateCharacters: true } : {}),
+    ...duplicateFlagOf(options, characters),
     ...(elements === undefined ? {} : { elements }),
     ...(objectives === undefined ? {} : { objectives }),
     ...(options.mysterySeed === true ? { mystery: rollMysteryOptions(seed) } : {}),

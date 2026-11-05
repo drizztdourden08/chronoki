@@ -1,12 +1,15 @@
 /* @layer bridge-wasm @kind test */
 import { describe, expect, it } from 'vitest';
-import { hpGrowByte, mpGrowByte, rateByte, synthRecord } from './duplicate-kind.fixture';
+import { hpGrowByte } from './hp-grow-byte.fixture';
 import { levelRecord } from './level-record';
 import { HP_GROW_ROM, MP_GROW_ROM, STAT_RATE_ROM } from './level-record.constants';
+import { mpGrowByte } from './mp-grow-byte.fixture';
+import { rateByte } from './rate-byte.fixture';
+import { synthRecord } from './synth-record.fixture';
 
 const rom = (addr: number): number | undefined => {
-  if (addr >= HP_GROW_ROM && addr < HP_GROW_ROM + 64) return hpGrowByte(addr - HP_GROW_ROM);
-  if (addr >= MP_GROW_ROM && addr < MP_GROW_ROM + 64) return mpGrowByte(addr - MP_GROW_ROM);
+  if (addr >= HP_GROW_ROM && addr < MP_GROW_ROM) return hpGrowByte(addr - HP_GROW_ROM);
+  if (addr >= MP_GROW_ROM && addr < STAT_RATE_ROM) return mpGrowByte(addr - MP_GROW_ROM);
   if (addr >= STAT_RATE_ROM && addr < STAT_RATE_ROM + 56) return rateByte(addr - STAT_RATE_ROM);
   return undefined;
 };

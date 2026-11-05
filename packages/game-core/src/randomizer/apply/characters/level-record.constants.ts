@@ -1,4 +1,6 @@
 /* @layer bridge-wasm @kind constants @source Belthasar battle.c CtBattleLevelUp (ROM_HP_GROW, ROM_MP_GROW, ROM_STAT_RATE) */
+import type { StatGrowth } from './level-record.constants.type';
+
 const RECORD_BYTES = 0x50;
 const OFF_MAX_HP = 0x05;
 const OFF_MAX_MP = 0x09;
@@ -19,8 +21,6 @@ const STAT_RATE_ROM = 0x0c25fa;
 const GROW_ROW_BYTES = 8;
 const STAT_RATE_ROW_BYTES = 7;
 
-type StatGrowth = { base: number; rate: number; current: number };
-
 const STAT_GROWTH: readonly StatGrowth[] = [
   { base: 0x2f, rate: 0, current: 0x0b },
   { base: 0x30, rate: 1, current: 0x0c },
@@ -30,7 +30,6 @@ const STAT_GROWTH: readonly StatGrowth[] = [
   { base: 0x35, rate: 6, current: 0x11 },
 ];
 
-export type { StatGrowth };
 export {
   GROW_ROW_BYTES, HP_GROW_ROM, MAX_HP, MAX_MP, MAX_STAT, MP_GROW_ROM, NEXT_BYTES, OFF_CUR_HP, OFF_CUR_MP, OFF_LEVEL, OFF_MAX_HP,
   OFF_MAX_MP, OFF_NEXT, OFF_XP, RECORD_BYTES, STAT_GROWTH, STAT_RATE_ROM, STAT_RATE_ROW_BYTES, XP_BYTES,

@@ -1,10 +1,19 @@
+/* @layer tests @kind test */
 import type { Profile } from '@drizztdourden08/brock-core';
 import { describe, expect, it } from 'vitest';
-import { duplicateCharactersOf } from './duplicate-characters-of';
+import { duplicateCharactersOf } from '@app/views/GameSession/behavior/duplicate-characters-of';
 
-const profileOf = (options: Record<string, unknown>): Profile => ({ randomizer: { options } }) as unknown as Profile;
+type ProfileOptions = NonNullable<Profile['randomizer']>['options'];
 
-describe('duplicateCharactersOf', () => {
+const profileOf = (options: ProfileOptions): Profile => ({
+  id: 'profile',
+  name: 'profile',
+  created: 0,
+  lastPlayed: 0,
+  randomizer: { mode: 'local', seed: 'seed', options },
+});
+
+describe('duplicateCharactersOf', { tags: ['critical'] }, () => {
   it('is off without a profile or the option', () => {
     expect(duplicateCharactersOf(null)).toBe(false);
     expect(duplicateCharactersOf(profileOf({ characterRando: true }))).toBe(false);
