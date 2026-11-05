@@ -54,3 +54,20 @@ describe('default-on feature migration', { tags: ['critical'] }, () => {
     expect(load({ vanillaSafe: false }).knownGates).toContain('gameInfo');
   });
 });
+
+describe('defaults flipped on migration', { tags: ['critical'] }, () => {
+  it('turns turbo on once for a profile that knew it as off', () => {
+    const settings = load({ gates: ['widescreen'], knownGates: ['turbo'], vanillaSafe: false });
+    expect(settings.gates).toContain('turbo');
+    expect(settings.flippedDefaults).toContain('turbo');
+  });
+
+  it('keeps turbo off when the flip was already applied', () => {
+    const settings = load({ gates: ['widescreen'], knownGates: ['turbo'], flippedDefaults: ['turbo'], vanillaSafe: false });
+    expect(settings.gates).not.toContain('turbo');
+  });
+
+  it('has turbo on in fresh settings', () => {
+    expect(load({ vanillaSafe: false }).gates).toContain('turbo');
+  });
+});
