@@ -3,10 +3,9 @@ import { useState } from 'react';
 import { Button, Callout, Field, NumberInput, Stack, Text } from '@drizztdourden08/tessera/primitives';
 import { ITEM_ID_MAX, ITEM_STACK_MAX } from '@chronoki/game-core';
 import type { GameInfoSnapshot } from '@chronoki/game-core';
-import { cheatGiveItem, cheatItemName, cheatSetGold } from '@app/game/cheats/cheat-actions';
+import { cheatGiveItem, cheatItemName, cheatSetGold } from '@app/game/cheats';
+import { GOLD_CAP } from './ItemsGoldTab.constants';
 import { DEFAULT_COUNT, DEFAULT_ITEM_ID, WRITE_REFUSED_TEXT } from '../CheatsWidget.constants';
-
-const GOLD_CAP = 9999999;
 
 const ItemsGoldTab = ({ snapshot }: { snapshot: GameInfoSnapshot }) => {
   const [itemId, setItemId] = useState(DEFAULT_ITEM_ID);
@@ -26,7 +25,7 @@ const ItemsGoldTab = ({ snapshot }: { snapshot: GameInfoSnapshot }) => {
         <NumberInput value={count} min={1} max={ITEM_STACK_MAX} onChange={setCount} />
       </Field>
       <Button onClick={() => run(cheatGiveItem(itemId, count))}>Give item</Button>
-      <Field label="Gold" hint={<Text size="sm">Now: {snapshot.gold}</Text>}>
+      <Field label="Gold" hint={<Text size="md">Now: {snapshot.gold}</Text>}>
         <NumberInput value={gold} min={0} max={GOLD_CAP} onChange={setGold} />
       </Field>
       <Button onClick={() => run(cheatSetGold(gold))}>Set gold</Button>
