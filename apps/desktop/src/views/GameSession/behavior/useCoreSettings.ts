@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import type { Profile } from '@drizztdourden08/brock-core';
 import { useSettings } from '@drizztdourden08/brock-react';
 import { gameFlagsOf } from '@app/game/randomizer/game-flags-of';
-import { buildCoreConfigIni, gateSettings, pictureRatioOf } from '@chronoki/game-core';
+import { buildCoreConfigIni, dialogPacingOf, gateSettings, pictureRatioOf } from '@chronoki/game-core';
 import type { CkArea } from '@chronoki/game-core';
 import { resolveGates } from '@chronoki/features';
 import { useLegacyModeMigration } from '@app/profiles/useLegacyModeMigration';
@@ -27,6 +27,7 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
   const steamData = useSteamDataImported();
   const muted = app.masterMuted || startupFlag('muted') === true;
   const volume = Math.round(app.masterVolume);
+  const { dialogSpeed, dialogHoldSpeed, dialogHoldToAccelerate, dialogFillOnB } = app;
   const { vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration } = app;
   const { screenRatio, stageArea: planned, wholePixels } = displayInputsOf(app, stageArea);
   const areaW = planned?.width ?? 0;
@@ -39,7 +40,8 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
     const { effective } = resolveGates(gates, { vanillaSafe, packaged: isPackaged(), satisfied });
     const stage = areaW > 0 ? { width: areaW, height: areaH } : undefined;
     const options = { aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, stageArea: stage, wholePixels };
-    const settings = gateSettings(effective, options, { volume, mute: muted });
+    const dialog = dialogPacingOf({ dialogSpeed, dialogHoldSpeed, dialogHoldToAccelerate, dialogFillOnB });
+    const settings = gateSettings(effective, options, { volume, mute: muted }, dialog);
     return {
       settings,
       config: buildCoreConfigIni(settings, gameFlagsOf(randomizer, disableGlitches, duplicateCharacters)),
@@ -51,7 +53,8 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
       turboSpeed,
       saveHoldDuration,
     };
-  }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, areaW, areaH, wholePixels, steamData, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration, randomizer, disableGlitches, duplicateCharacters]);
+  }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, areaW, areaH, wholePixels, steamData, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration, randomizer, disableGlitches, duplicateCharacters,
+    dialogSpeed, dialogHoldSpeed, dialogHoldToAccelerate, dialogFillOnB]);
 };
 
 export { useCoreSettings };

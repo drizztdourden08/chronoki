@@ -7,6 +7,8 @@ import { TurboSpeedControl } from './TurboSpeedControl';
 import { RenderScaleControl } from './RenderScaleControl';
 import { VolumeRow } from './audio/VolumeRow';
 import { DetectedPackControl } from './detected-pack-control';
+import { DialogHoldSpeedControl } from './dialog/DialogHoldSpeedControl';
+import { DialogSpeedControl } from './dialog/DialogSpeedControl';
 import { AspectRatioRow } from './display/AspectRatioRow';
 import { withAspectCascade } from './display/with-aspect-cascade';
 import { GATE_KEY_PREFIX } from './gate-keys.constants';
@@ -19,6 +21,8 @@ const renderSettingControl = (key: string, settings: AppSettings, onChange: Sett
   if (key === 'aspectRatio') return <AspectRatioRow settings={settings} onChange={onChange} />;
   if (key === 'renderScale') return <RenderScaleControl settings={settings} onChange={onChange} />;
   if (key === 'turboSpeed') return <TurboSpeedControl settings={settings} onChange={onChange} />;
+  if (key === 'dialogSpeed') return <DialogSpeedControl settings={settings} onChange={onChange} />;
+  if (key === 'dialogHoldSpeed') return <DialogHoldSpeedControl settings={settings} onChange={onChange} />;
   if (key === 'masterVolume') return <VolumeRow settingKey="masterVolume" settings={settings} onChange={onChange} />;
   if (key === 'musicVolume' || key === 'sfxVolume') return <VolumeRow settingKey={key} settings={settings} onChange={onChange} />;
   if (key === 'detectedPack') return <DetectedPackControl />;

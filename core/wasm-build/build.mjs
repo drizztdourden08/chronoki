@@ -22,6 +22,7 @@ import { writeDuplicateChars } from './patches/duplicate-chars.mjs';
 import { writeDuplicateCharsBattle } from './patches/duplicate-chars-battle.mjs';
 import { writeVisibleTechs } from './patches/visible-techs.mjs';
 import { writeTallField } from './patches/tall-field.mjs';
+import { writeDialogPacing } from './patches/dialog-pacing.mjs';
 import { writeShapes } from './shapes.mjs';
 import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
 
@@ -124,7 +125,7 @@ const gameArgs = (gen) => [
   '-sMODULARIZE=1', '-sEXPORT_NAME=Chronoki', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
-  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkSetDimFlashes,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkViewWidth,_CkViewHeight,_CkViewBlackTop,_CkViewBlackBottom,_CkViewBlackLeft,_CkViewBlackRight,_CkViewScene,_CkViewOriginX,_CkViewOriginY,_CkSetEdgeEnv,_CkEnvValid,_CkEnvPtr,_CkEnvWidth,_CkEnvHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkSetDimFlashes,_CkSetDialogPacing,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkViewWidth,_CkViewHeight,_CkViewBlackTop,_CkViewBlackBottom,_CkViewBlackLeft,_CkViewBlackRight,_CkViewScene,_CkViewOriginX,_CkViewOriginY,_CkSetEdgeEnv,_CkEnvValid,_CkEnvPtr,_CkEnvWidth,_CkEnvHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,callMain,FS,ENV,HEAPU8,HEAP16,HEAP32',
   '-lm',
 ];
@@ -194,6 +195,7 @@ const main = () => {
   gen.edge = writeEdgeEnv(gen.state);                 // the Edge Effect's environment picture, gated by CkSetEdgeEnv (patches/edge-env.mjs)
   gen.visible = writeVisibleTechs(gen.state);         // Visible Techs, gated by visible_techs (patches/visible-techs.mjs)
   gen.dup = writeDuplicateChars(gen.state, belthasar); // duplicate characters, gated by duplicate_characters: field/world/menu/ct_vm (patches/duplicate-chars.mjs)
+  gen.dialog = writeDialogPacing(gen.state);          // dialog pacing: the typewriter's iterations a frame, gated by dialog_controls (patches/dialog-pacing.mjs)
   // Sightscope, gated by sightscope; battle.c replaced in the game module (patches/sightscope.mjs). Duplicate characters'
   // battle side takes its battle.c and adds move.c (patches/duplicate-chars-battle.mjs): the same { files, replaced } shape.
   gen.sight = writeDuplicateCharsBattle(writeSightscope(gen.dir, belthasar), gen.dir, belthasar);

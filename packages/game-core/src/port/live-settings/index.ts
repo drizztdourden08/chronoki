@@ -1,7 +1,8 @@
 /* @layer bridge-wasm @kind barrel */
 export { callIfExported } from './call-if-exported';
-export { CK_EXPORT_SET_DIM_FLASHES } from './live-settings.constants';
+export { CK_EXPORT_SET_DIALOG_PACING, CK_EXPORT_SET_DIM_FLASHES } from './live-settings.constants';
 export { liveSettingsState } from './live-settings-state';
+export { reassertDialogPacing } from './reassert-dialog-pacing';
 export { reassertDimFlashes } from './reassert-dim-flashes';
 export { reassertLive } from './reassert-live';
 export { setLiveSettings } from './set-live-settings';

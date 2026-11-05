@@ -20,11 +20,16 @@ const wideLine = (s: CkSettings): string[] => (s.widescreen === 'off' ? [] : [`w
 const lockLine = (s: CkSettings): string[] =>
   s.tallLines > 0 || s.widescreen !== 'off' ? [`camera_lock=${flag(s.cameraLock)}`] : [];
 
+const dialogLines = ({ dialogControls, dialogPacing: p }: CkSettings): string[] =>
+  dialogControls
+    ? ['dialog_controls=1', `dialog_speed_q4=${p.baseQ4}`, `dialog_hold_q4=${p.holdQ4}`, `dialog_hold=${flag(p.hold)}`, `dialog_fill=${flag(p.fill)}`]
+    : [];
+
 const chronokiLines = (s: CkSettings, g: CkGameFlags): string[] => {
   const features = s.sightscope || s.visibleTechs ? [`sightscope=${flag(s.sightscope)}`, `visible_techs=${flag(s.visibleTechs)}`] : [];
   const dim = s.dimFlashes ? ['dim_flashes=1'] : [];
   const duplicates = g.randomizer && g.duplicateCharacters === true ? ['duplicate_characters=1'] : [];
-  const keys = [...features, ...dim, ...duplicates];
+  const keys = [...features, ...dim, ...dialogLines(s), ...duplicates];
   return keys.length > 0 ? ['[chronoki]', ...keys, ''] : [];
 };
 

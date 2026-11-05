@@ -4,6 +4,7 @@ import type { LiveSettingsState } from './live-settings.type';
 
 const setLiveSettings = (next: LiveSettingsState): void => {
   liveSettingsState.dimFlashes = next.dimFlashes;
+  liveSettingsState.dialogPacing = { ...next.dialogPacing };
 };
 
 export { setLiveSettings };

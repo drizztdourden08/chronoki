@@ -9,6 +9,7 @@ import { hasUnmetRequires } from './has-unmet-requires';
 
 const isSettingDisabled = (key: string, settings: AppSettings, lock: SettingLockCause | null): boolean => {
   if (key === 'pixelPerfect') return settings.viewportConstraint !== 'none';
+  if (key === 'dialogHoldSpeed' && !settings.dialogHoldToAccelerate) return true;
   if (key === `${GATE_KEY_PREFIX}linearFiltering` && settings.pixelPerfect && settings.viewportConstraint === 'none') return true;
   if (isAspectRuleDisabled(key, settings)) return true;
   if (isAudioDisabled(key, settings)) return true;

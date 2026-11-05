@@ -25,6 +25,10 @@ interface AppSettings extends BaseSettings {
   pixelPerfect: boolean;
   autoSaveMaxEntries: number;
   turboSpeed: number;
+  dialogSpeed: number;
+  dialogHoldSpeed: number;
+  dialogHoldToAccelerate: boolean;
+  dialogFillOnB: boolean;
   saveHoldDuration: number;
   musicVolume: number;
   musicMuted: boolean;
