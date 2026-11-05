@@ -1,0 +1,11 @@
+/* @layer shared-input @kind barrel */
+export * from '../../haptics';
+export type { HapticPatternId } from '../../data/haptics/haptic-pattern.type';
+export { HAPTIC_PATTERNS } from '../../data/haptics/haptic-patterns.constants';
+export { destroyHapticBridge } from '../../runtime/haptic-bridge/destroy-haptic-bridge';
+export { HID_WORKER_OVERHEAD_MS, INPUT_UNAVAILABLE } from '../../runtime/haptic-bridge/haptic-bridge.constants';
+export { hapticState } from '../../runtime/haptic-bridge/haptic-state';
+export { shapeForDevice } from '../../runtime/haptic-bridge/shape-for-device';
+export { startDebugLog } from '../../runtime/haptic-bridge/start-debug-log';
+export { updateHapticBridgeSettings } from '../../runtime/haptic-bridge/update-haptic-bridge-settings';
+export { updateHapticsProfileEnabled } from '../../runtime/haptic-bridge/update-haptics-profile-enabled';

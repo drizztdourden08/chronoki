@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import { getPlatform } from '@drizztdourden08/brock-react';
+import { startHaptics } from '@app/input/haptic-bridge/start-haptics';
 import { startAutoSave } from '../auto-save/start-auto-save';
 import { startSramSync } from '../sram-sync';
 import { startTurboLoop } from '../turbo/start-turbo-loop';
@@ -14,9 +15,11 @@ const startSessionServices = (game: Pick<ActiveGame, 'store' | 'profileId'>): ((
   const unsubscribe = device.onAppPause(() => { void saveOnQuit(); });
   const stopAutoSave = startAutoSave();
   const stopTurbo = startTurboLoop();
+  const stopHaptics = startHaptics();
   return () => {
     stopAutoSave();
     stopTurbo();
+    stopHaptics();
     unsubscribe();
     device.allowSleep();
   };
