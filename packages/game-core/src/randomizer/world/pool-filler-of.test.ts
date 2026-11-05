@@ -6,7 +6,7 @@ import { treasureItemOf } from './treasure-item-of';
 
 const REST = Array.from({ length: 40 }, (_, index) => treasureItemOf(index + 1));
 
-describe('poolFillerOf', () => {
+describe('poolFillerOf', { tags: ['critical'] }, () => {
   it('fills a 20 item shortfall with varied treasure items and no key items', () => {
     const filler = poolFillerOf(REST, 25, 5, 'seed-a');
     expect(filler).toHaveLength(20);

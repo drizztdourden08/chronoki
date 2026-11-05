@@ -1,6 +1,5 @@
 /* @layer bridge-wasm @kind constants */
 import { CT_OPTION_CATALOG } from '../world/ct-options.constants';
-import type { CtOptionValues } from '../world/ct-world-input.type';
 import { CT_MODES } from '../world/modes/ct-modes.constants';
 import type { VerifyOptionSet } from './verify-option-set.type';
 
@@ -13,12 +12,12 @@ const modeSets: VerifyOptionSet[] = CT_MODES.filter((mode) => mode.implemented)
 
 const flippedSets: VerifyOptionSet[] = implementedOptions
   .filter((option) => typeof option.default === 'boolean')
-  .map((option) => ({ name: `flip:${option.key}`, options: { [option.key]: !option.default } as CtOptionValues }));
+  .map((option) => ({ name: `flip:${option.key}`, options: { [option.key]: !option.default } }));
 
 const choiceSets: VerifyOptionSet[] = implementedOptions
   .flatMap((option) => (option.choices ?? [])
     .filter((choice) => choice !== option.default)
-    .map((choice) => ({ name: `${option.key}:${String(choice)}`, options: { [option.key]: choice } as CtOptionValues })));
+    .map((choice) => ({ name: `${option.key}:${String(choice)}`, options: { [option.key]: choice } })));
 
 const VERIFY_OPTION_SETS: readonly VerifyOptionSet[] = [
   { name: 'default', options: {} },

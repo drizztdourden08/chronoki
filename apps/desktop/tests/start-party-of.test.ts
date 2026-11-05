@@ -1,9 +1,9 @@
-/* @layer bridge-wasm @kind test */
+/* @layer tests @kind test */
 import { describe, expect, it } from 'vitest';
 import { LEGACY_PARTY } from '@chronoki/game-core';
-import { startPartyOf } from './start-party-of';
+import { startPartyOf } from '@app/game/randomizer/start-party-of';
 
-describe('startPartyOf', () => {
+describe('startPartyOf', { tags: ['critical'] }, () => {
   it('returns the rolled party of the placement', () => {
     expect(startPartyOf({ startParty: ['frog', 'ayla'] })).toEqual(['frog', 'ayla']);
   });
