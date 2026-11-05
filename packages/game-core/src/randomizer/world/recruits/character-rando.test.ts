@@ -28,12 +28,12 @@ describe('recruit spots with an assignment', { tags: ['critical'] }, () => {
   it('keeps the old layout for no assignment and for the identity', () => {
     const identity: CharacterAssignment = { marle: 'marle', lucca: 'lucca', frog: 'frog', robo: 'robo', ayla: 'ayla' };
     const plain = applyStartPartyToRegions(BASE, start, LEGACY_PARTY);
-    expect(applyStartPartyToRegions(BASE, start, LEGACY_PARTY, identity)).toEqual(plain);
+    expect(applyStartPartyToRegions(BASE, start, LEGACY_PARTY, { assignment: identity })).toEqual(plain);
     expect(applyStartPartyToRegions(BASE, start, LEGACY_PARTY, {})).toEqual(plain);
   });
 
   it('moves the character, and the spot rule stays with the spot', () => {
-    const specs = applyStartPartyToRegions(BASE, start, LEGACY_PARTY, swapped);
+    const specs = applyStartPartyToRegions(BASE, start, LEGACY_PARTY, { assignment: swapped });
     expect(eventsOf(specs, 'future').map((e) => e.id)).toEqual(['ayla']);
     expect(eventsOf(specs, 'future')[0]?.rule).toBe(CT_RECRUIT_SPOTS.robo?.rule);
     expect(eventsOf(specs, 'prehistory').map((e) => e.id)).toEqual(['robo']);
@@ -41,7 +41,7 @@ describe('recruit spots with an assignment', { tags: ['critical'] }, () => {
   });
 
   it('does not grant a starting character at another spot', () => {
-    const specs = applyStartPartyToRegions(BASE, start, ['crono', 'ayla'], swapped);
+    const specs = applyStartPartyToRegions(BASE, start, ['crono', 'ayla'], { assignment: swapped });
     expect(eventsOf(specs, 'future').map((e) => e.id)).toEqual([]);
     expect(eventsOf(specs, 'prehistory').map((e) => e.id)).toEqual(['robo']);
     const all = idsOf(specs);

@@ -29,6 +29,11 @@ const bucketSets: VerifyOptionSet[] = CT_OPTION_CATALOG.some((option) => option.
   ? [{ name: 'cross:bucketList-all', options: { bucketList: true, objectiveCount: 8, objectivesNeeded: 8 } }]
   : [];
 
+const duplicateSets: VerifyOptionSet[] = ['characterRando', 'duplicateCharacters']
+  .every((key) => CT_OPTION_CATALOG.some((option) => option.key === key && option.implemented))
+  ? [{ name: 'cross:characterRando+duplicateCharacters', options: { characterRando: true, duplicateCharacters: true } }]
+  : [];
+
 const VERIFY_OPTION_SETS: readonly VerifyOptionSet[] = [
   { name: 'default', options: {} },
   ...modeSets,
@@ -36,6 +41,7 @@ const VERIFY_OPTION_SETS: readonly VerifyOptionSet[] = [
   ...choiceSets,
   ...crossSets,
   ...bucketSets,
+  ...duplicateSets,
 ];
 
 export { VERIFY_OPTION_SETS };
