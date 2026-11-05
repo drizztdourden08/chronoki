@@ -9,7 +9,11 @@ import { checkBattleStatics } from '../battle-statics.mjs';
 import { root } from '../sources.mjs';
 
 // [what to find, what to put, how many times it must occur]
-const SIGHTSCOPE_PATCHES = [];
+const SEAT_LOOP = '    for (int seat = 0; seat < 3; seat++) { int a = bm[0x5E57 + seat * 0x80]; if (a == 0xA4 || a == 0xB8) bm[0x9F34]++; }\n';
+const SIGHTSCOPE_PATCHES = [
+  // option on: the seat count is never zero, so the top box posts message 0B (name + HP) for every enemy whose own bit allows it
+  [SEAT_LOOP, `${SEAT_LOOP}    if (ck_sightscope() && !bm[0x9F34]) bm[0x9F34] = 1;\n`, 1],
+];
 // the save-state battle section (phase 4, docs/plans/save-state-anywhere-plan.md): reconnect/ck_battle_state.inc hands out
 // the addresses of the battle.c statics the section keeps; battle-statics.mjs checks them against the original text.
 const BATTLE_STATE_SUFFIX = '\n#include "ck_battle_state.inc"\n';
