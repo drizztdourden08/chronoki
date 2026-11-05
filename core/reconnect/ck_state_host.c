@@ -79,7 +79,7 @@ size_t ck_fields_encode(uint8_t* out, const CkPtrField* table, int count) {
   return at;
 }
 
-#define CK_FIELDS_MAX 160
+#define CK_FIELDS_MAX 512
 
 static int fieldIndex(const CkPtrField* table, int count, const uint8_t* name, size_t n) {
   for (int i = 0; i < count; i++)
