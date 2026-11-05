@@ -7,7 +7,7 @@ import { resolveStartParty } from './party/resolve-start-party';
 
 const rollCtPlacement = (input: CtWorldInput, seed: string): CtPlacement => {
   const startParty = input.startParty ?? resolveStartParty(input.options ?? {}, seed);
-  return { ...generate(createCtWorldGame({ ...input, startParty }), { seed }), startParty };
+  return { ...generate(createCtWorldGame({ ...input, startParty, fillerSeed: seed }), { seed }), startParty };
 };
 
 export { rollCtPlacement };
