@@ -24,6 +24,7 @@ import { LEGAL_TEXT } from './legal.constants';
 import { CHRONOKI_DATA_DOMAINS } from './storage/data-domains.constants';
 import { APP_PROFILE_MODES } from './profile-modes';
 import { product } from './product';
+import { useWidgetDisabled } from './widget-gates/useWidgetDisabled';
 import type { AppSettings } from './settings.type';
 
 const ownRowTree = withOwnRowTabs(screenTree);
@@ -48,6 +49,7 @@ createRoot(root).render(
       widgets={appWidgets}
       widgetLayout={appWidgetLayout}
       widgetKits={appWidgetKits}
+      widgetDisabled={useWidgetDisabled}
       review={appReview}
       titleBar={appTitleBar}
       tours={appTours}
