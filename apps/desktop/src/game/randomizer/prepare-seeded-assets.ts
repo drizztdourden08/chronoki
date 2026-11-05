@@ -32,7 +32,7 @@ const prepareSeededAssets = async (profileId: string | null, assets: Uint8Array)
   if (!gate.ok) return refuse(gate.reason);
   const placement = pendingBoot.get()?.placement as CtPlacement | undefined;
   if (placement === undefined) return refuse(BOOT_REFUSALS.noPlacement);
-  const seeded = writeSeedToPack(profileId, placement, checks, assets, config.options);
+  const seeded = writeSeedToPack({ profileId, placement, checks, assets, options: config.options });
   if (!seeded.ok) pendingBoot.clear();
   return seeded;
 };
