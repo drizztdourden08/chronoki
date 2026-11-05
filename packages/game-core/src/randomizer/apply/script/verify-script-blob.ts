@@ -6,7 +6,7 @@ import { pointerAt } from './pointer-at';
 
 const verifyScriptBlob = (raw: Uint8Array): string[] => {
   const ops = listScriptOps(raw);
-  if (!ops) return ['the spliced script no longer walks cleanly'];
+  if (!ops) return ['the spliced script no longer walks from function start to function start'];
   const bounds = new Set<number>([raw.length - 1, ...ops.map((o) => o.at)]);
   const failed: string[] = [];
   ops.forEach((op) => {

@@ -17,6 +17,6 @@ describe('retargetChangeLocation', () => {
 
   it('encodeChangeLocation takes the same flags explicitly', { tags: ['critical'] }, () => {
     expect([...encodeChangeLocation(0x1f1, 5, 6)]).toEqual([0xe0, 0xf1, 0x01, 5, 6]);
-    expect([...encodeChangeLocation(0x1f1, 5, 6, 0xe0, 0x80)]).toEqual([0xe0, 0xf1, 0x81, 5, 6]);
+    expect([...encodeChangeLocation(0x1f1, 5, 6, { op: 0xe0, flags: 0x80 })]).toEqual([0xe0, 0xf1, 0x81, 5, 6]);
   });
 });

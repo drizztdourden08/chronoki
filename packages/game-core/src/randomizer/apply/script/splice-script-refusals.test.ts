@@ -15,12 +15,12 @@ const failedOf = (pack: Uint8Array, replace: number[]): string[] => {
 describe('spliceSceneScript refusals', () => {
   it('refuses a jump that lands inside the replaced op', { tags: ['critical'] }, () => {
     const pack = packOf(buildScript([[0x10, 3, ...CHANGE, ...RETURN]]));
-    expect(failedOf(pack, [0, 0])).toEqual(['test: jump at 0 lands inside the replaced op']);
+    expect(failedOf(pack, [0, 0])).toEqual(['test: jump at 32 lands inside the replaced op']);
   });
 
   it('refuses a displacement that would pass 0xFF', { tags: ['critical'] }, () => {
     const pack = packOf(buildScript(jumpScene));
-    expect(failedOf(pack, new Array<number>(260).fill(0))).toContain('test: jump at 0 no longer reaches its target');
+    expect(failedOf(pack, new Array<number>(260).fill(0))).toContain('test: jump at 32 no longer reaches its target');
   });
 
   it('refuses a function pointer into the replaced op', { tags: ['critical'] }, () => {
@@ -33,7 +33,7 @@ describe('spliceSceneScript refusals', () => {
   it('refuses a script that does not end exactly at the next function start', { tags: ['critical'] }, () => {
     const script = buildScript([[...CHANGE, 0x4a, 0x00]]);
     expect(failedOf(packOf(script), [0, 0])).toEqual([
-      'test: script does not walk cleanly from function start to function start',
+      'test: script does not walk from function start to function start',
     ]);
   });
 

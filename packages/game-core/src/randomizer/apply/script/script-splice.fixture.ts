@@ -2,15 +2,12 @@
 import { readPackEntries } from '../../checks/read-pack-entries';
 import { changeLocationTarget } from './change-location-target';
 import { isChangeLocation } from './is-change-location';
+import { CHANGE, POKE, RETURN } from './script-splice-fixture.constants';
+import type { FixtureBlob } from './script-splice-fixture.type';
 import type { ScriptSplice } from './script-splice.type';
-
-type Blob = { type: number; id: number; data: number[] };
 
 const le32 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >>> 24) & 0xff];
 const le16 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff];
-const POKE = [0x4a, 0x00, 0x00, 0x7e, 0x01];
-const CHANGE = [0xe0, 0xf0, 0x01, 0x3f, 0x38];
-const RETURN = [0x00];
 
 const buildScript = (bodies: number[][]): number[] => {
   const header = bodies.length * 32;
@@ -23,7 +20,7 @@ const buildScript = (bodies: number[][]): number[] => {
   return [bodies.length, ...pointers, ...bodies.flat()];
 };
 
-const buildPack = (blobs: Blob[]): Uint8Array => {
+const buildPack = (blobs: FixtureBlob[]): Uint8Array => {
   const bytes: number[] = [0x43, 0x54, 0x41, 0x53, ...le32(1), ...le32(blobs.length)];
   let at = 12 + blobs.length * 16;
   blobs.forEach((b) => {

@@ -10,7 +10,7 @@ const refuse = (why: string, reasons: string[]): BlobResult => ({ ok: false, fai
 
 const spliceScriptBlob = (raw: Uint8Array, splice: ScriptSplice): BlobResult => {
   const ops = listScriptOps(raw);
-  if (!ops) return refuse(splice.why, ['script does not walk cleanly from function start to function start']);
+  if (!ops) return refuse(splice.why, ['script does not walk from function start to function start']);
   const hits = ops.filter((o) => splice.anchor(raw.slice(1 + o.at, 1 + o.at + o.length)));
   const hit = hits[0];
   if (!hit) return refuse(splice.why, ['anchor not found']);

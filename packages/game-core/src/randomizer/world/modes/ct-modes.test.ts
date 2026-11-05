@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { CT_KIT } from '../ct-kit.constants';
 import { CT_OPTION_CATALOG } from '../ct-options.constants';
+import type { CtRegionId } from '../ct-world-keys.type';
 import { exitNameOf } from '../exit-name-of';
 import { CT_REGIONS } from '../regions/ct-regions.constants';
 import { applyModeToRegions } from './apply-mode-to-regions';
@@ -20,7 +21,7 @@ const expectUnavailable = (mode: CtModeDef): void => {
   expect(() => modeOf({ gameMode: mode.id })).toThrow(/not available yet/);
 };
 
-const firstExit = (): { from: string; to: string } => {
+const firstExit = (): { from: CtRegionId; to: CtRegionId } => {
   const spec = found(CT_REGIONS.find((candidate) => candidate.exits.length > 0));
   return { from: spec.id, to: found(spec.exits[0]).to };
 };
