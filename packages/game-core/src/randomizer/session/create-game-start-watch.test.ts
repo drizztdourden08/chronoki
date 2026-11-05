@@ -32,6 +32,13 @@ describe('createGameStartWatch', { tags: ['critical'] }, () => {
     expect(watch.observe(view(true, 7, 0, 2))).toBe(true);
   });
 
+  it('stays unstarted when Start in the demo resets the play clock to zero', () => {
+    const watch = createGameStartWatch();
+    watch.observe(view(true, 2, 50, 0));
+    expect(watch.observe(view(true, 0, 0, 0))).toBe(false);
+    expect(watch.observe(view(true, 0, 1, 0))).toBe(false);
+  });
+
   it('starts on New Game: the loader sets the new-game flag', () => {
     const watch = createGameStartWatch();
     watch.observe(view(true, 0, 5, 2));
