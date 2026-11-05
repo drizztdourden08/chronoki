@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { DEFAULT_GATE_OPTIONS, FEATURE_REGISTRY, resolveGates } from '@chronoki/features';
 import { coverFrame, fillBox, gateSettings, pictureRatioOf, presentBoxOf, presentSizeOf } from '../src';
 
-const WIDE = { minWidth: 256, maxWidth: 544, minHeight: 224, maxHeight: 224 };
-const TALL = { minWidth: 256, maxWidth: 256, minHeight: 224, maxHeight: 480 };
-const FREE = { minWidth: 256, maxWidth: 544, minHeight: 224, maxHeight: 480 };
+const WIDE = { minWidth: 256, maxWidth: 544, minHeight: 240, maxHeight: 240 };
+const TALL = { minWidth: 256, maxWidth: 256, minHeight: 240, maxHeight: 480 };
+const FREE = { minWidth: 256, maxWidth: 544, minHeight: 240, maxHeight: 480 };
 const area = (width: number, height: number) => ({ width, height });
 const ALL = FEATURE_REGISTRY.map((f) => f.id);
 const NO_TALL = ALL.filter((id) => id !== 'tallRendering');
@@ -58,26 +58,26 @@ describe('pixel perfect frame on both axes', { tags: ['critical'] }, () => {
   });
 
   it('raises the scale when the width would pass 544', () => {
-    expect(coverFrame(area(2560, 1080), 2560 / 1080, FREE, true)).toEqual({ width: 512, height: 224, scale: 5 });
+    expect(coverFrame(area(2560, 1080), 2560 / 1080, FREE, true)).toEqual({ width: 512, height: 240, scale: 5 });
   });
 });
 
 describe('pixel perfect frame on one axis (tall rendering off)', { tags: ['critical'] }, () => {
-  it('renders 384x224 at x5 for 16:9 on 1920x1080, cropping 4 lines top and bottom', () => {
-    expect(coverFrame(area(1920, 1080), 16 / 9, WIDE, true)).toEqual({ width: 384, height: 224, scale: 5 });
+  it('renders 384x240 at x5 for 16:9 on 1920x1080, cropping lines top and bottom', () => {
+    expect(coverFrame(area(1920, 1080), 16 / 9, WIDE, true)).toEqual({ width: 384, height: 240, scale: 5 });
   });
 
   it('renders 512x224 at x5 for the screen ratio on 2560x1080', () => {
-    expect(coverFrame(area(2560, 1080), 2560 / 1080, WIDE, true)).toEqual({ width: 512, height: 224, scale: 5 });
+    expect(coverFrame(area(2560, 1080), 2560 / 1080, WIDE, true)).toEqual({ width: 512, height: 240, scale: 5 });
   });
 
   it('takes the smallest whole scale that covers, never a smaller one with bars', () => {
-    expect(coverFrame(area(2560, 1440), 16 / 9, WIDE, true)).toEqual({ width: 366, height: 224, scale: 7 });
-    expect(coverFrame(area(1904, 1024), 16 / 9, WIDE, true)).toEqual({ width: 382, height: 224, scale: 5 });
+    expect(coverFrame(area(2560, 1440), 16 / 9, WIDE, true)).toEqual({ width: 428, height: 240, scale: 6 });
+    expect(coverFrame(area(1904, 1024), 16 / 9, WIDE, true)).toEqual({ width: 382, height: 240, scale: 5 });
   });
 
   it('covers a 21:9 box on a 16:9 screen at x4 with a 480 wide frame', () => {
-    expect(coverFrame(area(1920, 1080), 21 / 9, WIDE, true)).toEqual({ width: 480, height: 224, scale: 4 });
+    expect(coverFrame(area(1920, 1080), 21 / 9, WIDE, true)).toEqual({ width: 480, height: 240, scale: 4 });
   });
 
   it('plans a tall 3:4 frame on 810x1080 as 256x270 at x4', () => {
@@ -89,8 +89,8 @@ describe('pixel perfect frame on one axis (tall rendering off)', { tags: ['criti
 describe('free scale frame planning', { tags: ['critical'] }, () => {
   it('takes the width from the stage ratio for 16:9 on 1920x1080', () => {
     const frame = coverFrame(area(1920, 1080), 16 / 9, WIDE, false);
-    expect(frame).toMatchObject({ width: 398, height: 224 });
-    expect(frame.scale).toBeCloseTo(1920 / 398, 6);
+    expect(frame).toMatchObject({ width: 426, height: 240 });
+    expect(frame.scale).toBeCloseTo(1920 / 426, 6);
   });
 
   it('takes the lines from the stage ratio for 3:4 on 810x1080', () => {
@@ -103,8 +103,8 @@ describe('free scale frame planning', { tags: ['critical'] }, () => {
 describe('gate settings frame', { tags: ['critical'] }, () => {
   it('feeds the planned width to the core when the stage is given', () => {
     expect(settingsFor(ALL, { stageArea: area(1920, 1080), wholePixels: true })).toMatchObject({ wideWidth: 480, tallLines: 270 });
-    expect(settingsFor(NO_TALL, { stageArea: area(1920, 1080), wholePixels: true })).toMatchObject({ wideWidth: 384, tallLines: 0 });
-    expect(settingsFor(ALL, { stageArea: area(1920, 1080) })).toMatchObject({ wideWidth: 398, tallLines: 0 });
+    expect(settingsFor(NO_TALL, { stageArea: area(1920, 1080), wholePixels: true })).toMatchObject({ wideWidth: 384, tallLines: 240 });
+    expect(settingsFor(ALL, { stageArea: area(1920, 1080) })).toMatchObject({ wideWidth: 426, tallLines: 240 });
     expect(settingsFor(ALL, { aspectRatio: 'original', stageArea: area(1920, 1080), wholePixels: true }).wideWidth).toBe(0);
   });
 

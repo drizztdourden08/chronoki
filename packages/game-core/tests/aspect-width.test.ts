@@ -2,11 +2,39 @@
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_GATE_OPTIONS, FEATURE_REGISTRY, resolveGates } from '@chronoki/features';
 import type { AspectRatioChoice } from '@chronoki/features';
+import { resolveFrame } from '../src/port/aspect/resolve-frame';
 import { buildCoreConfigIni, frameSizeOf, gateSettings, parseRatio, ratioToLines, ratioToWidth } from '../src';
 
 describe('ratio to picture width', { tags: ['critical'] }, () => {
   it('gives 298, 358, 398 and 522 for 4:3, 16:10, 16:9 and 21:9', () => {
     expect(['4:3', '16:10', '16:9', '21:9'].map((r) => ratioToWidth(parseRatio(r)))).toEqual([298, 358, 398, 522]);
+  });
+});
+
+describe('240 line ratios', { tags: ['critical'] }, () => {
+  const effective = new Set(['widescreen', 'tallRendering']);
+  const frameFor = (aspectRatio: AspectRatioChoice, gates: ReadonlySet<string> = effective) =>
+    resolveFrame(gates, { ...DEFAULT_GATE_OPTIONS, aspectRatio });
+
+  it('renders 4:3 as a true 320x240 and 16:9 as 426x240', () => {
+    expect(frameFor('4:3')).toEqual({ width: 320, lines: 240 });
+    expect(frameFor('16:9')).toEqual({ width: 426, lines: 240 });
+    expect(frameFor('16:10')).toEqual({ width: 384, lines: 240 });
+  });
+
+  it('caps 21:9 at the 544 wide motion buffer, dropping to 234 lines', () => {
+    expect(frameFor('21:9')).toEqual({ width: 544, lines: 234 });
+  });
+
+  it('keeps Original at 256x224, or 256x240 with Extend Y', () => {
+    expect(frameFor('original')).toEqual({ width: 256, lines: 224 });
+    expect(frameFor('original', new Set(['widescreen', 'extendY']))).toEqual({ width: 256, lines: 240 });
+    expect(frameFor('original', new Set(['extendY']))).toEqual({ width: 256, lines: 224 });
+  });
+
+  it('takes the base lines as a parameter', () => {
+    expect(ratioToWidth(parseRatio('4:3'), 1, 240)).toBe(320);
+    expect(ratioToLines(parseRatio('16:9'), 1, 240)).toBe(240);
   });
 });
 
@@ -65,12 +93,12 @@ describe('gate settings width', { tags: ['critical'] }, () => {
   it('writes a non-off widescreen placeholder with the width for wide ratios', () => {
     const { effective } = resolveGates(ALL, { vanillaSafe: false });
     const settings = gateSettings(effective, { ...DEFAULT_GATE_OPTIONS, aspectRatio: '4:3' }, audio);
-    expect([settings.widescreen, settings.wideWidth]).toEqual(['16:9', 298]);
+    expect([settings.widescreen, settings.wideWidth]).toEqual(['16:9', 320]);
   });
 
   it('falls back from a tall ratio to 4:3 when tall rendering is off', () => {
     const requested = ALL.filter((id) => id !== 'tallRendering');
-    expect(widthFor(false, '3:4', requested)).toBe(298);
+    expect(widthFor(false, '3:4', requested)).toBe(320);
     expect(widthFor(false, '3:4')).toBe(0);
   });
 
