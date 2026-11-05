@@ -1,7 +1,12 @@
 /* @layer bridge-wasm @kind logic */
-import type { CollectionState, World } from '@drizztdourden08/brock-randomizer/world';
-import type { CtWorldKeys } from './ct-world-keys.type';
+import type { CtGoal } from './ct-goal.type';
+import type { CtGoalId } from './modes/ct-mode-def.type';
 
-const ctGoal = (state: CollectionState<World<CtWorldKeys>>): boolean => state.has('beat-lavos');
+const ctGoal: CtGoal = (state) => state.has('beat-lavos');
 
-export { ctGoal };
+const goalOf = (id: CtGoalId): CtGoal => {
+  if (id === 'beat-lavos') return ctGoal;
+  throw new Error(`Goal "${id}" is not available yet.`);
+};
+
+export { ctGoal, goalOf };

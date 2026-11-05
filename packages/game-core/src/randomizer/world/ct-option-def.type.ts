@@ -8,6 +8,7 @@ type CtOptionDef = {
   jotFlag: string;
   default: RuleOptionValue;
   choices?: readonly RuleOptionValue[];
+  disabledChoices?: readonly string[];
   frozen?: boolean;
   section: string;
   hint?: string;
