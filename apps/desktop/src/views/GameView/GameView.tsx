@@ -17,6 +17,7 @@ const GameView = () => {
   const product = useProduct();
   const saveOverlay = useSaveOverlay();
   const viewRef = useRef<HTMLDivElement | null>(null);
+  const profileId = launch?.profileId ?? null;
   useDockBleed(viewRef);
   return (
     <Box ref={viewRef} className="game-view">
@@ -24,15 +25,15 @@ const GameView = () => {
       <SaveStateOverlay
         open={saveOverlay.open}
         onClose={saveOverlay.close}
-        profileId={launch?.profileId ?? null}
+        profileId={profileId}
         highlightedSlot={saveOverlay.highlightedSlot}
         holdProgress={saveOverlay.holdProgress}
         hints={saveOverlay.hints}
       />
-      <DebugFloatingControls profileId={launch?.profileId ?? null} gameRunning={running} />
+      <DebugFloatingControls profileId={profileId} gameRunning={running} />
       {running && <PauseLayer />}
       {running && <ProfileSwitcherOverlay />}
-      {running && <RandomizerOverlays profileId={launch?.profileId ?? null} />}
+      {running && <RandomizerOverlays profileId={profileId} />}
       {launch === null && (
         <Box className="game-view__idle">
           <Image className="game-view__mark" src={product.logos.mark} alt="" />

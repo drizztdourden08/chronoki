@@ -2,9 +2,7 @@
 import { INVENTORY_COUNTS, INVENTORY_IDS } from '../game-info/wram-map.constants';
 import { ITEM_ID_MAX, ITEM_STACK_MAX } from './cheats.constants';
 import { SLOTS } from './give-item.constants';
-import type { CheatWrite } from './cheat-write.type';
-
-type GiveItemOptions = { heap: Uint8Array; ptr: number; write: CheatWrite; id: number; count: number };
+import type { GiveItemOptions } from './give-item.type';
 
 const slotOf = (heap: Uint8Array, ptr: number, id: number): number => {
   const same = SLOTS.find((slot) => heap[ptr + INVENTORY_IDS + slot] === id && heap[ptr + INVENTORY_COUNTS + slot] !== 0);
@@ -22,4 +20,3 @@ const giveItem = ({ heap, ptr, write, id, count }: GiveItemOptions): boolean => 
 };
 
 export { giveItem };
-export type { GiveItemOptions };
