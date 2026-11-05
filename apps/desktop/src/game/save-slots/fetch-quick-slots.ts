@@ -1,6 +1,6 @@
-/* @layer renderer-components @kind logic */
+/* @layer bridge-wasm @kind logic */
 import { platformSaveStore } from '@app/game/save-states';
-import type { SlotInfo } from '../HomeTab.type';
+import type { SlotInfo } from './save-slots.type';
 import { dataUrlOf } from './data-url-of';
 import { emptySlots } from './empty-slots';
 

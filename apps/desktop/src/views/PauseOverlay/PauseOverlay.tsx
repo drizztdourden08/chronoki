@@ -42,7 +42,7 @@ const PauseOverlay = () => {
               <Text>Resume</Text>
             </Box>
           )}
-          {(isFunctionBound('profile-prev') && isFunctionBound('profile-next')) && (
+          {(manager.getProfiles().length > 1 && isFunctionBound('profile-prev') && isFunctionBound('profile-next')) && (
             <Box className="pause-overlay__option">
               <FunctionGlyph action="profile-prev" />
               <FunctionGlyph action="profile-next" />

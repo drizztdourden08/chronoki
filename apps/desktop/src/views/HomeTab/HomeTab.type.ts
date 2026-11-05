@@ -57,12 +57,6 @@ interface HomeTabProps extends HomeSectionProps {
   normal: NormalSaves;
 }
 
-interface SlotInfo {
-  slot: number;
-  savedAt: number | null;
-  screenshot: string | null;
-}
-
 interface HomeSectionProps {
   profileId: string | null;
   running: boolean;
@@ -75,5 +69,5 @@ type TitlePendulumState =
 
 export type {
   ArmedRow, CreateSaveFormProps, HomeDialogsProps, HomeSectionProps, HomeSramImport, HomeTabProps, NamedSavesData,
-  NormalSaves, NormalSavesSectionProps, ProfileFactsInput, SaveRowPartsInput, SlotInfo, SramDialogState, TitlePendulumState,
+  NormalSaves, NormalSavesSectionProps, ProfileFactsInput, SaveRowPartsInput, SramDialogState, TitlePendulumState,
 };

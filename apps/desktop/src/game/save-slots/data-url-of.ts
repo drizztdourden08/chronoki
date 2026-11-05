@@ -1,5 +1,5 @@
-/* @layer renderer-components @kind logic */
-import { DATA_URL_CHUNK } from '../HomeTab.constants';
+/* @layer bridge-wasm @kind logic */
+import { DATA_URL_CHUNK } from './save-slots.constants';
 
 const dataUrlOf = (png: Uint8Array | null): string | null => {
   if (!png) return null;
