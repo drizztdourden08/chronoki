@@ -1,6 +1,5 @@
 /* @layer bridge-wasm @kind logic */
 import { hostGate } from '@chronoki/game-core';
-import { activeGameHolder } from '../lifecycle/active-game-holder';
 import { TURBO_GATE } from './turbo.constants';
 import { turboState } from './turbo-state';
 
@@ -9,8 +8,6 @@ const setTurboHeld = (held: boolean): void => {
   if (next === turboState.held) return;
   turboState.held = next;
   turboState.fraction = 0;
-  turboState.muted = next;
-  activeGameHolder.current?.session.audio.setVolume(next ? 0 : turboState.volume);
 };
 
 export { setTurboHeld };
