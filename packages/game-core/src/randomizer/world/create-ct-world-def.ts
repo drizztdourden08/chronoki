@@ -21,7 +21,9 @@ import { ruleMapsOfRegions } from './rule-maps-of-regions';
 import { sealedRulesOf } from './sealed-rules-of';
 import { keyItemsOf } from './epoch-fail/key-items-of';
 import { pinRoboRibbon } from './pin-robo-ribbon';
+import { progressionWithoutLocks } from './progression-without-locks';
 import { treasureItemRulesOf } from './treasure-item-rules-of';
+import { unboundSpotLocksOf } from './unbound-spot-locks';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const mode = modeOf(input.options);
@@ -40,6 +42,8 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const { regions, treasure } = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true);
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
   const keyItems = keyItemsOf(mode, epochFail, vanillaRoboRibbon);
+  const locks = unboundSpotLocksOf(regions);
+  const progression = progressionWithoutLocks(keyItems, locks);
   const rest = treasure.flatMap((location): CtItem[] =>
     (location.vanillaItem === undefined ? [] : [location.vanillaItem]));
   return {
@@ -57,13 +61,17 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     helpers: CT_HELPERS,
     options: () => options,
     goal: goalOf(mode.goal, mode.goalEvent),
-    buildPool: () => ({
-      progression: [...keyItems],
-      rest: [
-        ...rest,
-        ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, keyItems.length, { seed: input.fillerSeed, tabsanity: options.tabsanity === true }),
-      ],
-    }),
+    buildPool: ({ world }) => {
+      for (const [location, item] of locks) world.placedItems.set(location, item);
+      const spotCount = specs.flatMap((spec) => spec.spots).length - locks.length;
+      return {
+        progression,
+        rest: [
+          ...rest,
+          ...poolFillerOf(rest, spotCount, progression.length, { seed: input.fillerSeed, tabsanity: options.tabsanity === true }),
+        ],
+      };
+    },
   };
 };
 
