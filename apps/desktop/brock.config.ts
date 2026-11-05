@@ -33,7 +33,7 @@ export default defineBrockConfig({
     ],
   },
   targets: ['desktop', 'android', 'web'],
-  modules: ['updater', 'secrets', 'display', 'tools', 'port-kit', 'input', 'game-info', 'mcp', 'randomizer'],
+  modules: ['updater', 'secrets', 'display', 'tools', 'port-kit', 'input', 'game-info', 'mcp', 'randomizer', 'msu'],
   workflows: {
     steps: {
       ci: { beforeBuild: wasmCoreSteps },

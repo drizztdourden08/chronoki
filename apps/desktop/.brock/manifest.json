@@ -46,6 +46,11 @@
       "id": "randomizer",
       "package": "@drizztdourden08/brock-randomizer",
       "version": "0.120.1"
+    },
+    {
+      "id": "msu",
+      "package": "@drizztdourden08/brock-msu",
+      "version": "0.120.1"
     }
   ]
 }
