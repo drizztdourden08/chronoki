@@ -1,7 +1,9 @@
 /* @layer bridge-wasm @kind logic */
 import type { CheckDef } from '../checks/check.type';
 import type { CtPlacement } from '../world/ct-placement.type';
+import { chestRomIdOf } from '../world/chest-rom-id-of';
 import { treasureRomIdOf } from '../world/treasure-rom-id-of';
+import { CHEST_ID_PREFIX } from '../checks/checks.constants';
 import type { PackPlacementPlan } from './pack-placement-plan.type';
 
 const planPackPlacement = (placement: CtPlacement, checks: readonly CheckDef[]): PackPlacementPlan => {
@@ -11,7 +13,7 @@ const planPackPlacement = (placement: CtPlacement, checks: readonly CheckDef[]):
   const virtual: (readonly [string, string])[] = [];
   let unbound = 0;
   for (const [location, item] of placement.locations) {
-    const romId = treasureRomIdOf(item);
+    const romId = location.startsWith(`${CHEST_ID_PREFIX}-`) ? chestRomIdOf(item) : treasureRomIdOf(item);
     if (checkIds.has(location) && romId !== null) {
       pack[location] = romId;
       items.set(location, item);

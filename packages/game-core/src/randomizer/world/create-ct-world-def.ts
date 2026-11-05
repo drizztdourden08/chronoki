@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import type { GameWorldDef, ItemRule } from '@drizztdourden08/brock-randomizer/world';
+import type { GameWorldDef } from '@drizztdourden08/brock-randomizer/world';
 import { goalOf } from './goal-of';
 import { CT_HELPERS } from './ct-helpers.constants';
 import { ctOptionValues } from './ct-option-values';
@@ -18,7 +18,7 @@ import { ruleMapsOfRegions } from './rule-maps-of-regions';
 import { sealedRulesOf } from './sealed-rules-of';
 import { keyItemsOf } from './epoch-fail/key-items-of';
 import { pinRoboRibbon } from './pin-robo-ribbon';
-import { treasureOnly } from './treasure-only';
+import { treasureItemRulesOf } from './treasure-item-rules-of';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const mode = modeOf(input.options);
@@ -46,7 +46,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     exitRules,
     locationRules: sealedRulesOf(spotRules, treasure, input.sealedCheckIds),
     eventRules,
-    itemRules: new Map(treasure.map((location): [string, ItemRule<CtWorldKeys>] => [location.key, treasureOnly])),
+    itemRules: treasureItemRulesOf(treasure, options.chronosanity === true),
     helpers: CT_HELPERS,
     options: () => options,
     goal: goalOf(mode.goal, mode.goalEvent),
