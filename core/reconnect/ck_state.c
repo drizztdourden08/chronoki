@@ -199,6 +199,25 @@ void ck_state_load_result(int r) {
   finish(r != 0, CK_REASON_FAILED);
 }
 
+/* I-103: a save request is waiting (the safe point holds it while a sequence runs). */
+int ck_state_save_pending(void) { return g_phase == CK_WAIT_SAVE; }
+
+/* I-103: the staged state was taken inside a sequence (the title, a stage, the race, the gate warp), whose machines it does
+   not carry; the safe point refuses it with the reason "mode" before anything is touched. */
+int ck_state_load_in_sequence(void) {
+  static const char* const names[] = { "seqOpen", "raceOn", "endOn", "gwPhase" };
+  if (!g_inHost.data) return 0;
+  for (size_t i = 0; i < sizeof names / sizeof names[0]; i++) {
+    int v = 0;
+    if (ck_host_get_int(g_inHost, names[i], &v) && v) return 1;
+  }
+  return 0;
+}
+
+void ck_state_load_refuse_mode(void) {
+  if (g_phase == CK_LOAD_TAKEN) finish(0, CK_REASON_MODE);
+}
+
 int ck_state_request_save(void) {
   if (g_phase != CK_IDLE) return 0;
   g_phase = CK_WAIT_SAVE; g_status = 1; g_reason = CK_REASON_NONE; g_waited = 0;

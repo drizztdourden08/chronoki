@@ -72,6 +72,9 @@ int  ck_state_load_menu(const CkPtrField* table, int count, uint8_t* fb, size_t 
 int  ckMenuStatics(CkPtrField* out, int max);   /* menu.c's cross-frame statics (ck_menu_state.inc is appended to the patched menu.c) */
 void ckMenuAfterLoad(const uint8_t* wram);      /* after the MENU records are written: re-derives menu.c's pointers (the char-select view of the WRAM) */
 void ck_state_load_result(int r);      /* after a CK_OP_LOAD: what CtSceneLoadState answered */
+int  ck_state_save_pending(void);      /* a save request is waiting for a safe point */
+int  ck_state_load_in_sequence(void);  /* the staged state was taken inside a sequence (its HOST says so) */
+void ck_state_load_refuse_mode(void);  /* ends a taken load as refused, reason "mode", nothing touched */
 FILE* ck_fopen(const char* path, const char* mode);   /* fopen, except "mem:scene" and "mem:apu" (ct_vm.c and audio.c are built with fopen = ck_fopen) */
 int  ck_state_request_save(void);      /* 0 if a request is open */
 int  ck_state_request_load(const uint8_t* bytes, long len);   /* 0 if one is open or the container is refused (reason set) */

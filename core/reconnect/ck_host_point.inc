@@ -44,7 +44,20 @@
              : (!selftest && !f.vm && inWorld && !battlePhase && !menuPhase && !fade && !pendKind && ckOwSafe) ? 2
              : (!selftest && f.vm && !battlePhase && !inWorld && !gameOver && ckMenuSafe && menuStashOw == 0) ? 3
              : (!selftest && !f.vm && inWorld && !battlePhase && ckOwSafe && ckMenuSafe && menuStashOw == 1) ? 4 : 0;
-  int ckOp = ck_state_top(ckMode, fieldWram(), fieldSram());
+  /* I-103. A sequence (the title, the attract's stages, the race, the ending's, the gate warp) runs on machines a state
+     does not carry (seq_*.c's and field.c's stage statics, the title's sound clock, g_stagePic), so a state taken inside
+     one cannot resume it: such a save is held (and given up as "not now", the same rule as any unsafe window), and such
+     a state is refused below before anything is touched. Loading FROM a sequence (the title after boot) stays allowed. */
+  int ckSeqOn = seqOpen || raceOn || endOn || gwPhase;
+  /* The field's transition brightness has a driver whenever it is below full: the door fade (fade 1 to 3, the load
+     ramp, its hold), the drain of a latched change ($0117 bit 7), op 0xFF's own fade before a sequence or a gate warp
+     (ffPro), the menu, game over and the stages. With none of them, every path that ends a fade leaves fadeBri at 15
+     (field.c's ramp end, its skip, the world's entry) and the scene's own $0119 is what shows. A state taken with a lower
+     fadeBri and no driver (the ramp cut by a sequence request, field.c's `loadRamp && CtSceneSequence >= 0` stop, then the
+     request gone) would stay dim until the next door: the state boundary restores the invariant. */
+#define CK_FADE_IDLE() (f.vm && !fade && !loadRamp && loadHold <= 0 && !pendKind && !menuPhase && !gameOver && !battlePhase \
+    && !ckSeqOn && CtSceneSequence(f.vm) < 0 && CtSceneGateWarp(f.vm) < 0 && !(CtSceneMem7E(f.vm)[0x0117] & 0x80))
+  int ckOp = ck_state_top((ckSeqOn && ck_state_save_pending()) ? 0 : ckMode, fieldWram(), fieldSram());
   if (ckOp != CK_OP_NONE) {
 #define CK_HOST(t, n, d) memcpy(&ckHost.n, &n, sizeof ckHost.n);
 #include "ck_host_fields.h"
@@ -59,7 +72,10 @@
     if (menuPhase) {
 #include "ck_menu_save.inc"
     }
+    if (ckHost.fadeBri < 15 && CK_FADE_IDLE()) ckHost.fadeBri = 15;   /* the stored copy only: the live frame is untouched */
     ck_state_save_done(f.vm ? ckScene : 1, ckScene, &ckHost, ckHostFields, CK_HOST_COUNT);
+  } else if (ckOp == CK_OP_LOAD && ck_state_load_in_sequence()) {
+    ck_state_load_refuse_mode();   /* taken inside a sequence: refused, nothing touched (I-103, above) */
   } else if (ckOp == CK_OP_LOAD) {
     int ckMenuOk = 1, ckR = 0;
     const uint8_t* ckEntry = NULL;
@@ -103,6 +119,8 @@
 #include "ck_host_fields.h"
 #undef CK_HOST
         if (tbLastIdx != ckIdx || tbLastTbl != ckTbl) { tbLastIdx = -1; tbLastTbl = -2; }
+        ckSeqOn = seqOpen || raceOn || endOn || gwPhase;
+        if (fadeBri < 15 && CK_FADE_IDLE()) fadeBri = 15;   /* a state saved before the fix (I-103, above) */
       } else if (ckR == 2) {
         px = ckPlr[0]; py = ckPlr[1]; pz = (int)ckPlr[2]; pfac = (int)ckPlr[3];
       } else if (ckR == 1) {
@@ -114,4 +132,5 @@
 #include "ck_menu_finish.inc"
     ck_state_load_result(ckR);
   }
+#undef CK_FADE_IDLE
 }
