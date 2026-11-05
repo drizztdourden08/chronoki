@@ -7,6 +7,7 @@ import { CT_GAME, CT_OPTION_SCHEMAS, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA } fro
 import type { CtWorldInput } from './ct-world-input.type';
 import type { CtItem, CtWorldKeys } from './ct-world-keys.type';
 import { joinCtChecks } from './join-ct-checks';
+import { applyEpochFailToRegions } from './epoch-fail/apply-epoch-fail-to-regions';
 import { applyModeToRegions } from './modes/apply-mode-to-regions';
 import { modeOf } from './modes/mode-of';
 import { applyStartPartyToRegions } from './recruits/apply-start-party-to-regions';
@@ -15,16 +16,20 @@ import { CT_REGIONS } from './regions/ct-regions.constants';
 import { poolFillerOf } from './pool-filler-of';
 import { ruleMapsOfRegions } from './rule-maps-of-regions';
 import { sealedRulesOf } from './sealed-rules-of';
+import { keyItemsOf } from './epoch-fail/key-items-of';
 import { treasureOnly } from './treasure-only';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const mode = modeOf(input.options);
+  const options = ctOptionValues({ ...input.options, ...mode.forcedOptions });
+  const epochFail = options.epochFail === true;
+  const moded = applyModeToRegions(CT_REGIONS, mode);
   const specs = applyStartPartyToRegions(
-    applyModeToRegions(CT_REGIONS, mode), mode.start, input.startParty ?? LEGACY_PARTY,
+    epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, input.startParty ?? LEGACY_PARTY,
   );
   const { regions, treasure } = joinCtChecks(input, specs, mode.excludeDroppedTreasure === true);
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
-  const options = ctOptionValues({ ...input.options, ...mode.forcedOptions });
+  const keyItems = keyItemsOf(mode, epochFail);
   const rest = treasure.flatMap((location): CtItem[] =>
     (location.vanillaItem === undefined ? [] : [location.vanillaItem]));
   return {
@@ -43,8 +48,8 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     options: () => options,
     goal: goalOf(mode.goal, mode.goalEvent),
     buildPool: () => ({
-      progression: [...mode.keyItems],
-      rest: [...rest, ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, mode.keyItems.length, input.fillerSeed)],
+      progression: [...keyItems],
+      rest: [...rest, ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, keyItems.length, input.fillerSeed)],
     }),
   };
 };

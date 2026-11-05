@@ -3,7 +3,7 @@ import type { ItemDifficulty } from '../world/treasure-tiers/treasure-tier.type'
 
 type Placement = Readonly<Record<string, number>>;
 
-type ApplyOptions = { difficulty?: ItemDifficulty; hardEnemies?: boolean; bossDepths?: ReadonlyMap<string, number> };
+type ApplyOptions = { difficulty?: ItemDifficulty; hardEnemies?: boolean; epochFail?: boolean; bossDepths?: ReadonlyMap<string, number> };
 
 type PackEdit = { at: number; old: number; next: number; why: string };
 

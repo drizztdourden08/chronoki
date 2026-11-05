@@ -1,0 +1,15 @@
+/* @layer bridge-wasm @kind constants */
+const JETS_ITEM_ID = 0xea;
+const JETS_ITEM_NAME = 'JetsOfTime';
+const ICON_SOURCE_ITEM_ID = 0xd6;
+const NAME_TABLE_ROM = 0x0c0b5e;
+const NAME_RECORD_BYTES = 11;
+const ITEM_PROP_PACK_TYPE = 65;
+const ITEM_PROP_PACK_ID = 135;
+const KEY_ITEM_PROP = 0x1c;
+const NAME_SPACE = 0xff;
+
+export {
+  ICON_SOURCE_ITEM_ID, ITEM_PROP_PACK_ID, ITEM_PROP_PACK_TYPE, JETS_ITEM_ID, JETS_ITEM_NAME, KEY_ITEM_PROP, NAME_RECORD_BYTES,
+  NAME_SPACE, NAME_TABLE_ROM,
+};

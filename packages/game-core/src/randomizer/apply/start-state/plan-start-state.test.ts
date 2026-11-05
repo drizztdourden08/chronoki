@@ -135,8 +135,8 @@ describe('start block party', () => {
     expect(planStartState(state, LATE_CRONO).replace).toEqual(buildStartBlock(state, fitted, INTRO_JUMP));
   });
 
-  it('still refuses a block above the budget after the reorder', { tags: ['critical'] }, () => {
-    const flags = Array.from({ length: 8 }, (_, n) => ({ at: 0x7f0100 + n, bits: 0x01 }));
+  it('still refuses a late block above the budget after the reorder and the split', { tags: ['critical'] }, () => {
+    const flags = Array.from({ length: 4 }, () => ({ at: 0x7f0060, bits: 0xff }));
     const big = { ...STANDARD_START, flags: [...STANDARD_START.flags, ...flags] };
     expect(() => planStartState(big, ALL)).toThrow(StartBlockTooLongError);
   });
