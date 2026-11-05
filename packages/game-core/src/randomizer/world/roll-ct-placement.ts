@@ -6,12 +6,20 @@ import { createCtWorldGame } from './create-ct-world-game';
 import type { CtPlacement } from './ct-placement.type';
 import type { CtWorldInput } from './ct-world-input.type';
 import { resolveStartParty } from './party/resolve-start-party';
+import { characterAssignmentOf } from './recruits/character-assignment-of';
 
 const rollCtPlacement = (input: CtWorldInput, seed: string): CtPlacement => {
   const options = input.options ?? {};
   const startParty = fitStartParty(input.startParty ?? resolveStartParty(options, seed), options);
   const bosses = bossAssignmentOf(options, seed);
-  return { ...generate(createCtWorldGame({ ...input, startParty, fillerSeed: seed }), { seed }), startParty, ...(bosses === undefined ? {} : { bosses }) };
+  const characters = characterAssignmentOf(options, seed);
+  const game = createCtWorldGame({ ...input, startParty, fillerSeed: seed, ...(characters === undefined ? {} : { characters }) });
+  return {
+    ...generate(game, { seed }),
+    startParty,
+    ...(bosses === undefined ? {} : { bosses }),
+    ...(characters === undefined ? {} : { characters }),
+  };
 };
 
 export { rollCtPlacement };

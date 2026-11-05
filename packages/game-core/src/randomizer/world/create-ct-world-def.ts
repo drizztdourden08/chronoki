@@ -26,7 +26,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const epochFail = options.epochFail === true;
   const moded = applyModeToRegions(CT_REGIONS, mode);
   const specs = applyStartPartyToRegions(
-    epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, input.startParty ?? LEGACY_PARTY,
+    epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, input.startParty ?? LEGACY_PARTY, input.characters,
   );
   const vanillaRoboRibbon = options.vanillaRoboRibbon === true;
   const joinInput = vanillaRoboRibbon ? { ...input, checks: pinRoboRibbon(input.checks) } : input;

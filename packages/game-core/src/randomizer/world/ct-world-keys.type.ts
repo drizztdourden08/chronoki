@@ -34,7 +34,7 @@ type CtOptionKey =
   | 'gameMode' | 'itemDifficulty' | 'enemyDifficulty' | 'disableGlitches' | 'bossScaling' | 'earlyPendantCharge'
   | 'unlockedMagic' | 'lockedCharacters' | 'addCyrusGraveSpot' | 'addOzzieSpot' | 'vanillaRoboRibbon'
   | 'partyMode' | 'partySize' | 'startingParty' | 'epochFail' | 'shopPrices' | 'tabsanity' | 'techOrder'
-  | 'chronosanity' | 'bossRando' | 'gearRando' | 'healingRando' | 'techDamageRando'
+  | 'chronosanity' | 'bossRando' | 'gearRando' | 'healingRando' | 'techDamageRando' | 'characterRando'
   | 'powerTabMin' | 'powerTabMax' | 'magicTabMin' | 'magicTabMax' | 'speedTabMin' | 'speedTabMax';
 
 type CtWorldKeys = {

@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind type */
 import type { CtSpotId } from '../world/ct-world-keys.type';
 import type { TabAmounts } from '../world/tabs/tab-amounts.type';
+import type { CharacterAssignment } from '../world/recruits/character-assignment.type';
 import type { BossAssignment } from './boss-rando/boss-rando.type';
 import type { ShopPriceOption } from './shop-prices/shop-prices.type';
 import type { ItemDifficulty } from '../world/treasure-tiers/treasure-tier.type';
@@ -22,6 +23,7 @@ type ApplyOptions = {
   techDamageRando?: boolean;
   seed?: string;
   bossRando?: BossAssignment;
+  characterRando?: CharacterAssignment;
 };
 
 type PackEdit = { at: number; old: number; next: number; why: string };

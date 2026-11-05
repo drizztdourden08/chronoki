@@ -25,6 +25,10 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
     choiceLabels: { normal: 'Normal', free: 'Free', 'mostly-random': 'Mostly random', 'fully-random': 'Fully random' },
   },
   { key: 'bossRando', label: 'Boss randomization', jotFlag: 'ro', default: false, section: 'Randomization', implemented: true },
+  {
+    key: 'characterRando', label: 'Character randomization', jotFlag: 'chars', default: false, section: 'Randomization', implemented: true,
+    hint: 'Recruit spots hand out a different character; each keeps their own identity.',
+  },
   { key: 'disableGlitches', label: 'Disable glitches', jotFlag: 'g', default: false, section: 'Rules', implemented: true },
   { key: 'earlyPendantCharge', label: 'Early pendant charge', jotFlag: 'p', default: false, section: 'Rules', implemented: true },
   { key: 'unlockedMagic', label: 'Unlocked magic', jotFlag: 'm', default: false, section: 'Rules', implemented: true },
