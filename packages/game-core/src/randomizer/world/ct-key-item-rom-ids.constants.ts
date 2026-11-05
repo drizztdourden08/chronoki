@@ -15,8 +15,8 @@ const CT_KEY_ITEM_ROM_IDS: Readonly<Record<CtKeyItem, number>> = {
   'moon-stone': 0xde,
   'tomas-pop': 0xe3,
   jerky: 0xdb,
-  'grand-leon': 0x52,
-  'robo-ribbon': 0x96,
+  'grand-leon': 0x42,
+  'robo-ribbon': 0xb8,
 };
 
 export { CT_KEY_ITEM_ROM_IDS };
