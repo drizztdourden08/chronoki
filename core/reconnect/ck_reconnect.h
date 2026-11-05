@@ -38,6 +38,17 @@ int  ck_sightscope(void);
 int  ck_visible_techs(void);
 int  ck_view_black(int which);
 int  ck_view_scene(void);
+/* edge_env_reconnect.c: the Edge Effect's environment picture (the shown field frame without its sprites, captions or
+   boxes; built by the patched field.c, wasm-build/patches/edge-env.mjs). On only while the host's Edge Effect draws
+   (CkSetEdgeEnv); off = nothing built. begin hands out the RGBA buffer for a w x h picture (NULL: refused), publish marks it
+   shown (0: no picture this frame). */
+int  ck_edge_env_on(void);
+void ck_edge_env_set(int on);
+uint8_t* ck_edge_env_begin(int w, int h);
+void ck_edge_env_publish(int valid);
+const uint8_t* ck_edge_env_ptr(void);
+void ck_edge_env_size(int* w, int* h);
+int  ck_edge_env_valid(void);
 /* ck_state.c: save states (see its header comment). field.c reaches the ck_state_top .. ck_state_load_result group through
    ck_host_point.inc, the safe point the build includes at the top of its main loop. */
 #define CK_STATE_WRAM_BYTES 0x20000

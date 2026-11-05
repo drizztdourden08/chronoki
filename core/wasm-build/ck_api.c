@@ -42,6 +42,14 @@ EMSCRIPTEN_KEEPALIVE int CkViewBlackBottom(void) { return ck_view_black(1); }
 EMSCRIPTEN_KEEPALIVE int CkViewBlackLeft(void) { return ck_view_black(2); }
 EMSCRIPTEN_KEEPALIVE int CkViewBlackRight(void) { return ck_view_black(3); }
 EMSCRIPTEN_KEEPALIVE int CkViewScene(void) { return ck_view_scene(); }
+/* The Edge Effect's environment picture (reconnect/edge_env_reconnect.c): CkSetEdgeEnv(1) while the host's effect draws,
+   (0) when it stops. CkEnvValid is 1 when the frame shown last has one: RGBA at CkEnvPtr, CkEnvWidth x CkEnvHeight (the 1x
+   picture, CkViewWidth x CkViewHeight); 0 = use the frame itself. */
+EMSCRIPTEN_KEEPALIVE void CkSetEdgeEnv(int on) { ck_edge_env_set(on); }
+EMSCRIPTEN_KEEPALIVE int CkEnvValid(void) { return ck_edge_env_valid(); }
+EMSCRIPTEN_KEEPALIVE const void* CkEnvPtr(void) { return ck_edge_env_ptr(); }
+EMSCRIPTEN_KEEPALIVE int CkEnvWidth(void) { int w, h; ck_edge_env_size(&w, &h); return w; }
+EMSCRIPTEN_KEEPALIVE int CkEnvHeight(void) { int w, h; ck_edge_env_size(&w, &h); return h; }
 EMSCRIPTEN_KEEPALIVE int CkFrameCount(void) { return (int)ck_frame_count(); }
 /* Stereo frames queued since the last call (consumes them); CkSamplesPtr is the S16 interleaved buffer. */
 EMSCRIPTEN_KEEPALIVE int CkSampleCount(void) { return ck_audio_take((const int16_t**)0); }
