@@ -1,11 +1,12 @@
 /* @layer renderer-app @kind logic */
 import { defineBootTask } from '@drizztdourden08/brock-react';
-import { registerChronokiGlyphSource } from '@app/input/controller-families/register-chronoki-glyph-source';
+import { registerControllerHooks } from '@drizztdourden08/brock-input/renderer';
+import { GLYPH_SOURCE } from '@app/input/controller-families/glyph-source.constants';
 
 export default defineBootTask({
   label: 'Registering the controller glyphs',
   run: ({ report }) => {
-    registerChronokiGlyphSource();
+    registerControllerHooks({ glyphSource: GLYPH_SOURCE });
     report(1);
   },
 });

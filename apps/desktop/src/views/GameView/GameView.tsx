@@ -4,7 +4,7 @@ import { useProduct } from '@drizztdourden08/brock-react';
 import { Box, Image, Text } from '@drizztdourden08/tessera/primitives';
 import { GameLayer } from '@app/views/GameLayer';
 import { useGameSession } from '@app/views/GameSession';
-import { PauseOverlay } from '@app/views/PauseOverlay';
+import { PauseLayer } from '@app/views/PauseLayer';
 import { ProfileSwitcherOverlay } from '@app/views/ProfileSwitcherOverlay';
 import { DebugFloatingControls } from '@app/compounds/DebugFloatingControls';
 import { SaveStateOverlay, useSaveOverlay } from '@app/views/SaveStateOverlay';
@@ -29,7 +29,7 @@ const GameView = () => {
         hints={saveOverlay.hints}
       />
       <DebugFloatingControls profileId={launch?.profileId ?? null} gameRunning={running} />
-      {running && <PauseOverlay />}
+      {running && <PauseLayer />}
       {running && <ProfileSwitcherOverlay />}
       {launch === null && (
         <Box className="game-view__idle">
