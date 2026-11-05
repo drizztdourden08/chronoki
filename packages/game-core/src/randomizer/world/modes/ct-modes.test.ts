@@ -36,6 +36,10 @@ describe('modeOf', () => {
     expect(() => modeOf({ gameMode: 'nope' })).toThrow(/Unknown game mode/);
     CT_MODES.filter((candidate) => !candidate.implemented).forEach(expectUnavailable);
   });
+
+  it('keeps vanilla rando as the standard world, start and goal', { tags: ['critical'] }, () => {
+    expect(modeOf({ gameMode: 'vanilla-rando' })).toEqual({ ...standard, id: 'vanilla-rando', label: 'Vanilla Rando' });
+  });
 });
 
 describe('applyModeToRegions', () => {
