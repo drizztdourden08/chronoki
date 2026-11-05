@@ -9,6 +9,8 @@ import type { CtItem, CtWorldKeys } from './ct-world-keys.type';
 import { joinCtChecks } from './join-ct-checks';
 import { applyModeToRegions } from './modes/apply-mode-to-regions';
 import { modeOf } from './modes/mode-of';
+import { applyStartPartyToRegions } from './recruits/apply-start-party-to-regions';
+import { LEGACY_PARTY } from './recruits/legacy-party.constants';
 import { CT_REGIONS } from './regions/ct-regions.constants';
 import { poolFillerOf } from './pool-filler-of';
 import { ruleMapsOfRegions } from './rule-maps-of-regions';
@@ -17,7 +19,9 @@ import { treasureOnly } from './treasure-only';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const mode = modeOf(input.options);
-  const specs = applyModeToRegions(CT_REGIONS, mode);
+  const specs = applyStartPartyToRegions(
+    applyModeToRegions(CT_REGIONS, mode), mode.start, input.startParty ?? LEGACY_PARTY,
+  );
   const { regions, treasure } = joinCtChecks(input, specs);
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
   const options = ctOptionValues(input.options);

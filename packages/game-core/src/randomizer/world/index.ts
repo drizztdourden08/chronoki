@@ -15,10 +15,13 @@ export { CT_REGIONS } from './regions/ct-regions.constants';
 export { CT_GAME, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA } from './ct-world.constants';
 export { rollCtPlacement } from './roll-ct-placement';
 export { describeCtPlacement } from './describe-ct-placement';
+export { resolveStartParty } from './party/resolve-start-party';
+export { CT_CHARACTERS } from './party/ct-party.constants';
 export { treasureRomIdOf } from './treasure-rom-id-of';
 export type { CtGoalId, CtModeDef, CtModeId, CtStartStateId } from './modes/ct-mode-def.type';
 export type { CtOptionDef } from './ct-option-def.type';
 export type { CtPlacement } from './ct-placement.type';
+export type { CtStartParty } from './party/ct-party.type';
 export type { CtRegionSpec } from './ct-region-spec.type';
 export type { CtOptionValues, CtWorldInput } from './ct-world-input.type';
 export type {

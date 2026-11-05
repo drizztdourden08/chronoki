@@ -18,4 +18,10 @@ describe('describeCtPlacement', { tags: ['critical'] }, () => {
   it('reports zeros for an empty placement', () => {
     expect(rowsOf(placementOf([], 0))).toEqual({ Locations: '0', Treasure: '0', 'Key items': '0', Spheres: '0' });
   });
+
+  it('shows the starting party, with the reserve apart, only when the placement has one', () => {
+    const placement = { ...placementOf([], 0), startParty: ['frog', 'crono', 'ayla', 'robo', 'magus'] as const };
+    expect(rowsOf(placement)['Starting party']).toBe('Frog, Crono, Ayla (reserve: Robo, Magus)');
+    expect(rowsOf(placementOf([], 0))['Starting party']).toBeUndefined();
+  });
 });
