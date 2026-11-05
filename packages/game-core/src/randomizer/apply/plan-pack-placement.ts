@@ -1,8 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { CheckDef } from '../checks/check.type';
 import type { CtPlacement } from '../world/ct-placement.type';
-import type { CtSpotId } from '../world/ct-world-keys.type';
-import { SPOT_VANILLA_ITEMS } from '../world/spot-vanilla-items.constants';
 import { chestRomIdOf } from '../world/chest-rom-id-of';
 import { treasureRomIdOf } from '../world/treasure-rom-id-of';
 import { CHEST_ID_PREFIX } from '../checks/checks.constants';
@@ -21,7 +19,6 @@ const planPackPlacement = (placement: CtPlacement, checks: readonly CheckDef[]):
       items.set(location, item);
       continue;
     }
-    if (!checkIds.has(location) && SPOT_VANILLA_ITEMS[location as CtSpotId] === item) continue;
     virtual.push([location, item]);
     if (!checkIds.has(location)) unbound += 1;
   }
