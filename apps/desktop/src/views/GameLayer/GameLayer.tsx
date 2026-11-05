@@ -8,6 +8,7 @@ import { useGameSession } from '@app/views/GameSession';
 import { GAME_LAYER_ERROR_TITLE, GAME_LAYER_LABEL } from './GameLayer.constants';
 import { presentModeOf } from './behavior/present-mode-of';
 import { stageClass } from './behavior/stage-class';
+import { TierMarkerLayer } from './compounds/TierMarkerLayer';
 import { useEdgeGlowLoop } from './behavior/useEdgeGlowLoop';
 import { useGameBoot } from './behavior/useGameBoot';
 import { useAspectRatioLock } from './behavior/useAspectRatioLock';
@@ -39,6 +40,7 @@ const GameLayer = () => {
       <Box ref={stageRef} className={stageClass({ visible: launch !== null, gates, mode })}>
         <GameCanvas canvasRef={canvasRef} label={GAME_LAYER_LABEL} />
         <Canvas ref={fxCanvasRef} className="game-layer__fx" aria-hidden="true" />
+        <TierMarkerLayer status={status} gameCanvasRef={canvasRef} />
       </Box>
       {status === 'error' && <Text className="game-layer__error" variant="body">{`${GAME_LAYER_ERROR_TITLE}: ${error ?? ''}`}</Text>}
     </Box>

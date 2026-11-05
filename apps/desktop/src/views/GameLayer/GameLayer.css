@@ -53,3 +53,10 @@
   visibility: hidden;
   pointer-events: none;
 }
+
+.game-layer__stage canvas.game-layer__markers {
+  position: absolute;
+  background: transparent;
+  pointer-events: none;
+  image-rendering: auto;
+}
