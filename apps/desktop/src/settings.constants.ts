@@ -1,7 +1,7 @@
 /* @layer renderer-app @kind constants */
 import { DEFAULT_BASE_SETTINGS } from '@drizztdourden08/brock-core';
 import { DEFAULT_GATE_OPTIONS, DEFAULT_GATES } from '@chronoki/features';
-import { DEFAULT_AUDIO_SAMPLES } from './game/audio-lead';
+import { AUDIO_OUTPUT_AUTO, DEFAULT_AUDIO_SAMPLES } from './game/audio-lead';
 import type { AppSettings } from './settings.type';
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -37,6 +37,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   packReplaceSfx: true,
   vsync: false,
   audioSamples: DEFAULT_AUDIO_SAMPLES,
+  audioFreq: AUDIO_OUTPUT_AUTO,
+  audioChannels: AUDIO_OUTPUT_AUTO,
 };
 
 export { DEFAULT_SETTINGS };

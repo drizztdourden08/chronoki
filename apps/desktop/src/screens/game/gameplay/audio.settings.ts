@@ -62,6 +62,20 @@ const sections: Section[] = [
     title: 'Audio Device',
     items: [
       {
+        key: 'audioFreq',
+        label: 'Sample Rate',
+        description: 'Output rate: 44100 Hz or 48000 Hz. Auto keeps the current rate.',
+        hint: 'Applies when the next game starts.',
+        keywords: 'frequency sample rate hz automatic output 44100 48000',
+      },
+      {
+        key: 'audioChannels',
+        label: 'Channels',
+        description: 'Mono or stereo output.',
+        hint: 'Auto keeps stereo. Applies when the next game starts.',
+        keywords: 'mono stereo channel automatic output',
+      },
+      {
         key: 'audioSamples',
         label: 'Buffer Size',
         description: 'Latency against stability.',
