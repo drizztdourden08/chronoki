@@ -21,6 +21,8 @@ type CtRemovedExit = { from: CtRegionId; to: CtRegionId };
 
 type CtExtraEvent = { id: CtEventId; region: CtRegionId; rule?: CtRule };
 
+type CtModeStartFlag = { at: number; bits: number };
+
 type CtModeDef = {
   id: CtModeId;
   label: string;
@@ -39,6 +41,9 @@ type CtModeDef = {
   extraEvents?: readonly CtExtraEvent[];
   forcedOptions?: CtOptionValues;
   excludeDroppedTreasure?: boolean;
+  startFlags?: readonly CtModeStartFlag[];
 };
 
-export type { CtExtraEvent, CtExtraExit, CtGoalId, CtModeDef, CtModeId, CtRemovedExit, CtRulePatches, CtStartStateId };
+export type {
+  CtExtraEvent, CtExtraExit, CtGoalId, CtModeDef, CtModeId, CtModeStartFlag, CtRemovedExit, CtRulePatches, CtStartStateId,
+};

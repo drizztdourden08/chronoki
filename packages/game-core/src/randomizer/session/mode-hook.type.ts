@@ -5,6 +5,7 @@ import type { WramWrite } from './start-gold-grant.type';
 
 type ModeHook = {
   observe(view: MemoryView, started: boolean, newGame: boolean): void;
+  goalReached(): boolean;
   reset(): void;
 };
 

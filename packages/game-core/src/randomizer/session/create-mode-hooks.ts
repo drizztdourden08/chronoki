@@ -6,7 +6,7 @@ import type { ModeHook } from './mode-hook.type';
 import { MODE_HOOK_FACTORIES } from './mode-hooks.constants';
 import type { WramWrite } from './start-gold-grant.type';
 
-const IDLE_HOOK: ModeHook = { observe: () => undefined, reset: () => undefined };
+const IDLE_HOOK: ModeHook = { observe: () => undefined, goalReached: () => false, reset: () => undefined };
 
 const createModeHooks = (options: CtOptionValues, write: WramWrite): ModeHook => {
   const effective = effectiveOptionsOf(options);

@@ -19,7 +19,7 @@ const applyStartPartyToRegions = (
     events: [
       ...(spec.id === start ? party.map((id): CtEventSpec => ({ id })) : []),
       ...recruitEventsOf(spec, party),
-      ...spec.events,
+      ...spec.events.filter((event) => !party.some((id) => id === event.id)),
     ],
   }));
 
