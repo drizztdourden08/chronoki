@@ -2,7 +2,8 @@
 import type { FeatureDef } from '../feature.type';
 import { CORE_FEATURES } from './core-features.constants';
 import { HOST_FEATURES } from './host-features.constants';
+import { QOL_FEATURES } from './qol-features.constants';
 
-const FEATURE_REGISTRY: readonly FeatureDef[] = [...CORE_FEATURES, ...HOST_FEATURES];
+const FEATURE_REGISTRY: readonly FeatureDef[] = [...CORE_FEATURES, ...HOST_FEATURES, ...QOL_FEATURES];
 
 export { FEATURE_REGISTRY };

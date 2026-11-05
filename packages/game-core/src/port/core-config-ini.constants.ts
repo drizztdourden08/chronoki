@@ -15,6 +15,8 @@ const DEFAULT_CK_SETTINGS: CkSettings = {
   mute: false,
   sync: 'frame_perfect',
   instantSoundUploads: false,
+  sightscope: false,
+  visibleTechs: false,
 };
 
 const INI_HEADER = '; Belthasar -- options. Edited by the F1 overlay; safe to edit by hand.';

@@ -81,6 +81,19 @@ const sections: Section[] = [
     ],
   },
   {
+    id: 'quality-of-life',
+    title: 'Quality of Life',
+    items: [
+      gateItem('sightscope'),
+      gateItem('sightscopeBosses'),
+      gateItem('visibleTechList'),
+      gateItem('fastTabs'),
+      gateItem('treasureTierMarkers'),
+      gateItem('zenanAltMusic'),
+      gateItem('deathPeakAltMusic'),
+    ],
+  },
+  {
     id: 'vanilla-safe',
     title: 'Vanilla Safe',
     items: [
