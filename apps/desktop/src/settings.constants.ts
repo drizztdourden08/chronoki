@@ -24,6 +24,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   dialogHoldSpeed: 2,
   dialogHoldToAccelerate: true,
   dialogFillOnB: true,
+  dialogAutoSkip: false,
   saveHoldDuration: 2,
   musicVolume: 100,
   musicMuted: false,

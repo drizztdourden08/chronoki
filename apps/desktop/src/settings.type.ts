@@ -29,6 +29,7 @@ interface AppSettings extends BaseSettings {
   dialogHoldSpeed: number;
   dialogHoldToAccelerate: boolean;
   dialogFillOnB: boolean;
+  dialogAutoSkip: boolean;
   saveHoldDuration: number;
   musicVolume: number;
   musicMuted: boolean;

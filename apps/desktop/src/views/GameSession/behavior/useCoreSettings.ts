@@ -27,7 +27,7 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
   const steamData = useSteamDataImported();
   const muted = app.masterMuted || startupFlag('muted') === true;
   const volume = Math.round(app.masterVolume);
-  const { dialogSpeed, dialogHoldSpeed, dialogHoldToAccelerate, dialogFillOnB } = app;
+  const { dialogSpeed, dialogHoldSpeed, dialogHoldToAccelerate, dialogFillOnB, dialogAutoSkip } = app;
   const { vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration } = app;
   const { screenRatio, stageArea: planned, wholePixels } = displayInputsOf(app, stageArea);
   const areaW = planned?.width ?? 0;
@@ -40,7 +40,7 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
     const { effective } = resolveGates(gates, { vanillaSafe, packaged: isPackaged(), satisfied });
     const stage = areaW > 0 ? { width: areaW, height: areaH } : undefined;
     const options = { aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, stageArea: stage, wholePixels };
-    const dialog = dialogPacingOf({ dialogSpeed, dialogHoldSpeed, dialogHoldToAccelerate, dialogFillOnB });
+    const dialog = dialogPacingOf({ dialogSpeed, dialogHoldSpeed, dialogHoldToAccelerate, dialogFillOnB, dialogAutoSkip });
     const settings = gateSettings(effective, options, { volume, mute: muted }, dialog);
     return {
       settings,
@@ -54,7 +54,7 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
       saveHoldDuration,
     };
   }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, areaW, areaH, wholePixels, steamData, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration, randomizer, disableGlitches, duplicateCharacters,
-    dialogSpeed, dialogHoldSpeed, dialogHoldToAccelerate, dialogFillOnB]);
+    dialogSpeed, dialogHoldSpeed, dialogHoldToAccelerate, dialogFillOnB, dialogAutoSkip]);
 };
 
 export { useCoreSettings };

@@ -11,6 +11,7 @@ const VANILLA_SAFE_LOCKED_SETTINGS: ReadonlySet<string> = new Set([
   'dialogHoldSpeed',
   'dialogHoldToAccelerate',
   'dialogFillOnB',
+  'dialogAutoSkip',
 ]);
 
 export { VANILLA_SAFE_LOCKED_SETTINGS };
