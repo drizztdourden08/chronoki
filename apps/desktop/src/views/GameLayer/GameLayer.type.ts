@@ -10,6 +10,13 @@ interface GameBootArgs {
   launch: GameLaunch | null;
 }
 
+type StartOutcome = 'started' | 'abandon' | 'ignore';
+
+interface StartResult {
+  ok: boolean;
+  stale: boolean;
+}
+
 interface SessionPicture {
   frame: CkArea;
   ratio: number;
@@ -71,5 +78,5 @@ interface AspectLockArgs {
 
 export type {
   AspectLockArgs, BootedPlan, DeferredReplan, FrameReplanArgs, GameBootArgs, ReplanInputs, ReplanVerdict, SessionPicture, SettleState,
-  StageClassArgs, StageWait,
+  StageClassArgs, StageWait, StartOutcome, StartResult,
 };

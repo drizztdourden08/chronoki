@@ -1,15 +1,16 @@
 /* @layer renderer-components @kind hook */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { getPlatform } from '@drizztdourden08/brock-react';
+import { getPlatform, nav } from '@drizztdourden08/brock-react';
 import { startGame, stopGame } from '@app/game/lifecycle';
 import { useGameSession } from '@app/views/GameSession';
 import type { BootedPlan, GameBootArgs, SessionPicture } from '../GameLayer.type';
 import { sessionPictureOf } from './session-picture-of';
+import { startOutcomeOf } from './start-outcome-of';
 import { useFrameReplan } from './useFrameReplan';
 import { useStageSettled } from './useStageSettled';
 
 const useGameBoot = ({ canvasRef, launch }: GameBootArgs): SessionPicture | null => {
-  const { config, settings, volume, pictureRatio, onStarted } = useGameSession();
+  const { config, settings, volume, pictureRatio, onStarted, stop } = useGameSession();
   const started = useRef<number | null>(null);
   const [booted, setBooted] = useState<BootedPlan | null>(null);
   const settled = useStageSettled(launch, config);
@@ -28,9 +29,17 @@ const useGameBoot = ({ canvasRef, launch }: GameBootArgs): SessionPicture | null
     if (!canvas || !settled || started.current === launch.id) return;
     started.current = launch.id;
     setBooted(planned);
+    const launchId = launch.id;
+    const settle = (ok: boolean) => {
+      const outcome = startOutcomeOf({ ok, stale: started.current !== launchId });
+      if (outcome === 'started') onStarted();
+      if (outcome !== 'abandon') return;
+      stop();
+      nav.reopen();
+    };
     void startGame({ canvas, files: getPlatform().files, romFile: launch.romFile, profileId: launch.profileId, config, settings, volume })
-      .then((ok) => { if (ok) onStarted(); });
-  }, [canvasRef, launch, settled, planned, config, settings, volume, onStarted]);
+      .then(settle, () => settle(false));
+  }, [canvasRef, launch, settled, planned, config, settings, volume, onStarted, stop]);
 
   const onReplanned = useCallback((plan: BootedPlan) => {
     setBooted(plan);
