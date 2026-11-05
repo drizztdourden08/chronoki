@@ -1,4 +1,18 @@
 /* @layer renderer-app @kind constants */
-const MODE_LABELS = { 'vanilla-safe': 'Vanilla Safe', vanilla: 'Vanilla' } as const;
+import type { ProfileModeId } from './profile-mode.type';
 
-export { MODE_LABELS };
+const MODE_LABELS: Readonly<Record<ProfileModeId, string>> = {
+  'vanilla-safe': 'Vanilla Safe',
+  vanilla: 'Vanilla',
+  randomizer: 'Randomizer',
+  'randomizer-online': 'Archipelago Randomizer',
+  'randomizer-archipelia': 'Archipelia',
+};
+
+const MODE_OF_RANDOMIZER: Readonly<Record<'local' | 'online' | 'archipelia', ProfileModeId>> = {
+  local: 'randomizer',
+  online: 'randomizer-online',
+  archipelia: 'randomizer-archipelia',
+};
+
+export { MODE_LABELS, MODE_OF_RANDOMIZER };

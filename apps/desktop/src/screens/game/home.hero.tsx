@@ -21,7 +21,7 @@ const HomeHero = (props: HeroProps) => {
   const { slots, profile } = props;
   const { Eyebrow, Title, Backdrop, Art, Tools, Actions, Facts, Aside, Panel } = slots;
   const product = useProduct();
-  const mode = useProfileMode();
+  const mode = useProfileMode(profile);
   const { running, paused, play, stop, reset, togglePause } = useGameSession();
   const profileId = profile?.id ?? null;
   const { reveal, canReveal } = useRevealProfileFolder(profileId);
