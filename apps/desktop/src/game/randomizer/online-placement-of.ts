@@ -1,8 +1,9 @@
 /* @layer bridge-wasm @kind logic */
 import type { FileStore } from '@drizztdourden08/brock-core';
 import type { OnlineConnection } from '@drizztdourden08/brock-randomizer/archipelago';
-import { readRoomCache, writeRoomCache } from './archipelago/room-cache';
-import type { RoomCache } from './archipelago/room-cache';
+import { readRoomCache } from './archipelago/read-room-cache';
+import { writeRoomCache } from './archipelago/write-room-cache';
+import type { RoomCache } from './archipelago/room-cache.type';
 import { scoutRoom } from './archipelago/scout-room';
 import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/renderer';
 

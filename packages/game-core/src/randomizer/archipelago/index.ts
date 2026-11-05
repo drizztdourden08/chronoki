@@ -17,7 +17,7 @@ export { ctOptionRows } from './ct-option-rows';
 export { ctApIds } from './ct-ap-ids';
 export { ctPlacementOfScouts } from './ct-placement-of-scouts';
 export { parseCtSlotData } from './parse-ct-slot-data';
-export type { CtSlotReading } from './parse-ct-slot-data';
+export type { CtSlotReading } from './ct-slot-reading.type';
 export type { CtSlotData } from './ct-slot-data.type';
 export { ctWidestChecks } from './ct-widest-checks';
 export { FOREIGN_ITEM_KEY, FOREIGN_ROM_ID } from './foreign-item.constants';

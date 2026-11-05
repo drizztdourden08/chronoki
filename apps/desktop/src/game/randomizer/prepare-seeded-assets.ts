@@ -1,12 +1,11 @@
 /* @layer bridge-wasm @kind logic */
 import type { RandomizerProfileConfig } from '@drizztdourden08/brock-randomizer';
 import type { FileStore } from '@drizztdourden08/brock-core';
-import type { CtOptionValues } from '@chronoki/game-core';
 import { resolveMysteryOptions, withCtOptionDefaults } from '@chronoki/game-core';
 import { pendingBoot, onlineConnectionOf } from '@drizztdourden08/brock-randomizer/session';
 import { gateRandomizerBoot } from '@drizztdourden08/brock-randomizer/renderer';
-import type { RoomCache } from './archipelago/room-cache';
-import { BOOT_REFUSALS, LOCAL_MODE, ONLINE_MODE, ONLINE_PLAY } from './chronoki-randomizer.constants';
+import type { RoomCache } from './archipelago/room-cache.type';
+import { BOOT_REFUSALS, LOCAL_MODE, ONLINE_MODE } from './chronoki-randomizer.constants';
 import { checksOfPack } from './checks-of-pack';
 import { localRunHolder } from './local-run-holder';
 import { onlinePlacementOf } from './online-placement-of';
@@ -22,14 +21,14 @@ const refuse = (reason: string): SeededAssets => {
 
 const modeRefusalOf = (config: RandomizerProfileConfig): string | null => {
   if (config.mode === LOCAL_MODE) return null;
-  if (config.mode === ONLINE_MODE) return ONLINE_PLAY ? null : BOOT_REFUSALS.notLocal;
-  return ONLINE_PLAY ? BOOT_REFUSALS.lobbyNotStarted : BOOT_REFUSALS.notLocal;
+  if (config.mode === ONLINE_MODE) return null;
+  return BOOT_REFUSALS.lobbyNotStarted;
 };
 
 const roomOf = async (profileId: string, config: RandomizerProfileConfig, files: FileStore): Promise<RoomCache | string> => {
   if (config.mode === LOCAL_MODE) {
     const placement = pendingBoot.get()?.placement as RoomCache['placement'] | undefined;
-    return placement === undefined ? BOOT_REFUSALS.noPlacement : { placement, options: config.options as CtOptionValues };
+    return placement === undefined ? BOOT_REFUSALS.noPlacement : { placement, options: config.options };
   }
   const connection = onlineConnectionOf(config);
   if (connection === null) return BOOT_REFUSALS.noConnection;

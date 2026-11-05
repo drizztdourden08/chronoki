@@ -2,12 +2,14 @@
 import type { ArchipelagoGame } from '@drizztdourden08/brock-randomizer';
 import type { CtPlacement } from '@chronoki/game-core';
 import { AP_GAME, AP_WORLD_VERSION } from '@chronoki/game-core/archipelago';
-import { chronokiApArm, chronokiApDisarm } from './chronoki-ap-arm';
-import { chronokiApMarkCollected } from './chronoki-ap-collected';
+import { chronokiApArm } from './chronoki-ap-arm';
+import { chronokiApDisarm } from './chronoki-ap-disarm';
+import { chronokiApMarkCollected } from './chronoki-ap-mark-collected';
 import { chronokiApDeathLink } from './chronoki-ap-death-link';
 import { chronokiApFile } from './chronoki-ap-file';
 import { chronokiApGoal } from './chronoki-ap-goal';
-import { chronokiApLocationIdOf, chronokiApLocationKeyOf } from './chronoki-ap-ids';
+import { chronokiApLocationIdOf } from './chronoki-ap-location-id-of';
+import { chronokiApLocationKeyOf } from './chronoki-ap-location-key-of';
 import { chronokiApReceivedAction } from './chronoki-ap-received-action';
 import { chronokiApSlot } from './chronoki-ap-slot';
 import { chronokiArchipelia } from './chronoki-archipelia';

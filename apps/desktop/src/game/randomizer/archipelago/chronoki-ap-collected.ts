@@ -1,12 +1,6 @@
 /* @layer bridge-wasm @kind logic */
-import type { ArchipelagoGame } from '@drizztdourden08/brock-randomizer';
+import { chronokiApCollectedSet } from './chronoki-ap-collected-set';
 
-const collected = new Set<string>();
+const chronokiApCollected = (): ReadonlySet<string> => chronokiApCollectedSet;
 
-const chronokiApMarkCollected: NonNullable<ArchipelagoGame<unknown, unknown>['markCollected']> = (keys) => {
-  keys.forEach((key) => collected.add(key));
-};
-
-const chronokiApCollected = (): ReadonlySet<string> => collected;
-
-export { chronokiApCollected, chronokiApMarkCollected };
+export { chronokiApCollected };

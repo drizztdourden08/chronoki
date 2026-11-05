@@ -5,10 +5,9 @@ import { createMemoryApStateStore, createReceivedQueue } from '@drizztdourden08/
 import type { CtOptionValues, CtPlacement } from '@chronoki/game-core';
 import { parseCtSlotData } from '@chronoki/game-core/archipelago';
 import { chronokiApSlot } from './chronoki-ap-slot';
-import { chronokiApLocationKeyOf } from './chronoki-ap-ids';
-import type { RoomCache } from './room-cache';
-
-const SCOUT_TIMEOUT_MS = 20000;
+import { chronokiApLocationKeyOf } from './chronoki-ap-location-key-of';
+import type { RoomCache } from './room-cache.type';
+import { SCOUT_TIMEOUT_MS } from './scout-room.constants';
 
 const idleHost: OnlineHost = {
   arm: () => undefined,

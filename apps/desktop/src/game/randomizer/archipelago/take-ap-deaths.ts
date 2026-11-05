@@ -1,12 +1,12 @@
 /* @layer bridge-wasm @kind logic */
-import { apCallsOrNull } from './chronoki-ap-calls';
+import { apCallsOrNull } from './ap-calls-or-null';
 import {
   AP_DEATH_CAUSE_HOST_KILL, AP_EVENT_BYTES, AP_EVENT_DEATH, AP_EVENT_MAX, AP_EVENTS_HEADER_BYTES, CK_AP_TAKE_EVENTS,
 } from './chronoki-ap-death-link.constants';
 
 const takeApDeaths = (): number => {
   const calls = apCallsOrNull();
-  if (calls === null || !calls.has(CK_AP_TAKE_EVENTS)) return 0;
+  if (!calls?.has(CK_AP_TAKE_EVENTS)) return 0;
   try {
     const ptr = calls.number(CK_AP_TAKE_EVENTS);
     if (ptr === 0) return 0;
