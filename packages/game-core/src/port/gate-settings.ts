@@ -29,6 +29,7 @@ const gateSettings = (
     instantSoundUploads: effective.has('instantUploads'),
     sightscope: effective.has('sightscope'),
     visibleTechs: effective.has('visibleTechList'),
+    dimFlashes: effective.has('dimFlashes'),
   };
 };
 

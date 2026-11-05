@@ -17,6 +17,7 @@ const DEFAULT_CK_SETTINGS: CkSettings = {
   instantSoundUploads: false,
   sightscope: false,
   visibleTechs: false,
+  dimFlashes: false,
 };
 
 const VANILLA_GAME_FLAGS: CkGameFlags = { randomizer: false, disableGlitches: false };

@@ -19,6 +19,7 @@ interface CkSettings {
   instantSoundUploads: boolean;
   sightscope: boolean;
   visibleTechs: boolean;
+  dimFlashes: boolean;
 }
 
 type CkGameFlags = { randomizer: boolean; disableGlitches: boolean; duplicateCharacters?: boolean };

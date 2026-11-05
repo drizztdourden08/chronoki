@@ -26,7 +26,7 @@ const sections: Section[] = [
       {
         id: 'rendering-quality',
         title: 'Quality',
-        items: [gateItem('linearFiltering')],
+        items: [gateItem('linearFiltering'), gateItem('dimFlashes')],
       },
     ],
   },

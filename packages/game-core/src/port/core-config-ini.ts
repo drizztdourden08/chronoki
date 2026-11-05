@@ -22,8 +22,9 @@ const lockLine = (s: CkSettings): string[] =>
 
 const chronokiLines = (s: CkSettings, g: CkGameFlags): string[] => {
   const features = s.sightscope || s.visibleTechs ? [`sightscope=${flag(s.sightscope)}`, `visible_techs=${flag(s.visibleTechs)}`] : [];
+  const dim = s.dimFlashes ? ['dim_flashes=1'] : [];
   const duplicates = g.randomizer && g.duplicateCharacters === true ? ['duplicate_characters=1'] : [];
-  const keys = [...features, ...duplicates];
+  const keys = [...features, ...dim, ...duplicates];
   return keys.length > 0 ? ['[chronoki]', ...keys, ''] : [];
 };
 

@@ -124,7 +124,7 @@ const gameArgs = (gen) => [
   '-sMODULARIZE=1', '-sEXPORT_NAME=Chronoki', '-sENVIRONMENT=web,worker,node',
   '-sFORCE_FILESYSTEM=1', '-sALLOW_MEMORY_GROWTH=1', '-sINITIAL_MEMORY=268435456', '-sMAXIMUM_MEMORY=1073741824',
   '-sSTACK_SIZE=8388608',
-  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkViewWidth,_CkViewHeight,_CkViewBlackTop,_CkViewBlackBottom,_CkViewBlackLeft,_CkViewBlackRight,_CkViewScene,_CkViewOriginX,_CkViewOriginY,_CkSetEdgeEnv,_CkEnvValid,_CkEnvPtr,_CkEnvWidth,_CkEnvHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
+  '-sEXPORTED_FUNCTIONS=_main,_malloc,_free,_CkStop,_CkSetPaused,_CkSetDimFlashes,_CkRunFrame,_CkSetInput,_CkSaveSram,_CkStateSave,_CkStateLoad,_CkStateBuffer,_CkStateSize,_CkStateInput,_CkStateStamp,_CkStateStatus,_CkStateReason,_CkStateAvailable,_CkFramePtr,_CkFrameWidth,_CkFrameHeight,_CkViewWidth,_CkViewHeight,_CkViewBlackTop,_CkViewBlackBottom,_CkViewBlackLeft,_CkViewBlackRight,_CkViewScene,_CkViewOriginX,_CkViewOriginY,_CkSetEdgeEnv,_CkEnvValid,_CkEnvPtr,_CkEnvWidth,_CkEnvHeight,_CkFrameCount,_CkSamplesPtr,_CkSampleCount,_CkMusicState,_CkSetVoiceGains,_CkWramPtr,_CkEraName,_CkChapterName,_CkCharName,_CkItemName,_CkTechName,_ck_coro_entry',
   '-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,callMain,FS,ENV,HEAPU8,HEAP16,HEAP32',
   '-lm',
 ];

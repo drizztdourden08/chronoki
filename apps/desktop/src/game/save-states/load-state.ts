@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import { checkLoadable, engineStateOf } from '@chronoki/game-core';
 import type { SaveSlotRef } from '@drizztdourden08/brock-port-kit';
+import { pushLiveSettings } from '../live-settings/push-live-settings';
 import { restoreMusicPosition } from '../msu-save-glue';
 import { readCoreStamp } from '../state-stamp';
 import { decodeStoredState } from './decode-stored-state';
@@ -22,6 +23,7 @@ const loadState = async (ctx: SaveStateContext, ref: SaveSlotRef): Promise<State
   const pushed = await pushState(core, state);
   if (pushed.ok) {
     await restoreMusicPosition(profileId, ref);
+    pushLiveSettings();
     stateLoadedSignal.emit();
   }
   return pushed;

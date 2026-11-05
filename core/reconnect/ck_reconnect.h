@@ -42,6 +42,10 @@ int  ck_disable_glitches(void);
 /* settings_reconnect.c: [chronoki] sightscope and visible_techs, 0 or 1, default 0 (off = the original game). */
 int  ck_sightscope(void);
 int  ck_visible_techs(void);
+/* settings_reconnect.c: [chronoki] dim_flashes, 0 or 1, default 0 (off = the original game); CkSetDimFlashes (ck_api.c)
+   changes it live. present_reconnect.c's flash limiter runs only while it is 1. */
+int  ck_dim_flashes(void);
+void ck_dim_flashes_set(int on);
 /* settings_reconnect.c (ck_dup_chars.inc): [chronoki] duplicate_characters, 0 or 1, default 0 (off = the original game).
    Character rando may then put two copies of one character in the party: a party byte is a SLOT (story identity) and
    sheet byte +0x00 ($7E:2600 + slot * 0x50) is its KIND (looks, attack, techs). The patched engine files
