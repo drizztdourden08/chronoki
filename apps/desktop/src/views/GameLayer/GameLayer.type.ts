@@ -29,7 +29,8 @@ interface SettleState {
 interface StageWait {
   id: number;
   since: number;
-  fullscreen: boolean;
+  /** null until the launch profile's settings are loaded and the start-fullscreen choice is known. */
+  fullscreen: boolean | null;
 }
 
 interface BootedPlan {

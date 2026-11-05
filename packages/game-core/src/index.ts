@@ -12,6 +12,7 @@ export { aspectRatioOf } from './port/aspect/aspect-ratio-of';
 export { coverFrame } from './port/aspect/cover-frame';
 export { fillBox } from './port/aspect/fill-box';
 export { parseRatio } from './port/aspect/parse-ratio';
+export { pictureRatioOf } from './port/aspect/picture-ratio-of';
 export { presentBoxOf } from './port/aspect/present-box-of';
 export { presentRatioOf } from './port/aspect/present-ratio-of';
 export { presentSizeOf } from './port/aspect/present-size-of';
