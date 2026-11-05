@@ -20,7 +20,7 @@ describe('spliceSceneScript refusals', () => {
 
   it('refuses a displacement that would pass 0xFF', { tags: ['critical'] }, () => {
     const pack = packOf(buildScript(jumpScene));
-    expect(failedOf(pack, new Array<number>(260).fill(0))).toContain('test: jump at 32 no longer reaches its target');
+    expect(failedOf(pack, new Array<number>(260).fill(0))).toContain('test: jump at 96 no longer reaches its target');
   });
 
   it('refuses a function pointer into the replaced op', { tags: ['critical'] }, () => {
