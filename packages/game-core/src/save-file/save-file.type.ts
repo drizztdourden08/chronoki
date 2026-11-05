@@ -10,4 +10,9 @@ interface SramSlotSummary {
   minutes: number;
 }
 
-export type { SramSlotSummary };
+interface SlotChecks {
+  done: string[];
+  unknown: string[];
+}
+
+export type { SlotChecks, SramSlotSummary };

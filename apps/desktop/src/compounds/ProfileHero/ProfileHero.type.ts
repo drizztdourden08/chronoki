@@ -14,19 +14,20 @@ interface HeroLastSave {
   onLoad: () => void;
 }
 
+interface HeroChecks {
+  taken: number;
+  available: number | null;
+  left: number;
+  total: number;
+}
+
 interface HeroProgressFile {
   slot: number;
   lead: string;
   level: number;
   playTime: string;
   saveNumber: number;
-}
-
-interface HeroChecks {
-  taken: number;
-  available: number;
-  left: number;
-  total: number;
+  checks?: HeroChecks;
 }
 
 interface HeroProgressProps {
