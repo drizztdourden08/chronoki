@@ -7,6 +7,7 @@ export { createGameStartWatch } from './create-game-start-watch';
 export { createGiftWatch } from './create-gift-watch';
 export { createSaveLoadWatch } from './create-save-load-watch';
 export { createStartGoldGrant } from './create-start-gold-grant';
+export { createStartStateCheck } from './create-start-state-check';
 export { giftTargetsOf } from './gift-targets-of';
 export { playSecondsOf } from './play-seconds-of';
 export type { StartGoldGrant, WramWrite } from './start-gold-grant.type';

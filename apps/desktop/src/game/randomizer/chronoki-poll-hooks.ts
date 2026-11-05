@@ -11,7 +11,10 @@ const chronokiPollHooks = {
   beforePoll: (): void => {
     const run = localRunHolder.run;
     const view = chronokiRawMemoryBridge.view();
-    if (view === null || !gameStartGate.observe(view) || run === null) return;
+    if (view === null || run === null) return;
+    const started = gameStartGate.observe(view);
+    run.start.observe(view, started);
+    if (!started) return;
     if (run.saveLoad.loaded(view)) {
       appRandomizerLog(SAVE_LOAD_LOG);
       gameLoadedSignal.emit();
