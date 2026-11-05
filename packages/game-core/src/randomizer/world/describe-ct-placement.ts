@@ -27,6 +27,7 @@ const describeCtPlacement = (placement: CtPlacement): PlacementSummary => {
       ...characterRowsOf(placement.characters),
       ...elementRowsOf(placement.elements),
       ...mysteryRowsOf(placement.mystery),
+      ...(placement.objectives ?? []).map((objective) => ({ label: 'Objective', value: objective.label })),
     ],
   };
 };

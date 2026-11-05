@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind constants */
 import type { CtOptionDef } from './ct-option-def.type';
+import { BUCKET_OPTIONS } from './bucket/bucket-options.constants';
 import { CT_DEFAULT_MODE, CT_MODES } from './modes/ct-modes.constants';
 import {
   MYSTERY_ENEMY_DIFFICULTY, MYSTERY_GAME_MODE, MYSTERY_ITEM_DIFFICULTY, MYSTERY_SHOP_PRICES, MYSTERY_TECH_ORDER,
@@ -62,6 +63,7 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
     key: 'chronosanity', label: 'Chronosanity', jotFlag: 'cr', default: false, section: 'Randomization', implemented: true, mystery: 0.3,
     hint: 'Key items can be in any treasure chest, not only the key-item spots.',
   },
+  ...BUCKET_OPTIONS,
   ...TAB_RANGE_OPTIONS,
 ];
 
