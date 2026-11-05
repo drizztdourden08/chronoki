@@ -4,6 +4,7 @@ import type { CtPlacement } from './ct-placement.type';
 import { bossRowsOf } from './boss-rows-of';
 import { elementRowsOf } from './element-rows-of';
 import { characterRowsOf } from './recruits/character-rows-of';
+import { mysteryRowsOf } from './mystery/mystery-rows-of';
 import { keyItemsInChestsOf } from './key-items-in-chests-of';
 import { isCtKeyItem } from './is-ct-key-item';
 import { startPartyLabelOf } from './party/start-party-label-of';
@@ -25,6 +26,7 @@ const describeCtPlacement = (placement: CtPlacement): PlacementSummary => {
       ...bossRowsOf(placement.bosses),
       ...characterRowsOf(placement.characters),
       ...elementRowsOf(placement.elements),
+      ...mysteryRowsOf(placement.mystery),
     ],
   };
 };
