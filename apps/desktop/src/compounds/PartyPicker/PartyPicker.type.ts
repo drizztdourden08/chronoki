@@ -16,4 +16,10 @@ interface PartyTileProps {
   onToggle: (id: CtCharacter) => void;
 }
 
-export type { PartyPickerProps, PartyTileProps };
+interface PartySlotGroupProps {
+  title: string;
+  members: readonly CtCharacter[];
+  offset: number;
+}
+
+export type { PartyPickerProps, PartySlotGroupProps, PartyTileProps };

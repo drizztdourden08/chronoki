@@ -1,9 +1,7 @@
 /* @layer bridge-wasm @kind logic */
-import type { PackEdit } from '../../randomizer/apply/apply-seed.type';
 import { packRomSpans } from '../../randomizer/apply/enemy-table/pack-rom-spans';
 import { LOCATION_NO_SONG_BIT, LOCATION_RECORD_BYTES, LOCATION_RECORDS_ROM } from './alt-music.constants';
-
-type SongPlan = { edit: PackEdit | null; failed: string | null };
+import type { SongPlan } from './alt-music.type';
 
 const planRecordSong = (pack: Uint8Array, location: number, song: number): SongPlan => {
   const at = packRomSpans(pack, LOCATION_RECORDS_ROM + location * LOCATION_RECORD_BYTES, 1)[0];
@@ -14,4 +12,3 @@ const planRecordSong = (pack: Uint8Array, location: number, song: number): SongP
 };
 
 export { planRecordSong };
-export type { SongPlan };

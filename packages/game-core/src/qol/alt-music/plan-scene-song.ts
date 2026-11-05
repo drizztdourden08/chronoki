@@ -3,9 +3,7 @@ import type { PackEdit } from '../../randomizer/apply/apply-seed.type';
 import { findSceneScript } from '../../randomizer/apply/script/find-scene-script';
 import { walkScriptOps } from '../../script-walk/walk-script-ops';
 import { OP_PLAY_SONG } from './alt-music.constants';
-import type { SongPlan } from './plan-record-song';
-
-type SceneSongSpot = { scene: number; object: number; fn: number; from: number | null; song: number };
+import type { SceneSongSpot, SongPlan } from './alt-music.type';
 
 const planSceneSong = (pack: Uint8Array, spot: SceneSongSpot): SongPlan => {
   const name = `scene ${spot.scene} object ${spot.object} function ${spot.fn}`;
@@ -25,4 +23,3 @@ const planSceneSong = (pack: Uint8Array, spot: SceneSongSpot): SongPlan => {
 };
 
 export { planSceneSong };
-export type { SceneSongSpot };

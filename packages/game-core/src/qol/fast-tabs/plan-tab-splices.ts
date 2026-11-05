@@ -2,10 +2,8 @@
 import { opEquals } from '../../randomizer/apply/modes/op-equals';
 import type { ScriptSplice } from '../../randomizer/apply/script/script-splice.type';
 import type { FastTabSpot, SpotSplices, TabOp } from './fast-tab-spot.type';
-import { OP_ADD_ITEM, OP_EXPLORE_MODE, OP_SET_BIT, TAB_FUNCTION, TEXT_BOX_OPS } from './fast-tab-spots.constants';
+import { NOTHING, OP_ADD_ITEM, OP_EXPLORE_MODE, OP_SET_BIT, TAB_FUNCTION, TEXT_BOX_OPS } from './fast-tab-spots.constants';
 import { readTabOps } from './read-tab-ops';
-
-const NOTHING = new Uint8Array(0);
 
 const scopeOf = (spot: FastTabSpot, first = false) => ({ object: spot.object, fn: TAB_FUNCTION, first });
 

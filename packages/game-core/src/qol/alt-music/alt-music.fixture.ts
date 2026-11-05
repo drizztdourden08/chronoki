@@ -2,10 +2,7 @@
 import { le16 } from '../../randomizer/apply/boss-rando/le16.fixture';
 import { le32 } from '../../randomizer/apply/boss-rando/le32.fixture';
 import { DEATH_PEAK_LOCATIONS, LOCATION_RECORD_BYTES, LOCATION_RECORDS_ROM } from './alt-music.constants';
-
-type Blob = { type: number; id: number; data: number[] };
-
-type MusicPackOptions = { firstRecordSong?: number; zenanOps?: number[]; peakOps?: number[] };
+import type { Blob, MusicPackOptions } from './alt-music.type';
 
 const scriptWith = (object: number, fn: number, ops: number[]): number[] => {
   const count = object + 1;
