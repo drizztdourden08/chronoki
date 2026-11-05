@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import { BOSS_SPOTS } from './enemy-difficulty.constants';
+import { BOSS_SPOTS } from './boss-map.constants';
 
 type SphereLike = { index: number; locations: readonly unknown[] };
 
