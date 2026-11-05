@@ -1,7 +1,6 @@
 /* @layer renderer-appshell @kind logic */
 import type { SaveOverlayShown } from './save-overlay-store.type';
-
-const HIDDEN: SaveOverlayShown = { shown: false, slot: null };
+import { HIDDEN } from './save-overlay-store.constants';
 
 const listeners = new Set<() => void>();
 const holder: { state: SaveOverlayShown } = { state: HIDDEN };

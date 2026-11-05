@@ -28,7 +28,7 @@ const SaveStateOverlay = (props: SaveStateOverlayProps) => {
         <Box ref={trackRef} className="save-overlay__track">
           {Array.from({ length: SLOT_COUNT }, (_, i) => {
             const slot = slots.find((s) => s.slot === i);
-            const isEmpty = !slot || slot.savedAt === null;
+            const isEmpty = (slot?.savedAt ?? null) === null;
             const isHighlighted = highlightedSlot === i;
 
             return (
