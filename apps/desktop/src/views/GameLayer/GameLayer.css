@@ -47,3 +47,9 @@
   padding: var(--space-3);
   text-align: center;
 }
+
+.game-layer__stage canvas.game-layer__fx {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+}
