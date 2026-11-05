@@ -1,25 +1,23 @@
 /* @layer electron-main @kind logic */
-import { writeFile, mkdir } from 'fs/promises';
+import { mkdir, readdir, stat } from 'fs/promises';
 import { join } from 'path';
 import type { DebugCaptureFinalizeInput, DebugCaptureFinalizeResult } from '@app/debug-report';
-import { frameName } from '../capture-frame-budget';
 import { buildPackagedFrames } from './build-packaged-frames';
 import { captureSessionDir } from './capture-session-dir';
-import { PACKAGED_SUBDIR } from './finalize-capture-session.constants';
+import { FRAME_FILE, PACKAGED_SUBDIR } from './finalize-capture-session.constants';
 
+// brock-tools' finalizeRecording already wrote the frames, samples and video; this only packs the small copy for reports.
 const finalizeCaptureSession = async (input: DebugCaptureFinalizeInput): Promise<DebugCaptureFinalizeResult> => {
-  const { profileId, sessionKey, snapshots, screenshots } = input;
+  const { profileId, sessionKey } = input;
   try {
     const dir = captureSessionDir(profileId, sessionKey);
-    const packagedDir = join(dir, PACKAGED_SUBDIR);
-    await mkdir(packagedDir, { recursive: true });
-    await writeFile(join(dir, 'snapshots.jsonl'), snapshots.map((s) => JSON.stringify(s)).join('\n'));
-
-    const frameNames = screenshots.map((_, i) => frameName(i));
-    await Promise.all(screenshots.map((shot, i) => writeFile(join(dir, frameName(i)), Buffer.from(shot.png))));
+    const frameNames = (await readdir(dir)).filter((name) => FRAME_FILE.test(name)).sort();
     if (frameNames.length === 0) return { ok: true };
 
-    await buildPackagedFrames(packagedDir, dir, screenshots, frameNames);
+    const packagedDir = join(dir, PACKAGED_SUBDIR);
+    await mkdir(packagedDir, { recursive: true });
+    const sizes = await Promise.all(frameNames.map((name) => stat(join(dir, name)).then((s) => s.size)));
+    await buildPackagedFrames(packagedDir, dir, sizes.reduce((sum, size) => sum + size, 0), frameNames);
     return { ok: true };
   } catch (err) {
     return { error: err instanceof Error ? err.message : String(err) };

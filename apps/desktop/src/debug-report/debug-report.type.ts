@@ -13,8 +13,6 @@ interface DebugCaptureScreenshot {
 interface DebugCaptureFinalizeInput {
   profileId: string;
   sessionKey: string;
-  snapshots: DebugCaptureSnapshot[];
-  screenshots: DebugCaptureScreenshot[];
 }
 
 type DebugCaptureFinalizeResult =

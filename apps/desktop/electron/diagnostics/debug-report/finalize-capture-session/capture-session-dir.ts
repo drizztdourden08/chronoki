@@ -1,8 +1,9 @@
 /* @layer electron-main @kind logic */
 import { getUserDataPath } from '@drizztdourden08/brock-electron/main';
-import { CAPTURES_SUBDIR } from './finalize-capture-session.constants';
+import { RECORDINGS_DIR } from './finalize-capture-session.constants';
 
+// Same folder brock-tools' finalizeRecording writes to: <data>/recordings/<scope>/<key>, scope = profile id.
 const captureSessionDir = (profileId: string, sessionKey: string): string =>
-  getUserDataPath('profiles', profileId, CAPTURES_SUBDIR, sessionKey);
+  getUserDataPath(RECORDINGS_DIR, profileId, sessionKey);
 
 export { captureSessionDir };

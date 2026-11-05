@@ -3,8 +3,9 @@ import { readdir, stat } from 'fs/promises';
 import { join } from 'path';
 import { getUserDataPath } from '@drizztdourden08/brock-electron/main';
 import { readCaptureManifest } from './capture-manifest';
-import { CAPTURES_SUBDIR, PACKAGED_SUBDIR } from './finalize-capture-session';
+import { RECORDINGS_DIR, PACKAGED_SUBDIR } from './finalize-capture-session';
 import type { DebugCaptureSessionSummary } from '@app/debug-report';
+import { VIDEO_FILE } from './list-sessions.constants';
 import type { PreviewInfo } from './list-sessions.type';
 
 const startedAtOf = (sessionKey: string): number => {
@@ -19,7 +20,7 @@ const sumFileSizes = async (dir: string, names: string[]): Promise<number> => {
 
 const previewFor = (profileId: string, sessionKey: string, hasFullVideo: boolean, packagedNames: string[]): PreviewInfo => {
   const base = `app-debug-capture://captures/${encodeURIComponent(profileId)}/${encodeURIComponent(sessionKey)}`;
-  if (hasFullVideo) return { previewUrl: `${base}/video-full.mp4`, previewFrameUrls: [], previewKind: 'video' };
+  if (hasFullVideo) return { previewUrl: `${base}/${VIDEO_FILE}`, previewFrameUrls: [], previewKind: 'video' };
   const frames = packagedNames.filter((n) => n.endsWith('.png')).sort();
   if (frames.length > 0) {
     return {
@@ -32,7 +33,7 @@ const previewFor = (profileId: string, sessionKey: string, hasFullVideo: boolean
 };
 
 const listCaptureSessions = async (profileId: string): Promise<DebugCaptureSessionSummary[]> => {
-  const root = getUserDataPath('profiles', profileId, CAPTURES_SUBDIR);
+  const root = getUserDataPath(RECORDINGS_DIR, profileId);
   const manifest = await readCaptureManifest(profileId);
   const sessionKeys = await readdir(root, { withFileTypes: true })
     .then((entries) => entries.filter((e) => e.isDirectory()).map((e) => e.name))
@@ -42,7 +43,7 @@ const listCaptureSessions = async (profileId: string): Promise<DebugCaptureSessi
     const dir = join(root, sessionKey);
     const packagedDir = join(dir, PACKAGED_SUBDIR);
     const packagedNames = await readdir(packagedDir).catch(() => [] as string[]);
-    const hasFullVideo = await stat(join(dir, 'video-full.mp4')).then(() => true).catch(() => false);
+    const hasFullVideo = await stat(join(dir, VIDEO_FILE)).then(() => true).catch(() => false);
     const sizeBytes = await sumFileSizes(packagedDir, packagedNames);
     const preview = previewFor(profileId, sessionKey, hasFullVideo, packagedNames);
     return {
