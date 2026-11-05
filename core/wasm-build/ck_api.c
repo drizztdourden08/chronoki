@@ -8,6 +8,8 @@ static int g_paused = 0;
 
 EMSCRIPTEN_KEEPALIVE void CkStop(void) { ck_stop(); }
 EMSCRIPTEN_KEEPALIVE void CkSetPaused(int paused) { g_paused = paused != 0; }
+/* Dim Flashes (reconnect/ck_dim_flashes.inc): 1 limits large single-frame brightness jumps, 0 leaves frames as drawn. */
+EMSCRIPTEN_KEEPALIVE void CkSetDimFlashes(int on) { ck_dim_flashes_set(on); }
 EMSCRIPTEN_KEEPALIVE void CkRunFrame(void) {
   if (g_paused) return;
   ck_clock_advance_ms(1000.0 / 60.0);

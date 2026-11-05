@@ -3,6 +3,7 @@ import { isMsuSessionActive, msuSnapshot } from '@drizztdourden08/brock-msu/sess
 import { appLog } from '@app/log/app-log';
 import { msuRuntime } from '../msu-session/msu-runtime';
 import { resumeMsuAfterReboot } from '../msu-session/resume-msu-after-reboot';
+import { pushLiveSettings } from '../live-settings/push-live-settings';
 import { captureEngineState } from '../save-states/capture-engine-state';
 import { stateLoadedSignal } from '../save-states/state-loaded-signal';
 import { applyLiveVolume } from '../turbo/apply-live-volume';
@@ -27,6 +28,7 @@ const replanGame = async ({ from, to, volume }: ReplanRequest): Promise<ReplanOu
     replanStore.set(false);
     if (outcome.kind === 'lost' || outcome.kind === 'deferred') return outcome;
     applyLiveVolume(volume);
+    pushLiveSettings();
     await resumeMsuAfterReboot(packName, outcome.kind === 'rescued' ? null : music);
     if (outcome.kind !== 'rescued') stateLoadedSignal.emit();
     activeGameHolder.current?.canvas.focus();

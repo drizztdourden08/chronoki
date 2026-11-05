@@ -41,6 +41,7 @@ export { viewOriginOf } from './port/view-origin-of';
 export type { CkViewOrigin } from './port/view-origin.type';
 export { envFrameOf } from './port/env-frame-of';
 export { setEdgeEnv } from './port/set-edge-env';
+export * from './port/live-settings';
 export type { CkEnvCalls, CkEnvFrame } from './port/env-frame.type';
 export { SRAM_SLOT_COUNT } from './save-file/save-file.constants';
 export { validSramSlots } from './save-file/valid-sram-slots';
