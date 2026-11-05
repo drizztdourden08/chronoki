@@ -4,7 +4,7 @@ import type { CtWorldInput } from '../world/ct-world-input.type';
 
 type CtPlayerFileInput = {
   world: CtWorldInput;
-  schemaRows: readonly ExportedOption[];
+  schemaRows?: readonly ExportedOption[];
   slotName?: string;
   appVersion?: string;
   seedText?: string;

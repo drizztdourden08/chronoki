@@ -31,6 +31,8 @@
     "structure": "brock structure --check",
     "prose": "brock prose",
     "deadcode": "brock knip",
+    "apworld": "brock apworld export --entry packages/game-core/src/randomizer/archipelago/index.ts --fn exportCtWorld && brock apworld build --ap-version 0.6.6 --ap-version 0.6.7 --ap-version 0.6.8 --ap-public apps/desktop/public/archipelago",
+    "refresh-apworld": "brock apworld refresh --entry packages/game-core/src/randomizer/archipelago/index.ts --fn exportCtWorld --ap-source packages/game-core/src/randomizer --ap-version 0.6.6 --ap-version 0.6.7 --ap-version 0.6.8 --ap-public apps/desktop/public/archipelago",
     "duplicates": "jscpd ."
   },
   "devDependencies": {
