@@ -24,7 +24,7 @@ const armAppliedSeed = (applied: AppliedSeed, ctx: ApplyContext): { run: LocalRu
       armed: {
         polled,
         counts: armedCountsOf(applied, polled),
-        onCheck: (key, deliver) => queueLocalItem(run, key, ctx.tag, ctx.log, deliver),
+        onCheck: (key, deliver) => queueLocalItem(run, key, ctx, deliver),
       },
     },
   };
