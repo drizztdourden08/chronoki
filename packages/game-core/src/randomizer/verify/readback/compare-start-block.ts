@@ -5,7 +5,9 @@ import { OP_POKE_BYTE, OP_POKE_WORD } from '../../apply/script/script-ops.consta
 import type { ScriptOp } from '../../apply/script/script-splice.type';
 import type { ByteAt, CtStartState } from '../../apply/start-state/ct-start-state.type';
 import { LEGACY_PARTY } from '../../apply/start-state/legacy-party.constants';
+import { fitPartyToState } from '../../apply/start-state/fit-party-to-state';
 import { planStartState } from '../../apply/start-state/plan-start-state';
+import { startBlocksOf } from '../../apply/start-state/start-blocks-of';
 import { measureOpLength } from '../../checks/measure-op-length';
 import type { CtStartParty } from '../../world/party/ct-party.type';
 import { classifyStartOp } from './classify-start-op';
@@ -57,6 +59,13 @@ const opMismatches = (want: Uint8Array, got?: Uint8Array): Mismatch[] => {
 
 const missing = (location: string): Mismatch[] => [{ kind: 'start-block', location, expected: null, actual: null, address: -1 }];
 
+const compareBlock = (actual: Uint8Array[], block: Uint8Array, location: string): Mismatch[] => {
+  const expected = walkBlock(block).map((op) => block.subarray(op.at, op.at + op.length));
+  const base = anchorOf(expected, actual);
+  if (base < 0) return missing(location);
+  return expected.flatMap((want, i) => opMismatches(want, actual[base + i]));
+};
+
 const compareStartBlock = (pack: Uint8Array, state: CtStartState, party: CtStartParty = LEGACY_PARTY): Mismatch[] => {
   const script = findSceneScript(pack, START_SCENE);
   if (!script) return missing('scene-0-script');
@@ -64,11 +73,12 @@ const compareStartBlock = (pack: Uint8Array, state: CtStartState, party: CtStart
   const actualOps = listScriptOps(raw);
   if (!actualOps) return missing('scene-0-unwalkable');
   const actual = actualOps.map((op) => raw.subarray(1 + op.at, 1 + op.at + op.length));
-  const block = planStartState(state, party).replace;
-  const expected = walkBlock(block).map((op) => block.subarray(op.at, op.at + op.length));
-  const base = anchorOf(expected, actual);
-  if (base < 0) return missing('block-anchor');
-  return expected.flatMap((want, i) => opMismatches(want, actual[base + i]));
+  const fitted = fitPartyToState(party, state);
+  const { early } = startBlocksOf(state, fitted);
+  return [
+    ...(early.length === 0 ? [] : compareBlock(actual, early, 'start-block-part-1-anchor')),
+    ...compareBlock(actual, planStartState(state, party).replace, 'block-anchor'),
+  ];
 };
 
 export { compareStartBlock };
