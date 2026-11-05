@@ -10,6 +10,11 @@ EMSCRIPTEN_KEEPALIVE void CkStop(void) { ck_stop(); }
 EMSCRIPTEN_KEEPALIVE void CkSetPaused(int paused) { g_paused = paused != 0; }
 /* Dim Flashes (reconnect/ck_dim_flashes.inc): 1 limits large single-frame brightness jumps, 0 leaves frames as drawn. */
 EMSCRIPTEN_KEEPALIVE void CkSetDimFlashes(int on) { ck_dim_flashes_set(on); }
+/* Haptics (reconnect/haptic_reconnect.c, ck_haptic.h): CkSetHaptics(1) starts reporting battle events (party HP lost, enemy defeated);
+   0 (the default) keeps the core path to one test and no state. CkHapticPoll returns a CkHapticEventsT snapshot (seq, dropped, count,
+   then {kind, param} pairs) and empties the ring; read it after CkRunFrame. Not in any save state. */
+EMSCRIPTEN_KEEPALIVE void CkSetHaptics(int on) { ck_haptic_set(on); }
+EMSCRIPTEN_KEEPALIVE const void* CkHapticPoll(void) { return ck_haptic_take(); }
 /* Dialog pacing (reconnect/dialog_reconnect.c): Text Speed and Hold Speed in 1/4 units (4 = 1x, 0 = instant), Hold A to
    Accelerate, B Completes the Box. (4, 4, 0, 0) is the original one character a frame. */
 EMSCRIPTEN_KEEPALIVE void CkSetDialogPacing(int baseQ4, int holdQ4, int hold, int fill, int autoSkip) { ck_dialog_pacing_set(baseQ4, holdQ4, hold, fill, autoSkip); }
