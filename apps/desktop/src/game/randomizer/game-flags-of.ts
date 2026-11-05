@@ -1,9 +1,10 @@
 /* @layer bridge-wasm @kind logic */
 import type { CkGameFlags } from '@chronoki/game-core';
 
-const gameFlagsOf = (randomizer: boolean, disableGlitches: boolean): CkGameFlags => ({
+const gameFlagsOf = (randomizer: boolean, disableGlitches: boolean, duplicateCharacters = false): CkGameFlags => ({
   randomizer,
   disableGlitches: randomizer && disableGlitches,
+  duplicateCharacters: randomizer && duplicateCharacters,
 });
 
 export { gameFlagsOf };
