@@ -1,12 +1,13 @@
 /* @layer bridge-wasm @kind constants */
 import type { CtOptionDef } from './ct-option-def.type';
-
-const FROZEN_HINT = 'Fixed for this version of the randomizer.';
+import { CT_DEFAULT_MODE, CT_MODES } from './modes/ct-modes.constants';
 
 const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   {
-    key: 'gameMode', label: 'Game mode', jotFlag: 'mode', default: 'standard', choices: ['standard'], frozen: true,
-    section: 'Game', hint: FROZEN_HINT, choiceLabels: { standard: 'Standard' },
+    key: 'gameMode', label: 'Game mode', jotFlag: 'mode', default: CT_DEFAULT_MODE,
+    choices: CT_MODES.filter((mode) => mode.implemented).map((mode) => mode.id),
+    section: 'Game',
+    choiceLabels: Object.fromEntries(CT_MODES.filter((mode) => mode.implemented).map((mode) => [mode.id, mode.label])),
   },
   {
     key: 'itemDifficulty', label: 'Item difficulty', jotFlag: 'e/n/h', default: 'normal', choices: ['easy', 'normal', 'hard'],

@@ -13,6 +13,7 @@ import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeMixerGains } from './patches/mixer-gains.mjs';
 import { writeCameraLock } from './patches/camera-lock.mjs';
+import { writeNewGameWorld } from './patches/new-game-world.mjs';
 import { writeTallField } from './patches/tall-field.mjs';
 import { writeShapes } from './shapes.mjs';
 import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
@@ -179,6 +180,7 @@ const main = () => {
   gen.gains = writeMixerGains(gen.dir, belthasar);   // the S-DSP's voice-group gains (patches/mixer-gains.mjs)
   gen.tall = writeTallField(gen.state, belthasar);   // the tall picture, gated by tall_lines (patches/tall-field.mjs)
   gen.lock = writeCameraLock(gen.state);              // Lock Camera to View, gated by camera_lock (patches/camera-lock.mjs)
+  gen.world = writeNewGameWorld(gen.state);           // New Game: only world 0 is the intro pan (patches/new-game-world.mjs)
   if (!gen.tables32) {
     const missing = join(outDir, 'tables32', 'tables_storage.c');
     if (!allowMissingTables) {
