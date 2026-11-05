@@ -57,6 +57,19 @@ const sections: Section[] = [
     ],
   },
   { id: 'sound', title: 'Sound', items: [gateItem('instantUploads')] },
+  {
+    id: 'playback',
+    title: 'Audio Device',
+    items: [
+      {
+        key: 'audioSamples',
+        label: 'Buffer Size',
+        description: 'Latency against stability.',
+        hint: 'Smaller buffers may crackle.',
+        keywords: 'buffer latency crackle automatic output',
+      },
+    ],
+  },
 ];
 
 export default sections;

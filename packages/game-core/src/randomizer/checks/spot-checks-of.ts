@@ -9,7 +9,7 @@ const spotChecksOf = (checks: readonly CheckDef[]): ReadonlyMap<CtSpotId, string
   const gifts = checks.filter((check) => SPOT_GIFT_IDS.has(check.id)).map((check): [CtSpotId, string] => [check.id as CtSpotId, check.id]);
   const keyItems = KEY_ITEM_SPOT_GIFTS.filter((gift) => {
     const check = byId.get(gift.check);
-    return check?.kind === 'gift' && check.vanillaItem === gift.item;
+    return check !== undefined && check.kind !== 'event' && check.vanillaItem === gift.item;
   }).map((gift): [CtSpotId, string] => [gift.spot, gift.check]);
   const bound = [...gifts, ...keyItems];
   return bound.length === 0 ? undefined : new Map(bound);

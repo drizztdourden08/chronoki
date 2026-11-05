@@ -1,35 +1,27 @@
 /* @layer renderer-components @kind component */
-import { Box, SegmentedControl } from '@drizztdourden08/tessera/primitives';
+import { Box } from '@drizztdourden08/tessera/primitives';
+import { OptionGroupList } from '@drizztdourden08/brock-randomizer/renderer';
 import type { OptionTabProps } from '@drizztdourden08/brock-randomizer';
 import { PartyPicker, usePartySprites } from '../../../compounds/PartyPicker';
-import { PARTY_MODE_OPTIONS, PARTY_SIZE_OPTIONS, PARTY_TAB_LABELS } from './party-tab.constants';
+import { partyGroupsOf } from './party-groups-of';
 import { partyOfValue } from './party-of-value';
 
 const PartyTab = ({ values, overrides, onChange, frozen }: OptionTabProps) => {
   const spriteUrlOf = usePartySprites(null);
-  const set = (key: string, value: unknown) => onChange?.({ ...overrides, [key]: value });
-  const setMode = (next: string) => onChange?.({ ...overrides, partyMode: next, ...(next === 'custom' && partyOfValue(values.startingParty).length === 0 ? { startingParty: 'crono' } : {}) });
   const picked = partyOfValue(values.startingParty);
-  const mode = values.partyMode === 'custom' ? 'custom' : 'random';
+  const custom = values.partyMode === 'custom';
+  const set = (key: string, value: unknown) => onChange?.({ ...overrides, [key]: value });
+  const setMode = (next: unknown) => onChange?.({ ...overrides, partyMode: next, ...(next === 'custom' && picked.length === 0 ? { startingParty: 'crono' } : {}) });
   return (
     <Box>
-      <SegmentedControl
-        label={PARTY_TAB_LABELS.mode}
-        value={mode}
-        options={PARTY_MODE_OPTIONS}
-        disabled={frozen}
-        onChange={setMode}
+      <OptionGroupList
+        groups={partyGroupsOf(custom)}
+        valueOf={(option) => values[option.key] ?? ''}
+        frozen={frozen}
+        live
+        onRowChange={onChange === undefined ? undefined : (key, next) => (key === 'partyMode' ? setMode(next) : set(key, next))}
       />
-      {mode === 'random' ? (
-        <SegmentedControl
-          label={PARTY_TAB_LABELS.size}
-          description={PARTY_TAB_LABELS.sizeHint}
-          value={String(values.partySize)}
-          options={PARTY_SIZE_OPTIONS}
-          disabled={frozen}
-          onChange={(next) => set('partySize', Number(next))}
-        />
-      ) : (
+      {custom && (
         <PartyPicker
           value={picked}
           frozen={frozen}

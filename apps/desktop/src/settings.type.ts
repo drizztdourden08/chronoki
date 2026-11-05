@@ -40,6 +40,8 @@ interface AppSettings extends BaseSettings {
   resetMSUAtTitle: boolean;
   msuChipFallback: boolean;
   packReplaceSfx: boolean;
+  vsync: boolean;
+  audioSamples: number;
 }
 
 export type { AppSettings, MsuConfigMode, MsuFormat, ViewportMode };

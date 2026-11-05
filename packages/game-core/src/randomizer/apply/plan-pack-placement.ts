@@ -4,6 +4,7 @@ import { spotChecksOf } from '../checks/spot-checks-of';
 import type { CtPlacement } from '../world/ct-placement.type';
 import type { CtSpotId } from '../world/ct-world-keys.type';
 import { chestRomIdOf } from '../world/chest-rom-id-of';
+import { isPinnedPlacement } from '../world/is-pinned-placement';
 import { treasureRomIdOf } from '../world/treasure-rom-id-of';
 import { CHEST_ID_PREFIX } from '../checks/checks.constants';
 import type { PackPlacementPlan } from './pack-placement-plan.type';
@@ -16,6 +17,7 @@ const planPackPlacement = (placement: CtPlacement, checks: readonly CheckDef[]):
   const virtual: (readonly [string, string])[] = [];
   let unbound = 0;
   for (const [location, item] of placement.locations) {
+    if (isPinnedPlacement(location, item)) continue;
     const checkId = spotChecks.get(location) ?? location;
     const keyItemsFit = location.startsWith(`${CHEST_ID_PREFIX}-`) || spotChecks.has(location);
     const romId = keyItemsFit ? chestRomIdOf(item) : treasureRomIdOf(item);

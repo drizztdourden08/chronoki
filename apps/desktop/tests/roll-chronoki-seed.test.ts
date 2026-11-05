@@ -22,6 +22,7 @@ vi.mock('@app/game/randomizer/pack-of-rom', () => ({
 vi.mock('@chronoki/game-core', () => ({
   realWorldInputOfPack: () => ({ checks: state.checks }),
   resolveMysteryOptions: (options: unknown) => options,
+  withCtOptionDefaults: (options: unknown) => options,
   rollCtPlacement: (input: { checks: unknown[] }, seed: string) => ({ seed, count: input.checks.length }),
 }));
 

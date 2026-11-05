@@ -31,10 +31,18 @@ describe('ct options', { tags: ['critical'] }, () => {
 
   it('puts the logic tweaks into the values the seed hash covers, off by default', () => {
     const off = ctOptionValues();
-    const on = ctOptionValues({ addCyrusGraveSpot: true, addOzzieSpot: true, vanillaRoboRibbon: true });
-    (['addCyrusGraveSpot', 'addOzzieSpot', 'vanillaRoboRibbon'] as const).forEach((key) => {
+    const on = ctOptionValues({ addCyrusGraveSpot: true, addOzzieSpot: true });
+    (['addCyrusGraveSpot', 'addOzzieSpot'] as const).forEach((key) => {
       expect(off[key]).toBe(false);
       expect(on[key]).toBe(true);
     });
+  });
+
+  it('keeps the superseded vanilla Robo Ribbon option frozen on with a hint', () => {
+    expect(ctOptionValues().vanillaRoboRibbon).toBe(true);
+    expect(ctOptionValues({ vanillaRoboRibbon: false }).vanillaRoboRibbon).toBe(true);
+    const shown = ctUiOptions().find((option) => option.key === 'vanillaRoboRibbon');
+    expect(shown?.frozen).toBe(true);
+    expect(shown?.hint).toBeTruthy();
   });
 });

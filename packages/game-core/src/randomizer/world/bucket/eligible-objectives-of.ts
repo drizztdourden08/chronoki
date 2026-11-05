@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import { keyItemsOf } from '../epoch-fail/key-items-of';
+import { ctOptionValues } from '../ct-option-values';
 import type { CtOptionValues } from '../ct-world-input.type';
 import { applyModeToRegions } from '../modes/apply-mode-to-regions';
 import { modeOf } from '../modes/mode-of';
@@ -13,7 +14,7 @@ import { recruitObjectivesOf } from './recruit-objectives-of';
 const eligibleObjectivesOf = (effective: CtOptionValues, party: CtStartParty): ObjectiveDef[] => {
   const mode = modeOf(effective);
   const kept = new Set(applyModeToRegions(CT_REGIONS, mode).map((spec) => spec.id));
-  const keyItems = keyItemsOf(mode, effective.epochFail === true, effective.vanillaRoboRibbon === true);
+  const keyItems = keyItemsOf(mode, effective.epochFail === true, ctOptionValues(effective).vanillaRoboRibbon === true);
   return [...FLAG_OBJECTIVES, ...recruitObjectivesOf(party, kept), ...collectObjectivesOf(keyItems)].filter((objective) =>
     kept.has('end-of-time')
     && objective.regions.every((id) => kept.has(id))
