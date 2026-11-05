@@ -4,6 +4,8 @@ import type { CtPlacement } from '@chronoki/game-core';
 import { CT_GAME, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA, ctUiOptions, describeCtPlacement } from '@chronoki/game-core';
 import { chronokiCore } from '../lifecycle/chronoki-core';
 import { chronokiMemoryBridge } from './chronoki-memory-bridge';
+import { ChecksNotifySettings } from './checks-widget/ChecksNotifySettings';
+import { chronokiDeliverer } from './chronoki-deliverer';
 import { chronokiPollHooks } from './chronoki-poll-hooks';
 import { CHRONOKI_INVENTORY } from './inventory/chronoki-inventory.constants';
 import { chronokiTracker } from './tracker/chronoki-tracker';
@@ -22,13 +24,14 @@ const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   describe: describeCtPlacement,
   memory: chronokiMemoryBridge,
   applier: chronokiSeedApplier,
+  deliverer: chronokiDeliverer,
   poll: chronokiPollHooks,
   profile: { toConfig: chronokiToConfig },
   catalog: ctUiOptions(),
   labels: CHRONOKI_RANDOMIZER_LABELS,
   tracker: chronokiTracker,
   inventory: CHRONOKI_INVENTORY,
-  views: { optionTabs: ctOptionTabs },
+  views: { optionTabs: ctOptionTabs, checksWidget: { settings: ChecksNotifySettings } },
 });
 
 export { chronokiRandomizerGame };
