@@ -36,7 +36,7 @@ type SramProbeEntry = {
 type HostProbeEntry = {
   probe: 'host';
   ok: boolean;
-  turbo: { expected: boolean; extraFrames: number; mutedDuring: boolean; restored: boolean };
+  turbo: { expected: boolean; extraFrames: number; heldDuring: boolean; restored: boolean };
   autoSave: { expected: boolean; created: number };
   saveOnQuit: { expected: boolean; created: number };
   errors: string[];

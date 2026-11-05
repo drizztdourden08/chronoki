@@ -3,6 +3,8 @@ import { createSaveStore } from '@drizztdourden08/brock-port-kit';
 import { ctSaveCompanions } from '@chronoki/game-core';
 import { provideChronokiGameInfo } from '../game-info';
 import { activeGameHolder } from './active-game-holder';
+import { applyLiveVolume } from '../turbo/apply-live-volume';
+import { turboState } from '../turbo/turbo-state';
 import { bootGameModule } from './boot-game-module';
 import { startSessionServices } from './start-session-services';
 import type { StartGameRequest } from './start-game.type';
@@ -16,6 +18,7 @@ const startGame = async (request: StartGameRequest): Promise<boolean> => {
   const { canvas, romFile, profileId } = request;
   const unsubscribePause = startSessionServices({ store, profileId });
   activeGameHolder.current = { session, store, files: request.files, canvas, romFile, profileId, unsubscribePause };
+  applyLiveVolume(turboState.volume);
   provideChronokiGameInfo();
   canvas.focus();
   return true;

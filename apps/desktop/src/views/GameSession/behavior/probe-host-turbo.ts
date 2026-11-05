@@ -25,10 +25,10 @@ const probeHostTurbo = async (errors: string[]): Promise<HostProbeEntry['turbo']
   const before = turboState.extraFrames;
   keyEvent('keydown', code);
   await waitForFrames(presentedFrames() + HOST_PROBE_TURBO_FRAMES);
-  const mutedDuring = turboState.muted;
+  const heldDuring = turboState.held;
   keyEvent('keyup', code);
   await waitForFrames(presentedFrames() + 2);
-  const result = { expected, extraFrames: turboState.extraFrames - before, mutedDuring, restored: !turboState.held && !turboState.muted };
+  const result = { expected, extraFrames: turboState.extraFrames - before, heldDuring, restored: !turboState.held };
   if (!turboMatchesGate(result)) errors.push('turbo did not match the gate');
   return result;
 };
