@@ -3,6 +3,7 @@ import { fixScriptJumps } from './fix-script-jumps';
 import { listScriptOps } from './list-script-ops';
 import { MAX_SCRIPT_LENGTH } from './script-splice.constants';
 import type { BlobResult, ScriptSplice } from './script-splice.type';
+import { scopeOps } from './scope-ops';
 import { shiftScriptPointers } from './shift-script-pointers';
 import { verifyScriptBlob } from './verify-script-blob';
 
@@ -11,10 +12,10 @@ const refuse = (why: string, reasons: string[]): BlobResult => ({ ok: false, fai
 const spliceScriptBlob = (raw: Uint8Array, splice: ScriptSplice): BlobResult => {
   const ops = listScriptOps(raw);
   if (!ops) return refuse(splice.why, ['script does not walk from function start to function start']);
-  const hits = ops.filter((o) => splice.anchor(raw.slice(1 + o.at, 1 + o.at + o.length)));
+  const hits = scopeOps(raw, ops, splice.scope).filter((o) => splice.anchor(raw.slice(1 + o.at, 1 + o.at + o.length)));
   const hit = hits[0];
   if (!hit) return refuse(splice.why, ['anchor not found']);
-  if (hits.length > 1) return refuse(splice.why, [`anchor matches ${hits.length} ops`]);
+  if (hits.length > 1 && !splice.scope?.first) return refuse(splice.why, [`anchor matches ${hits.length} ops`]);
   const shift = { at: hit.at, end: hit.at + hit.length, delta: splice.replace.length - hit.length };
   if (raw.length + shift.delta > MAX_SCRIPT_LENGTH) return refuse(splice.why, [`script would exceed ${MAX_SCRIPT_LENGTH} bytes`]);
   const next = new Uint8Array(raw.length + shift.delta);

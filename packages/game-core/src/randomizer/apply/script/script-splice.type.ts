@@ -1,6 +1,9 @@
 /* @layer bridge-wasm @kind type */
+type SpliceScope = { object: number; fn: number; first?: boolean };
+
 type ScriptSplice = {
   scene: number;
+  scope?: SpliceScope;
   anchor: (op: Uint8Array) => boolean;
   replace: Uint8Array;
   why: string;
@@ -18,4 +21,4 @@ type SpliceShift = { at: number; end: number; delta: number };
 
 type JumpSpec = { dispAt: number; back: boolean };
 
-export type { BlobResult, EncodeResult, JumpSpec, ScriptOp, ScriptSplice, SpliceResult, SpliceShift };
+export type { BlobResult, EncodeResult, JumpSpec, ScriptOp, ScriptSplice, SpliceResult, SpliceScope, SpliceShift };
