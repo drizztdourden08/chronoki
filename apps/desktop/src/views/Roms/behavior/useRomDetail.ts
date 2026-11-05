@@ -1,10 +1,10 @@
 /* @layer renderer-components @kind hook */
 import { useEffect, useState } from 'react';
-import { readRomDetail } from '@app/storage/roms-store';
-import type { RomDetailInfo } from '@app/storage/roms-store';
+import type { RomDetailView } from '../Roms.type';
+import { readRomView } from './read-rom-view';
 
 const useRomDetail = (romFile: string | null, version: number) => {
-  const [detail, setDetail] = useState<RomDetailInfo | null>(null);
+  const [detail, setDetail] = useState<RomDetailView | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const useRomDetail = (romFile: string | null, version: number) => {
     }
     let cancelled = false;
     setLoading(true);
-    void readRomDetail(romFile).then((info) => {
+    void readRomView(romFile).then((info) => {
       if (cancelled) return;
       setDetail(info);
       setLoading(false);

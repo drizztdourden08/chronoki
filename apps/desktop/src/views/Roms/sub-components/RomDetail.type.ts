@@ -1,14 +1,13 @@
 /* @layer renderer-components @kind types */
-import type { RomDetailInfo } from '@app/storage/roms-store';
-import type { RomEntry } from '../Roms.type';
+import type { RomDetailView, RomEntry, RomStatusMessage } from '../Roms.type';
 
 interface RomDetailProps {
   rom: RomEntry;
-  detail: RomDetailInfo | null;
+  detail: RomDetailView | null;
   loading: boolean;
   busy: boolean;
+  status: RomStatusMessage | null;
   onRebuild: (romFile: string) => void;
-  onDelete: (romFile: string) => void;
 }
 
 export type { RomDetailProps };

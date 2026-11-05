@@ -1,12 +1,9 @@
 /* @layer renderer-components @kind component */
-import { EmptyState, Icon, IconButton, Stack } from '@drizztdourden08/tessera/primitives';
+import { EmptyState, Icon, IconButton, Stack, Status } from '@drizztdourden08/tessera/primitives';
 import { ListItemRow } from '@drizztdourden08/tessera/composites';
-import { formatBytes } from '@drizztdourden08/brock-core';
 import { ROMS_TEXT } from '../Roms.constants';
+import { ExtractionMeta } from './ExtractionMeta';
 import type { RomListProps } from './RomList.type';
-
-const metaOf = (ready: boolean, bytes: number | null): string =>
-  ready ? `${ROMS_TEXT.ready}${bytes ? ` - ${formatBytes(bytes)}` : ''}` : ROMS_TEXT.notBuilt;
 
 const RomList = ({ roms, selected, busy, onSelect, onDelete }: RomListProps) => (
   <Stack gap="xs">
@@ -15,10 +12,10 @@ const RomList = ({ roms, selected, busy, onSelect, onDelete }: RomListProps) => 
       <ListItemRow
         key={rom.romFile}
         icon={<Icon name="gamepad-2" />}
-        name={rom.romFile}
+        name={<>{rom.romFile} <Status tone="neutral">{ROMS_TEXT.kindBadge}</Status></>}
         selected={selected === rom.romFile}
         onClick={() => onSelect(rom.romFile)}
-        meta={metaOf(rom.ready, rom.assetBytes)}
+        meta={<ExtractionMeta rom={rom} />}
         action={
           <IconButton
             variant="ghost"
