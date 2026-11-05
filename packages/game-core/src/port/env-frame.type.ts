@@ -6,7 +6,6 @@ interface CkEnvCalls {
   heap: () => Uint8Array | null;
 }
 
-/* the shown field frame without sprites, captions or boxes: RGBA, the 1x picture (CkViewWidth x CkViewHeight) */
 interface CkEnvFrame {
   data: Uint8Array;
   width: number;

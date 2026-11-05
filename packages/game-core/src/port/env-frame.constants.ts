@@ -1,5 +1,4 @@
 /* @layer bridge-wasm @kind constants */
-/* The Edge Effect's environment picture (core/wasm-build/ck_api.c, core/reconnect/edge_env_reconnect.c) */
 const CK_EXPORT_SET_EDGE_ENV = 'CkSetEdgeEnv';
 const CK_EXPORT_ENV_VALID = 'CkEnvValid';
 const CK_EXPORT_ENV_PTR = 'CkEnvPtr';

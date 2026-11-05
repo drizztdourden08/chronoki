@@ -4,8 +4,6 @@ import {
 } from './env-frame.constants';
 import type { CkEnvCalls, CkEnvFrame } from './env-frame.type';
 
-/* the environment picture of the frame shown last, or null (no picture: mirror the frame itself). A view of the wasm
-   heap, valid until the next frame runs: upload it right away. */
 const envFrameOf = (calls: CkEnvCalls | null): CkEnvFrame | null => {
   if (!calls || !calls.has(CK_EXPORT_ENV_VALID) || calls.number(CK_EXPORT_ENV_VALID) !== 1) return null;
   const width = calls.number(CK_EXPORT_ENV_WIDTH);
