@@ -2,9 +2,10 @@
 import { useCallback } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
 import { Dialog } from '@drizztdourden08/tessera/composites';
-import { Text, TextInput } from '@drizztdourden08/tessera/primitives';
+import { Box, Icon, Text, TextInput } from '@drizztdourden08/tessera/primitives';
 import { IMPORT_CONFIRM_WORD } from '../HomeTab.constants';
 import type { HomeDialogsProps } from '../HomeTab.type';
+import './HomeTabDialogs.css';
 
 const ImportSramDialog = ({ sramImport }: HomeDialogsProps) => {
   const { dialog, confirmText, setConfirmText, confirm, close, slotCount } = sramImport;
@@ -27,12 +28,17 @@ const ImportSramDialog = ({ sramImport }: HomeDialogsProps) => {
       onConfirm={confirm}
       onCancel={close}
     >
-      <Text as="p">
+      <Box className="home-tab-dialogs__callout home-tab-dialogs__callout--ok">
+        <Icon className="home-tab-dialogs__callout-icon" name="check" />
+        <Text as="span">Verified: {dialog.verified ?? 0} of {slotCount} save slot(s) pass the game&apos;s checksum.</Text>
+      </Box>
+      <Text as="p" className="home-tab-dialogs__warning">
         Replace this profile&apos;s save with <Text as="strong">&quot;{dialog.targetName}&quot;</Text>? The current
         in-game save is overwritten and this cannot be undone.
       </Text>
-      <Text as="p">Verified: {dialog.verified ?? 0} of {slotCount} save slot(s) pass the game&apos;s checksum.</Text>
-      <Text as="p">Type <Text as="code">{IMPORT_CONFIRM_WORD}</Text> to confirm.</Text>
+      <Text as="p" className="home-tab-dialogs__hint">
+        Type <Text as="code" className="home-tab-dialogs__confirm-word">{IMPORT_CONFIRM_WORD}</Text> to confirm.
+      </Text>
       <TextInput value={confirmText} onChange={handleChange} onKeyDown={handleKey} placeholder={IMPORT_CONFIRM_WORD} autoFocus />
     </Dialog>
   );

@@ -6,13 +6,13 @@ import { SRAM_SLOT_COUNT, readSramSlotSummary } from '@chronoki/game-core';
 import type { HeroProgressFile } from '@app/compounds/ProfileHero';
 import { progressFileOf } from './progress-file-of';
 
-const useProfileProgress = (profileId: string | null, running: boolean): HeroProgressFile[] => {
-  const [files, setFiles] = useState<HeroProgressFile[]>([]);
+const useProfileProgress = (profileId: string | null, running: boolean): HeroProgressFile[] | null => {
+  const [files, setFiles] = useState<HeroProgressFile[] | null>(null);
 
   useEffect(() => {
     let current = true;
     if (!profileId) {
-      setFiles([]);
+      setFiles(null);
       return undefined;
     }
     void createSaveStore(getPlatform().files).sram.read(profileId).then((bytes) => {
