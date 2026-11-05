@@ -7,6 +7,7 @@ import type { ScriptSplice } from './script/script-splice.type';
 import { spliceSceneScripts } from './script/splice-scene-scripts';
 import type { SeedPlanContext } from './seed-plan-step.type';
 import { SEED_PLAN_STEPS } from './seed-plan-steps.constants';
+import { planStoryWindowSplices } from './story-windows/plan-story-window-splices';
 
 const stale = (pack: Uint8Array, edits: PackEdit[]): string[] =>
   edits.filter((e) => pack[e.at] !== e.old).map((e) => e.why);
@@ -35,7 +36,7 @@ const applySeedToPack = (
   edits.forEach((e) => {
     edited[e.at] = e.next;
   });
-  const spliced = spliceSceneScripts(edited, [...splices, ...spotPlan.splices]);
+  const spliced = spliceSceneScripts(edited, [...splices, ...spotPlan.splices, ...planStoryWindowSplices(placement)]);
   if (!spliced.ok) return { ok: false, failed: [...new Set(spliced.failed)] };
   return { ok: true, bytes: spliced.bytes, edits: edits.length };
 };
