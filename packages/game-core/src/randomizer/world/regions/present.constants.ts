@@ -1,6 +1,8 @@
 /* @layer bridge-wasm @kind constants */
 import { CT_KIT } from '../ct-kit.constants';
 import type { CtRegionSpec } from '../ct-region-spec.type';
+import { STORY_STAGES } from '../story/story-stages.constants';
+import { storyRuleOf } from '../story/story-rule-of';
 
 const { all, has, helper, region } = CT_KIT;
 
@@ -16,7 +18,7 @@ const PRESENT: CtRegionSpec = {
   spots: [
     { id: 'ki-snail-stop', name: 'Snail Stop' },
     { id: 'ki-carpenters-wife', name: "Carpenter's Wife" },
-    { id: 'ki-taban', name: 'Heckran Cave (Taban)' },
+    { id: 'ki-taban', name: 'Heckran Cave (Taban)', rule: storyRuleOf(STORY_STAGES.heckran) },
     { id: 'ki-kings-trial', name: "King's Trial", rule: has('kings-trial-done') },
     { id: 'ki-fionas-shrine', name: "Fiona's Shrine", rule: all(region('middle-ages'), has('robo')) },
     {

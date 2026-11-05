@@ -28,7 +28,8 @@ import { withPinnedSources } from './with-pinned-sources';
 import { unpinnedKeyItems } from './unpinned-key-items';
 import { giverLessSpotRulesOf } from './giver-less-spot-rules-of';
 import { treasureItemRulesOf } from './treasure-item-rules-of';
-import type { CtRule } from './ct-region-spec.type';
+import { locationRulesOf } from './location-rules-of';
+import { storyWindowItemRulesOf } from './story/story-window-item-rules-of';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const mode = modeOf(input.options);
@@ -64,12 +65,13 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     sweepsEvents: true,
     regions,
     exitRules,
-    locationRules: new Map([
-      ...sealedRulesOf(spotRules, treasure, input.sealedCheckIds),
-      ...sources.map((source): [string, CtRule] => [source.key, source.rule]),
-    ]),
+    locationRules: locationRulesOf(sealedRulesOf(spotRules, treasure, input.sealedCheckIds), treasure, sources),
     eventRules,
-    itemRules: new Map([...treasureItemRulesOf(treasure, options.chronosanity === true), ...giverLessSpotRulesOf(spotIds)]),
+    itemRules: new Map([
+      ...treasureItemRulesOf(treasure, options.chronosanity === true),
+      ...giverLessSpotRulesOf(spotIds),
+      ...storyWindowItemRulesOf(treasure),
+    ]),
     helpers: CT_HELPERS,
     options: () => options,
     goal: goalOf(mode.goal, mode.goalEvent),
