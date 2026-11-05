@@ -1,5 +1,7 @@
 /* @layer tooling-scripts @kind logic */
-const USAGE = 'node --experimental-wasm-jspi scripts/headless-seed.mjs --pack <file> --seed <s> [--mode X] [--party a,b] [--option k=v]... [--frames N] [--wasm <out dir>] [--json]';
+import { scenarioOf } from './scenario-args.mjs';
+
+const USAGE = 'node --experimental-wasm-jspi scripts/headless-seed.mjs --pack <file> --seed <s> [--mode X] [--party a,b] [--option k=v]... [--frames N] [--expect-location <hex>] [--expect <addr>=<hex>[/<mask>] or <addr>!=<hex>]... [--poke <addr>=<hex>@<frame>]... [--expect-after <frames>] [--wasm <out dir>] [--json]';
 
 const valueOf = (argv, flag) => {
   const index = argv.indexOf(flag);
@@ -35,6 +37,7 @@ const parseArgs = (argv) => {
     party: party === undefined ? null : party.split(',').map((id) => id.trim()),
     frames: Number(valueOf(argv, '--frames') ?? 4000),
     wasm: valueOf(argv, '--wasm'),
+    scenario: scenarioOf(argv),
     json: argv.includes('--json'),
   };
 };
