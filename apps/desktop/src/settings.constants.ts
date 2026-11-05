@@ -35,7 +35,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   resetMSUAtTitle: true,
   msuChipFallback: true,
   packReplaceSfx: true,
-  vsync: true,
+  vsync: false,
   audioSamples: DEFAULT_AUDIO_SAMPLES,
 };
 
