@@ -5,7 +5,8 @@ import { deleteRom, listRomsWithStatus } from '@app/storage/roms-store';
 import type { RomBuildResult, RomEntry, RomStatusMessage } from '../Roms.type';
 import { ROMS_TEXT } from '../Roms.constants';
 import { buildRomAssets } from './build-rom-assets';
-import { importRom, importRomUrl } from './import-rom';
+import { importRom } from './import-rom';
+import { importRomUrl } from './import-rom-url';
 import { useRomDetail } from './useRomDetail';
 import { useRomExtraction } from './useRomExtraction';
 
