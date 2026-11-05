@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind type */
-type CtStartStateId = 'jot-standard' | 'jot-lost-worlds';
+import type { CtStartStateId } from '../../world/modes/ct-mode-def.type';
 
 type CtFlagBit = { at: number; bits: number };
 
@@ -14,4 +14,4 @@ type CtStartState = {
   warp: { location: number; x: number; y: number; facing?: number };
 };
 
-export type { CtFlagBit, CtPoke, CtStartState, CtStartStateId };
+export type { CtFlagBit, CtPoke, CtStartState };

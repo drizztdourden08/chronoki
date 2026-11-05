@@ -1,9 +1,11 @@
 /* @layer bridge-wasm @kind test */
-import { createRng, generate, sweepPlacementSpheres } from '@drizztdourden08/brock-randomizer/world';
+import { createRng, generate, sweepPlacementSpheres, worldGameFromDef } from '@drizztdourden08/brock-randomizer/world';
 import { describe, expect, it } from 'vitest';
 import { deriveSealedCheckIds } from '../checks/derive-sealed-check-ids';
 import type { CheckDef } from '../checks/check.type';
+import { createCtWorldDef } from './create-ct-world-def';
 import { createCtWorldGame } from './create-ct-world-game';
+import { ctOptionValues } from './ct-option-values';
 import { CT_KIT } from './ct-kit.constants';
 import type { CtOptionValues, CtWorldInput } from './ct-world-input.type';
 import type { CtEventId, CtItem } from './ct-world-keys.type';
@@ -24,8 +26,11 @@ const inputOf = (options: CtOptionValues = {}, sealedCount = 1): CtWorldInput =>
   options,
 });
 
+const gameOf = (input: CtWorldInput) =>
+  worldGameFromDef({ ...createCtWorldDef(input), options: () => ({ ...ctOptionValues(), ...input.options }) });
+
 const worldOf = (input: CtWorldInput, seed = 'ct-missing') =>
-  createCtWorldGame(input).build({ request: { seed }, prep: undefined, rng: createRng(seed), attempt: 0 }).world;
+  gameOf(input).build({ request: { seed }, prep: undefined, rng: createRng(seed), attempt: 0 }).world;
 
 const stateOf = (input: CtWorldInput, held: readonly (CtItem | CtEventId)[]) => {
   const state = CT_KIT.createCollectionState(worldOf(input));
@@ -133,16 +138,18 @@ describe('Robo (Factory)', () => {
   });
 });
 
+const isBeaten = (input: CtWorldInput, seed: string): boolean => {
+  const placement = generate(createCtWorldGame(input), { seed });
+  const world = worldOf(input, seed);
+  world.placedItems.clear();
+  placement.locations.forEach(([location, item]) => world.placedItems.set(location, item));
+  return sweepPlacementSpheres(world).beaten;
+};
+
 describe('standard seeds', () => {
   it('are all beaten with sealed checks present', { tags: ['critical'] }, () => {
     const input = inputOf({}, 10);
-    const failed = Array.from({ length: SEEDS }, (_, n) => `ct-missing-${n}`).filter((seed) => {
-      const placement = generate(createCtWorldGame(input), { seed });
-      const world = worldOf(input, seed);
-      world.placedItems.clear();
-      placement.locations.forEach(([location, item]) => world.placedItems.set(location, item));
-      return !sweepPlacementSpheres(world).beaten;
-    });
+    const failed = Array.from({ length: SEEDS }, (_, n) => `ct-missing-${n}`).filter((seed) => !isBeaten(input, seed));
     expect(failed).toEqual([]);
   });
 });

@@ -2,10 +2,7 @@
 import {
   CLASS_BOUNDS_ROM, ITEM_PAGE_ROM, POWER_BASE_ROM, POWER_STRIDE_ROM, RECORD_BASE_ROM, RECORD_STRIDE_ROM,
 } from './treasure-tiers.constants';
-
-const BOUNDS = [0, 7, 8, 9, 10, 255];
-const RECORD_STRIDE = 8;
-const POWER_STRIDE = 1;
+import { BOUNDS, POWER_STRIDE, RECORD_STRIDE } from './item-rom-fixture.constants';
 
 const recordBase = (cls: number): number => 0x1000 * (cls + 1);
 const powerBase = (cls: number): number => 0x8000 + 0x400 * cls;

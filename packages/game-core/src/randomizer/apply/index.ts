@@ -8,4 +8,4 @@ export { START_STATES } from './start-state/start-states.constants';
 export type { ApplyResult, Placement, SeedApplier } from './apply-seed.type';
 export type { PackPlacementPlan } from './pack-placement-plan.type';
 export type { ScriptSplice } from './script/script-splice.type';
-export type { CtFlagBit, CtPoke, CtStartState, CtStartStateId } from './start-state/ct-start-state.type';
+export type { CtFlagBit, CtPoke, CtStartState } from './start-state/ct-start-state.type';

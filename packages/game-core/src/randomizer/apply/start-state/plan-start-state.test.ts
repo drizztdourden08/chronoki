@@ -39,7 +39,7 @@ describe('planStartState', () => {
     const warp = Uint8Array.from(block.slice(-5));
     expect(warp[0]).toBe(0xe0);
     expect(changeLocationTarget(warp)).toBe(0x1f1);
-    expect(warp[2] & 0x80).toBe(0x80);
+    expect((warp[2] ?? 0) & 0x80).toBe(0x80);
     expect([warp[3], warp[4]]).toEqual([0x4e, 0x4b]);
     expect(join([encodeClearBits(0x7f0056, 0x01)])).toEqual([0x66, 0x00, 0x56]);
   });

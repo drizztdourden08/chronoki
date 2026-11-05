@@ -9,7 +9,7 @@ const fieldEdits = (enemy: EnemyStats, field: EnemyField, factor: number): PackE
   const spec = ENEMY_FIELD_SPECS[field];
   const old = enemy.values[field];
   const next = clamp(Math.round(old * factor), spec.min, spec.max);
-  if (next === old) return [];
+  if (old === 0 || next === old) return [];
   const bases = spec.table === 'stats' ? enemy.statsAt : enemy.rewardsAt;
   const why = `enemy-${enemy.id}-${field}`;
   return bases.flatMap((base) => {

@@ -1,10 +1,8 @@
 /* @layer bridge-wasm @kind fixture */
 import { ENEMY_COUNT, REWARDS_RECORD_BYTES, REWARDS_ROM, STATS_RECORD_BYTES, STATS_ROM } from './enemy-table.constants';
+import { REWARD_RECORD, STAT_RECORD } from './enemy-table-fixture.constants';
 
 const le32 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >>> 24) & 0xff];
-
-const STAT_RECORD = [0x2c, 0x01, 10, 0, 0, 0, 0, 0, 5, 6, 7, 100, 9, 30, 20, 40, 4, 4, 4, 4, 0, 0, 0];
-const REWARD_RECORD = [200, 0, 50, 0, 0, 0, 9];
 
 const syntheticEnemyPack = (): Uint8Array => {
   const stats = new Array<number>(ENEMY_COUNT * STATS_RECORD_BYTES).fill(0);
