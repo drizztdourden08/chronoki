@@ -18,6 +18,8 @@ import { writeSaveFlagReset } from './patches/save-flag-reset.mjs';
 import { writeNewGameWorld } from './patches/new-game-world.mjs';
 import { writeEdgeEnv } from './patches/edge-env.mjs';
 import { writeSightscope } from './patches/sightscope.mjs';
+import { writeDuplicateChars } from './patches/duplicate-chars.mjs';
+import { writeDuplicateCharsBattle } from './patches/duplicate-chars-battle.mjs';
 import { writeVisibleTechs } from './patches/visible-techs.mjs';
 import { writeTallField } from './patches/tall-field.mjs';
 import { writeShapes } from './shapes.mjs';
@@ -191,7 +193,10 @@ const main = () => {
   gen.saveFlag = writeSaveFlagReset(gen.state);       // randomizer + disable_glitches: the save-point flag is cleared at a location change (patches/save-flag-reset.mjs)
   gen.edge = writeEdgeEnv(gen.state);                 // the Edge Effect's environment picture, gated by CkSetEdgeEnv (patches/edge-env.mjs)
   gen.visible = writeVisibleTechs(gen.state);         // Visible Techs, gated by visible_techs (patches/visible-techs.mjs)
-  gen.sight = writeSightscope(gen.dir, belthasar);    // Sightscope, gated by sightscope; battle.c replaced in the game module (patches/sightscope.mjs)
+  gen.dup = writeDuplicateChars(gen.state, belthasar); // duplicate characters, gated by duplicate_characters: field/world/menu/ct_vm (patches/duplicate-chars.mjs)
+  // Sightscope, gated by sightscope; battle.c replaced in the game module (patches/sightscope.mjs). Duplicate characters'
+  // battle side takes its battle.c and adds move.c (patches/duplicate-chars-battle.mjs): the same { files, replaced } shape.
+  gen.sight = writeDuplicateCharsBattle(writeSightscope(gen.dir, belthasar), gen.dir, belthasar);
   if (!gen.tables32) {
     const missing = join(outDir, 'tables32', 'tables_storage.c');
     if (!allowMissingTables) {

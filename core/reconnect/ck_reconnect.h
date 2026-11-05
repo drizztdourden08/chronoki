@@ -42,6 +42,20 @@ int  ck_disable_glitches(void);
 /* settings_reconnect.c: [chronoki] sightscope and visible_techs, 0 or 1, default 0 (off = the original game). */
 int  ck_sightscope(void);
 int  ck_visible_techs(void);
+/* settings_reconnect.c (ck_dup_chars.inc): [chronoki] duplicate_characters, 0 or 1, default 0 (off = the original game).
+   Character rando may then put two copies of one character in the party: a party byte is a SLOT (story identity) and
+   sheet byte +0x00 ($7E:2600 + slot * 0x50) is its KIND (looks, attack, techs). The patched engine files
+   (wasm-build/patches/duplicate-chars*.mjs) read every kind through these, each as `ck_dup_chars() ? kind : original`. */
+int  ck_dup_chars(void);
+int  ckPcKind(const uint8_t* wram, int slot);       /* the slot's kind; the slot when off / not a character */
+int  ckTechSeat(const uint8_t* s, int ch);          /* battle: the seat a tech participant of kind ch resolves to */
+int  ckSlotOfSeat(const uint8_t* s, int seat);      /* battle: the slot in seat 0..2 ($AEFF, else $AF0A), 0xFF none */
+int  ckKindMaskToSlots(const uint8_t* wram, int kindMask);   /* menu: an equip mask by kind -> by slot */
+int  ckKindAbsent(const uint8_t* wram);                      /* menu: FF/F865's absent mask, by kind */
+int  ckRosterSlotOfKind(const uint8_t* wram, int kind, int notSlot);   /* menu: a partner slot of that kind, 7 none */
+int  ckSheetKind(const uint8_t* sheet, int slot);            /* load screen: a saved sheet's kind */
+const char* ckKindDefaultName(const uint8_t* wram, int slot);   /* the kind's default name, NULL = keep the slot's */
+void ckDupDefaultNames(const uint8_t* wram);                 /* new game: CtSetName each slot shown as another kind */
 int  ck_view_black(int which);
 int  ck_view_scene(void);
 int  ck_view_origin(int axis);   /* 0 x, 1 y: the shown field frame's picture origin (SNES px) */
