@@ -5,6 +5,7 @@ export { configBackupFile } from './config-backup-file';
 export { configFile } from './config-file';
 export { inputProfilesFile } from './input-profiles-file';
 export { profileFile } from './profile-file';
+export { placementFile } from './profile-placement-file';
 export { sessionsFile } from './sessions-file';
 export { getAppState } from './get-app-state';
 export { listProfiles } from './list-profiles';

@@ -5,19 +5,19 @@ import type { CtPlacement } from '@chronoki/game-core';
 import { createCtWorldDef } from '@chronoki/game-core';
 import { chronokiPollHooks } from '../chronoki-poll-hooks';
 import { itemLabelOf } from '../item-label-of';
-import { currentChecks } from './current-checks';
 import { currentPollEntries } from './current-poll-entries';
 import { heldOfView } from './held-of-view';
 import { eraLabelOf } from './era-label-of';
 import { locationNameOf } from './location-name-of';
 import { trackerWorldInput } from './tracker-world-input';
+import { worldKeyOf } from './world-key-of';
 import { ERA_GROUPING_ID, TRACKER_GROUPINGS } from './tracker.constants';
 
 const baseOf = (placement?: CtPlacement) => trackerFromDef(createCtWorldDef(trackerWorldInput(placement)), {});
 
 const chronokiTracker: TrackerProvider<CtPlacement> = {
   world: (input) => baseOf(input.placement).world(input),
-  worldKey: (input) => `${input.placement.seed}:${currentChecks().length}:${input.placement.startParty?.join(',') ?? ''}`,
+  worldKey: (input) => worldKeyOf(input.placement),
   vanilla: () => baseOf().vanilla?.() as CtPlacement,
   sphereOf: (placement) => baseOf(placement).sphereOf?.(placement) ?? new Map<string, number>(),
   get checks() {

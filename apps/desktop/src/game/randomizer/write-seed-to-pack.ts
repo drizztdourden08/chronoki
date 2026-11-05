@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { RandomizerOptions } from '@drizztdourden08/brock-randomizer';
 import type { CtStartParty, ItemDifficulty, ScriptSplice } from '@chronoki/game-core';
-import { START_STATES, applySeedToPack, modeOf, planPackPlacement, planStartState } from '@chronoki/game-core';
+import { START_STATES, applySeedToPack, deriveSealedCheckIds, modeOf, planPackPlacement, planStartState } from '@chronoki/game-core';
 import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
 import { REFUSED_SAMPLE } from './chronoki-randomizer.constants';
 import { localRunHolder } from './local-run-holder';
@@ -30,7 +30,8 @@ const writeSeedToPack = ({ profileId, placement, checks, assets, options }: Writ
     const sample = written.failed.slice(0, REFUSED_SAMPLE).join(', ');
     return { ok: false, reason: `The seed does not fit this game pack: ${written.failed.length} checks refused (${sample})` };
   }
-  localRunHolder.applied = { profileId, seed: placement.seed, checks, plan, party };
+  const sealedCheckIds = [...deriveSealedCheckIds(assets)].sort();
+  localRunHolder.applied = { profileId, seed: placement.seed, checks, plan, party, options, sealedCheckIds };
   appRandomizerLog(`[Boot] Seed ${placement.seed} written to the game pack: ${written.edits} edits, ${Object.keys(plan.pack).length} checks`);
   return { ok: true, assets: written.bytes };
 };

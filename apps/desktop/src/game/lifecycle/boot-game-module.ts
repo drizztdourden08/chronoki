@@ -21,7 +21,7 @@ const bootGameModule = async (request: StartGameRequest, store: SaveStore): Prom
     files,
     romFile,
     profileId: null,
-    prepareAssets: (assets) => prepareBootAssets(request.profileId, assets),
+    prepareAssets: (assets) => prepareBootAssets(request.profileId, assets, files),
     config,
     settings,
     volume,
