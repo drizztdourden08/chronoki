@@ -9,7 +9,6 @@ import { CHRONOKI_RANDOMIZER_LABELS } from './chronoki-randomizer.constants';
 import { chronokiSeedApplier } from './chronoki-seed-applier';
 import { chronokiToConfig } from './chronoki-to-config';
 import { rollChronokiSeed } from './roll-chronoki-seed';
-import { chronokiTracker } from './tracker/chronoki-tracker';
 
 const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   id: CT_GAME,
@@ -24,7 +23,6 @@ const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   profile: { toConfig: chronokiToConfig },
   catalog: CT_OPTION_CATALOG,
   labels: CHRONOKI_RANDOMIZER_LABELS,
-  tracker: chronokiTracker,
 });
 
 export { chronokiRandomizerGame };
