@@ -18,7 +18,7 @@ describe('planSeedSplices', () => {
       .toEqual([planStartState(withOptionFlags(STANDARD_START, options), LEGACY_PARTY)]);
   });
 
-  it('refuses a mode that is not available yet', { tags: ['critical'] }, () => {
-    expect(() => planSeedSplices({ gameMode: 'vanilla-rando' }, LEGACY_PARTY)).toThrow(/not available yet/);
+  it('plans vanilla rando exactly as standard', { tags: ['critical'] }, () => {
+    expect(planSeedSplices({ gameMode: 'vanilla-rando' }, LEGACY_PARTY)).toEqual(planSeedSplices({}, LEGACY_PARTY));
   });
 });
