@@ -36,6 +36,9 @@ int  ck_camera_lock(void);
 /* settings_reconnect.c: [game] randomizer, 0 or 1, default 0: a randomizer game (the host writes it into ct_settings.ini). The era-gauge
    patch (wasm-build/patches/era-gauge.mjs) opens a gauge era only when its world word is in a WRAM slot; 0 = the original gauge. */
 int  ck_randomizer(void);
+/* settings_reconnect.c: [game] disable_glitches, 0 or 1, default 0: with randomizer, the save-flag-reset patch
+   (wasm-build/patches/save-flag-reset.mjs) clears the save-point flag at a location change (JoT flag g). */
+int  ck_disable_glitches(void);
 int  ck_view_black(int which);
 int  ck_view_scene(void);
 /* ck_state.c: save states (see its header comment). field.c reaches the ck_state_top .. ck_state_load_result group through

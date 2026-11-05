@@ -14,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { writeMixerGains } from './patches/mixer-gains.mjs';
 import { writeCameraLock } from './patches/camera-lock.mjs';
 import { writeEraGauge } from './patches/era-gauge.mjs';
+import { writeSaveFlagReset } from './patches/save-flag-reset.mjs';
 import { writeNewGameWorld } from './patches/new-game-world.mjs';
 import { writeTallField } from './patches/tall-field.mjs';
 import { writeShapes } from './shapes.mjs';
@@ -183,6 +184,7 @@ const main = () => {
   gen.lock = writeCameraLock(gen.state);              // Lock Camera to View, gated by camera_lock (patches/camera-lock.mjs)
   gen.world = writeNewGameWorld(gen.state);           // New Game: only world 0 is the intro pan (patches/new-game-world.mjs)
   gen.eraGauge = writeEraGauge(gen.state);            // randomizer: the Epoch's gauge offers only eras in the 7 WRAM slots (patches/era-gauge.mjs)
+  gen.saveFlag = writeSaveFlagReset(gen.state);       // randomizer + disable_glitches: the save-point flag is cleared at a location change (patches/save-flag-reset.mjs)
   if (!gen.tables32) {
     const missing = join(outDir, 'tables32', 'tables_storage.c');
     if (!allowMissingTables) {

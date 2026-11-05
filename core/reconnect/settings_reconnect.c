@@ -16,16 +16,19 @@ static int g_wideWidth = 0;
 static int g_tallLines = CK_TALL_LINES_OFF;
 static int g_cameraLock = 1;
 static int g_randomizer = 0;
+static int g_disableGlitches = 0;
 
 int ck_wide_width(void) { return g_wideWidth; }
 int ck_tall_lines(void) { return g_tallLines; }
 int ck_camera_lock(void) { return g_cameraLock; }
 int ck_randomizer(void) { return g_randomizer; }
+int ck_disable_glitches(void) { return g_disableGlitches; }
 void CtSettingsDefaults(CtSettings* s) {
   g_wideWidth = 0;
   g_tallLines = CK_TALL_LINES_OFF;
   g_cameraLock = 1;
   g_randomizer = 0;
+  g_disableGlitches = 0;
   memset(s, 0, sizeof *s);
   s->windowScale = 2; s->renderScale = 1; s->vsync = 1;
   s->volume = 100;
@@ -61,6 +64,7 @@ static void apply(CtSettings* s, const char* sec, const char* key, const char* v
       s->widescreen = !strcmp(val, "16:9") ? CT_WIDE_16_9 : !strcmp(val, "16:10") ? CT_WIDE_16_10 : !strcmp(val, "21:9") ? CT_WIDE_21_9 : CT_WIDE_OFF;
   } else if (!strcmp(sec, "game")) {
     if (!strcmp(key, "randomizer")) g_randomizer = truthy(val) || iv != 0;
+    else if (!strcmp(key, "disable_glitches")) g_disableGlitches = truthy(val) || iv != 0;
   } else if (!strcmp(sec, "sound")) {
     if (!strcmp(key, "volume")) s->volume = iv < 0 ? 0 : iv > 100 ? 100 : iv;
     else if (!strcmp(key, "mute")) s->mute = truthy(val) || iv != 0;
