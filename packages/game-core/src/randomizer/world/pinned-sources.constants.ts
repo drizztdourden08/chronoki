@@ -1,6 +1,8 @@
 /* @layer bridge-wasm @kind constants */
 import { CT_KIT } from './ct-kit.constants';
 import type { PinnedSource } from './pinned-source.type';
+import { STORY_STAGES } from './story/story-stages.constants';
+import { storyRuleOf } from './story/story-rule-of';
 
 const { all, has, region } = CT_KIT;
 
@@ -11,7 +13,7 @@ const PINNED_SOURCES: readonly PinnedSource[] = [
     region: 'end-of-time',
     mapId: 0x1d0,
     name: 'Gaspar (Chrono Trigger)',
-    rule: region('ocean-palace'),
+    rule: storyRuleOf(STORY_STAGES.oceanPalace),
     needs: ['end-of-time', 'ocean-palace'],
   },
   {
