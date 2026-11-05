@@ -125,6 +125,19 @@ const QOL_FEATURES: FeatureDef[] = [
     affectsVanillaParity: true,
     live: false,
   },
+  {
+    id: 'cheatsEnabled',
+    label: 'Enable Cheats',
+    description: 'Shows the Cheats widget: give items, set gold and refill the party in the running game.',
+    userMessage: 'Not in the original game. It only writes to the running game when you press a cheat; with it off nothing changes.',
+    group: 'Quality of life',
+    kind: 'host',
+    origin: 'chronoki',
+    default: false,
+    requires: [],
+    affectsVanillaParity: true,
+    live: true,
+  },
 ];
 
 export { QOL_FEATURES };

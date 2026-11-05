@@ -49,6 +49,7 @@ export { validSramSlots } from './save-file/valid-sram-slots';
 export { readSramSlotSummary } from './save-file/read-sram-slot-summary';
 export type { SramSlotSummary } from './save-file/save-file.type';
 export * from './game-info';
+export * from './cheats';
 export * from './randomizer/checks';
 export * from './randomizer';
 export * from './msu-bridge';
