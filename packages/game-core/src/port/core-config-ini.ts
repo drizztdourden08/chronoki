@@ -1,8 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import {
-  BUTTON_STEMS, DEFAULT_CK_SETTINGS, DEFAULT_KEY2_NAMES, DEFAULT_KEY_NAMES, DEFAULT_PAD_NAMES, INI_HEADER,
+  BUTTON_STEMS, DEFAULT_CK_SETTINGS, DEFAULT_KEY2_NAMES, DEFAULT_KEY_NAMES, DEFAULT_PAD_NAMES, INI_HEADER, VANILLA_GAME_FLAGS,
 } from './core-config-ini.constants';
-import type { CkSettings } from './core-config-ini.type';
+import type { CkGameFlags, CkSettings } from './core-config-ini.type';
 
 const flag = (value: boolean): string => (value ? '1' : '0');
 
@@ -42,12 +42,20 @@ const videoLines = (s: CkSettings): string[] => [
   '',
 ];
 
-const buildCoreConfigIni = (settings: Partial<CkSettings> = {}): string => {
+const gameLines = (g: CkGameFlags): string[] => [
+  '[game]',
+  `randomizer=${flag(g.randomizer)}`,
+  `disable_glitches=${flag(g.randomizer && g.disableGlitches)}`,
+  '',
+];
+
+const buildCoreConfigIni = (settings: Partial<CkSettings> = {}, game: CkGameFlags = VANILLA_GAME_FLAGS): string => {
   const s = { ...DEFAULT_CK_SETTINGS, ...settings };
   return [
     INI_HEADER,
     '',
     ...videoLines(s),
+    ...gameLines(game),
     '[sound]',
     `volume=${s.volume}`,
     `mute=${flag(s.mute)}`,

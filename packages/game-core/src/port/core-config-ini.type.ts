@@ -19,4 +19,6 @@ interface CkSettings {
   instantSoundUploads: boolean;
 }
 
-export type { CkSettings, CkSync, CkWidescreen };
+type CkGameFlags = { randomizer: boolean; disableGlitches: boolean };
+
+export type { CkGameFlags, CkSettings, CkSync, CkWidescreen };

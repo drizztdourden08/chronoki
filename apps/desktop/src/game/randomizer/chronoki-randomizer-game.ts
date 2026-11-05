@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import { defineRandomizerGame } from '@drizztdourden08/brock-randomizer';
 import type { CtPlacement } from '@chronoki/game-core';
-import { CT_GAME, CT_OPTION_CATALOG, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA, describeCtPlacement } from '@chronoki/game-core';
+import { CT_GAME, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA, ctUiOptions, describeCtPlacement } from '@chronoki/game-core';
 import { chronokiCore } from '../lifecycle/chronoki-core';
 import { chronokiMemoryBridge } from './chronoki-memory-bridge';
 import { chronokiPollHooks } from './chronoki-poll-hooks';
@@ -23,7 +23,7 @@ const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   applier: chronokiSeedApplier,
   poll: chronokiPollHooks,
   profile: { toConfig: chronokiToConfig },
-  catalog: CT_OPTION_CATALOG,
+  catalog: ctUiOptions(),
   labels: CHRONOKI_RANDOMIZER_LABELS,
   tracker: chronokiTracker,
   inventory: CHRONOKI_INVENTORY,

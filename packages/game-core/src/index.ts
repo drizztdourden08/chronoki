@@ -45,7 +45,7 @@ export * from './game-info';
 export * from './randomizer/checks';
 export * from './randomizer';
 export * from './msu-bridge';
-export type { CkSettings, CkSync, CkWidescreen } from './port/core-config-ini.type';
+export type { CkGameFlags, CkSettings, CkSync, CkWidescreen } from './port/core-config-ini.type';
 export type { CkArea, CkCoverFrame, CkFrameRanges, CkPresentMode } from './port/aspect/aspect.type';
 export type { CkFrameInput, CkFrameSize } from './port/frame-size/frame-size.type';
 export type { CkStateParts } from './port/state-container/ck-state.type';

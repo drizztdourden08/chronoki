@@ -26,7 +26,7 @@ import { useSyncCorePause } from './useSyncCorePause';
 const useGameSessionValue = (): GameSessionValue => {
   const { profile, loaded } = useGameProfile();
   const [stageArea, setStageArea] = useState<CkArea | null>(null);
-  const core = useCoreSettings(stageArea);
+  const core = useCoreSettings(stageArea, profile);
   useHostFeatures(core);
   const [launch, setLaunch] = useState<GameLaunch | null>(null);
   const [notice, setNotice] = useState<string | null>(null);

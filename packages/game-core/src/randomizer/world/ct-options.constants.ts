@@ -11,14 +11,14 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   },
   {
     key: 'itemDifficulty', label: 'Item difficulty', jotFlag: 'e/n/h', default: 'normal', choices: ['easy', 'normal', 'hard'],
-    section: 'Difficulty', implemented: false, choiceLabels: { easy: 'Easy', normal: 'Normal', hard: 'Hard' },
+    section: 'Difficulty', implemented: true, choiceLabels: { easy: 'Easy', normal: 'Normal', hard: 'Hard' },
   },
   {
     key: 'enemyDifficulty', label: 'Enemy difficulty', jotFlag: 'n/h', default: 'normal', choices: ['normal', 'hard'],
     section: 'Difficulty', implemented: false, choiceLabels: { normal: 'Normal', hard: 'Hard' },
   },
   { key: 'bossScaling', label: 'Boss scaling', jotFlag: 'b', default: false, section: 'Difficulty', implemented: false },
-  { key: 'disableGlitches', label: 'Disable glitches', jotFlag: 'g', default: false, section: 'Rules', implemented: false },
+  { key: 'disableGlitches', label: 'Disable glitches', jotFlag: 'g', default: false, section: 'Rules', implemented: true },
   { key: 'earlyPendantCharge', label: 'Early pendant charge', jotFlag: 'p', default: false, section: 'Rules', implemented: false },
   { key: 'unlockedMagic', label: 'Unlocked magic', jotFlag: 'm', default: false, section: 'Rules', implemented: false },
   { key: 'lockedCharacters', label: 'Locked characters', jotFlag: 'c', default: false, section: 'Rules', implemented: true },

@@ -1,6 +1,8 @@
 /* @layer renderer-appshell @kind hook */
 import { useMemo } from 'react';
+import type { Profile } from '@drizztdourden08/brock-core';
 import { useSettings } from '@drizztdourden08/brock-react';
+import { gameFlagsOf } from '@app/game/randomizer/game-flags-of';
 import { buildCoreConfigIni, gateSettings, pictureRatioOf } from '@chronoki/game-core';
 import type { CkArea } from '@chronoki/game-core';
 import { resolveGates } from '@chronoki/features';
@@ -15,7 +17,7 @@ import type { AppSettings } from '@app/settings.type';
 import { displayInputsOf } from './display-inputs-of';
 import type { CoreSettings } from './useCoreSettings.type';
 
-const useCoreSettings = (stageArea: CkArea | null): CoreSettings => {
+const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = null): CoreSettings => {
   const { settings: app } = useSettings<AppSettings>();
   useVolumeScaleMigration();
   useLegacyModeMigration();
@@ -27,6 +29,8 @@ const useCoreSettings = (stageArea: CkArea | null): CoreSettings => {
   const { screenRatio, stageArea: planned, wholePixels } = displayInputsOf(app, stageArea);
   const areaW = planned?.width ?? 0;
   const areaH = planned?.height ?? 0;
+  const randomizer = profile?.randomizer !== undefined;
+  const disableGlitches = randomizer && profile?.randomizer?.options.disableGlitches === true;
   return useMemo(() => {
     const satisfied = steamSatisfied(steamData);
     const { effective } = resolveGates(gates, { vanillaSafe, packaged: isPackaged(), satisfied });
@@ -35,7 +39,7 @@ const useCoreSettings = (stageArea: CkArea | null): CoreSettings => {
     const settings = gateSettings(effective, options, { volume, mute: muted });
     return {
       settings,
-      config: buildCoreConfigIni(settings),
+      config: buildCoreConfigIni(settings, gameFlagsOf(randomizer, disableGlitches)),
       volume: muted ? 0 : volume,
       gates: effective,
       pictureRatio: pictureRatioOf(effective, options),
@@ -44,7 +48,7 @@ const useCoreSettings = (stageArea: CkArea | null): CoreSettings => {
       turboSpeed,
       saveHoldDuration,
     };
-  }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, areaW, areaH, wholePixels, steamData, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration]);
+  }, [muted, volume, vanillaSafe, gates, aspectRatio, customAspectW, customAspectH, renderScale, screenRatio, areaW, areaH, wholePixels, steamData, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed, saveHoldDuration, randomizer, disableGlitches]);
 };
 
 export { useCoreSettings };
