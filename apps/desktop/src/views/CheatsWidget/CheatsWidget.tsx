@@ -1,20 +1,25 @@
 /* @layer renderer-widgets @kind component */
-import { CheatsShell } from '@drizztdourden08/brock-game-info/renderer';
-import type { CheatsTab } from '@drizztdourden08/brock-game-info/renderer';
+import { CheatsFrame } from '@drizztdourden08/brock-react';
+import type { CheatsTabDef } from '@drizztdourden08/brock-react';
 import { EmptyState } from '@drizztdourden08/tessera/primitives';
 import { useCheatSnapshot } from './behavior/useCheatSnapshot';
-import { ItemsGoldTab } from './sub-components/ItemsGoldTab';
-import { PartyTab } from './sub-components/PartyTab';
-import { DEFAULT_TAB, NOT_RUNNING_TEXT, OFF_REASON } from './CheatsWidget.constants';
+import { useSeedChecks } from './behavior/useSeedChecks';
+import { ChecksTab } from './sub-components/ChecksTab/ChecksTab';
+import { ItemsTab } from './sub-components/ItemsTab/ItemsTab';
+import { PlayerTab } from './sub-components/PlayerTab/PlayerTab';
+import { DEFAULT_TAB, NOT_RUNNING_TEXT } from './CheatsWidget.constants';
+import './CheatsWidget.css';
 
 const CheatsWidgetContent = () => {
   const snapshot = useCheatSnapshot();
-  const waiting = () => <EmptyState message={NOT_RUNNING_TEXT} />;
-  const tabs: readonly CheatsTab[] = [
-    { id: 'items', label: 'Items and gold', render: () => (snapshot ? <ItemsGoldTab snapshot={snapshot} /> : waiting()) },
-    { id: 'party', label: 'Party', render: () => (snapshot ? <PartyTab snapshot={snapshot} /> : waiting()) },
+  const checks = useSeedChecks();
+  const waiting = <EmptyState message={NOT_RUNNING_TEXT} />;
+  const tabs: CheatsTabDef[] = [
+    { id: 'items', label: 'Items', content: snapshot ? <ItemsTab /> : waiting },
+    { id: 'player', label: 'Player', content: snapshot ? <PlayerTab snapshot={snapshot} /> : waiting },
   ];
-  return <CheatsShell tabs={tabs} enabled offReason={OFF_REASON} defaultTab={DEFAULT_TAB} />;
+  if (checks) tabs.push({ id: 'checks', label: 'Checks', content: snapshot ? <ChecksTab rows={checks} /> : waiting });
+  return <CheatsFrame tabs={tabs} defaultTab={DEFAULT_TAB} />;
 };
 
 export { CheatsWidgetContent };

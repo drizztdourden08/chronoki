@@ -55,6 +55,7 @@
     "@drizztdourden08/brock-updater": "^0.120.1",
     "@drizztdourden08/tessera": "catalog:",
     "@electron-toolkit/utils": "catalog:",
+    "fflate": "catalog:",
     "jszip": "^3.10.1",
     "koffi": "catalog:",
     "react": "catalog:",
