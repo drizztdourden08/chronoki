@@ -7,7 +7,7 @@ import { create2DFallbackRenderer } from './create-2d-fallback';
 import { createEdgeGlowControls } from './create-edge-glow-controls';
 import { createEdgeGlowState } from './create-edge-glow-state';
 import { disposeEdgeGlow } from './dispose-edge-glow';
-import type { EdgeGlowPipeline } from './edge-glow-programs.type';
+import type { CleanFrame, EdgeGlowPipeline } from './edge-glow-programs.type';
 import { QUAD_TRIANGLES, QUAD_TRIANGLE_VERTICES } from './renderer.constants';
 import { renderPassthrough } from './render-passthrough';
 import { renderMirrorBlur } from './render-mirror-blur';
@@ -40,18 +40,19 @@ const createEdgeGlowRenderer = (glCanvas: HTMLCanvasElement, options: EdgeGlowOp
   const pipe: EdgeGlowPipeline = {
     gl, glCanvas, progs, uniforms, quadBuffer,
     gameTexture: createTexture(gl, gl.NEAREST),
+    cleanTexture: createTexture(gl, gl.NEAREST),
     draw: { mode: gl.TRIANGLES, count: QUAD_TRIANGLE_VERTICES },
     settings: { blurRadius, glowIntensity, noiseSpeed, noiseScale, blurPasses },
   };
 
   const resize = (w: number, h: number): void => resizeEdgeGlow(pipe, state, w, h);
 
-  const render = (gameCanvas: HTMLCanvasElement, time: number): void => {
+  const render = (gameCanvas: HTMLCanvasElement, time: number, cleanFrame?: CleanFrame | null): void => {
     if (gl.isContextLost()) return;
     const width = gameCanvas.width * outputScale;
     const height = gameCanvas.height * outputScale;
     if (width !== state.width || height !== state.height) resize(width, height);
-    const mirrorSrcTexture = uploadEdgeGlowFrames(pipe, gameCanvas);
+    const mirrorSrcTexture = uploadEdgeGlowFrames(pipe, gameCanvas, cleanFrame);
     if (!state.enabled) {
       renderPassthrough(pipe, state);
       return;
