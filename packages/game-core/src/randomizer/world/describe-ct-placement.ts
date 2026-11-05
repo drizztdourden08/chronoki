@@ -2,6 +2,7 @@
 import type { PlacementSummary } from '@drizztdourden08/brock-randomizer';
 import type { CtPlacement } from './ct-placement.type';
 import { bossRowsOf } from './boss-rows-of';
+import { elementRowsOf } from './element-rows-of';
 import { keyItemsInChestsOf } from './key-items-in-chests-of';
 import { isCtKeyItem } from './is-ct-key-item';
 import { startPartyLabelOf } from './party/start-party-label-of';
@@ -21,6 +22,7 @@ const describeCtPlacement = (placement: CtPlacement): PlacementSummary => {
         ? []
         : [{ label: 'Starting party', value: startPartyLabelOf(placement.startParty) }]),
       ...bossRowsOf(placement.bosses),
+      ...elementRowsOf(placement.elements),
     ],
   };
 };

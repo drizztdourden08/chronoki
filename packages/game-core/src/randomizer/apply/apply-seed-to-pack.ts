@@ -14,6 +14,7 @@ import type { ScriptSplice } from './script/script-splice.type';
 import { spliceSceneScripts } from './script/splice-scene-scripts';
 import { planGearRandoEdits } from './gear-rando/plan-gear-rando-edits';
 import { planHealingRandoEdits } from './healing-rando/plan-healing-rando-edits';
+import { planElementEdits } from './element-rando/plan-element-edits';
 import { planTechDamageEdits } from './tech-damage/plan-tech-damage-edits';
 import { planTechOrderEdits } from './tech-order/plan-tech-order-edits';
 
@@ -42,12 +43,13 @@ const applySeedToPack = (
   const gearPlan = options.gearRando === true ? planGearRandoEdits(pack, seed) : none;
   const healPlan = options.healingRando === true ? planHealingRandoEdits(pack, seed) : none;
   const damagePlan = options.techDamageRando === true ? planTechDamageEdits(pack, seed, techPlan.edits) : none;
+  const elementPlan = options.elementRando === undefined ? none : planElementEdits(pack, options.elementRando, [...techPlan.edits, ...damagePlan.edits]);
   const edits = [...chestPlan.edits, ...giftPlan.edits, ...planEnemyOptionEdits(pack, options), ...jetsPlan.edits, ...tabPlan.edits,
-    ...techPlan.edits, ...bossPlan.edits, ...gearPlan.edits, ...healPlan.edits, ...damagePlan.edits,
+    ...techPlan.edits, ...bossPlan.edits, ...gearPlan.edits, ...healPlan.edits, ...damagePlan.edits, ...elementPlan.edits,
     ...(options.shopPrices === undefined ? [] : planShopPriceEdits(pack, options.shopPrices))];
   const failed = [...new Set([
     ...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...spotPlan.failed, ...tabPlan.failed,
-    ...techPlan.failed, ...bossPlan.failed, ...gearPlan.failed, ...healPlan.failed, ...damagePlan.failed, ...stale(pack, edits),
+    ...techPlan.failed, ...bossPlan.failed, ...gearPlan.failed, ...healPlan.failed, ...damagePlan.failed, ...elementPlan.failed, ...stale(pack, edits),
   ])];
   if (failed.length > 0) return { ok: false, failed };
   const edited = pack.slice();
