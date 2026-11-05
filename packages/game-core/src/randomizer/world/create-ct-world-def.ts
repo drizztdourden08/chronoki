@@ -31,6 +31,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const party = input.startParty ?? LEGACY_PARTY;
   const partied = applyStartPartyToRegions(
     epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, party, input.characters,
+    options.characterRando === true && options.duplicateCharacters === true,
   );
   const objectives = objectivesOf(input.options, input.fillerSeed ?? '', party);
   const specs = applyBucketToRegions(partied, objectives, bucketCountsOf(options, objectives.length).needed);

@@ -26,6 +26,7 @@ const rollCtPlacement = (rawInput: CtWorldInput, seed: string): CtPlacement => {
     startParty,
     ...(bosses === undefined ? {} : { bosses }),
     ...(characters === undefined ? {} : { characters }),
+    ...(characters !== undefined && options.duplicateCharacters === true ? { duplicateCharacters: true } : {}),
     ...(elements === undefined ? {} : { elements }),
     ...(objectives === undefined ? {} : { objectives }),
     ...(options.mysterySeed === true ? { mystery: rollMysteryOptions(seed) } : {}),
