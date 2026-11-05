@@ -1,15 +1,14 @@
 /* @layer renderer-components @kind component */
 import { Field, Grid, SegmentedControl, Select, Stack, Text, TextInput } from '@drizztdourden08/tessera/primitives';
+import { randomizerReviewSections } from '@drizztdourden08/brock-randomizer/renderer';
 import { WizardReview } from '@drizztdourden08/tessera/composites';
-import type { WizardApi } from '@drizztdourden08/tessera/composites';
+import type { ProfileStepBodyProps } from './ProfileStepBody.type';
 import { PRESET_HINTS, PRESET_OPTIONS } from '@app/profiles/presets';
-import type { ProfileWizardValues, ReadyRom } from '../../ProfileManager.type';
 import { STEP_IDS, STEP_LABELS } from './ProfileCreateWizard.constants';
 import { ModuleStepBody } from './ModuleStepBody';
 import { presetLabelOf } from './behavior/preset-label-of';
-import { randomizerReviewSection } from './behavior/randomizer-review-section';
 
-const ProfileStepBody = ({ wizard, readyRoms }: { wizard: WizardApi<ProfileWizardValues>; readyRoms: ReadyRom[] }) => {
+const ProfileStepBody = ({ wizard, readyRoms, subStep, onSubStepChange }: ProfileStepBodyProps) => {
   const { values, update } = wizard;
 
   switch (wizard.current.id) {
@@ -44,13 +43,13 @@ const ProfileStepBody = ({ wizard, readyRoms }: { wizard: WizardApi<ProfileWizar
               { label: 'ROM', value: values.rom, title: values.rom },
               { label: 'Preset', value: presetLabelOf(values.preset) },
             ],
-          }, ...[randomizerReviewSection(values)].filter((section) => section !== null)]}
+          }, ...randomizerReviewSections(values)]}
           disabled={wizard.busy}
           onEdit={(stepId) => wizard.goTo(stepId)}
         />
       );
     default:
-      return <ModuleStepBody wizard={wizard} />;
+      return <ModuleStepBody wizard={wizard} subStep={subStep} onSubStepChange={onSubStepChange} />;
   }
 };
 

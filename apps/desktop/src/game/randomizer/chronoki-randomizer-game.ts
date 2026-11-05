@@ -5,6 +5,8 @@ import { CT_GAME, CT_OPTION_CATALOG, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA, desc
 import { chronokiCore } from '../lifecycle/chronoki-core';
 import { chronokiMemoryBridge } from './chronoki-memory-bridge';
 import { chronokiPollHooks } from './chronoki-poll-hooks';
+import { CHRONOKI_INVENTORY } from './inventory/chronoki-inventory.constants';
+import { chronokiTracker } from './tracker/chronoki-tracker';
 import { CHRONOKI_RANDOMIZER_LABELS } from './chronoki-randomizer.constants';
 import { chronokiSeedApplier } from './chronoki-seed-applier';
 import { chronokiToConfig } from './chronoki-to-config';
@@ -23,6 +25,8 @@ const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   profile: { toConfig: chronokiToConfig },
   catalog: CT_OPTION_CATALOG,
   labels: CHRONOKI_RANDOMIZER_LABELS,
+  tracker: chronokiTracker,
+  inventory: CHRONOKI_INVENTORY,
 });
 
 export { chronokiRandomizerGame };
