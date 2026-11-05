@@ -44,6 +44,7 @@ int  ck_sightscope(void);
 int  ck_visible_techs(void);
 int  ck_view_black(int which);
 int  ck_view_scene(void);
+int  ck_view_origin(int axis);   /* 0 x, 1 y: the shown field frame's picture origin (SNES px) */
 /* edge_env_reconnect.c: the Edge Effect's environment picture (the shown field frame without its sprites, captions or
    boxes; built by the patched field.c, wasm-build/patches/edge-env.mjs). On only while the host's Edge Effect draws
    (CkSetEdgeEnv); off = nothing built. begin hands out the RGBA buffer for a w x h picture (NULL: refused), publish marks it

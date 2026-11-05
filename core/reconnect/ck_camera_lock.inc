@@ -6,10 +6,12 @@
    [my0 + T, my1 - 224 - T], the midpoint when the room is shorter than the picture. The map and the objects move together
    (as fillHold does); the box and the screen-fixed overlays stay put. */
 static int g_ckLockBlack[4], g_ckLockScene;                /* the shown frame's black rows / columns (top, bottom, left, right) and scene kind */
+static int g_ckLockOrigin[2], g_ckLockPendOrigin[2];       /* the shown frame's picture origin (x, y) and the compose's */
 static int g_ckLockPendBlack[4], g_ckLockPendScene;        /* ...the compose's, shown at the next present (ckLockPresentBegin) */
 static void ckLockPresentBegin(void) {
   memcpy(g_ckLockBlack, g_ckLockPendBlack, sizeof g_ckLockBlack);
   g_ckLockScene = g_ckLockPendScene;
+  memcpy(g_ckLockOrigin, g_ckLockPendOrigin, sizeof g_ckLockOrigin);
   memset(g_ckLockPendBlack, 0, sizeof g_ckLockPendBlack); g_ckLockPendScene = 0;
 }
 static int ckLockHasEdgeRows(const Field* f) {
@@ -40,6 +42,7 @@ static int fieldBeyondLayers(void);
 static void ckLockExtents(const Field* f, int wideW, int wideX, int camx, int camy, int T, int field) {
   memset(g_ckLockPendBlack, 0, sizeof g_ckLockPendBlack);
   g_ckLockPendScene = field ? 1 : 0;
+  g_ckLockPendOrigin[0] = field ? camx : 0; g_ckLockPendOrigin[1] = field ? camy : 0;   /* the 4:3 view's origin (camy final) */
   if (!field) return;
   if (ckLockHasEdgeRows(f)) {
     const int top = f->my0 - (camy - T), bot = camy + CAMH + T - f->my1;
@@ -57,3 +60,4 @@ static void ckLockExtents(const Field* f, int wideW, int wideX, int camx, int ca
 /* ck_api.c: CkViewBlackTop / Bottom / Left / Right (which 0..3) and CkViewScene, of the frame shown last */
 int ck_view_black(int which) { return which >= 0 && which < 4 ? g_ckLockBlack[which] : 0; }
 int ck_view_scene(void) { return g_ckLockScene; }
+int ck_view_origin(int axis) { return axis == 0 ? g_ckLockOrigin[0] : axis == 1 ? g_ckLockOrigin[1] : 0; }   /* CkViewOriginX / Y */
