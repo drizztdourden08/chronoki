@@ -1,3 +1,4 @@
+/* @layer tooling-scripts @kind logic */
 import { check } from './checks.mjs';
 import { hex } from './ram.mjs';
 

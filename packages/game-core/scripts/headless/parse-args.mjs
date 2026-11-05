@@ -1,3 +1,4 @@
+/* @layer tooling-scripts @kind logic */
 const USAGE = 'node --experimental-wasm-jspi scripts/headless-seed.mjs --pack <file> --seed <s> [--mode X] [--party a,b] [--option k=v]... [--frames N] [--wasm <out dir>] [--json]';
 
 const valueOf = (argv, flag) => {

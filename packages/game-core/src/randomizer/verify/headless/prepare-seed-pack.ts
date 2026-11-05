@@ -6,16 +6,10 @@ import type { CtOptionValues } from '../../world/ct-world-input.type';
 import type { CtStartParty } from '../../world/party/ct-party.type';
 import { partyIdsOf } from '../../world/party/party-ids-of';
 import { rollCtPlacement } from '../../world/roll-ct-placement';
+import type { PreparedSeed } from './prepare-seed-pack.type';
 import { verifyRealInputOf } from '../verify-real-input';
 import { verifyStartSplicesOf } from '../verify-start-splices';
 import { startStateOf } from '../verify-start-state-of';
-
-type PreparedSeed = {
-  bytes: Uint8Array;
-  party: CtStartParty;
-  partyIds: number[];
-  flags: readonly { at: number; bits: number }[];
-};
 
 const prepareSeedPack = (pack: Uint8Array, options: CtOptionValues, party: CtStartParty, seed: string): PreparedSeed => {
   const input = verifyRealInputOf(pack, options, party);
@@ -28,4 +22,3 @@ const prepareSeedPack = (pack: Uint8Array, options: CtOptionValues, party: CtSta
 };
 
 export { prepareSeedPack };
-export type { PreparedSeed };

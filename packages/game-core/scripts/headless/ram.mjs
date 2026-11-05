@@ -1,4 +1,4 @@
-// $7E:xxxx is WRAM offset xxxx, $7F:xxxx is 0x10000 + xxxx; a full address 0x7Fxxxx maps to offset - 0x7E0000.
+/* @layer tooling-scripts @kind logic */
 const WRAM_BASE = 0x7e0000;
 
 const ramReader = (core) => {

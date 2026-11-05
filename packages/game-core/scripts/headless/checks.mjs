@@ -1,3 +1,4 @@
+/* @layer tooling-scripts @kind logic */
 import { hex } from './ram.mjs';
 
 const ROSTER = 0x7e2980;

@@ -1,5 +1,4 @@
-// Boots a randomized seed headlessly in the wasm core and checks the in-game RAM.
-// node --experimental-wasm-jspi scripts/headless-seed.mjs --pack <file> --seed <s> [--mode X] [--party a,b] [--option k=v]... [--frames N] [--wasm <out dir>] [--json]
+/* @layer tooling-scripts @kind logic */
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
