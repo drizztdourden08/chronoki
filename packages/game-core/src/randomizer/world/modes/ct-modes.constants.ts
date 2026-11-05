@@ -1,32 +1,17 @@
 /* @layer bridge-wasm @kind constants */
-import { CT_KEY_ITEMS } from '../ct-key-items.constants';
-import type { CtEra } from '../ct-world-keys.type';
 import type { CtModeDef, CtModeId } from './ct-mode-def.type';
-
-const CT_ALL_ERAS: readonly CtEra[] = ['present', 'middle-ages', 'future', 'prehistory', 'dark-ages', 'end-of-time', 'none'];
-
-const STANDARD_MODE: CtModeDef = {
-  id: 'standard',
-  label: 'Standard',
-  implemented: true,
-  start: 'present',
-  eras: CT_ALL_ERAS,
-  extraExits: [],
-  rulePatches: {},
-  keyItems: CT_KEY_ITEMS,
-  goal: 'beat-lavos',
-  startState: 'jot-standard',
-};
-
-const stubOf = (id: CtModeId, label: string, overrides: Partial<CtModeDef> = {}): CtModeDef =>
-  ({ ...STANDARD_MODE, id, label, implemented: false, ...overrides });
+import { ICE_AGE_MODE } from './ice-age-mode.constants';
+import { LEGACY_OF_CYRUS_MODE } from './legacy-of-cyrus-mode.constants';
+import { LOST_WORLDS_MODE } from './lost-worlds-mode.constants';
+import { CT_ALL_ERAS, STANDARD_MODE } from './standard-mode.constants';
+import { VANILLA_RANDO_MODE } from './vanilla-rando-mode.constants';
 
 const CT_MODES: readonly CtModeDef[] = [
   STANDARD_MODE,
-  stubOf('lost-worlds', 'Lost Worlds', { start: 'end-of-time', startState: 'jot-lost-worlds' }),
-  stubOf('legacy-of-cyrus', 'Legacy of Cyrus', { goal: 'beat-ozzie' }),
-  stubOf('ice-age', 'Ice Age', { goal: 'ice-age-woe' }),
-  stubOf('vanilla-rando', 'Vanilla Rando'),
+  LOST_WORLDS_MODE,
+  LEGACY_OF_CYRUS_MODE,
+  ICE_AGE_MODE,
+  VANILLA_RANDO_MODE,
 ];
 
 const CT_DEFAULT_MODE: CtModeId = 'standard';

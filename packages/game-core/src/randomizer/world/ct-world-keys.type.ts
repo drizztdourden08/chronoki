@@ -1,7 +1,10 @@
 /* @layer bridge-wasm @kind type */
 type CtKeyItem =
   | 'gate-key' | 'pendant' | 'dreamstone' | 'ruby-knife' | 'c-trigger' | 'clone' | 'bent-sword' | 'bent-hilt'
-  | 'hero-medal' | 'prism-shard' | 'moon-stone' | 'tomas-pop' | 'jerky' | 'grand-leon' | 'robo-ribbon';
+  | 'hero-medal' | 'prism-shard' | 'moon-stone' | 'tomas-pop' | 'jerky' | 'grand-leon' | 'robo-ribbon'
+  | 'jets-of-time';
+
+type CtBaseKeyItem = Exclude<CtKeyItem, 'jets-of-time'>;
 
 type CtTreasureItem = `treasure-${string}`;
 
@@ -9,7 +12,8 @@ type CtItem = CtKeyItem | CtTreasureItem;
 
 type CtCharacter = 'crono' | 'marle' | 'lucca' | 'robo' | 'frog' | 'ayla' | 'magus';
 
-type CtEventId = CtCharacter | 'masamune' | 'kings-trial-done' | 'beat-lavos';
+type CtEventId = CtCharacter | 'masamune' | 'kings-trial-done' | 'beat-lavos'
+  | 'beat-ozzie' | 'cyrus-done' | 'beat-giga-gaia';
 
 type CtEra = 'present' | 'middle-ages' | 'future' | 'prehistory' | 'dark-ages' | 'end-of-time' | 'none';
 
@@ -29,7 +33,7 @@ type CtHelperName = 'sun-stone-charged' | 'go-mode' | 'sealed-open';
 type CtOptionKey =
   | 'gameMode' | 'itemDifficulty' | 'enemyDifficulty' | 'disableGlitches' | 'bossScaling' | 'earlyPendantCharge'
   | 'unlockedMagic' | 'lockedCharacters' | 'addCyrusGraveSpot' | 'addOzzieSpot'
-  | 'partyMode' | 'partySize' | 'startingParty';
+  | 'partyMode' | 'partySize' | 'startingParty' | 'epochFail';
 
 type CtWorldKeys = {
   item: CtItem;
@@ -42,6 +46,6 @@ type CtWorldKeys = {
 };
 
 export type {
-  CtCharacter, CtEra, CtEventId, CtHelperName, CtItem, CtKeyItem, CtOptionKey, CtRegionId, CtSpotId, CtTreasureItem,
+  CtBaseKeyItem, CtCharacter, CtEra, CtEventId, CtHelperName, CtItem, CtKeyItem, CtOptionKey, CtRegionId, CtSpotId, CtTreasureItem,
   CtWorldKeys,
 };

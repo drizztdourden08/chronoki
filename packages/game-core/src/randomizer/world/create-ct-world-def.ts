@@ -22,9 +22,9 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const specs = applyStartPartyToRegions(
     applyModeToRegions(CT_REGIONS, mode), mode.start, input.startParty ?? LEGACY_PARTY,
   );
-  const { regions, treasure } = joinCtChecks(input, specs);
+  const { regions, treasure } = joinCtChecks(input, specs, mode.excludeDroppedTreasure === true);
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
-  const options = ctOptionValues(input.options);
+  const options = ctOptionValues({ ...input.options, ...mode.forcedOptions });
   const rest = treasure.flatMap((location): CtItem[] =>
     (location.vanillaItem === undefined ? [] : [location.vanillaItem]));
   return {
@@ -41,7 +41,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     itemRules: new Map(treasure.map((location): [string, ItemRule<CtWorldKeys>] => [location.key, treasureOnly])),
     helpers: CT_HELPERS,
     options: () => options,
-    goal: goalOf(mode.goal),
+    goal: goalOf(mode.goal, mode.goalEvent),
     buildPool: () => ({
       progression: [...mode.keyItems],
       rest: [...rest, ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, mode.keyItems.length, input.fillerSeed)],

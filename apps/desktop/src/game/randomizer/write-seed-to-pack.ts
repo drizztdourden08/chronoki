@@ -1,7 +1,6 @@
 /* @layer bridge-wasm @kind logic */
-import type { RandomizerOptions } from '@drizztdourden08/brock-randomizer';
-import type { CtStartParty, ScriptSplice } from '@chronoki/game-core';
-import { START_STATES, applyOptionsOf, applySeedToPack, deriveSealedCheckIds, modeOf, planPackPlacement, planStartState } from '@chronoki/game-core';
+import type { ScriptSplice } from '@chronoki/game-core';
+import { applyOptionsOf, applySeedToPack, deriveSealedCheckIds, planPackPlacement, planSeedSplices } from '@chronoki/game-core';
 import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
 import { REFUSED_SAMPLE } from './chronoki-randomizer.constants';
 import { localRunHolder } from './local-run-holder';
@@ -9,18 +8,12 @@ import { startPartyOf } from './start-party-of';
 import type { SeededAssets } from './seeded-assets.type';
 import type { WriteSeedInput } from './write-seed-to-pack.type';
 
-const splicesOf = (options: RandomizerOptions, party: CtStartParty): ScriptSplice[] => {
-  const state = START_STATES[modeOf(options).startState];
-  if (state === undefined) throw new Error('This game mode has no start state yet.');
-  return [planStartState(state, party)];
-};
-
 const writeSeedToPack = ({ profileId, placement, checks, assets, options }: WriteSeedInput): SeededAssets => {
   const plan = planPackPlacement(placement, checks);
   const party = startPartyOf(placement);
   let splices: ScriptSplice[];
   try {
-    splices = splicesOf(options, party);
+    splices = planSeedSplices(options, party);
   } catch (error) {
     return { ok: false, reason: error instanceof Error ? error.message : String(error) };
   }

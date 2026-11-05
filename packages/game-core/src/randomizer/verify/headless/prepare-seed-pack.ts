@@ -8,7 +8,7 @@ import { partyIdsOf } from '../../world/party/party-ids-of';
 import { rollCtPlacement } from '../../world/roll-ct-placement';
 import type { PreparedSeed } from './prepare-seed-pack.type';
 import { verifyRealInputOf } from '../verify-real-input';
-import { verifyStartSplicesOf } from '../verify-start-splices';
+import { planSeedSplices } from '../../apply/plan-seed-splices';
 import { startStateOf } from '../verify-start-state-of';
 
 const prepareSeedPack = (pack: Uint8Array, options: CtOptionValues, party: CtStartParty, seed: string): PreparedSeed => {
@@ -16,7 +16,7 @@ const prepareSeedPack = (pack: Uint8Array, options: CtOptionValues, party: CtSta
   const placement = rollCtPlacement(input, seed);
   const placed = placement.startParty ?? party;
   const plan = planPackPlacement(placement, input.checks);
-  const written = applySeedToPack(pack, plan.pack, verifyStartSplicesOf(options, placed), applyOptionsOf(options, placement.spheres));
+  const written = applySeedToPack(pack, plan.pack, planSeedSplices(options, placed), applyOptionsOf(options, placement.spheres));
   if (!written.ok) throw new Error(`apply refused ${written.failed.length}: ${written.failed.slice(0, 5).join(', ')}`);
   return { bytes: written.bytes, party: placed, partyIds: partyIdsOf(placed), flags: startStateOf(options).flags };
 };

@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind constants */
-import type { CtKeyItem } from './ct-world-keys.type';
+import type { CtBaseKeyItem } from './ct-world-keys.type';
 
-const CT_KEY_ITEM_ROM_IDS: Readonly<Record<CtKeyItem, number>> = {
+const CT_KEY_ITEM_ROM_IDS: Readonly<Record<CtBaseKeyItem, number>> = {
   'gate-key': 0xd7,
   pendant: 0xd6,
   dreamstone: 0xdc,
