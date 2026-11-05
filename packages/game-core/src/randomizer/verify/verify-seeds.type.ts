@@ -9,6 +9,7 @@ type VerifySeedsRequest = {
   baseSeed?: string;
   optionSets?: readonly VerifyOptionSet[];
   party?: VerifyPartyMode;
+  pack?: Uint8Array;
 };
 
 export type { VerifyPartyMode, VerifySeedsRequest };

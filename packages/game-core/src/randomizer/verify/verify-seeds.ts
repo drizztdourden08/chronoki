@@ -4,6 +4,7 @@ import { verifyCtPlacement } from './verify-ct-placement';
 import { verifyPartiesOf } from './verify-parties';
 import type { VerifyFailure, VerifySummary } from './verify-result.type';
 import type { VerifySeedsRequest } from './verify-seeds.type';
+import { verifySeedEndToEnd } from './verify-seed-end-to-end';
 import { verifyInputOf } from './verify-synthetic-input';
 import { VERIFY_DEFAULT_BASE, VERIFY_DEFAULT_SEEDS } from './verify.constants';
 
@@ -19,7 +20,9 @@ const verifySeeds = (request: VerifySeedsRequest = {}): VerifySummary => {
     for (const party of parties) {
       for (const seed of seedsOf(request)) {
         runs += 1;
-        const result = verifyCtPlacement(verifyInputOf(optionSet.options, party), seed);
+        const result = request.pack
+          ? verifySeedEndToEnd(request.pack, optionSet.options, party, seed)
+          : verifyCtPlacement(verifyInputOf(optionSet.options, party), seed);
         if (result.ok) continue;
         failures.push({
           seed, optionSet: optionSet.name, party: party.join(','), sphere: result.stuckAt?.sphere,
