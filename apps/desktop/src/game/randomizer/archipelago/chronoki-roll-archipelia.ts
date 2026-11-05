@@ -2,11 +2,8 @@
 import { joinedRoll } from '@drizztdourden08/brock-randomizer';
 import type { RandomizerProfileConfig, RollContext } from '@drizztdourden08/brock-randomizer';
 import { joinFromForm } from '@drizztdourden08/brock-randomizer/renderer';
-import type { LobbyCheck, LobbyDraft } from '@drizztdourden08/brock-randomizer/renderer';
-
-const NO_LOBBY_ERROR = 'Check the lobby address before joining.';
-
-type LobbyConnection = { lobby?: Pick<LobbyDraft, 'seat'>; lobbyCheck?: LobbyCheck };
+import type { LobbyConnection } from './lobby-connection.type';
+import { NO_LOBBY_ERROR } from './chronoki-roll-archipelia.constants';
 
 const rollChronokiArchipelia = async (config: RandomizerProfileConfig, ctx: RollContext) => {
   const { lobby, lobbyCheck } = (ctx.connection ?? {}) as LobbyConnection;

@@ -1,20 +1,15 @@
 /* @layer bridge-wasm @kind logic */
 import type { ApplyContext } from '@drizztdourden08/brock-randomizer/session';
-import { apCall, apCallsOrNull } from './chronoki-ap-calls';
-
-const CK_SET_FOREIGN_NAME = 'CkSetForeignName';
-const CK_CLEAR_FOREIGN_NAMES = 'CkClearForeignNames';
-const KIND_CHEST = 1;
-const NAME_MAX = 40;
-const CHEST_KEY = /^chest-([0-9a-f]{3})-(\d+)$/;
-const NOT_CHARSET = /[^A-Za-z0-9 .,'!?-]/g;
+import { apCall } from './ap-call';
+import { apCallsOrNull } from './ap-calls-or-null';
+import { CHEST_KEY, CK_CLEAR_FOREIGN_NAMES, CK_SET_FOREIGN_NAME, KIND_CHEST, NAME_MAX, NOT_CHARSET } from './chronoki-ap-foreign-names.constants';
 
 const textOf = (playerName: string, itemName: string): string =>
   `${playerName}'s ${itemName}`.replace(NOT_CHARSET, '').slice(0, NAME_MAX);
 
 const setForeignName = (kind: number, loc: number, key: number, text: string): void => {
   const calls = apCallsOrNull();
-  if (calls === null || !calls.has(CK_SET_FOREIGN_NAME)) return;
+  if (!calls?.has(CK_SET_FOREIGN_NAME)) return;
   const bytes = new TextEncoder().encode(`${text}\0`);
   const ptr = calls.number('malloc', bytes.length);
   if (ptr === 0) return;

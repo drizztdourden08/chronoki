@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-const NO_SLOT = -1;
+import { NO_SLOT } from './chronoki-ap-current-slot.constants';
 
 let current = NO_SLOT;
 
@@ -10,4 +10,4 @@ const chronokiApCurrentSlot = {
   },
 };
 
-export { chronokiApCurrentSlot, NO_SLOT };
+export { chronokiApCurrentSlot };

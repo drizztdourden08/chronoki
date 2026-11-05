@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { ApStateStore } from '@drizztdourden08/brock-randomizer/session';
-import { apCall, apNumber } from './chronoki-ap-calls';
+import { apCall } from './ap-call';
+import { apNumber } from './ap-number';
 import {
   CK_AP_GET_RECEIVED_INDEX, CK_AP_GET_ROOM_HASH, CK_AP_SET_RECEIVED_INDEX, CK_AP_SET_ROOM_HASH, NO_ROOM,
 } from './chronoki-ap-state-store.constants';

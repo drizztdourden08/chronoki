@@ -1,12 +1,12 @@
 /* @layer bridge-wasm @kind logic */
-import type { ArchipelagoGame } from '@drizztdourden08/brock-randomizer';
-import { apCall, apCallsOrNull, apNumber } from './chronoki-ap-calls';
+import { apCall } from './ap-call';
+import { apCallsOrNull } from './ap-calls-or-null';
+import { apNumber } from './ap-number';
 import {
   AP_DEATH_CAUSE, AP_DEATH_POLL_MS, AP_KILL_LANDING_NEXT_BATTLE_FRAME, CK_AP_KILL_PARTY, CK_SET_AP_DEATH_LINK, CK_SET_AP_KILL_LANDING,
 } from './chronoki-ap-death-link.constants';
 import { takeApDeaths } from './take-ap-deaths';
-
-type ChronokiDeathLink = NonNullable<ArchipelagoGame<unknown, unknown>['deathLink']>;
+import type { ChronokiDeathLink } from './chronoki-ap-death-link.type';
 
 const listeners = new Set<(cause: string) => void>();
 let timer: ReturnType<typeof setInterval> | null = null;
@@ -32,7 +32,7 @@ const chronokiApDeathLink: ChronokiDeathLink = {
   },
   kill: () => {
     const calls = apCallsOrNull();
-    if (calls === null || !calls.has(CK_AP_KILL_PARTY)) return 'unsupported';
+    if (!calls?.has(CK_AP_KILL_PARTY)) return 'unsupported';
     apCall(CK_SET_AP_KILL_LANDING, AP_KILL_LANDING_NEXT_BATTLE_FRAME);
     return (apNumber(CK_AP_KILL_PARTY) ?? 0) === 0 ? 'down' : 'armed';
   },

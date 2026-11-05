@@ -1,13 +1,12 @@
 /* @layer bridge-wasm @kind logic */
 import type { FileStore } from '@drizztdourden08/brock-core';
-import type { CtOptionValues, CtPlacement } from '@chronoki/game-core';
 import { roomCacheFile } from '@app/profiles/storage';
-
-type RoomCache = { placement: CtPlacement; options: CtOptionValues };
+import type { CtPlacement } from '@chronoki/game-core';
+import type { RoomCache } from './room-cache.type';
 
 const isRoomCache = (raw: unknown): raw is RoomCache => {
   if (typeof raw !== 'object' || raw === null) return false;
-  const { placement, options } = raw as Partial<RoomCache>;
+  const { placement, options } = raw as { placement?: Partial<CtPlacement> | null; options?: unknown };
   return typeof options === 'object' && options !== null && typeof placement === 'object' && placement !== null
     && typeof placement.seed === 'string' && Array.isArray(placement.locations);
 };
@@ -22,10 +21,4 @@ const readRoomCache = async (files: FileStore, profileId: string): Promise<RoomC
   }
 };
 
-const writeRoomCache = async (files: FileStore, profileId: string, cache: RoomCache): Promise<void> => {
-  await files.mkdir(`profiles/${profileId}/archipelago`);
-  await files.writeText(roomCacheFile(profileId), JSON.stringify(cache));
-};
-
-export { readRoomCache, writeRoomCache };
-export type { RoomCache };
+export { readRoomCache };
