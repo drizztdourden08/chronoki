@@ -22,6 +22,8 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   { key: 'earlyPendantCharge', label: 'Early pendant charge', jotFlag: 'p', default: false, section: 'Rules', implemented: false },
   { key: 'unlockedMagic', label: 'Unlocked magic', jotFlag: 'm', default: false, section: 'Rules', implemented: false },
   { key: 'lockedCharacters', label: 'Locked characters', jotFlag: 'c', default: false, section: 'Rules', implemented: true },
+  { key: 'addCyrusGraveSpot', label: "Add Cyrus's Grave spot", jotFlag: 'cyrus', default: false, section: 'Rules', implemented: false },
+  { key: 'addOzzieSpot', label: "Add Ozzie's Fort spot", jotFlag: 'ozzie', default: false, section: 'Rules', implemented: false },
 ];
 
 export { CT_OPTION_CATALOG };

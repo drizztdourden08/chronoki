@@ -1,0 +1,7 @@
+/* @layer bridge-wasm @kind constants */
+const OP_IF_FLAG_BIT = 0x16;
+const PENDANT_CHARGED_OFFSET = 0xf4;
+const PENDANT_CHARGED_MASK = 0x40;
+const GIFT_OBJECT_PATTERN = /-o(\d+)/;
+
+export { GIFT_OBJECT_PATTERN, OP_IF_FLAG_BIT, PENDANT_CHARGED_MASK, PENDANT_CHARGED_OFFSET };

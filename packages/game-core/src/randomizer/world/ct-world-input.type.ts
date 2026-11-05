@@ -8,6 +8,7 @@ type CtOptionValues = Readonly<Partial<Record<CtOptionKey, RuleOptionValue>>>;
 type CtWorldInput = {
   checks: readonly CheckDef[];
   spotChecks?: ReadonlyMap<CtSpotId, string>;
+  sealedCheckIds?: ReadonlySet<string>;
   options?: CtOptionValues;
 };
 

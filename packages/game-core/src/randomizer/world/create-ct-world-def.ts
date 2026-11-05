@@ -10,7 +10,9 @@ import { joinCtChecks } from './join-ct-checks';
 import { applyModeToRegions } from './modes/apply-mode-to-regions';
 import { modeOf } from './modes/mode-of';
 import { CT_REGIONS } from './regions/ct-regions.constants';
+import { poolFillerOf } from './pool-filler-of';
 import { ruleMapsOfRegions } from './rule-maps-of-regions';
+import { sealedRulesOf } from './sealed-rules-of';
 import { treasureOnly } from './treasure-only';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
@@ -30,13 +32,16 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     sweepsEvents: true,
     regions,
     exitRules,
-    locationRules: spotRules,
+    locationRules: sealedRulesOf(spotRules, treasure, input.sealedCheckIds),
     eventRules,
     itemRules: new Map(treasure.map((location): [string, ItemRule<CtWorldKeys>] => [location.key, treasureOnly])),
     helpers: CT_HELPERS,
     options: () => options,
     goal: goalOf(mode.goal),
-    buildPool: () => ({ progression: [...mode.keyItems], rest: [...rest] }),
+    buildPool: () => ({
+      progression: [...mode.keyItems],
+      rest: [...rest, ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, mode.keyItems.length)],
+    }),
   };
 };
 
