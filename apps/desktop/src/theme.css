@@ -2,7 +2,9 @@
 @import url('@chronoki/design/chronoki.css');
 
 :root {
-  --angle-title-pendulum: 16deg;
-  --duration-title-pendulum: 1.22s;
-  --offset-title-pendulum: 6%;
+  --angle-title-pendulum: 26deg;
+  --duration-title-pendulum: 1.6s;
+  --offset-title-pendulum: 4%;
+  --pivot-title-pendulum: 73%;
+  --length-title-pendulum: 3;
 }

@@ -8,7 +8,10 @@ const usePendulumScale = (frameRef: RefObject<HTMLElement | null>, artHeight: nu
   useLayoutEffect(() => {
     const frame = frameRef.current;
     if (!frame || artHeight <= 0) return undefined;
-    const measure = () => setScale(Math.max(1, Math.ceil(frame.clientHeight / artHeight)));
+    const measure = () => {
+      const length = parseFloat(getComputedStyle(frame).getPropertyValue('--title-pendulum-length')) || 1;
+      setScale(Math.max(1, Math.ceil((frame.clientHeight * length) / artHeight)));
+    };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(frame);
