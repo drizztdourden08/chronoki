@@ -3,7 +3,7 @@ import type { AspectRatioChoice } from '@chronoki/features';
 
 const NEW_DEFAULT_GATES: readonly string[] = ['saveStates', 'enhancedSaveSlotShortcut', 'saveOnQuit', 'sceneAdjust', 'wideSteamMargins'];
 
-const GATES_ADDED_AFTER_FIRST_PROFILES: readonly string[] = ['gameInfo', 'perGroupVolume'];
+const GATES_ADDED_AFTER_FIRST_PROFILES: readonly string[] = ['gameInfo', 'perGroupVolume', 'extendY', 'cameraLock', 'edgeEffect'];
 
 const ALWAYS_ON_GATES: readonly string[] = ['saveStates'];
 

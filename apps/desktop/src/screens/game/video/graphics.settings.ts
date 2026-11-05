@@ -30,6 +30,17 @@ const sections: Section[] = [
       },
     ],
   },
+  {
+    id: 'enhancements',
+    title: 'Enhancements',
+    subsections: [
+      {
+        id: 'enhancements-field',
+        title: 'Field',
+        items: [gateItem('edgeEffect')],
+      },
+    ],
+  },
 ];
 
 export default sections;

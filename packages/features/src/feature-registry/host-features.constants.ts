@@ -13,6 +13,11 @@ const HOST_FEATURES: FeatureDef[] = [
     group: 'Display', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: false, live: true,
   },
   {
+    id: 'edgeEffect', label: 'Edge Effect', description: 'Fill black borders with a blurred mirror reflection and animated decay effect instead of solid black',
+    userMessage: 'Fill black borders with a blurred mirror reflection and animated decay effect instead of solid black',
+    group: 'Display', kind: 'host', origin: 'chronoki', default: true, requires: ['widescreen'], affectsVanillaParity: false, live: true,
+  },
+  {
     id: 'saveStates', label: 'Save States', description: 'Save and load the whole game at any moment.',
     userMessage: 'Save and load the whole game at any moment.',
     group: 'Saves', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: false, live: true,
