@@ -20,6 +20,7 @@ const LOST_WORLDS_MODE: CtModeDef = {
   goal: 'beat-lavos',
   startState: 'jot-lost-worlds',
   excludeDroppedTreasure: true,
+  forcedOptions: { epochFail: false },
 };
 
 export { LOST_WORLDS_MODE };
