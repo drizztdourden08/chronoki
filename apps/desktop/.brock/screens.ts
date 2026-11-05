@@ -7,6 +7,7 @@ import { meta as dataHomeHeroMeta } from '../src/screens/data/home.hero';
 import { meta as dataLibraryProfilesPageMeta } from '../src/screens/data/library/profiles.page';
 import { meta as dataLibraryRomsPageMeta } from '../src/screens/data/library/roms.page';
 import { meta as dataStoragePageMeta } from '../src/screens/data/storage.page';
+import { meta as dataStudiosMsuPageMeta } from '../src/screens/data/studios/msu.page';
 import GameAppContributingSettings, { meta as gameAppContributingSettingsMeta } from '../src/screens/game/app/contributing.settings';
 import GameGameplayAudioSettings, { meta as gameGameplayAudioSettingsMeta } from '../src/screens/game/gameplay/audio.settings';
 import { meta as gameGameplayControlsCustomMeta } from '../src/screens/game/gameplay/controls.custom';
@@ -23,6 +24,7 @@ const screenTree = buildScreenTree(config, [
   { kind: 'hero', bucket: 'data', id: 'home', component: lazyComponent(() => import('../src/screens/data/home.hero')), meta: dataHomeHeroMeta },
   { kind: 'page', bucket: 'data', group: 'library', id: 'profiles', component: lazyComponent(() => import('../src/screens/data/library/profiles.page')), meta: dataLibraryProfilesPageMeta },
   { kind: 'page', bucket: 'data', group: 'library', id: 'roms', component: lazyComponent(() => import('../src/screens/data/library/roms.page')), meta: dataLibraryRomsPageMeta },
+  { kind: 'page', bucket: 'data', group: 'studios', id: 'msu', component: lazyComponent(() => import('../src/screens/data/studios/msu.page')), meta: dataStudiosMsuPageMeta },
   { kind: 'page', bucket: 'data', id: 'storage', component: lazyComponent(() => import('../src/screens/data/storage.page')), meta: dataStoragePageMeta },
   { kind: 'settings', bucket: 'game', group: 'app', id: 'contributing', sections: GameAppContributingSettings, meta: gameAppContributingSettingsMeta },
   { kind: 'backdrop', bucket: 'game', id: 'game', component: lazyComponent(() => import('../src/screens/game/game.backdrop')) },

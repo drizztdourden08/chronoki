@@ -20,7 +20,10 @@ export default defineScreens({
       icon: 'archive',
       menu: 'submenu',
       requiresProfile: false,
-      groups: [{ id: 'library', label: 'Library' }],
+      groups: [
+        { id: 'library', label: 'Library' },
+        { id: 'studios', label: 'Studios' },
+      ],
     },
   ],
   home: 'game',
