@@ -3,7 +3,6 @@ import { toolsApi } from '@drizztdourden08/brock-tools/renderer';
 import { requireAppApi } from '@app/ipc/require-app-api';
 import type { DebugCaptureScreenshot, DebugCaptureSnapshot } from '@app/debug-report';
 
-// brock-tools writes the frames and samples and encodes the video when ffmpeg is ready; the app then packs the report copy.
 const finishRecording = async (
   profileId: string, sessionKey: string, snapshots: DebugCaptureSnapshot[], screenshots: DebugCaptureScreenshot[],
 ): Promise<void> => {

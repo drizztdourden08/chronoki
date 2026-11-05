@@ -6,7 +6,6 @@ import { buildPackagedFrames } from './build-packaged-frames';
 import { captureSessionDir } from './capture-session-dir';
 import { FRAME_FILE, PACKAGED_SUBDIR } from './finalize-capture-session.constants';
 
-// brock-tools' finalizeRecording already wrote the frames, samples and video; this only packs the small copy for reports.
 const finalizeCaptureSession = async (input: DebugCaptureFinalizeInput): Promise<DebugCaptureFinalizeResult> => {
   const { profileId, sessionKey } = input;
   try {
