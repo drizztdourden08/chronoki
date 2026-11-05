@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { planSeedSplices } from '../plan-seed-splices';
 import { LEGACY_PARTY } from '../start-state/legacy-party.constants';
 import { START_BLOCK_MAX_BYTES } from '../start-state/start-block.constants';
-import { endingBytesOf } from './ending-splice';
+import { endingBytesOf } from './ending-bytes-of';
 
 const hex = (bytes: readonly number[]): string => bytes.map((byte) => byte.toString(16).padStart(2, '0')).join(' ');
 

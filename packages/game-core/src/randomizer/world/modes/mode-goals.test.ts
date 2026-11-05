@@ -23,7 +23,7 @@ const chest = (n: number): CheckDef => ({
 
 const inputOf = (gameMode: string): CtWorldInput => ({
   checks: Array.from({ length: 42 }, (_, n) => chest(n)),
-  options: { gameMode },
+  options: { gameMode, partySize: 2 },
 });
 
 const stateOf = (gameMode: string, held: Held) => {
@@ -54,7 +54,7 @@ describe('Legacy of Cyrus goal', { tags: ['critical'] }, () => {
   });
 
   it('needs Magus and the Cyrus event for the Ozzie event', () => {
-    const base: Held = ['bent-sword', 'bent-hilt', 'frog', 'hero-medal', 'grand-leon'];
+    const base: Held = ['masamune', 'frog', 'hero-medal', 'grand-leon'];
     expect(CT_KIT.canReachEvent(stateOf('legacy-of-cyrus', [...base, 'cyrus-done']), 'beat-ozzie')).toBe(false);
     expect(CT_KIT.canReachEvent(stateOf('legacy-of-cyrus', [...base, 'magus']), 'beat-ozzie')).toBe(false);
     expect(CT_KIT.canReachEvent(stateOf('legacy-of-cyrus', [...base, 'magus', 'cyrus-done']), 'beat-ozzie')).toBe(true);
