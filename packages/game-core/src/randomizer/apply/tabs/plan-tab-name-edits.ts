@@ -15,7 +15,7 @@ const coversName = (table: PackEntry, rom: number, length: number): boolean =>
   rom >= table.id && rom + length <= table.id + table.length;
 
 const nameEdits = (pack: Uint8Array, tables: PackEntry[], kind: TabKind, amount: number): EditPlan => {
-  const bytes = encodeItemName(`${TAB_NAME_PREFIX[kind]}Tab+${amount}`);
+  const bytes = encodeItemName(`${TAB_NAME_PREFIX[kind]}Tab ${amount}`);
   const rom = nameRom(kind);
   const covering = tables.filter((table) => coversName(table, rom, bytes.length));
   if (covering.length === 0) return { edits: [], failed: [`${TAB_NAME_WHY}: ${kind} tab name not in the pack`] };

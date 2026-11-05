@@ -1,12 +1,13 @@
 /* @layer bridge-wasm @kind test */
 import { describe, expect, it } from 'vitest';
+import type { CtItem } from '../ct-world-keys.type';
 import { isCtKeyItem } from '../is-ct-key-item';
 import { poolFillerOf } from '../pool-filler-of';
 import { treasureItemOf } from '../treasure-item-of';
 import { tabFillerOf } from './tab-filler-of';
 
 const REST = Array.from({ length: 40 }, (_, index) => treasureItemOf(index + 1));
-const TABS = new Set([treasureItemOf(0xcd), treasureItemOf(0xce), treasureItemOf(0xcf)]);
+const TABS = new Set<CtItem>([treasureItemOf(0xcd), treasureItemOf(0xce), treasureItemOf(0xcf)]);
 
 describe('tabsanity filler', { tags: ['critical'] }, () => {
   it('turns every filler slot into a non-key tab with a seeded mix', () => {
