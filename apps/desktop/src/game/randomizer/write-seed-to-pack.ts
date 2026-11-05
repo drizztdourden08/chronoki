@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { RandomizerOptions } from '@drizztdourden08/brock-randomizer';
-import type { CtStartParty, ItemDifficulty, ScriptSplice } from '@chronoki/game-core';
-import { START_STATES, applySeedToPack, deriveSealedCheckIds, modeOf, planPackPlacement, planStartState } from '@chronoki/game-core';
+import type { CtStartParty, ScriptSplice } from '@chronoki/game-core';
+import { START_STATES, applyOptionsOf, applySeedToPack, deriveSealedCheckIds, modeOf, planPackPlacement, planStartState } from '@chronoki/game-core';
 import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
 import { REFUSED_SAMPLE } from './chronoki-randomizer.constants';
 import { localRunHolder } from './local-run-holder';
@@ -24,8 +24,7 @@ const writeSeedToPack = ({ profileId, placement, checks, assets, options }: Writ
   } catch (error) {
     return { ok: false, reason: error instanceof Error ? error.message : String(error) };
   }
-  const difficulty = (options.itemDifficulty ?? 'normal') as ItemDifficulty;
-  const written = applySeedToPack(assets, plan.pack, splices, { difficulty });
+  const written = applySeedToPack(assets, plan.pack, splices, applyOptionsOf(options, placement.spheres));
   if (!written.ok) {
     const sample = written.failed.slice(0, REFUSED_SAMPLE).join(', ');
     return { ok: false, reason: `The seed does not fit this game pack: ${written.failed.length} checks refused (${sample})` };

@@ -1,11 +1,11 @@
 /* @layer bridge-wasm @kind logic */
 import { applySeedToPack } from '../apply/apply-seed-to-pack';
+import { applyOptionsOf } from '../apply/enemy-difficulty/apply-options-of';
 import { planPackPlacement } from '../apply/plan-pack-placement';
 import type { CtPlacement } from '../world/ct-placement.type';
 import type { CtOptionValues } from '../world/ct-world-input.type';
 import type { CtStartParty } from '../world/party/ct-party.type';
 import { rollCtPlacement } from '../world/roll-ct-placement';
-import type { ItemDifficulty } from '../world/treasure-tiers/treasure-tier.type';
 import { comparePackToPlacement } from './readback/compare-pack-to-placement';
 import { verifyCtPlacement } from './verify-ct-placement';
 import { verifyRealInputOf } from './verify-real-input';
@@ -24,8 +24,7 @@ const verifySeedEndToEnd = (pack: Uint8Array, options: CtOptionValues, party: Ct
     const placement: CtPlacement = rollCtPlacement(input, seed);
     const placedParty = placement.startParty ?? party;
     const plan = planPackPlacement(placement, input.checks);
-    const difficulty = (options.itemDifficulty ?? 'normal') as ItemDifficulty;
-    const written = applySeedToPack(pack, plan.pack, verifyStartSplicesOf(options, placedParty), { difficulty });
+    const written = applySeedToPack(pack, plan.pack, verifyStartSplicesOf(options, placedParty), applyOptionsOf(options, placement.spheres));
     if (!written.ok) return failedWith(swept, `apply refused ${written.failed.length}: ${written.failed.slice(0, VERIFY_SAMPLE).join(', ')}`);
     const mismatches = comparePackToPlacement(written.bytes, placement, {
       checks: input.checks, startState: startStateOf(options), party: placedParty,
