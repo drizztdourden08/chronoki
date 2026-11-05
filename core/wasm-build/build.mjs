@@ -23,6 +23,7 @@ import { writeDuplicateCharsBattle } from './patches/duplicate-chars-battle.mjs'
 import { writeVisibleTechs } from './patches/visible-techs.mjs';
 import { writeTallField } from './patches/tall-field.mjs';
 import { writeDialogPacing } from './patches/dialog-pacing.mjs';
+import { writeWideSideSprites } from './patches/wide-side-sprites.mjs';
 import { writeShapes } from './shapes.mjs';
 import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
 
@@ -196,6 +197,7 @@ const main = () => {
   gen.visible = writeVisibleTechs(gen.state);         // Visible Techs, gated by visible_techs (patches/visible-techs.mjs)
   gen.dup = writeDuplicateChars(gen.state, belthasar); // duplicate characters, gated by duplicate_characters: field/world/menu/ct_vm (patches/duplicate-chars.mjs)
   gen.dialog = writeDialogPacing(gen.state);          // dialog pacing: the typewriter's iterations a frame, gated by dialog_controls (patches/dialog-pacing.mjs)
+  gen.wideSides = writeWideSideSprites(gen.state);   // the widescreen's side objects at their OBJ priority (patches/wide-side-sprites.mjs)
   // Sightscope, gated by sightscope; battle.c replaced in the game module (patches/sightscope.mjs). Duplicate characters'
   // battle side takes its battle.c and adds move.c (patches/duplicate-chars-battle.mjs): the same { files, replaced } shape.
   gen.sight = writeDuplicateCharsBattle(writeSightscope(gen.dir, belthasar), gen.dir, belthasar);
