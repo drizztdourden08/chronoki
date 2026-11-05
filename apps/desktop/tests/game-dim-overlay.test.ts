@@ -21,6 +21,7 @@ vi.mock('@app/game/save-states', () => ({
 
 const { loadIntoPlay } = await import('@app/views/GameSession/behavior/load-into-play');
 const { pauseSyncPlan } = await import('@app/views/GameSession/behavior/pause-sync-plan');
+const { inputSuppressedFor } = await import('@app/views/GameSession/behavior/input-suppressed-for');
 
 const ctx: SaveStateContext = Object.assign({} as SaveStateContext, { profileId: 'p1' });
 const quick = { kind: 'quick', slot: 0 } as const;
@@ -84,5 +85,20 @@ describe('the pause overlay follows one pause flag', { tags: ['critical'] }, () 
   it('waits while a re-plan or a boot has the core loading', () => {
     expect(pauseSyncPlan({ running: true, inputPaused: true, status: 'loading' })).toEqual({ releaseInput: false, corePaused: null });
     expect(pauseSyncPlan({ running: true, inputPaused: true, status: 'idle' })).toEqual({ releaseInput: false, corePaused: null });
+  });
+});
+
+describe('game input is held while a menu window covers the game', { tags: ['critical'] }, () => {
+  it('suppresses input while a screen is open over the running game', () => {
+    expect(inputSuppressedFor(true, true)).toBe(true);
+  });
+
+  it('lets input through the moment the menu closes', () => {
+    expect(inputSuppressedFor(true, false)).toBe(false);
+  });
+
+  it('suppresses input while no game runs', () => {
+    expect(inputSuppressedFor(false, false)).toBe(true);
+    expect(inputSuppressedFor(false, true)).toBe(true);
   });
 });
