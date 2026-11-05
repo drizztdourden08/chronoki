@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button, Callout, Inline, Stack, Text } from '@drizztdourden08/tessera/primitives';
 import type { GameInfoSnapshot } from '@chronoki/game-core';
-import { cheatRefill } from '@app/game/cheats/cheat-actions';
+import { cheatRefill } from '@app/game/cheats';
 import { WRITE_REFUSED_TEXT } from '../CheatsWidget.constants';
 
 const PartyTab = ({ snapshot }: { snapshot: GameInfoSnapshot }) => {

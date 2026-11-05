@@ -15,13 +15,13 @@ describe('cheat writes', () => {
   it('stacks an item up to 99 and uses the first empty slot', { tags: ['critical'] }, () => {
     const heap = makeHeap();
     const write = writerOf(heap);
-    expect(giveItem(heap, PTR, write, 0x10, 60)).toBe(true);
-    expect(giveItem(heap, PTR, write, 0x10, 60)).toBe(true);
+    expect(giveItem({ heap, ptr: PTR, write, id: 0x10, count: 60 })).toBe(true);
+    expect(giveItem({ heap, ptr: PTR, write, id: 0x10, count: 60 })).toBe(true);
     expect(heap[PTR + 0x2400]).toBe(0x10);
     expect(heap[PTR + 0x2500]).toBe(99);
-    expect(giveItem(heap, PTR, write, 0x11, 1)).toBe(true);
+    expect(giveItem({ heap, ptr: PTR, write, id: 0x11, count: 1 })).toBe(true);
     expect(heap[PTR + 0x2401]).toBe(0x11);
-    expect(giveItem(heap, PTR, write, 0, 1)).toBe(false);
+    expect(giveItem({ heap, ptr: PTR, write, id: 0, count: 1 })).toBe(false);
   });
 
   it('writes gold little-endian and clamps it', { tags: ['critical'] }, () => {
