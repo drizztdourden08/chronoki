@@ -10,7 +10,7 @@ const ctSettingsTilesOf = (values: CtOptionValues): RunTile[] => {
   const options = ctUiOptions();
   const changeable = options.filter((option) => option.implemented && option.frozen !== true);
   const flags = ctScopeFlagsOf(values);
-  const labelOf = (key: string): string => {
+  const labelOf = (key: keyof CtOptionValues): string => {
     const option = options.find((each) => each.key === key);
     const value = String(values[key] ?? option?.default ?? '');
     return option?.choiceLabels?.[value] ?? value;

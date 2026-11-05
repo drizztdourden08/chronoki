@@ -3,7 +3,7 @@ import { Box, ScrollArea, Text } from '@drizztdourden08/tessera/primitives';
 import { CtPoolFillBar } from './CtPoolFillBar';
 import { POOL_PANEL_TITLE } from './ct-pool-listing.constants';
 import type { CtPoolListingProps } from './ct-pool-listing.type';
-import './ct-pool-listing.css';
+import './CtPoolListing.css';
 
 const CtPoolListing = ({ groups, totals, error, titled = true }: CtPoolListingProps) => (
   <Box className="ct-pool-listing">

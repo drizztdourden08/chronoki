@@ -25,7 +25,7 @@ const useCtPoolImpacts = (options: CtOptionValues, seed: string, romFile: string
         if (cached !== undefined) return cached;
         let cell: ImpactCell;
         try {
-          cell = ctImpactCell(ctPoolImpactOf(key, pack, options, pool, seed));
+          cell = ctImpactCell(ctPoolImpactOf({ key, pack, options, current: pool, seed }));
         } catch {
           cell = ctImpactCell(UNAVAILABLE);
         }

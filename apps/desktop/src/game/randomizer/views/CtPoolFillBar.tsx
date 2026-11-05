@@ -3,7 +3,7 @@ import { Box, StackedBar, Text } from '@drizztdourden08/tessera/primitives';
 import type { StackedBarSegment } from '@drizztdourden08/tessera/primitives';
 import { FILL_BAR_LABEL, FILL_SEGMENTS, FILL_TOTAL_TITLE, POOL_UNAVAILABLE } from './ct-pool-listing.constants';
 import type { CtPoolTotals } from './ct-pool-totals.type';
-import './ct-pool-listing.css';
+import './CtPoolFillBar.css';
 
 const segmentsOf = (totals: CtPoolTotals): StackedBarSegment[] =>
   FILL_SEGMENTS.map(({ key, label, description, color }) => ({ id: key, label, description, color, value: totals[key] }));

@@ -1,4 +1,6 @@
 /* @layer renderer-components @kind constants */
+import type { CtOptionValues } from '@chronoki/game-core';
+
 const SCOPE_SECTION = 'Randomization';
 
 const SCOPE_EXCLUDED: readonly string[] = ['mysterySeed', 'duplicateCharacters', 'duplicateAllSlots'];
@@ -11,7 +13,7 @@ const SCOPES_TITLE = 'Shuffle scopes';
 
 const FLAG_MIN_WIDTH = 140;
 
-const SETTING_TILES: readonly { key: string; label: string }[] = [
+const SETTING_TILES: readonly { key: keyof CtOptionValues; label: string }[] = [
   { key: 'gameMode', label: 'Game mode' },
   { key: 'itemDifficulty', label: 'Item difficulty' },
   { key: 'enemyDifficulty', label: 'Enemy difficulty' },
