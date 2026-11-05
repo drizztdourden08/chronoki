@@ -3,6 +3,7 @@ export { applySeedToPack } from './apply-seed-to-pack';
 export { planPackPlacement } from './plan-pack-placement';
 export { buildStartBlock } from './start-state/build-start-block';
 export { planStartState } from './start-state/plan-start-state';
+export { LEGACY_PARTY } from './start-state/legacy-party.constants';
 export { STANDARD_START } from './start-state/standard-start.constants';
 export { START_STATES } from './start-state/start-states.constants';
 export type { ApplyResult, Placement, SeedApplier } from './apply-seed.type';

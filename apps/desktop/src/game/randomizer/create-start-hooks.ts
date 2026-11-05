@@ -1,8 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
-import type { CtOptionValues } from '@chronoki/game-core';
+import type { CtOptionValues, CtStartParty } from '@chronoki/game-core';
 import {
-  createCtWramWriter, createStartGoldGrant, createStartStateCheck, HARD_START_GOLD, modeOf, START_STATES,
+  createCtWramWriter, createStartGoldGrant, createStartStateCheck, HARD_START_GOLD, LEGACY_PARTY, modeOf, START_STATES,
 } from '@chronoki/game-core';
 import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
 import { chronokiMemoryOptions } from './chronoki-memory-options';
@@ -10,12 +10,12 @@ import { chronokiRawMemoryBridge } from './chronoki-raw-memory-bridge';
 import { START_CHECK_MAX_POLLS } from './chronoki-poll-hooks.constants';
 import type { StartHooks } from './start-hooks.type';
 
-const createStartHooks = (options: CtOptionValues): StartHooks => {
+const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_PARTY): StartHooks => {
   const grant = options.itemDifficulty === 'hard'
     ? createStartGoldGrant(createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge), HARD_START_GOLD)
     : null;
   const state = START_STATES[modeOf(options).startState];
-  const check = state === undefined ? null : createStartStateCheck(state);
+  const check = state === undefined ? null : createStartStateCheck(state, party);
   let logged = false;
   let polls = 0;
   return {

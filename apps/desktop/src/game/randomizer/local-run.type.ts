@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind type */
-import type { CheckDef, GiftWatch, PackPlacementPlan, SaveLoadWatch } from '@chronoki/game-core';
+import type { CheckDef, CtStartParty, GiftWatch, PackPlacementPlan, SaveLoadWatch } from '@chronoki/game-core';
 import type { StartHooks } from './start-hooks.type';
 
 type AppliedSeed = {
@@ -7,6 +7,7 @@ type AppliedSeed = {
   seed: string;
   checks: readonly CheckDef[];
   plan: PackPlacementPlan;
+  party: CtStartParty;
 };
 
 type LocalReceivedItem = { checkId: string; item: string };
