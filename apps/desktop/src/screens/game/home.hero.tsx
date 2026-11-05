@@ -77,7 +77,7 @@ const HomeHero = (props: HeroProps) => {
       </Tools>
       <Facts rows={facts} />
       {lastSave && <Aside><HeroLastSaveTile save={lastSave} /></Aside>}
-      {progress && <Panel>{randomizer ? <RandomizedProgress files={progress} /> : <HeroProgress files={progress} />}</Panel>}
+      {progress && <Panel>{randomizer ? <RandomizedProgress files={progress} profileId={profileId} romFile={romFile} /> : <HeroProgress files={progress} />}</Panel>}
       <HomeTab profileId={profileId} running={running} normal={normal} />
       <HomeDialogs sramImport={sramImport} />
     </>

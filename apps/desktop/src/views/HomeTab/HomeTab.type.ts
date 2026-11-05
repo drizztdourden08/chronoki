@@ -38,6 +38,8 @@ interface HomeFact {
 
 interface RandomizedProgressProps {
   files: HeroProgressFile[];
+  profileId: string | null;
+  romFile: string | null;
 }
 
 interface NamedSavesData {
