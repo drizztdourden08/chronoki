@@ -55,12 +55,8 @@ const videoLines = (s: CkSettings): string[] => [
   '',
 ];
 
-const gameLines = (g: CkGameFlags): string[] => [
-  '[game]',
-  `randomizer=${flag(g.randomizer)}`,
-  `disable_glitches=${flag(g.randomizer && g.disableGlitches)}`,
-  '',
-];
+const gameLines = (g: CkGameFlags): string[] =>
+  g.randomizer ? ['[game]', 'randomizer=1', `disable_glitches=${flag(g.disableGlitches)}`, ''] : [];
 
 const buildCoreConfigIni = (settings: Partial<CkSettings> = {}, game: CkGameFlags = VANILLA_GAME_FLAGS): string => {
   const s = { ...DEFAULT_CK_SETTINGS, ...settings };

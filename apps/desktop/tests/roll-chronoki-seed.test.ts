@@ -9,14 +9,21 @@ const state = vi.hoisted(() => ({
   loaded: [] as string[],
 }));
 
-vi.mock('@drizztdourden08/brock-react', () => ({ useProfilesStore: { getState: () => ({ profiles: state.profiles }) } }));
-vi.mock('@app/game/randomizer/checks-of-rom', () => ({
-  checksOfRom: (romFile: string) => {
+vi.mock('@drizztdourden08/brock-react', () => ({
+  useProfilesStore: { getState: () => ({ profiles: state.profiles }) },
+  getPlatform: () => ({ files: {} }),
+}));
+vi.mock('@app/game/randomizer/pack-of-rom', () => ({
+  packOfRom: (romFile: string) => {
     state.loaded.push(romFile);
-    return Promise.resolve(state.checks);
+    return Promise.resolve(new Uint8Array(0));
   },
 }));
-vi.mock('@chronoki/game-core', () => ({ rollCtPlacement: (input: { checks: unknown[] }, seed: string) => ({ seed, count: input.checks.length }) }));
+vi.mock('@chronoki/game-core', () => ({
+  realWorldInputOfPack: () => ({ checks: state.checks }),
+  resolveMysteryOptions: (options: unknown) => options,
+  rollCtPlacement: (input: { checks: unknown[] }, seed: string) => ({ seed, count: input.checks.length }),
+}));
 
 const config: RandomizerProfileConfig = { mode: 'local', seed: 's1', options: {} };
 
