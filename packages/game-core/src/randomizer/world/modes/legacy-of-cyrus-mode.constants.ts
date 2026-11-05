@@ -33,6 +33,7 @@ const LEGACY_OF_CYRUS_MODE: CtModeDef = {
   goal: 'beat-ozzie',
   goalEvent: 'beat-ozzie',
   excludeDroppedTreasure: true,
+  requiredCharacters: ['frog'],
   implemented: true,
 };
 

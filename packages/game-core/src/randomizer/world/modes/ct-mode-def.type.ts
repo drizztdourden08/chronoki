@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind type */
 import type { CtRule } from '../ct-region-spec.type';
 import type { CtOptionValues } from '../ct-world-input.type';
-import type { CtEra, CtEventId, CtKeyItem, CtRegionId, CtSpotId } from '../ct-world-keys.type';
+import type { CtCharacter, CtEra, CtEventId, CtKeyItem, CtRegionId, CtSpotId } from '../ct-world-keys.type';
 
 type CtModeId = 'standard' | 'lost-worlds' | 'legacy-of-cyrus' | 'ice-age' | 'vanilla-rando';
 
@@ -42,6 +42,7 @@ type CtModeDef = {
   forcedOptions?: CtOptionValues;
   excludeDroppedTreasure?: boolean;
   startFlags?: readonly CtModeStartFlag[];
+  requiredCharacters?: readonly CtCharacter[];
 };
 
 export type {
