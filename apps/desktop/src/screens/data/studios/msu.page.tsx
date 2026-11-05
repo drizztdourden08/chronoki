@@ -2,7 +2,6 @@
 import type { ScreenMeta } from '@drizztdourden08/brock-react';
 import { MsuStudioPage } from '@drizztdourden08/brock-msu/renderer';
 import { chronokiMsuStore, chronokiMsuStudio, confirmPackDelete } from '@app/game/msu-studio';
-import type { ChronokiMsuStudioGame } from '@app/game/msu-studio';
 
 const meta: ScreenMeta = { title: 'MSU Studio', icon: 'headphones', showHeader: true, order: 1, fill: true, keywords: ['msu', 'music', 'soundtrack', 'pcm', 'tracks', 'msul', 'pack', 'optimize'] };
 
@@ -10,7 +9,7 @@ const noRefresh = (): void => undefined;
 
 const MsuPage = () => (
   <MsuStudioPage
-    game={chronokiMsuStudio as ChronokiMsuStudioGame}
+    game={chronokiMsuStudio}
     store={chronokiMsuStore()}
     onDeleteConfirm={confirmPackDelete}
     onRefresh={noRefresh}
