@@ -5,8 +5,8 @@ import { giveCtAction } from '../randomizer/give-ct-action';
 import { localRunHolder } from '../randomizer/local-run-holder';
 import { receiveLocalItem } from '../randomizer/receive-local-item';
 import { currentAppliedSeed } from '../randomizer/tracker/current-applied-seed';
+import { COLLECT_TAG } from './cheat-collect-check.constants';
 
-const COLLECT_TAG = '[cheats]';
 
 const cheatCollectCheck = (checkId: string): boolean => {
   const item = currentAppliedSeed()?.plan.items.get(checkId);

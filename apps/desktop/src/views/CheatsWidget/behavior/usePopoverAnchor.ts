@@ -1,8 +1,8 @@
 /* @layer renderer-widgets @kind hook */
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
+import type { PopoverAnchor } from './popover-anchor.type';
 
-type PopoverAnchor<K extends string> = { kind: K; anchor: HTMLElement } | null;
 
 const usePopoverAnchor = <K extends string>() => {
   const [open, setOpen] = useState<PopoverAnchor<K>>(null);

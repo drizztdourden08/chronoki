@@ -11,9 +11,9 @@ const CheckEntry = ({ row, onResult }: CheckEntryProps) => {
     <Inline gap="sm" justify="between" align="center">
       <Stack gap="xs">
         <Text>{row.name}</Text>
-        <Text size="sm">{row.item}</Text>
+        <Text variant="caption">{row.item}</Text>
       </Stack>
-      {row.done ? <Text size="sm">Done</Text> : <Button size="sm" onClick={() => onResult(cheatCollectCheck(row.id))} {...hint}>Collect</Button>}
+      {row.done ? <Text variant="caption">Done</Text> : <Button size="sm" onClick={() => onResult(cheatCollectCheck(row.id))} {...hint}>Collect</Button>}
     </Inline>
   );
 };

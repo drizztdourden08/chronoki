@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import { SHEET_BASE, SHEET_COUNT, SHEET_STRIDE } from '../game-info/wram-map.constants';
 import { STAT_CAPS, STAT_OFFSETS } from './set-sheet-stat.constants';
-import type { SheetStat } from './set-sheet-stat.constants';
+import type { SheetStat } from './set-sheet-stat.type';
 import type { CheatWrite } from './cheat-write.type';
 
 const setSheetStat = (write: CheatWrite, id: number, stat: SheetStat, value: number): boolean => {
