@@ -7,6 +7,7 @@ interface CkSettings {
   widescreen: CkWidescreen;
   wideWidth: number;
   tallLines: number;
+  cameraLock: boolean;
   renderScale: number;
   interpolation: boolean;
   steamMargins: boolean;

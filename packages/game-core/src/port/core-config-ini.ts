@@ -17,6 +17,9 @@ const tallLine = (s: CkSettings): string[] => (s.tallLines > 0 ? [`tall_lines=${
 
 const wideLine = (s: CkSettings): string[] => (s.widescreen === 'off' ? [] : [`wide_width=${s.wideWidth}`]);
 
+const lockLine = (s: CkSettings): string[] =>
+  s.tallLines > 0 || s.widescreen !== 'off' ? [`camera_lock=${flag(s.cameraLock)}`] : [];
+
 const videoLines = (s: CkSettings): string[] => [
   '[video]',
   'backend=sdl',
@@ -28,6 +31,7 @@ const videoLines = (s: CkSettings): string[] => [
   `widescreen=${s.widescreen}`,
   ...wideLine(s),
   ...tallLine(s),
+  ...lockLine(s),
   `steam_margins=${flag(s.steamMargins)}`,
   `fill_bottom_lines=${flag(s.fillBottomLines)}`,
   `scene_adjustments=${flag(s.sceneAdjustments)}`,

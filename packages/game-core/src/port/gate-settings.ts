@@ -19,6 +19,7 @@ const gateSettings = (
     widescreen: wide ? '16:9' : 'off',
     wideWidth: wide ? width : 0,
     tallLines: tall ? lines : 0,
+    cameraLock: effective.has('cameraLock'),
     renderScale: effective.has('renderScale') ? options.renderScale : 1,
     interpolation: effective.has('interpolate'),
     steamMargins: effective.has('wideSteamMargins'),
