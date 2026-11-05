@@ -27,9 +27,9 @@ describe('planTabNameEdits', { tags: ['critical'] }, () => {
       edited[edit.at] = edit.next;
     });
     const nameOf = (id: number): number[] => Array.from(edited.slice(28 + NAME_AT + id * NAME_RECORD_BYTES + 1, 28 + NAME_AT + (id + 1) * NAME_RECORD_BYTES));
-    expect(nameOf(0xcd)).toEqual(encodeItemName('PowerTab+3'));
-    expect(nameOf(0xce)).toEqual(encodeItemName('MagicTab+2'));
-    expect(nameOf(0xcf)).toEqual(encodeItemName('SpeedTab+9'));
+    expect(nameOf(0xcd)).toEqual(encodeItemName('PowerTab 3'));
+    expect(nameOf(0xce)).toEqual(encodeItemName('MagicTab 2'));
+    expect(nameOf(0xcf)).toEqual(encodeItemName('SpeedTab 9'));
     expect(edited[28 + NAME_AT + 0xcd * NAME_RECORD_BYTES]).toBe(0xef);
   });
 
