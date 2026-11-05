@@ -4,18 +4,21 @@ import { join } from 'node:path';
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-const bootEngine = async (wasmDir, packBytes) => {
+const DEFAULT_INI = '[game]\nrandomizer = 1\n';
+
+const bootEngine = async (wasmDir, packBytes, { ini = DEFAULT_INI, env = {}, onErr = () => {} } = {}) => {
   const lines = [];
   const state = { stopped: null };
   const options = {
     print: (line) => lines.push(line),
-    printErr: () => {},
+    printErr: onErr,
     onExit: (code) => { state.stopped = code ?? 0; },
     onAbort: (why) => { state.stopped = `abort ${why}`; },
     preRun: [() => {
       options.FS.writeFile('/ct_assets.dat', packBytes);
-      options.FS.writeFile('/ct_settings.ini', '[game]\nrandomizer = 1\n');
+      options.FS.writeFile('/ct_settings.ini', ini);
       options.FS.mkdir('/saves');
+      Object.assign(options.ENV, env);
     }],
   };
   const core = await createRequire(import.meta.url)(join(wasmDir, 'chronoki.js'))(options);
