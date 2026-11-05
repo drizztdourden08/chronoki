@@ -42,6 +42,8 @@ EMSCRIPTEN_KEEPALIVE int CkViewBlackBottom(void) { return ck_view_black(1); }
 EMSCRIPTEN_KEEPALIVE int CkViewBlackLeft(void) { return ck_view_black(2); }
 EMSCRIPTEN_KEEPALIVE int CkViewBlackRight(void) { return ck_view_black(3); }
 EMSCRIPTEN_KEEPALIVE int CkViewScene(void) { return ck_view_scene(); }
+EMSCRIPTEN_KEEPALIVE int CkViewOriginX(void) { return ck_view_origin(0); }
+EMSCRIPTEN_KEEPALIVE int CkViewOriginY(void) { return ck_view_origin(1); }
 /* The Edge Effect's environment picture (reconnect/edge_env_reconnect.c): CkSetEdgeEnv(1) while the host's effect draws,
    (0) when it stops. CkEnvValid is 1 when the frame shown last has one: RGBA at CkEnvPtr, CkEnvWidth x CkEnvHeight (the 1x
    picture, CkViewWidth x CkViewHeight); 0 = use the frame itself. */

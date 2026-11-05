@@ -37,6 +37,8 @@ export { createEdgeGlowRenderer } from './edge-glow/renderer';
 export type { EdgeGlowRenderer } from './edge-glow/edge-glow.type';
 export { viewBlackOf } from './port/view-black-of';
 export type { CkCanvasSize, CkViewBlack, CkViewCalls } from './port/view-black.type';
+export { viewOriginOf } from './port/view-origin-of';
+export type { CkViewOrigin } from './port/view-origin.type';
 export { envFrameOf } from './port/env-frame-of';
 export { setEdgeEnv } from './port/set-edge-env';
 export type { CkEnvCalls, CkEnvFrame } from './port/env-frame.type';
