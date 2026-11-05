@@ -1,6 +1,7 @@
 /* @layer renderer-app @kind logic */
-import type { CaptureSummary } from '@app/bug-report/debug-capture/debug-capture.type';
+import { formatDate } from '@drizztdourden08/tessera/primitives';
+import type { DebugCaptureSessionSummary } from '@app/debug-report';
 
-const recordingName = (session: CaptureSummary): string => new Date(session.startedAt).toLocaleString();
+const recordingName = (session: DebugCaptureSessionSummary): string => formatDate(session.startedAt, 'datetime');
 
 export { recordingName };
