@@ -1,9 +1,8 @@
 /* @layer renderer-lib @kind logic */
-import { createSpriteStore, spriteDigestOf } from '@drizztdourden08/brock-port-kit';
+import { createSpriteStore } from '@drizztdourden08/brock-port-kit';
 import { partySpriteDir } from './party-sprite-dir';
+import { partySpritesDigest } from './party-sprites-digest';
 import { PARTY_SPRITE_NAMES } from './sprites-store.constants';
-
-const partySpritesDigest = (): string => spriteDigestOf(PARTY_SPRITE_NAMES);
 
 const manifestOfReceipt = (text: string | null): string | null => {
   if (!text) return null;
@@ -25,4 +24,4 @@ const partySpriteStore = createSpriteStore({
   },
 });
 
-export { partySpriteStore, partySpritesDigest };
+export { partySpriteStore };

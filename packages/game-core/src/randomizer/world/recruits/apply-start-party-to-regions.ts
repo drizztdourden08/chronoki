@@ -7,7 +7,7 @@ import { CT_RECRUIT_ORDER, CT_RECRUITS } from './ct-recruits.constants';
 const recruitEventsOf = (spec: CtRegionSpec, party: CtStartParty): CtEventSpec[] =>
   CT_RECRUIT_ORDER.flatMap((id): CtEventSpec[] => {
     const recruit = CT_RECRUITS[id];
-    if (party.includes(id) || recruit === null || recruit.region !== spec.id) return [];
+    if (party.includes(id) || recruit?.region !== spec.id) return [];
     return [recruit.rule === undefined ? { id } : { id, rule: recruit.rule }];
   });
 

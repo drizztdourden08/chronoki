@@ -21,7 +21,7 @@ const fakePack = (skip?: { type: number; id: number }): Uint8Array => {
       [T_SPRITE, spriteBlob()],
       [T_SPRITEANIM, Uint8Array.from([1, 1, 0, 0, 0, 0, 4])],
     ];
-    for (const [type, blob] of parts) if (!skip || skip.type !== type || skip.id !== id) builder.add(type, id, blob);
+    for (const [type, blob] of parts) if (skip?.type !== type || skip.id !== id) builder.add(type, id, blob);
   }
   return builder.build();
 };
@@ -29,7 +29,7 @@ const fakePack = (skip?: { type: number; id: number }): Uint8Array => {
 const stubCanvas = (): void => {
   vi.stubGlobal('OffscreenCanvas', class {
     getContext = () => ({ putImageData: () => undefined });
-    convertToBlob = async () => new Blob([Uint8Array.from([137, 80, 78, 71])]);
+    convertToBlob = () => Promise.resolve(new Blob([Uint8Array.from([137, 80, 78, 71])]));
   });
   vi.stubGlobal('ImageData', class {
     constructor(public data: Uint8ClampedArray, public width: number, public height: number) {}

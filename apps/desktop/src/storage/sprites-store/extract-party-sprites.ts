@@ -6,10 +6,8 @@ import { runImportJob } from '../import-job';
 import { platformFiles } from '../platform-files';
 import { romStoreOf } from '../rom-files';
 import { partySpriteStore } from './party-sprite-store';
-import { PARTY_SPRITE_SUBDIR } from './sprites-store.constants';
+import { PREFIX } from './extract-party-sprites.constants';
 import type { PartySpritesResult } from './sprites-store.type';
-
-const PREFIX = `${PARTY_SPRITE_SUBDIR}/`;
 
 const withoutPrefix = (buffers: SpriteBuffer[]): SpriteBuffer[] =>
   buffers.map(({ name, bytes }) => ({ name: name.startsWith(PREFIX) ? name.slice(PREFIX.length) : name, bytes }));
