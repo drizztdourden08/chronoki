@@ -130,6 +130,11 @@ const sections: Section[] = [
     ],
   },
   {
+    id: 'tracker',
+    title: 'Tracker',
+    items: [gateItem('trackerEnabled')],
+  },
+  {
     id: 'cheats',
     title: 'Cheats',
     items: [gateItem('cheatsEnabled')],

@@ -44,6 +44,11 @@ const HOST_FEATURES: FeatureDef[] = [
     group: 'Audio', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: true, live: true,
   },
   {
+    id: 'trackerEnabled', label: 'Enable Checks Tracker', description: 'Turning this off stops the checks tracker updating.',
+    userMessage: 'Turning this off stops the checks tracker updating.',
+    group: 'Quality of life', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: false, live: true,
+  },
+  {
     id: 'gameInfo', label: 'Game Info widget',
     description: 'Reads location, party, gold, time and story progress from the running game for the Game Info widget.',
     userMessage: 'Read only: it never changes what the game computes. Off in Vanilla Safe.',
