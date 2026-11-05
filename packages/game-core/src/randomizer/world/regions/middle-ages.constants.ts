@@ -20,7 +20,7 @@ const MIDDLE_AGES: CtRegionSpec = {
     { id: 'ki-frogs-burrow', name: "Frog's Burrow (Hero Medal chest)", rule: has('hero-medal') },
     { id: 'ki-sunken-desert', name: 'Sunken Desert', rule: has('robo') },
   ],
-  events: [{ id: 'frog' }, { id: 'lucca' }],
+  events: [],
   maps: [
     0x075, 0x077, 0x078, 0x07a, 0x081, 0x087, 0x08d, 0x08f, 0x095, 0x097, 0x09a, 0x09d, 0x09e, 0x0a1, 0x0bc, 0x0c2,
     0x0c6, 0x0c7, 0x1e0,

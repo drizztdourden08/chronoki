@@ -2,7 +2,7 @@
 import { CT_KIT } from '../ct-kit.constants';
 import type { CtRegionSpec } from '../ct-region-spec.type';
 
-const { all, has, option, region, when } = CT_KIT;
+const { all, has } = CT_KIT;
 
 const FUTURE: CtRegionSpec = {
   id: 'future',
@@ -14,7 +14,7 @@ const FUTURE: CtRegionSpec = {
     { id: 'ki-sun-palace', name: 'Sun Palace' },
     { id: 'ki-geno-dome', name: 'Geno Dome' },
   ],
-  events: [{ id: 'robo', rule: when(option('lockedCharacters', true), region('future'), all()) }],
+  events: [],
   maps: [
     0x07e, 0x0d0, 0x0d2, 0x0d3, 0x0d6, 0x0d9, 0x0da, 0x0db, 0x0dc, 0x0e2, 0x0e3, 0x0e6, 0x0f2, 0x0f3, 0x0fb, 0x10c,
   ],

@@ -2,7 +2,7 @@
 import { CT_KIT } from '../ct-kit.constants';
 import type { CtRegionSpec } from '../ct-region-spec.type';
 
-const { all, has, option, when } = CT_KIT;
+const { has } = CT_KIT;
 
 const PREHISTORY: CtRegionSpec = {
   id: 'prehistory',
@@ -10,7 +10,7 @@ const PREHISTORY: CtRegionSpec = {
   era: 'prehistory',
   exits: [{ to: 'end-of-time' }, { to: 'tyrano-lair', rule: has('dreamstone') }],
   spots: [{ id: 'ki-reptite-lair', name: 'Reptite Lair' }],
-  events: [{ id: 'ayla', rule: when(option('lockedCharacters', true), has('dreamstone'), all()) }],
+  events: [],
   maps: [0x110, 0x112, 0x115, 0x121, 0x124, 0x126, 0x127],
 };
 
