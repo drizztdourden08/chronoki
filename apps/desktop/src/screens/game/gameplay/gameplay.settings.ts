@@ -6,7 +6,7 @@ const meta: ScreenMeta = {
   title: 'Gameplay',
   icon: 'gamepad-2',
   order: 1,
-  keywords: ['gameplay', 'vanilla safe', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward', 'randomizer', 'seed'],
+  keywords: ['gameplay', 'vanilla safe', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward'],
 };
 
 const asSeconds = (value: number): string => `${value} s`;
@@ -58,11 +58,6 @@ const sections: Section[] = [
             control: { kind: 'range', min: 1, max: 5, step: 0.5, format: asSeconds },
           },
         ],
-      },
-      {
-        id: 'randomizer',
-        title: 'Randomizer',
-        items: [gateItem('randomizer')],
       },
       {
         id: 'turbo',
