@@ -63,7 +63,7 @@ describe('legacy Crono + Marle party', { tags: ['critical'] }, () => {
   it('gives the same placement as the pre-party world for fixed seeds', () => {
     const options = { partyMode: 'custom', startingParty: 'crono,marle' };
     for (const seed of SEEDS) {
-      const before = generate(createCtWorldGame(inputOf(options)), { seed });
+      const before = generate(createCtWorldGame({ ...inputOf(options), fillerSeed: seed }), { seed });
       const after = rollCtPlacement(inputOf(options), seed);
       expect(after.locations).toEqual(before.locations);
       expect(after.spheres).toEqual(before.spheres);

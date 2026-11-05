@@ -6,7 +6,9 @@ import { readPackEntries } from '../../checks/read-pack-entries';
 import type { PackEntry } from '../../checks/read-pack-entries.type';
 import type { Mismatch } from './readback.type';
 
-const giftMismatch = (pack: Uint8Array, id: string, expected: number, spots: number[], script?: PackEntry): Mismatch[] => {
+type GiftProbe = { id: string; expected: number; spots: number[]; script?: PackEntry };
+
+const giftMismatch = (pack: Uint8Array, { id, expected, spots, script }: GiftProbe): Mismatch[] => {
   if (!script || spots.length === 0) return [{ kind: 'gift', location: id, expected, actual: null, address: -1 }];
   const wrong = spots.map((p) => script.start + p).find((at) => pack[at] !== expected);
   if (wrong === undefined) return [];
@@ -21,7 +23,7 @@ const compareGifts = (pack: Uint8Array, placed: Placement, checks: readonly Chec
     .flatMap(([id, expected]) => {
       const check = byId.get(id);
       const script = check?.scriptId === undefined ? undefined : scripts.get(check.scriptId);
-      return giftMismatch(pack, id, expected, check?.patchAt ?? [], script);
+      return giftMismatch(pack, { id, expected, spots: check?.patchAt ?? [], script });
     });
 };
 

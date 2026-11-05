@@ -22,7 +22,7 @@ const walkBlock = (block: Uint8Array): ScriptOp[] => {
 };
 
 const sameOp = (want: Uint8Array, got?: Uint8Array): boolean =>
-  got !== undefined && got.length === want.length && want.every((byte, k) => byte === got[k]);
+  got?.length === want.length && want.every((byte, k) => byte === got[k]);
 
 const isPoke = (op?: Uint8Array): boolean => op?.[0] === OP_POKE_BYTE || op?.[0] === OP_POKE_WORD;
 
