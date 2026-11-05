@@ -7,7 +7,6 @@ const PARTY_PICKER_LABELS = {
   active: 'Active',
   reserve: 'Reserve',
   lead: 'lead',
-  experimental: 'experimental',
   note: 'Their recruit scenes are skipped. Starters keep their default names.',
 } as const;
 

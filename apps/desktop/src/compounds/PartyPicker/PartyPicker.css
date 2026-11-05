@@ -12,68 +12,10 @@
   color: var(--c-text-muted);
 }
 
-.party-picker__tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(calc(5 * var(--text-base)), 1fr));
-  gap: var(--space-xs);
-}
-
 .party-picker__bar {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-}
-
-.party-tile {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2xs);
-  padding: var(--space-xs);
-  border: var(--border-width-thin) solid var(--c-border);
-  border-radius: var(--radius-sm);
-}
-
-.party-tile:hover:not(:disabled),
-.party-tile:focus-visible {
-  background: var(--c-hover);
-  outline: none;
-}
-
-.party-tile--picked {
-  background: var(--c-selected);
-  border-color: var(--c-primary);
-}
-
-.party-tile__badge {
-  position: absolute;
-  top: var(--space-2xs);
-  left: var(--space-2xs);
-}
-
-.party-tile__badge--active {
-  background: var(--c-warning);
-  color: var(--c-on-warning);
-}
-
-.party-tile__badge--reserve {
-  background: var(--c-sunken);
-  color: var(--c-text-muted);
-}
-
-.party-tile__thumb {
-  width: calc(2.75 * var(--text-base));
-  height: calc(2.75 * var(--text-base));
-}
-
-.party-tile__label {
-  font-size: var(--text-xs);
-}
-
-.party-tile__note {
-  font-size: var(--text-xs);
-  color: var(--c-text-faint);
 }
 
 .party-slots {

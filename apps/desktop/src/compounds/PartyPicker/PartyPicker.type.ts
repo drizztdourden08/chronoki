@@ -8,18 +8,10 @@ interface PartyPickerProps {
   spriteUrlOf?: (id: CtCharacter) => string | null;
 }
 
-interface PartyTileProps {
-  id: CtCharacter;
-  slot: number;
-  disabled: boolean;
-  spriteUrl: string | null;
-  onToggle: (id: CtCharacter) => void;
-}
-
 interface PartySlotGroupProps {
   title: string;
   members: readonly CtCharacter[];
   offset: number;
 }
 
-export type { PartyPickerProps, PartySlotGroupProps, PartyTileProps };
+export type { PartyPickerProps, PartySlotGroupProps };
