@@ -31,6 +31,14 @@ static const uint8_t* ckDupNamePrefill(const uint8_t* s7, int id) {
   for (; i < 6; i++) rec[i] = 0;
   return rec;
 }
+/* [chronoki] duplicate characters: the trimmed name \`st\` is the kind's default name of a slot shown as another kind, so the
+   naming screen's duplicate check (C2/E3E0) lets it stand (a second Crono keeps "Crono"); any other clash is still refused. */
+static int ckDupNameIsKindDefault(const uint8_t* s7, int id, const uint8_t* st) {
+  if (!ckKindDefaultName(s7, id)) return 0;
+  const uint8_t* d = ckDupNamePrefill(s7, id);
+  for (int i = 0; i < 5; i++) { if (st[i] != d[i]) return 0; if (st[i] == 0x00) return 1; }
+  return 1;
+}
 `;
 const STRIP_MARK = "// ---- Strip's visible band (disasm/notes/battle_hud_band_anim.md) ----\n";
 
@@ -60,6 +68,29 @@ const FIELD_PATCHES = [
   [STRIP_MARK, `${NAME_PREFILL}\n${STRIP_MARK}`, 1],
   ['memcpy(nmCt, s7 + 0x2C23 + menuNameId * 6, 6);',
     'memcpy(nmCt, ck_dup_chars() ? ckDupNamePrefill(s7, menuNameId) : s7 + 0x2C23 + menuNameId * 6, 6);', 1],
+  // Names: the commit's duplicate check (C2/E3E0) refuses a name another record holds; a slot shown as another kind may
+  // keep its kind's default name (ckDupNameIsKindDefault). Gate off: the check as it is.
+  ['if (dup) nameSfx(s7, 0x01, "reject-duplicate");',
+    'if (ck_dup_chars() && dup && ckDupNameIsKindDefault(s7, menuNameId, st)) dup = 0;   /* [chronoki] duplicate characters */\n'
+      + '                if (dup) nameSfx(s7, 0x01, "reject-duplicate");', 1],
+  // F7 (I-115 follow-up): the battle PC attack render's Crono swing (battleAttackRender) and Marle crossbow
+  // (battleMarleAttackRender) are drawn for combatants 0 and 1; under the gate, for the attacking seat (whose kind
+  // battle.c's battleSkeleton and F1/F3/F4 already checked), and the stance layer skips only that seat.
+  ['if (ladderPose < 0 && charId == 0 && cronoAtk) continue;',
+    'if (ladderPose < 0 && charId == 0 && cronoAtk && (!ck_dup_chars() || seat == h->actAttacker)) continue;', 1],
+  ['if (ladderPose < 0 && charId == 1 && marleAtk) continue;',
+    'if (ladderPose < 0 && charId == 1 && marleAtk && (!ck_dup_chars() || seat == h->actAttacker)) continue;', 1],
+  ['  if (BATTLE_ZSKIP(0)) return;',
+    '  int ckAs = (ck_dup_chars() && h->actAttacker >= 0 && h->actAttacker < 3) ? h->actAttacker : 0;   /* [chronoki] duplicate characters: the swinging seat */\n'
+      + '  if (BATTLE_ZSKIP(ckAs)) return;', 1],
+  ['    footX = BT_LIVEX(h, 0);\n    footY = BT_LIVEY(h, 0);\n',
+    '    footX = BT_LIVEX(h, ckAs);\n    footY = BT_LIVEY(h, ckAs);\n', 1],
+  ['battlePcAnchorDelta(mem, 0, CT_EXT_CRONO_X', 'battlePcAnchorDelta(mem, ckAs, CT_EXT_CRONO_X', 1],
+  ['CtBattlePcFacing(mem, h, 0)', 'CtBattlePcFacing(mem, h, ckAs)', 2],
+  ['  if (BATTLE_ZSKIP(1)) return;',
+    '  int ckMs = (ck_dup_chars() && h->actAttacker >= 0 && h->actAttacker < 3) ? h->actAttacker : 1;   /* [chronoki] duplicate characters: the firing seat */\n'
+      + '  if (BATTLE_ZSKIP(ckMs)) return;', 1],
+  ['battlePcAnchorDelta(mem, 1, CT_EXT_MARLE_X', 'battlePcAnchorDelta(mem, ckMs, CT_EXT_MARLE_X', 1],
 ];
 
 const WORLD_PATCHES = [

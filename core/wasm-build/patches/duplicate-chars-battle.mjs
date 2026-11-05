@@ -129,6 +129,11 @@ const BATTLE_PATCHES = [
   ['int charId = s[0x2980 + seat] & 7;', `int charId = (${D} ? ckBtKindOf(s, s[0x2980 + seat]) : s[0x2980 + seat]) & 7;`, 1],
   // B13 the reserve XP: "not in the fight" = the slot is not in the party bytes
   ['!(s[0xB1BE + id] & 0x80)', `(${D} ? ckBtSeatedSlot(s, id) : !(s[0xB1BE + id] & 0x80))`, 1],
+  // B20 (I-115 follow-up) battleSkeleton: the ROM-free swing ladder (fxAtkPose / critAnim, drawn by field.c
+  // battleAttackRender) is published for seat 0 only; under the gate for any seat whose kind is Crono (field.c F7 draws it
+  // at that seat). The ROM-free walker (battlePcAtkArm) stays seat 0's: elsewhere the swing is planted (the fixed table).
+  ['  if (h->actAttacker != 0) return;',
+    `  if (${D} ? (h->actAttacker < 0 || h->actAttacker >= 3 || ckBtKindOf(h->mem, h->mem[0x2980 + h->actAttacker]) != 0) : h->actAttacker != 0) return;`, 1],
 ];
 
 const MOVE_PATCHES = [
