@@ -4,6 +4,7 @@ import { bossAssignmentOf } from '../apply/boss-rando/boss-assignment-of';
 import { elementAssignmentOf } from '../apply/element-rando/element-assignment-of';
 import { fitStartParty } from '../apply/start-state/fit-start-party';
 import { objectiveRowsOf } from './bucket/objective-rows-of';
+import { assertUnboundSpotsVanilla } from './assert-unbound-spots-vanilla';
 import { createCtWorldGame } from './create-ct-world-game';
 import type { CtPlacement } from './ct-placement.type';
 import type { CtWorldInput } from './ct-world-input.type';
@@ -22,8 +23,10 @@ const rollCtPlacement = (rawInput: CtWorldInput, seed: string): CtPlacement => {
   const elements = elementAssignmentOf(options, seed);
   const objectives = objectiveRowsOf(options, seed, startParty);
   const game = createCtWorldGame({ ...input, startParty, fillerSeed: seed, ...(characters === undefined ? {} : { characters }) });
+  const rolled = generate(game, { seed });
+  assertUnboundSpotsVanilla(rolled.locations, input.checks);
   return {
-    ...generate(game, { seed }),
+    ...rolled,
     startParty,
     ...(bosses === undefined ? {} : { bosses }),
     ...(characters === undefined ? {} : { characters }),
