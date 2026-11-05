@@ -10,6 +10,7 @@ import { heldOfView } from './held-of-view';
 import { eraLabelOf } from './era-label-of';
 import { locationNameOf } from './location-name-of';
 import { trackerWorldInput } from './tracker-world-input';
+import { vanillaOf } from './vanilla-of';
 import { worldKeyOf } from './world-key-of';
 import { ERA_GROUPING_ID, TRACKER_GROUPINGS } from './tracker.constants';
 
@@ -18,7 +19,7 @@ const baseOf = (placement?: CtPlacement) => trackerFromDef(createCtWorldDef(trac
 const chronokiTracker: TrackerProvider<CtPlacement> = {
   world: (input) => baseOf(input.placement).world(input),
   worldKey: (input) => worldKeyOf(input.placement),
-  vanilla: () => baseOf().vanilla?.() as CtPlacement,
+  vanilla: () => vanillaOf(() => baseOf().vanilla?.() as CtPlacement | undefined),
   sphereOf: (placement) => baseOf(placement).sphereOf?.(placement) ?? new Map<string, number>(),
   get checks() {
     return currentPollEntries();
