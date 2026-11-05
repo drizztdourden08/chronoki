@@ -32,7 +32,7 @@ const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_
         goalLogged = true;
         appRandomizerLog(GOAL_REACHED_LOG);
       }
-      checkPoll.poll(view, started);
+      checkPoll.poll(view, started && newGame);
     },
     goalReached: (): boolean => mode.goalReached(),
     reset: (): void => {
