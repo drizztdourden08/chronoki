@@ -1,6 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { CharacterAssignment } from '../../world/recruits/character-assignment.type';
-import { CHARACTER_RANDO_SPOTS } from '../../world/recruits/character-rando.constants';
+import { CHARACTER_KINDS } from '../../world/recruits/character-rando.constants';
 import type { EditPlan, PackEdit } from '../apply-seed.type';
 import { createRomSpace } from '../tech-order/create-rom-space';
 import { namedTableOf } from '../tech-order/named-table-of';
@@ -24,7 +24,7 @@ const planDuplicateRecordEdits = (pack: Uint8Array, assignment: CharacterAssignm
   const rom = createRomSpace(pack).read;
   const edits: PackEdit[] = [];
   const failed: string[] = [];
-  CHARACTER_RANDO_SPOTS.forEach((spot) => {
+  CHARACTER_KINDS.forEach((spot) => {
     const kind = assignment[spot] ?? spot;
     const slot = CHARACTER_IDS[spot];
     if (kind === spot) return;
