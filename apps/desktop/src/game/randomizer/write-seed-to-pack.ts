@@ -1,6 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { RandomizerOptions } from '@drizztdourden08/brock-randomizer';
-import type { CheckDef, CtOptionValues, CtPlacement, ItemDifficulty, ScriptSplice } from '@chronoki/game-core';
+import type { CheckDef, CtPlacement, ItemDifficulty, ScriptSplice } from '@chronoki/game-core';
 import { START_STATES, applySeedToPack, modeOf, planPackPlacement, planStartState } from '@chronoki/game-core';
 import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
 import { REFUSED_SAMPLE } from './chronoki-randomizer.constants';
@@ -8,14 +8,16 @@ import { localRunHolder } from './local-run-holder';
 import type { SeededAssets } from './seeded-assets.type';
 
 const splicesOf = (options: RandomizerOptions): ScriptSplice[] => {
-  const state = START_STATES[modeOf(options as CtOptionValues).startState];
+  const state = START_STATES[modeOf(options).startState];
   if (state === undefined) throw new Error('This game mode has no start state yet.');
   return [planStartState(state)];
 };
 
-const writeSeedToPack = (
-  profileId: string, placement: CtPlacement, checks: readonly CheckDef[], assets: Uint8Array, options: RandomizerOptions,
-): SeededAssets => {
+type WriteSeedInput = {
+  profileId: string; placement: CtPlacement; checks: readonly CheckDef[]; assets: Uint8Array; options: RandomizerOptions;
+};
+
+const writeSeedToPack = ({ profileId, placement, checks, assets, options }: WriteSeedInput): SeededAssets => {
   const plan = planPackPlacement(placement, checks);
   let splices: ScriptSplice[];
   try {

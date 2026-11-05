@@ -5,8 +5,7 @@ import type { CtFlagBit, CtStartState } from '../apply/start-state/ct-start-stat
 import { INTRO_WORLD } from '../apply/start-state/start-block.constants';
 import { CT_WRAM_REGION } from '../memory/ct-memory.constants';
 import { WRAM_CPU_BASE } from './session.constants';
-
-type StartStateCheck = { read(view: MemoryView): string; settled(view: MemoryView): boolean };
+import type { StartStateCheck } from './create-start-state-check.type';
 
 const locationOf = (view: MemoryView): number => view.word(CT_WRAM_REGION, LOCATION_ID) & LOCATION_MASK;
 

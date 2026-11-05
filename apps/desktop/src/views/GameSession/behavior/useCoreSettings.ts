@@ -14,6 +14,7 @@ import { useSteamDataImported } from '@app/settings-controls/useSteamDataImporte
 import { useVolumeScaleMigration } from '@app/settings-controls/useVolumeScaleMigration';
 import { useWindowModeReset } from '@app/settings-controls/useWindowModeReset';
 import type { AppSettings } from '@app/settings.type';
+import { disableGlitchesOf } from './disable-glitches-of';
 import { displayInputsOf } from './display-inputs-of';
 import type { CoreSettings } from './useCoreSettings.type';
 
@@ -30,7 +31,7 @@ const useCoreSettings = (stageArea: CkArea | null, profile: Profile | null = nul
   const areaW = planned?.width ?? 0;
   const areaH = planned?.height ?? 0;
   const randomizer = profile?.randomizer !== undefined;
-  const disableGlitches = randomizer && profile?.randomizer?.options.disableGlitches === true;
+  const disableGlitches = disableGlitchesOf(profile);
   return useMemo(() => {
     const satisfied = steamSatisfied(steamData);
     const { effective } = resolveGates(gates, { vanillaSafe, packaged: isPackaged(), satisfied });
