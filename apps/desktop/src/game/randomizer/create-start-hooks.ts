@@ -11,14 +11,16 @@ import { GOAL_REACHED_LOG } from './chronoki-poll-hooks.constants';
 import { createStartCheckPoll } from './create-start-check-poll';
 import type { StartHooks } from './start-hooks.type';
 
-const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_PARTY): StartHooks => {
+const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_PARTY, seed?: string): StartHooks => {
   const grant = options.itemDifficulty === 'hard'
     ? createStartGoldGrant(createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge), HARD_START_GOLD)
     : null;
   const magic = options.unlockedMagic === true
     ? createStartMagicGrant(createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge))
     : null;
-  const mode = createModeHooks(options, createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge));
+  const mode = createModeHooks(options, createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge), {
+    seed, party, log: appRandomizerLog,
+  });
   const checkPoll = createStartCheckPoll(createOptionsStartCheck(options, party));
   let goalLogged = false;
   return {

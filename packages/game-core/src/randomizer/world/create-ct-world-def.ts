@@ -1,5 +1,8 @@
 /* @layer bridge-wasm @kind logic */
-import type { GameWorldDef, ItemRule } from '@drizztdourden08/brock-randomizer/world';
+import type { GameWorldDef } from '@drizztdourden08/brock-randomizer/world';
+import { applyBucketToRegions } from './bucket/apply-bucket-to-regions';
+import { bucketCountsOf } from './bucket/bucket-counts-of';
+import { objectivesOf } from './bucket/objectives-of';
 import { goalOf } from './goal-of';
 import { CT_HELPERS } from './ct-helpers.constants';
 import { ctOptionValues } from './ct-option-values';
@@ -17,19 +20,25 @@ import { poolFillerOf } from './pool-filler-of';
 import { ruleMapsOfRegions } from './rule-maps-of-regions';
 import { sealedRulesOf } from './sealed-rules-of';
 import { keyItemsOf } from './epoch-fail/key-items-of';
-import { treasureOnly } from './treasure-only';
+import { pinRoboRibbon } from './pin-robo-ribbon';
+import { treasureItemRulesOf } from './treasure-item-rules-of';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const mode = modeOf(input.options);
   const options = ctOptionValues({ ...input.options, ...mode.forcedOptions });
   const epochFail = options.epochFail === true;
   const moded = applyModeToRegions(CT_REGIONS, mode);
-  const specs = applyStartPartyToRegions(
-    epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, input.startParty ?? LEGACY_PARTY,
+  const party = input.startParty ?? LEGACY_PARTY;
+  const partied = applyStartPartyToRegions(
+    epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, party, input.characters,
   );
-  const { regions, treasure } = joinCtChecks(input, specs, mode.excludeDroppedTreasure === true);
+  const objectives = objectivesOf(input.options, input.fillerSeed ?? '', party);
+  const specs = applyBucketToRegions(partied, objectives, bucketCountsOf(options, objectives.length).needed);
+  const vanillaRoboRibbon = options.vanillaRoboRibbon === true;
+  const joinInput = vanillaRoboRibbon ? { ...input, checks: pinRoboRibbon(input.checks) } : input;
+  const { regions, treasure } = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true);
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
-  const keyItems = keyItemsOf(mode, epochFail);
+  const keyItems = keyItemsOf(mode, epochFail, vanillaRoboRibbon);
   const rest = treasure.flatMap((location): CtItem[] =>
     (location.vanillaItem === undefined ? [] : [location.vanillaItem]));
   return {
@@ -43,13 +52,16 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     exitRules,
     locationRules: sealedRulesOf(spotRules, treasure, input.sealedCheckIds),
     eventRules,
-    itemRules: new Map(treasure.map((location): [string, ItemRule<CtWorldKeys>] => [location.key, treasureOnly])),
+    itemRules: treasureItemRulesOf(treasure, options.chronosanity === true),
     helpers: CT_HELPERS,
     options: () => options,
     goal: goalOf(mode.goal, mode.goalEvent),
     buildPool: () => ({
       progression: [...keyItems],
-      rest: [...rest, ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, keyItems.length, input.fillerSeed)],
+      rest: [
+        ...rest,
+        ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, keyItems.length, { seed: input.fillerSeed, tabsanity: options.tabsanity === true }),
+      ],
     }),
   };
 };

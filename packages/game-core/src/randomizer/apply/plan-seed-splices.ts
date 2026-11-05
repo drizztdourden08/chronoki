@@ -3,6 +3,7 @@ import type { CtOptionValues } from '../world/ct-world-input.type';
 import { effectiveOptionsOf } from '../world/modes/effective-options-of';
 import { modeOf } from '../world/modes/mode-of';
 import type { CtStartParty } from '../world/party/ct-party.type';
+import { planBucketSplices } from './bucket/plan-bucket-splices';
 import { MODE_SPLICERS } from './modes/mode-splicers.constants';
 import type { ScriptSplice } from './script/script-splice.type';
 import { planStartSplices } from './start-state/plan-start-splices';
@@ -14,6 +15,7 @@ const planSeedSplices = (options: CtOptionValues, party: CtStartParty): ScriptSp
   return [
     ...planStartSplices(startStateOf(effective), party),
     ...(modeSplicer === undefined ? [] : modeSplicer(effective, party)),
+    ...(effective.bucketList === true ? planBucketSplices() : []),
   ];
 };
 

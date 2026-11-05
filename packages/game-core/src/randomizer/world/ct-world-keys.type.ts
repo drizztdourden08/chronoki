@@ -13,7 +13,7 @@ type CtItem = CtKeyItem | CtTreasureItem;
 type CtCharacter = 'crono' | 'marle' | 'lucca' | 'robo' | 'frog' | 'ayla' | 'magus';
 
 type CtEventId = CtCharacter | 'masamune' | 'kings-trial-done' | 'beat-lavos'
-  | 'beat-ozzie' | 'cyrus-done' | 'beat-giga-gaia';
+  | 'beat-ozzie' | 'cyrus-done' | 'beat-giga-gaia' | `objective-${string}`;
 
 type CtEra = 'present' | 'middle-ages' | 'future' | 'prehistory' | 'dark-ages' | 'end-of-time' | 'none';
 
@@ -32,8 +32,11 @@ type CtHelperName = 'sun-stone-charged' | 'go-mode' | 'sealed-open';
 
 type CtOptionKey =
   | 'gameMode' | 'itemDifficulty' | 'enemyDifficulty' | 'disableGlitches' | 'bossScaling' | 'earlyPendantCharge'
-  | 'unlockedMagic' | 'lockedCharacters' | 'addCyrusGraveSpot' | 'addOzzieSpot'
-  | 'partyMode' | 'partySize' | 'startingParty' | 'epochFail';
+  | 'unlockedMagic' | 'lockedCharacters' | 'addCyrusGraveSpot' | 'addOzzieSpot' | 'vanillaRoboRibbon'
+  | 'partyMode' | 'partySize' | 'startingParty' | 'epochFail' | 'shopPrices' | 'tabsanity' | 'techOrder'
+  | 'chronosanity' | 'mysterySeed' | 'bossRando' | 'gearRando' | 'healingRando' | 'techDamageRando' | 'characterRando'
+  | 'elementRando' | 'bucketList' | 'objectiveCount' | 'objectivesNeeded'
+  | 'powerTabMin' | 'powerTabMax' | 'magicTabMin' | 'magicTabMax' | 'speedTabMin' | 'speedTabMax';
 
 type CtWorldKeys = {
   item: CtItem;

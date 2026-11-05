@@ -11,13 +11,15 @@ import { realignGiftChecks } from './readback/realign-gift-checks';
 import { verifyCtPlacement } from './verify-ct-placement';
 import { verifyRealInputOf } from './verify-real-input';
 import type { VerifyResult } from './verify-result.type';
+import { resolveMysteryOptions } from '../world/mystery/resolve-mystery-options';
 import { verifyStartSplicesOf } from './verify-start-splices';
 import { startStateOf } from './verify-start-state-of';
 import { VERIFY_SAMPLE } from './verify.constants';
 
 const failedWith = (base: VerifyResult, error: string): VerifyResult => ({ ...base, ok: false, error });
 
-const verifySeedEndToEnd = (pack: Uint8Array, options: CtOptionValues, party: CtStartParty, seed: string): VerifyResult => {
+const verifySeedEndToEnd = (pack: Uint8Array, rawOptions: CtOptionValues, party: CtStartParty, seed: string): VerifyResult => {
+  const options = resolveMysteryOptions(rawOptions, seed);
   const input = verifyRealInputOf(pack, options, party);
   const swept = verifyCtPlacement(input, seed);
   if (!swept.ok) return swept;
@@ -25,7 +27,7 @@ const verifySeedEndToEnd = (pack: Uint8Array, options: CtOptionValues, party: Ct
     const placement: CtPlacement = rollCtPlacement(input, seed);
     const placedParty = placement.startParty ?? party;
     const plan = planPackPlacement(placement, input.checks);
-    const written = applySeedToPack(pack, plan.pack, verifyStartSplicesOf(options, placedParty), applyOptionsOf(options, placement.spheres));
+    const written = applySeedToPack(pack, plan.pack, verifyStartSplicesOf(options, placedParty), applyOptionsOf(options, placement.spheres, seed));
     if (!written.ok) return failedWith(swept, `apply refused ${written.failed.length}: ${written.failed.slice(0, VERIFY_SAMPLE).join(', ')}`);
     const mismatches = comparePackToPlacement(written.bytes, placement, {
       checks: realignGiftChecks(pack, written.bytes, input.checks), startState: startStateOf(options), party: placedParty,

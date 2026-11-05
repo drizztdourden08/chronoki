@@ -10,6 +10,7 @@ const trackerWorldInput = (placement?: CtPlacement): CtWorldInput => {
     sealedCheckIds: seed === null ? undefined : new Set(seed.sealedCheckIds),
     options: seed?.options,
     startParty: placement?.startParty,
+    characters: placement?.characters,
   };
 };
 

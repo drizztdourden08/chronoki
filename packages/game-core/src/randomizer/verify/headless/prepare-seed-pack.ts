@@ -9,14 +9,16 @@ import { rollCtPlacement } from '../../world/roll-ct-placement';
 import type { PreparedSeed } from './prepare-seed-pack.type';
 import { verifyRealInputOf } from '../verify-real-input';
 import { planSeedSplices } from '../../apply/plan-seed-splices';
+import { resolveMysteryOptions } from '../../world/mystery/resolve-mystery-options';
 import { startStateOf } from '../verify-start-state-of';
 
-const prepareSeedPack = (pack: Uint8Array, options: CtOptionValues, party: CtStartParty, seed: string): PreparedSeed => {
+const prepareSeedPack = (pack: Uint8Array, rawOptions: CtOptionValues, party: CtStartParty, seed: string): PreparedSeed => {
+  const options = resolveMysteryOptions(rawOptions, seed);
   const input = verifyRealInputOf(pack, options, party);
   const placement = rollCtPlacement(input, seed);
   const placed = placement.startParty ?? party;
   const plan = planPackPlacement(placement, input.checks);
-  const written = applySeedToPack(pack, plan.pack, planSeedSplices(options, placed), applyOptionsOf(options, placement.spheres));
+  const written = applySeedToPack(pack, plan.pack, planSeedSplices(options, placed), applyOptionsOf(options, placement.spheres, seed));
   if (!written.ok) throw new Error(`apply refused ${written.failed.length}: ${written.failed.slice(0, 5).join(', ')}`);
   return { bytes: written.bytes, party: placed, partyIds: partyIdsOf(placed), flags: startStateOf(options).flags };
 };
