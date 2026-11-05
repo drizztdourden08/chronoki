@@ -57,13 +57,9 @@ describe('applyModeToRegions', () => {
 describe('gameMode option', () => {
   const option = CT_OPTION_CATALOG.find((candidate) => candidate.key === 'gameMode')!;
 
-  it('is not frozen and lists every mode', () => {
+  it('is not frozen and lists only implemented modes', () => {
     expect(option.frozen).not.toBe(true);
-    expect(option.choices).toEqual(CT_MODES.map((mode) => mode.id));
-  });
-
-  it('marks unimplemented modes disabled', () => {
-    expect(option.disabledChoices).toEqual(CT_MODES.filter((mode) => !mode.implemented).map((mode) => mode.id));
-    expect(option.disabledChoices).not.toContain('standard');
+    expect(option.choices).toEqual(CT_MODES.filter((mode) => mode.implemented).map((mode) => mode.id));
+    expect(option.choices).toContain('standard');
   });
 });
