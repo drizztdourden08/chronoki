@@ -1,4 +1,6 @@
 /* @layer bridge-wasm @kind constants */
 const SAVE_LOAD_JUMP_SECONDS = 300;
+const GAME_START_JUMP_SECONDS = 10;
+const NEW_GAME_CHOSEN = 1;
 
-export { SAVE_LOAD_JUMP_SECONDS };
+export { GAME_START_JUMP_SECONDS, NEW_GAME_CHOSEN, SAVE_LOAD_JUMP_SECONDS };
