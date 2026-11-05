@@ -5,7 +5,7 @@ import type { HeroProps, ScreenMeta } from '@drizztdourden08/brock-react';
 import { HeroLastSaveTile, HeroProgress, HeroTools } from '@app/compounds/ProfileHero';
 import { HubGameControls } from '@app/compounds/HubGameControls';
 import { useProfileMode } from '@app/profiles/useProfileMode';
-import GamePendulum from './game.pendulum';
+import { GamePendulum } from './game.pendulum';
 import { useGameSession } from '@app/views/GameSession';
 import { MODE_LABELS } from '@app/profiles/profile-mode-labels.constants';
 import { HomeDialogs, HomeTab, buildProfileFacts, romFileOf, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';

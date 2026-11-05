@@ -1,8 +1,8 @@
 /* @layer renderer-components @kind style */
 .title-pendulum {
-  --title-pendulum-amplitude: 16deg;
-  --title-pendulum-half-period: 1.22s;
-  --title-pendulum-rest: 6%;
+  --title-pendulum-amplitude: var(--angle-title-pendulum);
+  --title-pendulum-half-period: var(--duration-title-pendulum);
+  --title-pendulum-rest: var(--offset-title-pendulum);
 
   position: absolute;
   inset: 0;

@@ -13,4 +13,4 @@ const GamePendulum = ({ romFile }: { romFile: string | null }) => {
   return <TitlePendulum src={art.url} width={art.width} height={art.height} onError={() => setBroken(true)} />;
 };
 
-export default GamePendulum;
+export { GamePendulum };
