@@ -14,9 +14,9 @@ describe('ct options', { tags: ['critical'] }, () => {
   });
 
   it('keeps unimplemented options out of the values the seed hash covers', () => {
-    const keys = Object.keys(ctOptionValues({ bossScaling: true, itemDifficulty: 'hard' }));
+    const keys = Object.keys(ctOptionValues({ earlyPendantCharge: true, itemDifficulty: 'hard' }));
     const expected = CT_OPTION_CATALOG.filter((option) => option.implemented).map((option) => option.key);
     expect(keys.sort()).toEqual(expected.sort());
-    expect(keys).not.toContain('bossScaling');
+    expect(keys).not.toContain('earlyPendantCharge');
   });
 });
