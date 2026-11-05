@@ -1,7 +1,11 @@
 /* @layer bridge-wasm @kind logic */
-import { createCtMemoryBridge } from '@chronoki/game-core';
-import { chronokiMemoryOptions } from './chronoki-memory-options';
+import type { MemoryBridge } from '@drizztdourden08/brock-randomizer/memory';
+import { chronokiRawMemoryBridge } from './chronoki-raw-memory-bridge';
+import { gameStartGate } from './game-start-gate';
 
-const chronokiMemoryBridge = createCtMemoryBridge(chronokiMemoryOptions);
+const chronokiMemoryBridge: MemoryBridge = {
+  ...chronokiRawMemoryBridge,
+  view: () => (gameStartGate.started() ? chronokiRawMemoryBridge.view() : null),
+};
 
 export { chronokiMemoryBridge };
