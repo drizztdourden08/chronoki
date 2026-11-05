@@ -5,7 +5,7 @@ import type { CtRecruit } from './ct-recruit.type';
 
 const { all, has, option, region, when } = CT_KIT;
 
-const CT_RECRUITS: Readonly<Record<CtCharacter, CtRecruit>> = {
+const CT_RECRUIT_SPOTS: Readonly<Record<CtCharacter, CtRecruit>> = {
   crono: { region: 'death-peak' },
   marle: { region: 'middle-ages' },
   frog: { region: 'middle-ages' },
@@ -17,4 +17,4 @@ const CT_RECRUITS: Readonly<Record<CtCharacter, CtRecruit>> = {
 
 const CT_RECRUIT_ORDER: readonly CtCharacter[] = ['crono', 'marle', 'frog', 'lucca', 'robo', 'ayla', 'magus'];
 
-export { CT_RECRUIT_ORDER, CT_RECRUITS };
+export { CT_RECRUIT_ORDER, CT_RECRUIT_SPOTS };

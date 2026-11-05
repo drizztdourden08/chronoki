@@ -5,6 +5,7 @@ import type { ApplyOptions, ApplyResult, PackEdit, Placement } from './apply-see
 import { planChestEdits } from './plan-chest-edits';
 import { planEnemyOptionEdits } from './enemy-difficulty/plan-enemy-option-edits';
 import { planBossSwapEdits } from './boss-rando/plan-boss-swap-edits';
+import { planRecruitSwapEdits } from './characters/plan-recruit-swap-edits';
 import { planJetsItemEdits } from './jets/plan-jets-item-edits';
 import { planShopPriceEdits } from './shop-prices/plan-shop-price-edits';
 import { planGiftEdits } from './plan-gift-edits';
@@ -34,11 +35,12 @@ const applySeedToPack = (
   const tabPlan = options.tabAmounts ? planTabNameEdits(pack, options.tabAmounts) : { edits: [], failed: [] };
   const techPlan = options.techOrder === undefined ? { edits: [], failed: [] } : planTechOrderEdits(pack, options.techOrder, options.seed ?? '');
   const bossPlan = options.bossRando ? planBossSwapEdits(pack, options.bossRando) : { edits: [], failed: [] };
+  const characterPlan = options.characterRando ? planRecruitSwapEdits(pack, options.characterRando) : { edits: [], failed: [] };
   const edits = [...chestPlan.edits, ...giftPlan.edits, ...planEnemyOptionEdits(pack, options), ...jetsPlan.edits, ...tabPlan.edits,
-    ...techPlan.edits, ...bossPlan.edits, ...(options.shopPrices === undefined ? [] : planShopPriceEdits(pack, options.shopPrices))];
+    ...techPlan.edits, ...bossPlan.edits, ...characterPlan.edits, ...(options.shopPrices === undefined ? [] : planShopPriceEdits(pack, options.shopPrices))];
   const failed = [...new Set([
     ...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...spotPlan.failed, ...tabPlan.failed,
-    ...techPlan.failed, ...bossPlan.failed, ...stale(pack, edits),
+    ...techPlan.failed, ...bossPlan.failed, ...characterPlan.failed, ...stale(pack, edits),
   ])];
   if (failed.length > 0) return { ok: false, failed };
   const edited = pack.slice();

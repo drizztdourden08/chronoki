@@ -13,7 +13,8 @@ const verifyCtPlacement = (input: CtWorldInput, seed: string): VerifyResult => {
   try {
     const placement = rollCtPlacement(input, seed);
     const startParty = placement.startParty ?? [];
-    const { world } = createCtWorldGame({ ...input, startParty })
+    const characters = placement.characters === undefined ? {} : { characters: placement.characters };
+    const { world } = createCtWorldGame({ ...input, startParty, ...characters })
       .build({ request: { seed }, prep: undefined, rng: createRng(seed), attempt: 0 });
     world.placedItems.clear();
     placement.locations.forEach(([location, item]) => world.placedItems.set(location, item));
