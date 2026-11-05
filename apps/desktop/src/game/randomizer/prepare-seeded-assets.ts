@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { RandomizerProfileConfig } from '@drizztdourden08/brock-randomizer';
+import type { FileStore } from '@drizztdourden08/brock-core';
 import type { CtPlacement } from '@chronoki/game-core';
 import { hostGate } from '@chronoki/game-core';
 import { gateRandomizerBoot, pendingBoot } from '@drizztdourden08/brock-randomizer/session';
@@ -7,6 +8,7 @@ import { BOOT_REFUSALS, LOCAL_MODE, RANDOMIZER_GATE } from './chronoki-randomize
 import { checksOfPack } from './checks-of-pack';
 import { localRunHolder } from './local-run-holder';
 import { randomizerConfigOf } from './randomizer-config-of';
+import { savePlacement } from './save-placement';
 import type { SeededAssets } from './seeded-assets.type';
 import { writeSeedToPack } from './write-seed-to-pack';
 
@@ -20,7 +22,7 @@ const gateRefusalOf = (config: RandomizerProfileConfig): string | null => {
   return config.mode === LOCAL_MODE ? null : BOOT_REFUSALS.notLocal;
 };
 
-const prepareSeededAssets = async (profileId: string | null, assets: Uint8Array): Promise<SeededAssets> => {
+const prepareSeededAssets = async (profileId: string | null, assets: Uint8Array, files: FileStore): Promise<SeededAssets> => {
   localRunHolder.applied = null;
   const config = profileId === null ? undefined : randomizerConfigOf(profileId);
   if (profileId === null || config === undefined) return { ok: true, assets };
@@ -34,6 +36,7 @@ const prepareSeededAssets = async (profileId: string | null, assets: Uint8Array)
   if (placement === undefined) return refuse(BOOT_REFUSALS.noPlacement);
   const seeded = writeSeedToPack({ profileId, placement, checks, assets, options: config.options });
   if (!seeded.ok) pendingBoot.clear();
+  else await savePlacement(files, profileId, placement);
   return seeded;
 };
 
