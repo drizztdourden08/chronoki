@@ -23,7 +23,7 @@ const createHeadlessGrants = (options: CtOptionValues, memory: CtMemoryOptions):
       const view = bridge.view();
       if (view === null) return;
       watch.observe(view);
-      gold?.observe(watch.started() && watch.newGame());
+      gold?.observe(watch.started() && watch.newGame(), view);
       magic?.observe(watch.started() && watch.newGame(), view);
     },
     started: () => watch.started(),

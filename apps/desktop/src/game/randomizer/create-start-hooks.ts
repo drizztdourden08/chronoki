@@ -23,7 +23,7 @@ const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_
   let polls = 0;
   return {
     observe: (view: MemoryView, started: boolean, newGame: boolean): void => {
-      grant?.observe(started && newGame);
+      grant?.observe(started && newGame, view);
       magic?.observe(started && newGame, view);
       if (!started || logged || check === null) return;
       polls += 1;
