@@ -31,4 +31,4 @@ const syntheticRecruitPack = (skipScene?: number): Uint8Array => {
   return packOf(blobs);
 };
 
-export { syntheticRecruitPack };
+export { packOf, sceneBlobs, syntheticRecruitPack };
