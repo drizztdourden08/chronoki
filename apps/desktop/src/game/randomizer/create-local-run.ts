@@ -6,7 +6,7 @@ import { randomizerConfigOf } from './randomizer-config-of';
 
 const createLocalRun = (seed: AppliedSeed): LocalRun => ({
   seed,
-  start: createStartHooks(randomizerConfigOf(seed.profileId)?.options ?? {}),
+  start: createStartHooks(randomizerConfigOf(seed.profileId)?.options ?? {}, seed.party),
   gifts: createGiftWatch(giftTargetsOf(seed.checks, seed.plan.pack)),
   saveLoad: createSaveLoadWatch(),
   received: [],
