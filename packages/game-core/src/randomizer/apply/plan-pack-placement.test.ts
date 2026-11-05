@@ -19,10 +19,10 @@ describe('planPackPlacement', { tags: ['critical'] }, () => {
     expect(plan.unbound).toBe(0);
   });
 
-  it('keeps key items virtual: not in the pack, still bound to a check', () => {
+  it('puts key items on chest checks into the pack with their chest ROM id', () => {
     const plan = planPackPlacement(placementOf([['chest-a', 'pendant']]), [check('chest-a')]);
-    expect(plan.pack).toEqual({});
-    expect(plan.virtual).toEqual([['chest-a', 'pendant']]);
+    expect(plan.pack).toEqual({ 'chest-a': 0xd6 });
+    expect(plan.virtual).toEqual([]);
     expect(plan.unbound).toBe(0);
   });
 

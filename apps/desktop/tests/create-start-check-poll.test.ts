@@ -6,7 +6,7 @@ import { START_CHECK_MAX_POLLS } from '@app/game/randomizer/chronoki-poll-hooks.
 
 const state = vi.hoisted((): { logged: string[]; loud: string[] } => ({ logged: [], loud: [] }));
 
-vi.mock('@drizztdourden08/brock-randomizer/session', () => ({ appRandomizerLog: (line: string) => state.logged.push(line) }));
+vi.mock('@drizztdourden08/brock-randomizer/renderer', () => ({ appRandomizerLog: (line: string) => state.logged.push(line) }));
 vi.mock('@app/game/randomizer/report-start-mismatch', () => ({ reportStartMismatch: (line: string) => state.loud.push(line) }));
 
 const VIEW: MemoryView = { byte: () => 0, word: () => 0 };

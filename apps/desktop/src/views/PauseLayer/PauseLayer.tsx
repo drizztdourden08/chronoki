@@ -4,13 +4,14 @@ import { MANUAL_PAUSE } from '@chronoki/input-mapping';
 import { FunctionGlyph } from '@app/compounds/FunctionGlyph';
 import { getInputManager } from '@app/input/input-manager/get-input-manager';
 import { isFunctionBound } from '@app/input/input-manager/is-function-bound';
-import { useGameSession } from '@app/views/GameSession';
+import { useCoreState } from '@drizztdourden08/brock-port-kit/renderer';
+import { chronokiCore } from '@app/game/lifecycle';
 
 const glyphOf = (action: 'pause' | 'profile-prev' | 'profile-next') =>
   (isFunctionBound(action) ? <FunctionGlyph action={action} /> : undefined);
 
 const PauseLayer = () => {
-  const { status } = useGameSession();
+  const { status } = useCoreState(chronokiCore);
   const manager = getInputManager();
 
   return (
