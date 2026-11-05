@@ -33,6 +33,9 @@ void ck_view_size(int* w, int* h);
    and the widescreen's camera is the Steam release's clamped one; 0 = the ROM's camera and the original widescreen centring.
    ck_view_black (which: 0 top, 1 bottom, 2 left, 3 right) and ck_view_scene (1 field, 0 other): the shown frame's black extents. */
 int  ck_camera_lock(void);
+/* settings_reconnect.c: [game] randomizer, 0 or 1, default 0: a randomizer game (the host writes it into ct_settings.ini). The era-gauge
+   patch (wasm-build/patches/era-gauge.mjs) opens a gauge era only when its world word is in a WRAM slot; 0 = the original gauge. */
+int  ck_randomizer(void);
 int  ck_view_black(int which);
 int  ck_view_scene(void);
 /* ck_state.c: save states (see its header comment). field.c reaches the ck_state_top .. ck_state_load_result group through
