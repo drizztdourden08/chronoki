@@ -13,12 +13,14 @@ const useDockBleed = (viewRef: RefObject<HTMLElement | null>): void => {
       const bleed = bleedOf(main.getBoundingClientRect(), dock.getBoundingClientRect());
       for (const edge of DOCK_EDGE_NAMES) main.style.setProperty(BLEED_VARS[edge], `${bleed[edge]}px`);
     };
+    main.dataset.gameBleed = '';
     apply();
     const observer = new ResizeObserver(apply);
     observer.observe(main);
     observer.observe(dock);
     return () => {
       observer.disconnect();
+      delete main.dataset.gameBleed;
       for (const edge of DOCK_EDGE_NAMES) main.style.removeProperty(BLEED_VARS[edge]);
     };
   }, [viewRef]);

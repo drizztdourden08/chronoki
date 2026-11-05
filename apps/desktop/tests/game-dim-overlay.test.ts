@@ -2,20 +2,19 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { SaveStateContext, StateResult } from '@app/game/save-states';
 
-const mocks = vi.hoisted(() => ({
-  steps: [] as string[],
-  result: { ok: true } as StateResult,
-  manager: true,
-}));
+const mocks = vi.hoisted(() => {
+  const result: StateResult = { ok: true };
+  return { steps: [] as string[], result, manager: true };
+});
 
 vi.mock('@drizztdourden08/brock-react', () => ({ nav: { close: () => mocks.steps.push('close-menu') } }));
 vi.mock('@app/input/input-manager/peek-input-manager', () => ({
   peekInputManager: () => (mocks.manager ? { resume: () => mocks.steps.push('resume') } : null),
 }));
 vi.mock('@app/game/save-states', () => ({
-  loadState: async () => {
+  loadState: () => {
     mocks.steps.push('load');
-    return mocks.result;
+    return Promise.resolve(mocks.result);
   },
 }));
 
