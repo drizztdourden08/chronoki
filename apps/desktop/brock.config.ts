@@ -23,6 +23,8 @@ export default defineBrockConfig({
     schemes: [{ scheme: 'app-sprite', dir: 'sprites' }, { scheme: 'app-debug-capture', stream: true }],
     icons: { brand: 'chronoki', wordmark: { src: './logos/wordmark.svg', rendering: 'pixelated' } },
     profilesRoute: 'data/profiles',
+    // no public repo yet (owner decision pending): product.repo stays out, so the updater is inert
+    protocols: [{ scheme: 'chronoki', name: 'ChronoKi' }],
   },
   packaging: {
     extraResources: [
@@ -31,7 +33,7 @@ export default defineBrockConfig({
     ],
   },
   targets: ['desktop', 'android', 'web'],
-  modules: ['display', 'port-kit', 'input', 'game-info', 'randomizer'],
+  modules: ['updater', 'secrets', 'display', 'tools', 'port-kit', 'input', 'game-info', 'mcp', 'randomizer'],
   workflows: {
     steps: {
       ci: { beforeBuild: wasmCoreSteps },
