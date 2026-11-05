@@ -65,6 +65,10 @@ const buildCoreConfigIni = (settings: Partial<CkSettings> = {}): string => {
     `sync=${s.sync}`,
     `instant_sound_uploads=${flag(s.instantSoundUploads)}`,
     '',
+    '[chronoki]',
+    `sightscope=${flag(s.sightscope)}`,
+    `visible_techs=${flag(s.visibleTechs)}`,
+    '',
   ].join('\n');
 };
 

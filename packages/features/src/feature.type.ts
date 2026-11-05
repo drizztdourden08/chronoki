@@ -6,7 +6,7 @@ type FeatureGroup = 'Display' | 'Enhancements' | 'Audio' | 'Input' | 'Saves' | '
 type FeatureOrigin = 'belthasar' | 'chronoki';
 
 interface FeatureIniKey {
-  section: 'video' | 'timing';
+  section: 'video' | 'timing' | 'chronoki';
   key: string;
 }
 

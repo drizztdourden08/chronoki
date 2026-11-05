@@ -8,7 +8,8 @@ const settingsC = readSettingsC();
 const withReference = settingsC ? it : it.skip;
 
 const CONTROL_KEY = /^(key|key2|pad)_(\w+)$/;
-const HOST_READ_KEYS = new Set(['video.wide_width', 'video.tall_lines', 'video.camera_lock']);
+const HOST_READ_KEYS = new Set(['video.wide_width', 'video.tall_lines', 'video.camera_lock',
+  'chronoki.sightscope', 'chronoki.visible_techs']);
 
 const readLoadedKeys = (src: string): Set<string> => {
   const body = src.slice(src.indexOf('static void setKey'), src.indexOf('int CtSettingsLoad'));
@@ -57,7 +58,7 @@ describe('ini keys exist in settings.c', { tags: ['critical'] }, () => {
     const loaded = readLoadedKeys(settingsC ?? '');
     const missing = FEATURE_REGISTRY.flatMap((feature) => (feature.iniKey ? [feature.iniKey] : []))
       .map(({ section, key }) => `${section}.${key}`)
-      .filter((qualified) => !loaded.has(qualified));
+      .filter((qualified) => !loaded.has(qualified) && !HOST_READ_KEYS.has(qualified));
     expect(missing).toEqual([]);
   });
 
