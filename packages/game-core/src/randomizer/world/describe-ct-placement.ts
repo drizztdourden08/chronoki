@@ -24,7 +24,7 @@ const describeCtPlacement = (placement: CtPlacement): PlacementSummary => {
         ? []
         : [{ label: 'Starting party', value: startPartyLabelOf(placement.startParty) }]),
       ...bossRowsOf(placement.bosses),
-      ...characterRowsOf(placement.characters),
+      ...characterRowsOf(placement.characters, placement.duplicateCharacters === true),
       ...elementRowsOf(placement.elements),
       ...mysteryRowsOf(placement.mystery),
       ...(placement.objectives ?? []).map((objective) => ({ label: 'Objective', value: objective.label })),

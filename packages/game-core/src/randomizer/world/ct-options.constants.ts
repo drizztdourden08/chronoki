@@ -33,6 +33,10 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
     key: 'characterRando', label: 'Character randomization', jotFlag: 'chars', default: false, section: 'Randomization', implemented: true, mystery: 0.3,
     hint: 'Recruit spots hand out a different character; each keeps their own identity.',
   },
+  {
+    key: 'duplicateCharacters', label: 'Duplicate characters', jotFlag: 'dupchars', default: false, section: 'Randomization', implemented: true,
+    hint: 'Only with character randomization: a recruit spot can hand out a kind you already have.',
+  },
   { key: 'disableGlitches', label: 'Disable glitches', jotFlag: 'g', default: false, section: 'Rules', implemented: true, mystery: 0.25 },
   { key: 'earlyPendantCharge', label: 'Early pendant charge', jotFlag: 'p', default: false, section: 'Rules', implemented: true, mystery: 0.3 },
   { key: 'unlockedMagic', label: 'Unlocked magic', jotFlag: 'm', default: false, section: 'Rules', implemented: true, mystery: 0.3 },

@@ -9,7 +9,7 @@ import type { CtWorldKeys } from './ct-world-keys.type';
 import type { CtStartParty } from './party/ct-party.type';
 
 type CtPlacement = DefPlacement<CtWorldKeys> & {
-  startParty?: CtStartParty; bosses?: BossAssignment; characters?: CharacterAssignment; elements?: ElementAssignment;
+  startParty?: CtStartParty; bosses?: BossAssignment; characters?: CharacterAssignment; duplicateCharacters?: boolean; elements?: ElementAssignment;
   mystery?: CtOptionValues; objectives?: readonly ObjectiveRow[];
 };
 
