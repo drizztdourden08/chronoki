@@ -29,7 +29,7 @@ interface SettleState {
 interface StageWait {
   id: number;
   since: number;
-  fullscreen: boolean;
+  fullscreen: boolean | null;
 }
 
 interface BootedPlan {

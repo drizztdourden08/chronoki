@@ -12,7 +12,9 @@ const presentSizeOf = (stage: CkArea, frame: CkArea, ratio: number, mode: CkPres
     return { width: frame.width * scale, height: frame.height * scale };
   }
   const scale = Math.max(box.width / frame.width, box.height / frame.height);
-  return { width: Math.ceil(frame.width * scale - EPSILON), height: Math.ceil(frame.height * scale - EPSILON) };
+  const width = Math.min(stage.width, Math.ceil(frame.width * scale - EPSILON));
+  const height = Math.min(stage.height, Math.ceil(frame.height * scale - EPSILON));
+  return { width, height };
 };
 
 export { presentSizeOf };

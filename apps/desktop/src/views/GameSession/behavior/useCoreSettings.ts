@@ -1,7 +1,7 @@
 /* @layer renderer-appshell @kind hook */
 import { useMemo } from 'react';
 import { useSettings } from '@drizztdourden08/brock-react';
-import { aspectRatioOf, buildCoreConfigIni, gateSettings } from '@chronoki/game-core';
+import { buildCoreConfigIni, gateSettings, pictureRatioOf } from '@chronoki/game-core';
 import type { CkArea } from '@chronoki/game-core';
 import { resolveGates } from '@chronoki/features';
 import { useLegacyModeMigration } from '@app/profiles/useLegacyModeMigration';
@@ -38,7 +38,7 @@ const useCoreSettings = (stageArea: CkArea | null): CoreSettings => {
       config: buildCoreConfigIni(settings),
       volume: muted ? 0 : volume,
       gates: effective,
-      pictureRatio: aspectRatioOf(effective, options),
+      pictureRatio: pictureRatioOf(effective, options),
       autoSaveIntervalSeconds,
       autoSaveMaxEntries,
       turboSpeed,

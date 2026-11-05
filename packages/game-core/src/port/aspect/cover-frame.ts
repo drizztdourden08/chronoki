@@ -2,6 +2,7 @@
 import { EPSILON } from './cover-frame.constants';
 import type { CkArea, CkAxisPlan, CkCoverFrame, CkFrameAxis, CkFrameRanges } from './aspect.type';
 import { fillBox } from './fill-box';
+import { wholeBoxOf } from './whole-box-of';
 import { wholeFrame } from './whole-frame';
 
 const evenCeil = (value: number): number => Math.ceil(value / 2 - EPSILON) * 2;
@@ -24,7 +25,7 @@ const coverFrame = (area: CkArea, ratio: number, ranges: CkFrameRanges, whole: b
   const box = fillBox(ratio, area);
   if (box.width <= 0 || box.height <= 0) return { width: ranges.minWidth, height: ranges.minHeight, scale: 1 };
   const wide = ranges.minHeight === ranges.maxHeight;
-  if (whole && !wide && ranges.minWidth !== ranges.maxWidth) return wholeFrame(box, ranges);
+  if (whole && !wide && ranges.minWidth !== ranges.maxWidth) return wholeFrame(wholeBoxOf(area, ratio, ranges), ranges);
   const axis: CkFrameAxis = wide
     ? { fixed: ranges.maxHeight, boxFixed: box.height, boxFree: box.width, min: ranges.minWidth, max: ranges.maxWidth }
     : { fixed: ranges.maxWidth, boxFixed: box.width, boxFree: box.height, min: ranges.minHeight, max: ranges.maxHeight };

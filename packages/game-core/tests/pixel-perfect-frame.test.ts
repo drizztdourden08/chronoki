@@ -1,7 +1,7 @@
 /* @layer tests @kind test */
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_GATE_OPTIONS, FEATURE_REGISTRY, resolveGates } from '@chronoki/features';
-import { coverFrame, fillBox, gateSettings, presentBoxOf, presentSizeOf } from '../src';
+import { coverFrame, fillBox, gateSettings, pictureRatioOf, presentBoxOf, presentSizeOf } from '../src';
 
 const WIDE = { minWidth: 256, maxWidth: 544, minHeight: 224, maxHeight: 224 };
 const TALL = { minWidth: 256, maxWidth: 256, minHeight: 224, maxHeight: 480 };
@@ -45,8 +45,16 @@ describe('pixel perfect frame on both axes', { tags: ['critical'] }, () => {
     expect(coverFrame(area(1920, 1080), 3 / 4, FREE, true)).toEqual({ width: 270, height: 360, scale: 3 });
   });
 
-  it('stays 256 wide when planned from a stage still settling (810x990), so the boot waits for it', () => {
-    expect(coverFrame(area(810, 990), 3 / 4, FREE, true)).toEqual({ width: 256, height: 330, scale: 3 });
+  it('fills a 3:4 stage of 810x1025 at x3 with 270x342', () => {
+    expect(coverFrame(area(810, 1025), 3 / 4, FREE, true)).toEqual({ width: 270, height: 342, scale: 3 });
+  });
+
+  it('fills a stage past the snap (810x990) with extra columns when the 256 minimum already overflows the 3:4 box', () => {
+    expect(coverFrame(area(810, 990), 3 / 4, FREE, true)).toEqual({ width: 270, height: 330, scale: 3 });
+  });
+
+  it('keeps a deliberate 3:4 on a wide stage (1920x990) at 256 wide, not a new scale', () => {
+    expect(coverFrame(area(1920, 990), 3 / 4, FREE, true)).toEqual({ width: 256, height: 330, scale: 3 });
   });
 
   it('raises the scale when the width would pass 544', () => {
@@ -105,6 +113,16 @@ describe('gate settings frame', { tags: ['critical'] }, () => {
     expect(settingsFor(ALL, { aspectRatio: '3:4', stageArea: area(810, 1080) })).toMatchObject({ wideWidth: 0, tallLines: 340 });
   });
 
+  it('plans 3:4 pixel perfect on 810x990 as 270x330 and presents it at the stage ratio, filling it at x3', () => {
+    const options = { ...DEFAULT_GATE_OPTIONS, aspectRatio: '3:4' as const, stageArea: area(810, 990), wholePixels: true };
+    const { effective } = resolveGates(ALL, { vanillaSafe: false, satisfied: new Set(['steamData']) });
+    expect(settingsFor(ALL, options)).toMatchObject({ wideWidth: 270, tallLines: 330 });
+    const ratio = pictureRatioOf(effective, options);
+    expect(ratio).toBeCloseTo(810 / 990, 9);
+    expect(presentSizeOf(area(810, 990), area(270, 330), ratio, 'whole')).toEqual(area(810, 990));
+    expect(pictureRatioOf(effective, { ...options, stageArea: area(1920, 1080) })).toBe(3 / 4);
+  });
+
   it('plans from the stage it is given: a 1032 high stage before fullscreen gives 258 lines', () => {
     expect(settingsFor(ALL, { aspectRatio: '16:9', stageArea: area(1920, 1032), wholePixels: true })).toMatchObject({ wideWidth: 480, tallLines: 258 });
     expect(settingsFor(ALL, { aspectRatio: '16:9', stageArea: area(1920, 1080), wholePixels: true })).toMatchObject({ wideWidth: 480, tallLines: 270 });
@@ -117,8 +135,9 @@ describe('gate settings frame', { tags: ['critical'] }, () => {
 });
 
 describe('canvas size without pixel perfect', { tags: ['critical'] }, () => {
-  it('covers a 1920x1080 stage with 16:9, cropping under a pixel', () => {
-    expect(presentSizeOf(area(1920, 1080), area(398, 224), 16 / 9, 'fit')).toEqual(area(1920, 1081));
+  it('fills a 1920x1080 stage with 16:9 and never exceeds it (was 1920x1081)', () => {
+    expect(presentSizeOf(area(1920, 1080), area(398, 224), 16 / 9, 'fit')).toEqual(area(1920, 1080));
+    expect(presentSizeOf(area(1920, 1080), area(396, 224), 16 / 9, 'fit')).toEqual(area(1920, 1080));
   });
 
   it('covers its own box for a deliberate 21:9 and keeps Original contained', () => {
@@ -127,12 +146,12 @@ describe('canvas size without pixel perfect', { tags: ['critical'] }, () => {
     expect(presentSizeOf(area(1920, 1080), area(256, 224), 0, 'fit')).toEqual(area(1234, 1080));
   });
 
-  it('covers the stage even when the frame shape no longer matches it', () => {
-    expect(presentSizeOf(area(1920, 1080), area(384, 224), 16 / 9, 'fit')).toEqual(area(1920, 1120));
+  it('stays inside the stage even when the frame shape no longer matches it', () => {
+    expect(presentSizeOf(area(1920, 1080), area(384, 224), 16 / 9, 'fit')).toEqual(area(1920, 1080));
   });
 
-  it('covers a tall 3:4 stage of 810x1080', () => {
-    expect(presentSizeOf(area(810, 1080), area(256, 340), 3 / 4, 'fit')).toEqual(area(814, 1080));
+  it('fills a tall 3:4 stage of 810x1080 without passing its width', () => {
+    expect(presentSizeOf(area(810, 1080), area(256, 340), 3 / 4, 'fit')).toEqual(area(810, 1080));
   });
 });
 
