@@ -44,6 +44,10 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   { key: 'partySize', label: 'Random party size', jotFlag: '-', default: 2, choices: [1, 2, 3, 4, 5, 6, 7], section: 'Party', implemented: true },
   { key: 'startingParty', label: 'Party', jotFlag: '-', default: 'crono,marle', section: 'Party', implemented: true },
   { key: 'tabsanity', label: 'Tabsanity', jotFlag: 'tab', default: false, section: 'Tabs', implemented: true },
+  {
+    key: 'chronosanity', label: 'Chronosanity', jotFlag: 'cr', default: false, section: 'Randomization', implemented: true,
+    hint: 'Key items can be in any treasure chest, not only the key-item spots.',
+  },
   ...TAB_RANGE_OPTIONS,
 ];
 
