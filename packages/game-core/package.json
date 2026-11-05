@@ -9,6 +9,9 @@
     ".": "./src/index.ts",
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "verify-seeds": "node scripts/verify-seeds.mjs"
+  },
   "dependencies": {
     "@chronoki/features": "workspace:*",
     "@chronoki/game-data": "workspace:*",
