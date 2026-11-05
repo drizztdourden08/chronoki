@@ -23,6 +23,8 @@ Values are what Spekkio's teach scene (location 0x1D1, object 9, fn 3) writes fo
 
 The block is spliced at the intro jump (offset 226). The earlier 0x16 jump at offset 77 has displacement 152 and must still reach offset 233: 152 + (blockLength - 5) <= 255, so blockLength <= 108.
 
+The New Game flag shows while the game is still at location 0x000, before scene 0 reaches the block, so the start read-back (session/create-start-state-check.ts) waits for the warp location itself, only on a fresh New Game, and reports a mismatch with a toast after 30 polls without the warp.
+
 ## Start gold (session/create-start-gold-grant.ts)
 
 The game writes its own starting 400 gold about 10 frames after the new-game flag shows (headless run: flag at frame 283, write at 293), so the grant waits for non-zero gold (or a poll limit) before writing.

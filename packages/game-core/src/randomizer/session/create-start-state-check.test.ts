@@ -25,6 +25,19 @@ describe('createStartStateCheck', { tags: ['critical'] }, () => {
     expect(createStartStateCheck(STANDARD_START).read(fakeView({ ...okBytes(), 0x0100: 0x10 }))).toContain('location');
   });
 
+  it('is not settled on the New Game edge (location 0) nor on the intro world, only once the warp lands', () => {
+    const check = createStartStateCheck(STANDARD_START);
+    expect(check.settled(fakeView({ ...okBytes(), 0x0100: 0x00, 0x0101: 0x00 }))).toBe(false);
+    expect(check.settled(fakeView({ ...okBytes(), 0x0100: 0xf0, 0x0101: 0x01 }))).toBe(false);
+    expect(check.settled(fakeView(okBytes()))).toBe(true);
+  });
+
+  it('matches only when nothing is off', () => {
+    const check = createStartStateCheck(STANDARD_START);
+    expect(check.matches(fakeView(okBytes()))).toBe(true);
+    expect(check.matches(fakeView({ ...okBytes(), 0x10057: 0x00 }))).toBe(false);
+  });
+
   it('flags a wrong roster byte and joined mask', () => {
     const line = createStartStateCheck(STANDARD_START).read(fakeView({ ...okBytes(), 0x2981: 0x80, 0x29af: 0x80 }));
     expect(line).toContain('party 0x7e2981=0x80 expected 0x1');
