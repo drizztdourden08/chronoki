@@ -1,13 +1,14 @@
 /* @layer renderer-app @kind component */
 import { useMemo } from 'react';
-import { useProduct } from '@drizztdourden08/brock-react';
+import { useProduct, useSettings } from '@drizztdourden08/brock-react';
 import type { HeroProps, ScreenMeta } from '@drizztdourden08/brock-react';
 import { HeroLastSaveTile, HeroProgress, HeroTools } from '@app/compounds/ProfileHero';
 import { HubGameControls } from '@app/compounds/HubGameControls';
-import { useProfileMode } from '@app/profiles/useProfileMode';
+import { MODE_BADGE_LABELS } from '@app/compounds/ModeBadge';
+import { modeOf } from '@app/profile-modes';
+import type { AppSettings } from '@app/settings.type';
 import { GamePendulum } from './game.pendulum';
 import { useGameSession } from '@app/views/GameSession';
-import { MODE_LABELS } from '@app/profiles/profile-mode-labels.constants';
 import { HomeDialogs, HomeTab, buildProfileFacts, romFileOf, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
 
 const meta: ScreenMeta = {
@@ -21,7 +22,8 @@ const HomeHero = (props: HeroProps) => {
   const { slots, profile } = props;
   const { Eyebrow, Title, Backdrop, Art, Tools, Actions, Facts, Aside, Panel } = slots;
   const product = useProduct();
-  const mode = useProfileMode(profile);
+  const { settings } = useSettings<AppSettings>();
+  const mode = profile ? modeOf(profile, settings) : 'vanilla';
   const { running, paused, play, stop, reset, togglePause } = useGameSession();
   const profileId = profile?.id ?? null;
   const { reveal, canReveal } = useRevealProfileFolder(profileId);
@@ -52,7 +54,7 @@ const HomeHero = (props: HeroProps) => {
   return (
     <>
       <Eyebrow>Mode</Eyebrow>
-      <Title>{MODE_LABELS[mode]}</Title>
+      <Title>{MODE_BADGE_LABELS[mode]}</Title>
       <Backdrop kind="node" node={backdrop} />
       <Art kind="image" src={product.logos.mark} alt="" />
       <Actions>

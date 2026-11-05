@@ -1,5 +1,7 @@
 /* @layer renderer-components @kind types */
 import type { Profile } from '@drizztdourden08/brock-core';
+import type { FactsPanelFact } from '@drizztdourden08/tessera/composites';
+import type { ProfileModeId } from '@app/compounds/ModeBadge';
 import type { ProfilePresetId } from '@app/profiles/presets';
 
 interface ReadyRom {
@@ -19,7 +21,7 @@ interface ProfileDetailPanelProps {
 
 interface ProfileDetailHeaderProps {
   profile: Profile;
-  modeLabel: string;
+  mode: ProfileModeId;
   onOpen: () => void;
   onDelete: () => void;
 }
@@ -46,7 +48,14 @@ interface ProfileWizardValues {
   name: string;
   rom: string;
   preset: ProfilePresetId;
+  msuPack: string;
   [slice: string]: unknown;
+}
+
+interface FactsSectionProps {
+  title: string;
+  hint?: string;
+  facts: readonly FactsPanelFact[][];
 }
 
 interface MsuFolderImport {
@@ -56,4 +65,4 @@ interface MsuFolderImport {
   importFiles: (files: File[]) => Promise<void>;
 }
 
-export type { MsuFolderImport, ProfileCreateWizardProps, ProfileDetailHeaderProps, ProfileDetailPanelProps, ProfileListPaneProps, ProfileManagerProps, ProfileWizardValues, ReadyRom };
+export type { FactsSectionProps, MsuFolderImport, ProfileCreateWizardProps, ProfileDetailHeaderProps, ProfileDetailPanelProps, ProfileListPaneProps, ProfileManagerProps, ProfileWizardValues, ReadyRom };

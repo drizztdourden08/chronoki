@@ -17,14 +17,14 @@ const useProfileWizard = (onCreated: (profile: Profile) => void) => {
   const moduleSteps = useModuleProfileSteps();
   const steps = useMemo(() => placeWizardSteps(profileWizardSteps, moduleSteps), [moduleSteps]);
   const [initialValues] = useState<ProfileWizardValues>(() => ({
-    ...wizardInitialSlices(moduleSteps), name: '', rom: '', preset: DEFAULT_PROFILE_PRESET,
+    ...wizardInitialSlices(moduleSteps), name: '', rom: '', preset: DEFAULT_PROFILE_PRESET, msuPack: '',
   }));
 
   const handleFinish = useCallback(async (values: ProfileWizardValues): Promise<CreateOutcome> => {
-    const { name, rom, preset } = values;
+    const { name, rom, preset, msuPack } = values;
     try {
       const extra = wizardCreateOptions(moduleSteps, values);
-      const profile = await create({ ...extra, name: name.trim(), romFile: rom, initialConfig: applyProfilePreset(preset) });
+      const profile = await create({ ...extra, name: name.trim(), romFile: rom, msuPack: msuPack || undefined, initialConfig: applyProfilePreset(preset) });
       created.current = profile;
       return { success: true, id: profile.id };
     } catch (failure) {

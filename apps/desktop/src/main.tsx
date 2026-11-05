@@ -22,6 +22,7 @@ import { chronokiShellModule } from './shell/chronoki-shell-module';
 import { DEVELOPER_TOOLS, SETTINGS, VOLUME } from './main.constants';
 import { LEGAL_TEXT } from './legal.constants';
 import { CHRONOKI_DATA_DOMAINS } from './storage/data-domains.constants';
+import { APP_PROFILE_MODES } from './profile-modes';
 import { product } from './product';
 import type { AppSettings } from './settings.type';
 
@@ -53,6 +54,7 @@ createRoot(root).render(
       startupPrompts={appStartupPrompts}
       toolbars={appToolbars}
       profileHooks={chronokiProfileHooks}
+      profileModes={APP_PROFILE_MODES}
     />
   </StrictMode>,
 );
