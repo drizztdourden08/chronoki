@@ -19,6 +19,8 @@ type ReadbackOptions = {
   party?: CtStartParty;
 };
 
+type StartOpClass = { kind: MismatchKind; location: string };
+
 type DecodedOp = { kind: 'poke' | 'set-bit' | 'reset-bit' | 'warp' | 'other'; address: number; value: number };
 
-export type { DecodedOp, Mismatch, MismatchKind, ReadbackOptions };
+export type { DecodedOp, Mismatch, MismatchKind, ReadbackOptions, StartOpClass };

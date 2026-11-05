@@ -9,12 +9,11 @@ import { deriveChestChecks } from '../../checks/derive-chest-checks';
 import { deriveGiftChecks } from '../../checks/derive-gift-checks';
 import type { CtPlacement } from '../../world/ct-placement.type';
 import { placementFixture } from '../../world/ct-placement.fixture';
+import type { PackBlob } from './readback-pack.type';
 
 const { POKE, RETURN, buildScript, le16, le32 } = spliceFixture;
 
-type Blob = { type: number; id: number; data: number[] };
-
-const buildPack = (blobs: Blob[]): Uint8Array => {
+const buildPack = (blobs: PackBlob[]): Uint8Array => {
   const bytes: number[] = [0x43, 0x54, 0x41, 0x53, ...le32(1), ...le32(blobs.length)];
   let at = 12 + blobs.length * 16;
   blobs.forEach((b) => {
@@ -55,4 +54,6 @@ const writtenPack = (): Uint8Array => {
   return result.bytes;
 };
 
-export { fixturePlacement, writtenPack };
+const readbackFixture = { fixturePlacement, writtenPack };
+
+export { readbackFixture };

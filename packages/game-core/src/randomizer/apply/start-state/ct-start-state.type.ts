@@ -5,6 +5,8 @@ type CtFlagBit = { at: number; bits: number };
 
 type CtPoke = { at: number; value: number; width: 1 | 2 };
 
+type ByteAt = [number, number];
+
 type CtStartState = {
   id: CtStartStateId;
   flags: readonly CtFlagBit[];
@@ -13,4 +15,4 @@ type CtStartState = {
   warp: { location: number; x: number; y: number; facing?: number };
 };
 
-export type { CtFlagBit, CtPoke, CtStartState };
+export type { ByteAt, CtFlagBit, CtPoke, CtStartState };

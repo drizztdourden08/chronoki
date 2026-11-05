@@ -76,7 +76,7 @@ describe('start block party', () => {
   it('pokes only roster slots that differ from the boot state, plus the mask', { tags: ['critical'] }, () => {
     expect(partyPokes([0, 1]).map((p) => [p.at, p.value])).toEqual([[0x7e2981, 1], [0x7e29af, 0xc0]]);
     expect(partyPokes([0])).toEqual([]);
-    expect(partyPokes([4, 5, 3]).map((p) => [p.at, p.value])).toEqual([[0x7e2980, 4], [0x7e2981, 5], [0x7e2982, 3], [0x7e29af, 0x0c]]);
+    expect(partyPokes([4, 5, 3]).map((p) => [p.at, p.value])).toEqual([[0x7e2980, 4], [0x7e2981, 5], [0x7e2982, 3], [0x7e29af, 0x1c]]);
   });
 
   it('Crono absent: slot 0 is poked and the mask bit 0x80 is clear', { tags: ['critical'] }, () => {
