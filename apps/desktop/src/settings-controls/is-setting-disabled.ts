@@ -9,6 +9,7 @@ import { hasUnmetRequires } from './has-unmet-requires';
 const isSettingDisabled = (key: string, settings: AppSettings, lock: SettingLockCause | null): boolean => {
   if (key === 'pixelPerfect') return settings.viewportConstraint !== 'none';
   if (key === `${GATE_KEY_PREFIX}linearFiltering` && settings.pixelPerfect && settings.viewportConstraint === 'none') return true;
+  if (key === `${GATE_KEY_PREFIX}extendY` && settings.aspectRatio !== 'original') return true;
   if (isAudioDisabled(key, settings)) return true;
   if (lock !== null) return true;
   if (hasUnmetRequires(key, settings)) return true;

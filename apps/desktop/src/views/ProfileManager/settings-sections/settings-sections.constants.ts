@@ -20,6 +20,8 @@ const PICTURE_SECTION: SettingsSection = {
     gateRow('widescreen'),
     gateRow('tallRendering'),
     { key: 'aspectRatio', label: 'Aspect Ratio' },
+    gateRow('extendY'),
+    gateRow('cameraLock'),
     gateRow('sceneAdjust'),
     gateRow('wideSteamMargins'),
     gateRow('fillBottomLine'),

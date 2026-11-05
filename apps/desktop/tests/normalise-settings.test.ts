@@ -39,6 +39,11 @@ describe('default-on feature migration', { tags: ['critical'] }, () => {
     expect(settings.gates).toContain('perGroupVolume');
   });
 
+  it('gives an old profile extendY, cameraLock and edgeEffect', () => {
+    const settings = load({ gates: ['widescreen'], vanillaSafe: false });
+    expect(settings.gates).toEqual(expect.arrayContaining(['extendY', 'cameraLock', 'edgeEffect']));
+  });
+
   it('keeps a feature off when the profile already knew it', () => {
     const settings = load({ gates: ['widescreen'], knownGates: ['gameInfo', 'perGroupVolume'], vanillaSafe: false });
     expect(settings.gates).not.toContain('gameInfo');

@@ -30,6 +30,15 @@ describe('requirements', { tags: ['critical'] }, () => {
     expect(resolveFeatures(['widescreen', 'wideSteamMargins'], STEAM).effective.has('wideSteamMargins')).toBe(true);
   });
 
+  it('defaults extendY, cameraLock and edgeEffect on and needs widescreen', () => {
+    ['extendY', 'cameraLock', 'edgeEffect'].forEach((id) => {
+      expect(FEATURES_BY_ID[id]?.default).toBe(true);
+      expect(FEATURES_BY_ID[id]?.requires).toEqual(['widescreen']);
+      expect(resolveFeatures([id]).effective.has(id)).toBe(false);
+      expect(resolveFeatures(['widescreen', id]).effective.has(id)).toBe(true);
+    });
+  });
+
   it('names the cause that locks a control', () => {
     const base = { vanillaSafe: false, enabled: new Set<string>() };
     expect(lockCauseOf('widescreen', { ...base, vanillaSafe: true })).toBe('vanillaSafe');
