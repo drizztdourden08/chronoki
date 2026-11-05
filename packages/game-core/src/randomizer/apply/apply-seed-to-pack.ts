@@ -8,6 +8,7 @@ import { planJetsItemEdits } from './jets/plan-jets-item-edits';
 import { planShopPriceEdits } from './shop-prices/plan-shop-price-edits';
 import { planGiftEdits } from './plan-gift-edits';
 import { planSpotGiftSplices } from './plan-spot-gift-splices';
+import { planTabNameEdits } from './tabs/plan-tab-name-edits';
 import type { ScriptSplice } from './script/script-splice.type';
 import { spliceSceneScripts } from './script/splice-scene-scripts';
 
@@ -28,10 +29,12 @@ const applySeedToPack = (
   const giftPlan = planGiftEdits(pack, gifts, placement);
   const jetsPlan = options.epochFail === true ? planJetsItemEdits(pack) : { edits: [], failed: [] };
   const spotPlan = planSpotGiftSplices(placement, options.spotGifts);
-  const edits = [...chestPlan.edits, ...giftPlan.edits, ...planEnemyOptionEdits(pack, options), ...jetsPlan.edits,
+  const tabPlan = options.tabAmounts ? planTabNameEdits(pack, options.tabAmounts) : { edits: [], failed: [] };
+  const edits = [...chestPlan.edits, ...giftPlan.edits, ...planEnemyOptionEdits(pack, options), ...jetsPlan.edits, ...tabPlan.edits,
     ...(options.shopPrices === undefined ? [] : planShopPriceEdits(pack, options.shopPrices))];
   const failed = [...new Set([
-    ...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...spotPlan.failed, ...stale(pack, edits),
+    ...unknown, ...chestPlan.failed, ...giftPlan.failed, ...jetsPlan.failed, ...spotPlan.failed, ...tabPlan.failed,
+    ...stale(pack, edits),
   ])];
   if (failed.length > 0) return { ok: false, failed };
   const edited = pack.slice();
