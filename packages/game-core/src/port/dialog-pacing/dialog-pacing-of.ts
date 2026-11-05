@@ -7,6 +7,7 @@ const dialogPacingOf = (settings: DialogPacingSettings): CkDialogPacing => ({
   holdQ4: toQ4(settings.dialogHoldSpeed),
   hold: settings.dialogHoldToAccelerate,
   fill: settings.dialogFillOnB,
+  autoSkip: settings.dialogAutoSkip,
 });
 
 export { dialogPacingOf };

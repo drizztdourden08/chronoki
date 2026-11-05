@@ -112,6 +112,13 @@ const sections: Section[] = [
             hint: 'Needs Dialog Pacing Controls.',
             keywords: 'dialog b complete fill box skip text',
           },
+          {
+            key: 'dialogAutoSkip',
+            label: 'Auto-Skip Dialog',
+            description: 'Show dialog text instantly and dismiss message boxes for you. Yes/no and shop prompts still wait for your answer.',
+            hint: 'Needs Dialog Pacing Controls.',
+            keywords: 'dialog text skip fast auto advance message box speed instant',
+          },
         ],
       },
     ],

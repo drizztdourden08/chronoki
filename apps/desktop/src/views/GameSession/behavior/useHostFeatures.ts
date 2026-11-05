@@ -18,11 +18,11 @@ const useHostFeatures = ({ settings, gates, volume, autoSaveIntervalSeconds, aut
   useEffect(() => { setAudioOutput(audioFreq, audioChannels); }, [audioFreq, audioChannels]);
   useEffect(() => { applyFrameSchedule(vsync); }, [vsync]);
   useEffect(() => { setHostGates(gates); }, [gates]);
-  const { baseQ4, holdQ4, hold, fill } = settings.dialogPacing;
+  const { baseQ4, holdQ4, hold, fill, autoSkip } = settings.dialogPacing;
   useEffect(() => {
-    setLiveSettings({ dimFlashes: gates.has('dimFlashes'), dialogPacing: { baseQ4, holdQ4, hold, fill } });
+    setLiveSettings({ dimFlashes: gates.has('dimFlashes'), dialogPacing: { baseQ4, holdQ4, hold, fill, autoSkip } });
     pushLiveSettings();
-  }, [gates, baseQ4, holdQ4, hold, fill]);
+  }, [gates, baseQ4, holdQ4, hold, fill, autoSkip]);
   useEffect(() => { setAutoSaveInterval(autoSaveIntervalSeconds); }, [autoSaveIntervalSeconds]);
   useEffect(() => { setAutoSaveMaxEntries(autoSaveMaxEntries); }, [autoSaveMaxEntries]);
   useEffect(() => { setTurboSpeed(turboSpeed); }, [turboSpeed]);
