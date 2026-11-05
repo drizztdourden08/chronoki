@@ -2,6 +2,7 @@
 import type { ReactNode } from 'react';
 import type { CkArea, CkSettings } from '@chronoki/game-core';
 import type { FunctionAction } from '@chronoki/input-mapping';
+import type { CoreStatus } from '@drizztdourden08/brock-port-kit/renderer';
 
 interface GameLaunch {
   id: number;
@@ -29,8 +30,19 @@ interface GameSessionValue {
   onFunctionRelease: (action: FunctionAction) => void;
 }
 
+interface PauseSyncInputs {
+  running: boolean;
+  inputPaused: boolean;
+  status: CoreStatus;
+}
+
+interface PauseSyncPlan {
+  releaseInput: boolean;
+  corePaused: boolean | null;
+}
+
 interface GameSessionProps {
   children: ReactNode;
 }
 
-export type { GameLaunch, GameSessionProps, GameSessionValue };
+export type { GameLaunch, GameSessionProps, GameSessionValue, PauseSyncInputs, PauseSyncPlan };

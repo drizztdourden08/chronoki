@@ -22,3 +22,7 @@
   max-height: 100%;
   opacity: 0.12;
 }
+
+[data-game-bleed] .screen-host__scrim {
+  inset: calc(var(--game-bleed-top, 0) * -1) calc(var(--game-bleed-right, 0) * -1) calc(var(--game-bleed-bottom, 0) * -1) calc(var(--game-bleed-left, 0) * -1);
+}

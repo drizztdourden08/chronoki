@@ -6,21 +6,22 @@ import { bleedOf } from './bleed-of';
 
 const useDockBleed = (viewRef: RefObject<HTMLElement | null>): void => {
   useEffect(() => {
-    const el = viewRef.current;
-    const main = el?.closest<HTMLElement>(DOCK_MAIN_SELECTOR) ?? null;
+    const main = viewRef.current?.closest<HTMLElement>(DOCK_MAIN_SELECTOR) ?? null;
     const dock = main?.parentElement?.closest<HTMLElement>(DOCK_SELECTOR) ?? null;
-    if (!el || !main || !dock) return;
+    if (!main || !dock) return;
     const apply = (): void => {
       const bleed = bleedOf(main.getBoundingClientRect(), dock.getBoundingClientRect());
-      for (const edge of DOCK_EDGE_NAMES) el.style.setProperty(BLEED_VARS[edge], `${bleed[edge]}px`);
+      for (const edge of DOCK_EDGE_NAMES) main.style.setProperty(BLEED_VARS[edge], `${bleed[edge]}px`);
     };
+    main.dataset.gameBleed = '';
     apply();
     const observer = new ResizeObserver(apply);
     observer.observe(main);
     observer.observe(dock);
     return () => {
       observer.disconnect();
-      for (const edge of DOCK_EDGE_NAMES) el.style.removeProperty(BLEED_VARS[edge]);
+      delete main.dataset.gameBleed;
+      for (const edge of DOCK_EDGE_NAMES) main.style.removeProperty(BLEED_VARS[edge]);
     };
   }, [viewRef]);
 };

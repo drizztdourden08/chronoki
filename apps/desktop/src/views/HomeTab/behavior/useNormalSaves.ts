@@ -1,8 +1,8 @@
 /* @layer renderer-components @kind hook */
 import { useCallback, useState } from 'react';
-import { activeStateContext, loadState, overwriteNamedState, platformSaveStore, saveNamedState } from '@app/game/save-states';
+import { activeStateContext, overwriteNamedState, platformSaveStore, saveNamedState } from '@app/game/save-states';
 import { appLog } from '@app/log/app-log';
-import { useGameSession } from '@app/views/GameSession';
+import { loadIntoPlay, useGameSession } from '@app/views/GameSession';
 import { ensureGameRunning } from './ensure-game-running';
 import { NORMAL_KIND } from '../HomeTab.constants';
 import { defaultSaveName } from './default-save-name';
@@ -28,7 +28,7 @@ const useNormalSaves = (profileId: string | null, running: boolean) => {
     const ctx = activeStateContext();
     if (!ctx) return;
     setBusyId(id);
-    const result = await loadState(ctx, { kind: NORMAL_KIND, id });
+    const result = await loadIntoPlay(ctx, { kind: NORMAL_KIND, id });
     if (!result.ok) appLog.warn(`[state] load save ${id} failed: ${result.reason}`);
     setBusyId(null);
   }, [running, play]);

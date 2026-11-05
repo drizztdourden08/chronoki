@@ -1,9 +1,9 @@
 /* @layer renderer-components @kind hook */
 import { useCallback, useEffect, useState } from 'react';
-import { activeStateContext, loadState, saveState } from '@app/game/save-states';
+import { activeStateContext, saveState } from '@app/game/save-states';
 import { appLog } from '@app/log/app-log';
 import type { SlotInfo } from '../HomeTab.type';
-import { useGameSession } from '@app/views/GameSession';
+import { loadIntoPlay, useGameSession } from '@app/views/GameSession';
 import { ensureGameRunning } from './ensure-game-running';
 import { emptySlots } from './empty-slots';
 import { fetchQuickSlots } from './fetch-quick-slots';
@@ -39,7 +39,7 @@ const useQuickSaves = (profileId: string | null, running: boolean) => {
     const ctx = activeStateContext();
     if (!ctx) return;
     setBusySlot(slot);
-    const result = await loadState(ctx, { kind: 'quick', slot });
+    const result = await loadIntoPlay(ctx, { kind: 'quick', slot });
     if (!result.ok) appLog.warn(`[state] load ${slot + 1} failed: ${result.reason}`);
     setBusySlot(null);
   }, [running, play]);
