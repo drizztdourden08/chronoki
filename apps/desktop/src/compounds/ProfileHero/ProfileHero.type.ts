@@ -22,4 +22,16 @@ interface HeroProgressFile {
   saveNumber: number;
 }
 
-export type { HeroLastSave, HeroProgressFile, HeroToolsProps };
+interface HeroChecks {
+  taken: number;
+  available: number;
+  left: number;
+  total: number;
+}
+
+interface HeroProgressProps {
+  files: HeroProgressFile[];
+  checks?: HeroChecks | null;
+}
+
+export type { HeroChecks, HeroLastSave, HeroProgressFile, HeroProgressProps, HeroToolsProps };
