@@ -58,7 +58,10 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     goal: goalOf(mode.goal, mode.goalEvent),
     buildPool: () => ({
       progression: [...keyItems],
-      rest: [...rest, ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, keyItems.length, input.fillerSeed, options.tabsanity === true)],
+      rest: [
+        ...rest,
+        ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, keyItems.length, { seed: input.fillerSeed, tabsanity: options.tabsanity === true }),
+      ],
     }),
   };
 };

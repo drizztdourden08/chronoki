@@ -2,8 +2,7 @@
 import { combineElements } from './combine-elements';
 import { ROBO_VANILLA_ORDER, VANILLA_ELEMENT_OF } from './element-rando.constants';
 import type { Element, ElementAssignment, Participant } from './element-rando.type';
-
-const LASER_SPIN_AT = 0;
+import { LASER_SPIN_AT } from './new-element-of.constants';
 
 const vanillaOf = (who: Participant): Element | null => {
   if (who === 'ayla') return null;

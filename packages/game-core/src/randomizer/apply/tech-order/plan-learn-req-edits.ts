@@ -2,10 +2,9 @@
 import {
   CC_BANK_ROM, LEARN_REF_BYTES, LEARN_REF_END, LEARN_REF_LIMIT, LEARN_REFS_ROM, LEARN_REQ_BYTES, TECH_CHARACTERS, TECH_SLOTS,
 } from './tech-order.constants';
-import type { TechIdMaps } from './tech-id-maps-of';
+import { SEAT_MASK } from './plan-learn-req-edits.constants';
+import type { TechIdMaps } from './tech-id-maps-of.type';
 import type { RomSpace, RomStage } from './tech-order.type';
-
-const SEAT_MASK = 0x80;
 
 const membersOf = (mask: number): number[] =>
   Array.from({ length: TECH_CHARACTERS }, (_, c) => c).filter((c) => (mask & (SEAT_MASK >> c)) !== 0);

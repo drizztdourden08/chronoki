@@ -1,15 +1,7 @@
 /* @layer bridge-wasm @kind fixture */
 import { CONTROL_COUNT, CONTROL_TABLE } from '../tech-order/tech-order.constants';
 import { GROUP_SIZE, GROUP_TABLE_ROM } from './element-rando.constants';
-
-const GROUPS: readonly (readonly number[])[] = [
-  [0], [1], [2], [3], [4], [5], [6], [1, 0], [0, 2], [3, 0],
-];
-
-const TECHS: readonly (readonly [group: number, element: number])[] = [
-  [0, 0x82], [1, 0x22], [2, 0x12], [4, 0x22], [6, 0x82], [6, 0x42], [3, 0x42], [3, 0x12], [3, 0x82], [5, 0x04],
-  [7, 0x22], [8, 0x42], [9, 0x42], [6, 0x00],
-];
+import { GROUPS, TECHS } from './element-rando.fixture.constants';
 
 const le32 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >>> 24) & 0xff];
 

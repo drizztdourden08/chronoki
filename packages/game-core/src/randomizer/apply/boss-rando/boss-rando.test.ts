@@ -7,7 +7,11 @@ import { findSceneScript } from '../script/find-scene-script';
 import type { PackEdit } from '../apply-seed.type';
 import { bossAssignmentOf } from './boss-assignment-of';
 import type { BossAssignment } from './boss-rando.type';
-import { hpOf, levelOf, sceneScript, slotOf, syntheticBossPack } from './boss-rando.fixture';
+import { syntheticBossPack } from './boss-rando.fixture';
+import { hpOf } from './hp-of.fixture';
+import { levelOf } from './level-of.fixture';
+import { sceneScript } from './scene-script.fixture';
+import { slotOf } from './slot-of.fixture';
 import { bossSpotEnemiesOf } from './boss-spot-enemies-of';
 import { BOSS_RANDO_SPOTS } from './boss-spots.constants';
 import { planBossSpotStats } from './plan-boss-spot-stats';
@@ -30,6 +34,12 @@ const applied = (pack: Uint8Array, edits: readonly PackEdit[]): Uint8Array => {
 const opOf = (pack: Uint8Array, scene: number): [number, number] => {
   const script = findSceneScript(pack, scene);
   return [pack[(script?.start ?? 0) + 34] ?? 0, pack[(script?.start ?? 0) + 35] ?? 0];
+};
+
+const expectSpotSwapped = (after: Uint8Array, spot: (typeof spots)[number], i: number): void => {
+  const j = (i + 1) % spots.length;
+  const expectedSlot = (slotOf(i) & 0x80) | (slotOf(j) & 0x7f);
+  spot.scenes.forEach((scene) => expect(opOf(after, scene)).toEqual([spots[j]?.enemy, expectedSlot]));
 };
 
 describe('boss assignment', { tags: ['critical'] }, () => {
@@ -60,11 +70,7 @@ describe('boss swap edits', { tags: ['critical'] }, () => {
     const plan = planBossSwapEdits(pack, rotated);
     expect(plan.failed).toEqual([]);
     const after = applied(pack, plan.edits);
-    spots.forEach((spot, i) => {
-      const j = (i + 1) % spots.length;
-      const expectedSlot = (slotOf(i) & 0x80) | (slotOf(j) & 0x7f);
-      spot.scenes.forEach((scene) => expect(opOf(after, scene)).toEqual([spots[j]?.enemy, expectedSlot]));
-    });
+    spots.forEach((spot, i) => expectSpotSwapped(after, spot, i));
   });
 
   it('plans nothing for a boss left in place', () => {

@@ -3,14 +3,8 @@ import {
   CC_MENU_TABLE_NAME, CC_MENU_TABLE_ROM, CONTROL_COUNT, CONTROL_TABLE, DESC_ROW_BYTES, DESC_TABLE_NAME, LEARN_REFS_ROM,
   MENU_MP_REQS_BYTES, MENU_MP_REQS_ROM, MOVED_TABLES, MP_COST_TABLE_NAME, MP_INDEX_TABLE_NAME,
 } from './tech-order.constants';
-
-type FixtureEntry = { type: number; id: number; data: number[] };
-
-const LEARN_REQS_ROM = 0x0c27fa;
-const LEARN_REQ_COUNT = 18;
-const MENU_COPY_BYTES = 0x1a1d;
-const TABLE_RECORDS = 0x39;
-const REFS = [0xc0, 0x39, 3, 0xfa, 0x27, 0xa0, 0x3c, 3, 0x03, 0x28, 0xff];
+import { LEARN_REQ_COUNT, LEARN_REQS_ROM, MENU_COPY_BYTES, REFS, TABLE_RECORDS } from './tech-order.fixture.constants';
+import type { FixtureEntry } from './tech-order.fixture.type';
 
 const le32 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >>> 24) & 0xff];
 

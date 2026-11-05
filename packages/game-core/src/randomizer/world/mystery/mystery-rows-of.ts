@@ -1,8 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { CtOptionValues } from '../ct-world-input.type';
 import { CT_OPTION_CATALOG } from '../ct-options.constants';
-
-type MysteryRow = { label: string; value: string };
+import type { MysteryRow } from './mystery-rows-of.type';
 
 const valueLabelOf = (labels: Readonly<Record<string, string>> | undefined, value: unknown): string => {
   if (typeof value === 'boolean') return value ? 'On' : 'Off';

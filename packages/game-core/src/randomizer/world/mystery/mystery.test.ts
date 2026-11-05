@@ -1,3 +1,4 @@
+/* @layer bridge-wasm @kind test */
 import { describe, expect, it } from 'vitest';
 import { CT_OPTION_CATALOG } from '../ct-options.constants';
 import { effectiveOptionsOf } from '../modes/effective-options-of';
@@ -8,7 +9,7 @@ import { rollMysteryOptions } from './roll-mystery-options';
 const seedWhere = (prefix: string, test: (seed: string) => boolean): string =>
   Array.from({ length: 1000 }, (_, i) => `${prefix}${i}`).find(test) ?? '';
 
-describe('mystery seed', () => {
+describe('mystery seed', { tags: ['critical'] }, () => {
   it('leaves options untouched when off', () => {
     const options = { itemDifficulty: 'hard', mysterySeed: false } as const;
     expect(resolveMysteryOptions(options, 'abc')).toBe(options);

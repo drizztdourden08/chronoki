@@ -1,9 +1,8 @@
 /* @layer bridge-wasm @kind logic */
 import { readPackEntries } from '../../checks/read-pack-entries';
+import { NAME_ALIGN } from './named-table-of.constants';
 import { NAMED_TABLE_HEADER_BYTES, NAMED_TABLE_TYPE } from './tech-order.constants';
 import type { NamedTable } from './tech-order.type';
-
-const NAME_ALIGN = 4;
 
 const sizeAtOf = (nameBytes: number): number => Math.ceil((1 + nameBytes) / NAME_ALIGN) * NAME_ALIGN;
 

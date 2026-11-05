@@ -10,7 +10,8 @@ import { applyOptionsOf } from '../enemy-difficulty/apply-options-of';
 import { findSceneScript } from '../script/find-scene-script';
 import { planRecruitSwapEdits } from './plan-recruit-swap-edits';
 import { RECRUIT_SPOT_SCENES } from './recruit-spot-edits.constants';
-import { scriptOf, syntheticRecruitPack } from './recruit-rando.fixture';
+import { syntheticRecruitPack } from './recruit-rando.fixture';
+import { scriptOf } from './script-of.fixture';
 
 const spots = CHARACTER_RANDO_SPOTS;
 const rotated: CharacterAssignment = Object.fromEntries(spots.map((s, i) => [s, spots[(i + 1) % spots.length] ?? s]));
@@ -28,6 +29,11 @@ const applied = (pack: Uint8Array, edits: readonly PackEdit[]): Uint8Array => {
 const scriptBytes = (pack: Uint8Array, scene: number): number[] => {
   const script = findSceneScript(pack, scene);
   return [...pack.subarray(script?.start ?? 0, (script?.start ?? 0) + (script?.length ?? 0))];
+};
+
+const expectScenesRewritten = (edited: Uint8Array, spot: CtCharacter, scenes: readonly number[]): void => {
+  const holder = rotated[spot] ?? spot;
+  scenes.forEach((scene) => expect(scriptBytes(edited, scene)).toEqual(scriptOf(spot, holder)));
 };
 
 describe('recruit assignment', { tags: ['critical'] }, () => {
@@ -55,10 +61,9 @@ describe('recruit swap edits', { tags: ['critical'] }, () => {
     const plan = planRecruitSwapEdits(pack, rotated);
     expect(plan.failed).toEqual([]);
     const edited = applied(pack, plan.edits);
-    (Object.entries(RECRUIT_SPOT_SCENES) as [CtCharacter, readonly number[]][]).forEach(([spot, scenes]) => {
-      const holder = rotated[spot] ?? spot;
-      scenes.forEach((scene) => expect(scriptBytes(edited, scene)).toEqual(scriptOf(spot, holder)));
-    });
+    (Object.entries(RECRUIT_SPOT_SCENES) as [CtCharacter, readonly number[]][]).forEach(([spot, scenes]) =>
+      expectScenesRewritten(edited, spot, scenes),
+    );
   });
 
   it('changes no byte for the identity assignment, even without the scenes', () => {
