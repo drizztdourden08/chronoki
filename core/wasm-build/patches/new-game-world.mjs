@@ -1,12 +1,12 @@
 // Build-time text patch for the field (src/field.c): on New Game only world 0 is the 1000 AD intro pan.
 // One exact match, count 1; any mismatch stops the build (the camera-lock.mjs precedent). Applied right after
 // writeCameraLock, on the patched field.c copy state-patches.mjs wrote under out/gen/state/. core/belthasar is never edited.
-//  * Vanilla play is unchanged: vanilla scene 0 only enters world 0, so destWorld != 0 never holds before the intro is done.
+//  * Gate: ck_randomizer() (the host's `[game] randomizer = 1`); a vanilla game never runs the added line.
 //  * A start state that enters another world on New Game gets the arrival tile instead of the intro pan.
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const ANCHOR = 'haveWorld = worldInit(&assets, &wd, destWorld);';
-const PATCHED = `if (newGame && !ngIntroDone && destWorld != 0) ngIntroDone = 1;   /* ChronoKi: only world 0 is the intro pan */ ${ANCHOR}`;
+const PATCHED = `if (ck_randomizer() && newGame && !ngIntroDone && destWorld != 0) ngIntroDone = 1;   /* ChronoKi: randomizer start states only; only world 0 is the intro pan */ ${ANCHOR}`;
 
 // [what to find, what to put, how many times it must occur]
 const WORLD_PATCHES = [[ANCHOR, PATCHED, 1]];

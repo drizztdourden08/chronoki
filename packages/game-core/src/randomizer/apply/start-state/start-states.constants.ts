@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind constants */
-import type { CtStartState, CtStartStateId } from './ct-start-state.type';
+import type { CtStartStateId } from '../../world/modes/ct-mode-def.type';
+import type { CtStartState } from './ct-start-state.type';
 import { STANDARD_START } from './standard-start.constants';
 
 const START_STATES: Readonly<Partial<Record<CtStartStateId, CtStartState>>> = {
