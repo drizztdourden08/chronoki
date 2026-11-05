@@ -1,5 +1,6 @@
 /* @layer renderer-app @kind entry */
 import '@drizztdourden08/tessera/tokens.css';
+import '@drizztdourden08/tessera/fonts/chronotype/chronotype.css';
 import '../.brock/palette.css';
 import './theme.css';
 import { StrictMode } from 'react';
