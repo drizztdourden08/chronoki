@@ -44,7 +44,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     goal: goalOf(mode.goal),
     buildPool: () => ({
       progression: [...mode.keyItems],
-      rest: [...rest, ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, mode.keyItems.length)],
+      rest: [...rest, ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, mode.keyItems.length, input.fillerSeed)],
     }),
   };
 };

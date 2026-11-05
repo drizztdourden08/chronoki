@@ -12,6 +12,7 @@ type CtWorldInput = {
   sealedCheckIds?: ReadonlySet<string>;
   options?: CtOptionValues;
   startParty?: CtStartParty;
+  fillerSeed?: string;
 };
 
 export type { CtOptionValues, CtWorldInput };
