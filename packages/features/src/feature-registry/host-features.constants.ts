@@ -5,7 +5,7 @@ const HOST_FEATURES: FeatureDef[] = [
   {
     id: 'turbo', label: 'Turbo', description: 'Runs the game faster while the Turbo shortcut is held.',
     userMessage: 'Runs the game faster while the Turbo shortcut is held.',
-    group: 'Quality of life', kind: 'host', origin: 'chronoki', default: false, requires: [], affectsVanillaParity: false, live: true,
+    group: 'Quality of life', kind: 'host', origin: 'chronoki', default: true, requires: [], affectsVanillaParity: false, live: true,
   },
   {
     id: 'linearFiltering', label: 'Linear Filtering', description: 'Apply bilinear interpolation for smoother, less pixelated visuals. Turn it off for crisp pixel art',
