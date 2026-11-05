@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind barrel */
+export { buildPackTierTable } from './build-pack-tier-table';
+export { buildTierTable } from './build-tier-table';
+export { readItemStats } from './read-item-stats';
 export { shiftItemByDifficulty } from './shift-item-by-difficulty';
-export { tierSlotOf } from './tier-slot-of';
-export { tierPoolOf } from './tier-pool-of';
-export { DIFFICULTY_TIER_SHIFT, HARD_START_GOLD, TREASURE_GROUPS } from './treasure-tiers.constants';
-export type { ItemDifficulty, ItemGroup, TierSlot, TreasureTier } from './treasure-tier.type';
+export { DIFFICULTY_TIER_SHIFT, HARD_START_GOLD } from './treasure-tiers.constants';
+export type { ItemDifficulty, ItemStat, TierSlot, TierTable, TreasureTier } from './treasure-tier.type';

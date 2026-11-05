@@ -1,5 +1,9 @@
 /* @layer bridge-wasm @kind type */
+import type { ItemDifficulty } from '../world/treasure-tiers/treasure-tier.type';
+
 type Placement = Readonly<Record<string, number>>;
+
+type ApplyOptions = { difficulty?: ItemDifficulty };
 
 type PackEdit = { at: number; old: number; next: number; why: string };
 
@@ -9,4 +13,4 @@ type ApplyResult = { ok: true; bytes: Uint8Array; edits: number } | { ok: false;
 
 type SeedApplier = (pack: Uint8Array, placement: Placement) => ApplyResult;
 
-export type { ApplyResult, EditPlan, PackEdit, Placement, SeedApplier };
+export type { ApplyOptions, ApplyResult, EditPlan, PackEdit, Placement, SeedApplier };

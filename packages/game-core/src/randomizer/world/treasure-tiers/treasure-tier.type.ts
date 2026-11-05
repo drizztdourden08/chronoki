@@ -3,8 +3,10 @@ type ItemDifficulty = 'easy' | 'normal' | 'hard';
 
 type TreasureTier = 0 | 1 | 2;
 
-type ItemGroup = { first: number; last: number };
+type ItemStat = { id: number; kind: string; score: number };
 
-type TierSlot = { group: ItemGroup; tier: TreasureTier };
+type TierSlot = { kind: string; tier: TreasureTier };
 
-export type { ItemDifficulty, ItemGroup, TierSlot, TreasureTier };
+type TierTable = { slots: ReadonlyMap<number, TierSlot>; pools: ReadonlyMap<string, readonly number[]> };
+
+export type { ItemDifficulty, ItemStat, TierSlot, TierTable, TreasureTier };
