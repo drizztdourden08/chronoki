@@ -2,9 +2,7 @@
 import type { ItemDifficulty } from '../../world/treasure-tiers/treasure-tier.type';
 import type { ApplyOptions } from '../apply-seed.type';
 import { bossDepthsOf } from './boss-depths-of';
-
-type OptionBag = Readonly<Record<string, unknown>>;
-type SphereLike = { index: number; locations: readonly unknown[] };
+import type { OptionBag, SphereLike } from './enemy-difficulty.type';
 
 const applyOptionsOf = (options: OptionBag, spheres: readonly SphereLike[]): ApplyOptions => ({
   difficulty: (options.itemDifficulty ?? 'normal') as ItemDifficulty,

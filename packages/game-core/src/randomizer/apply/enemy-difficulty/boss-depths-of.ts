@@ -1,7 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import { BOSS_SPOTS } from './boss-map.constants';
-
-type SphereLike = { index: number; locations: readonly unknown[] };
+import type { SphereLike } from './enemy-difficulty.type';
 
 const bossDepthsOf = (spheres: readonly SphereLike[]): ReadonlyMap<string, number> => {
   const depths = new Map<string, number>();
