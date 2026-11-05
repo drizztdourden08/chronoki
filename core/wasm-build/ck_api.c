@@ -35,6 +35,13 @@ EMSCRIPTEN_KEEPALIVE int CkFrameHeight(void) { int w, h; ck_frame_info(&w, &h); 
 /* the 1x picture the options ask for (the widescreen's width or 256, 224 + 2 x tall's band rows); the frame is k x that */
 EMSCRIPTEN_KEEPALIVE int CkViewWidth(void) { int w, h; ck_view_size(&w, &h); return w; }
 EMSCRIPTEN_KEEPALIVE int CkViewHeight(void) { int w, h; ck_view_size(&w, &h); return h; }
+/* the shown frame's black extents (camera lock, reconnect/ck_camera_lock.inc): rows of the picture past the room above and below,
+   columns past it left and right; CkViewScene is 1 for a field frame, 0 for any other scene */
+EMSCRIPTEN_KEEPALIVE int CkViewBlackTop(void) { return ck_view_black(0); }
+EMSCRIPTEN_KEEPALIVE int CkViewBlackBottom(void) { return ck_view_black(1); }
+EMSCRIPTEN_KEEPALIVE int CkViewBlackLeft(void) { return ck_view_black(2); }
+EMSCRIPTEN_KEEPALIVE int CkViewBlackRight(void) { return ck_view_black(3); }
+EMSCRIPTEN_KEEPALIVE int CkViewScene(void) { return ck_view_scene(); }
 EMSCRIPTEN_KEEPALIVE int CkFrameCount(void) { return (int)ck_frame_count(); }
 /* Stereo frames queued since the last call (consumes them); CkSamplesPtr is the S16 interleaved buffer. */
 EMSCRIPTEN_KEEPALIVE int CkSampleCount(void) { return ck_audio_take((const int16_t**)0); }

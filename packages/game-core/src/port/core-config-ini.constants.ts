@@ -5,6 +5,7 @@ const DEFAULT_CK_SETTINGS: CkSettings = {
   widescreen: 'off',
   wideWidth: 0,
   tallLines: 0,
+  cameraLock: false,
   renderScale: 1,
   interpolation: false,
   steamMargins: false,
