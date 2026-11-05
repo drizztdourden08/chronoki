@@ -2,7 +2,7 @@
 import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import type { CtOptionValues, CtStartParty } from '@chronoki/game-core';
 import {
-  createCtWramWriter, createStartGoldGrant, createStartStateCheck, HARD_START_GOLD, LEGACY_PARTY, modeOf, START_STATES,
+  createCtWramWriter, createStartGoldGrant, createStartMagicGrant, createStartStateCheck, HARD_START_GOLD, LEGACY_PARTY, modeOf, START_STATES,
 } from '@chronoki/game-core';
 import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
 import { chronokiMemoryOptions } from './chronoki-memory-options';
@@ -14,6 +14,9 @@ const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_
   const grant = options.itemDifficulty === 'hard'
     ? createStartGoldGrant(createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge), HARD_START_GOLD)
     : null;
+  const magic = options.unlockedMagic === true
+    ? createStartMagicGrant(createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge))
+    : null;
   const state = START_STATES[modeOf(options).startState];
   const check = state === undefined ? null : createStartStateCheck(state, party);
   let logged = false;
@@ -21,6 +24,7 @@ const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_
   return {
     observe: (view: MemoryView, started: boolean, newGame: boolean): void => {
       grant?.observe(started && newGame);
+      magic?.observe(started && newGame, view);
       if (!started || logged || check === null) return;
       polls += 1;
       if (!check.settled(view) && polls < START_CHECK_MAX_POLLS) return;
@@ -29,6 +33,7 @@ const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_
     },
     reset: (): void => {
       grant?.reset();
+      magic?.reset();
       logged = false;
       polls = 0;
     },
