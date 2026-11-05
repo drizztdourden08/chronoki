@@ -1,24 +1,26 @@
 /* @layer bridge-wasm @kind test */
 import { describe, expect, it } from 'vitest';
-import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import { GOLD } from '../../game-info/wram-map.constants';
 import { HARD_START_GOLD } from '../world/treasure-tiers/treasure-tiers.constants';
 import { createStartGoldGrant } from './create-start-gold-grant';
+import { fakeView } from './memory-view.fake';
 import { GOLD_WAIT_MAX_POLLS } from './session.constants';
 
 const fixture = (accept = true) => {
-  const ram = new Map<number, number>();
+  const ram: Record<number, number> = {};
   const writes: { offset: number; bytes: number[] }[] = [];
-  const view = { byte: (_region: string, at: number): number => ram.get(at) ?? 0 } as Pick<MemoryView, 'byte'> as MemoryView;
+  const view = fakeView(ram);
   const write = (offset: number, bytes: Uint8Array): boolean => {
     if (!accept) return false;
     writes.push({ offset, bytes: [...bytes] });
-    bytes.forEach((b, i) => ram.set(offset + i, b));
+    bytes.forEach((b, i) => {
+      ram[offset + i] = b;
+    });
     return true;
   };
   const gameWritesStartGold = (): void => {
-    ram.set(GOLD, 0x90);
-    ram.set(GOLD + 1, 0x01);
+    ram[GOLD] = 0x90;
+    ram[GOLD + 1] = 0x01;
   };
   return { writes, view, write, gameWritesStartGold };
 };
