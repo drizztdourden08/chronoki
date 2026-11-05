@@ -7,6 +7,10 @@ const VANILLA_SAFE_LOCKED_SETTINGS: ReadonlySet<string> = new Set([
   'resetMSUAtTitle',
   'msuChipFallback',
   'packReplaceSfx',
+  'dialogSpeed',
+  'dialogHoldSpeed',
+  'dialogHoldToAccelerate',
+  'dialogFillOnB',
 ]);
 
 export { VANILLA_SAFE_LOCKED_SETTINGS };
