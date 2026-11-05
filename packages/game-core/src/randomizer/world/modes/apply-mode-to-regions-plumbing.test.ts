@@ -23,6 +23,9 @@ const resultFor = (patch: Partial<CtModeDef>): CtRegionSpec[] => applyModeToRegi
 const specOf = (result: readonly CtRegionSpec[], id: CtRegionSpec['id']): CtRegionSpec =>
   found(result.find((spec) => spec.id === id));
 
+const isExitTarget = (spec: { id: string }): boolean =>
+  CT_REGIONS.some((other) => other.exits.some((exit) => exit.to === spec.id));
+
 describe('applyModeToRegions removals and events', () => {
   it('removes a named exit and keeps the others', { tags: ['critical'] }, () => {
     const from = withExits();
@@ -40,7 +43,7 @@ describe('applyModeToRegions removals and events', () => {
   });
 
   it('removes a region with every exit that led to it', { tags: ['critical'] }, () => {
-    const target = found(CT_REGIONS.find((spec) => CT_REGIONS.some((other) => other.exits.some((exit) => exit.to === spec.id))));
+    const target = found(CT_REGIONS.find(isExitTarget));
     const result = resultFor({ removedRegions: [target.id] });
     expect(result.some((spec) => spec.id === target.id)).toBe(false);
     expect(result.flatMap((spec) => spec.exits).some((exit) => exit.to === target.id)).toBe(false);

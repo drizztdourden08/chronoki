@@ -7,6 +7,7 @@ import type { CtOptionValues } from '../world/ct-world-input.type';
 import type { CtStartParty } from '../world/party/ct-party.type';
 import { rollCtPlacement } from '../world/roll-ct-placement';
 import { comparePackToPlacement } from './readback/compare-pack-to-placement';
+import { realignGiftChecks } from './readback/realign-gift-checks';
 import { verifyCtPlacement } from './verify-ct-placement';
 import { verifyRealInputOf } from './verify-real-input';
 import type { VerifyResult } from './verify-result.type';
@@ -27,7 +28,7 @@ const verifySeedEndToEnd = (pack: Uint8Array, options: CtOptionValues, party: Ct
     const written = applySeedToPack(pack, plan.pack, verifyStartSplicesOf(options, placedParty), applyOptionsOf(options, placement.spheres));
     if (!written.ok) return failedWith(swept, `apply refused ${written.failed.length}: ${written.failed.slice(0, VERIFY_SAMPLE).join(', ')}`);
     const mismatches = comparePackToPlacement(written.bytes, placement, {
-      checks: input.checks, startState: startStateOf(options), party: placedParty,
+      checks: realignGiftChecks(pack, written.bytes, input.checks), startState: startStateOf(options), party: placedParty,
     });
     if (mismatches.length === 0) return swept;
     const sample = mismatches.slice(0, VERIFY_SAMPLE)
