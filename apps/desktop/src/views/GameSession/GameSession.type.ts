@@ -19,6 +19,7 @@ interface GameSessionValue {
   settings: CkSettings;
   volume: number;
   gates: ReadonlySet<string>;
+  saveHoldDuration: number;
   pictureRatio: number;
   setStageArea: (area: CkArea) => void;
   play: () => void;

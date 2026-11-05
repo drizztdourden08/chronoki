@@ -7,19 +7,27 @@ import { useGameSession } from '@app/views/GameSession';
 import { PauseOverlay } from '@app/views/PauseOverlay';
 import { ProfileSwitcherOverlay } from '@app/views/ProfileSwitcherOverlay';
 import { DebugFloatingControls } from '@app/compounds/DebugFloatingControls';
-import { SaveStateOverlay } from '@app/views/SaveStateOverlay';
+import { SaveStateOverlay, useSaveOverlay } from '@app/views/SaveStateOverlay';
 import { useDockBleed } from './behavior/useDockBleed';
 import './GameView.css';
 
 const GameView = () => {
   const { launch, notice, running } = useGameSession();
   const product = useProduct();
+  const saveOverlay = useSaveOverlay();
   const viewRef = useRef<HTMLDivElement | null>(null);
   useDockBleed(viewRef);
   return (
     <Box ref={viewRef} className="game-view">
       <GameLayer />
-      {running && <SaveStateOverlay />}
+      <SaveStateOverlay
+        open={saveOverlay.open}
+        onClose={saveOverlay.close}
+        profileId={launch?.profileId ?? null}
+        highlightedSlot={saveOverlay.highlightedSlot}
+        holdProgress={saveOverlay.holdProgress}
+        hints={saveOverlay.hints}
+      />
       <DebugFloatingControls profileId={launch?.profileId ?? null} gameRunning={running} />
       {running && <PauseOverlay />}
       {running && <ProfileSwitcherOverlay />}

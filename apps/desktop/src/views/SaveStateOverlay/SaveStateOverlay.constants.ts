@@ -1,9 +1,16 @@
 /* @layer renderer-components @kind constants */
-import type { HintAction } from './SaveStateOverlay.type';
+import { QUICK_SAVE_SLOTS } from '@app/game/save-slots';
+import { loadFromSlot, saveToSlot } from '@app/views/GameSession';
+import type { HintAction, SlotActionSpec } from './SaveStateOverlay.type';
 
+const SLOT_COUNT = QUICK_SAVE_SLOTS;
 const ANIM_MS = 180;
+const TAP_THRESHOLD_MS = 180;
 
-const SLOT_ACTION_PREFIXES: readonly string[] = ['save-state', 'load-state'];
+const SLOT_ACTIONS: readonly SlotActionSpec[] = [
+  { prefix: 'load-state', label: 'LoadState', verb: 'Loading', run: loadFromSlot },
+  { prefix: 'save-state', label: 'SaveState', verb: 'Saving', run: saveToSlot },
+];
 
 const HINT_LABELS: Record<HintAction, string> = {
   'tap-load': 'Tap to load',
@@ -12,8 +19,4 @@ const HINT_LABELS: Record<HintAction, string> = {
   'esc-cancel': 'Cancel',
 };
 
-const IDLE_HINTS: readonly HintAction[] = ['tap-load', 'hold-save', 'esc-cancel'];
-
-const HOLDING_HINTS: readonly HintAction[] = ['holding-save', 'esc-cancel'];
-
-export { ANIM_MS, HINT_LABELS, HOLDING_HINTS, IDLE_HINTS, SLOT_ACTION_PREFIXES };
+export { HINT_LABELS, SLOT_COUNT, ANIM_MS, TAP_THRESHOLD_MS, SLOT_ACTIONS };
