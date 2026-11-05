@@ -8,7 +8,8 @@ import { itemLabelOf } from '../item-label-of';
 import { currentChecks } from './current-checks';
 import { currentPollEntries } from './current-poll-entries';
 import { heldOfView } from './held-of-view';
-import { eraLabelOf, locationNameOf } from './location-index';
+import { eraLabelOf } from './era-label-of';
+import { locationNameOf } from './location-name-of';
 import { ERA_GROUPING_ID, TRACKER_GROUPINGS } from './tracker.constants';
 
 const baseOf = () => trackerFromDef(createCtWorldDef({ checks: currentChecks() }), {});

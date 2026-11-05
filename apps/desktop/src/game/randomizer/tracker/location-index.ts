@@ -1,13 +1,9 @@
 /* @layer bridge-wasm @kind logic */
 import type { CheckDef, CtEra } from '@chronoki/game-core';
-import { CT_ERA_LABELS, CT_REGIONS } from '@chronoki/game-core';
+import { CT_REGIONS } from '@chronoki/game-core';
 import { currentChecks } from './current-checks';
-
-type LocationIndex = { eraOf: ReadonlyMap<string, CtEra>; nameOf: ReadonlyMap<string, string> };
-
-const ERA_OF_MAP = new Map<number, CtEra>(
-  CT_REGIONS.flatMap((spec) => spec.maps.map((map): [number, CtEra] => [map, spec.era])),
-);
+import { ERA_OF_MAP } from './location-index.constants';
+import type { LocationIndex } from './location-index.type';
 
 const buildIndex = (checks: readonly CheckDef[]): LocationIndex => {
   const eraOf = new Map<string, CtEra>();
@@ -33,8 +29,4 @@ const indexOfChecks = (): LocationIndex => {
   return built;
 };
 
-const eraLabelOf = (location: string): string => CT_ERA_LABELS[indexOfChecks().eraOf.get(location) ?? 'none'];
-
-const locationNameOf = (location: string): string => indexOfChecks().nameOf.get(location) ?? location;
-
-export { eraLabelOf, locationNameOf };
+export { indexOfChecks };
