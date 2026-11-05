@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind constants */
 import type { EditPlan } from './apply-seed.type';
 import { planBossSwapEdits } from './boss-rando/plan-boss-swap-edits';
+import { planDuplicateKindEdits } from './characters/plan-duplicate-kind-edits';
 import { planRecruitSwapEdits } from './characters/plan-recruit-swap-edits';
 import { planElementEdits } from './element-rando/plan-element-edits';
 import { planEnemyOptionEdits } from './enemy-difficulty/plan-enemy-option-edits';
@@ -43,7 +44,12 @@ const SEED_PLAN_STEPS: readonly SeedPlanStep[] = [
   {
     key: 'character',
     when: (options) => Boolean(options.characterRando),
-    plan: (pack, options) => (options.characterRando ? planRecruitSwapEdits(pack, options.characterRando) : { edits: [], failed: [] }),
+    plan: (pack, options) => {
+      if (!options.characterRando) return { edits: [], failed: [] };
+      return options.duplicateCharacters === true
+        ? planDuplicateKindEdits(pack, options.characterRando)
+        : planRecruitSwapEdits(pack, options.characterRando);
+    },
   },
   { key: 'gear', when: (options) => options.gearRando === true, plan: (pack, _options, ctx) => planGearRandoEdits(pack, ctx.seed) },
   { key: 'heal', when: (options) => options.healingRando === true, plan: (pack, _options, ctx) => planHealingRandoEdits(pack, ctx.seed) },

@@ -21,6 +21,6 @@ interface CkSettings {
   visibleTechs: boolean;
 }
 
-type CkGameFlags = { randomizer: boolean; disableGlitches: boolean };
+type CkGameFlags = { randomizer: boolean; disableGlitches: boolean; duplicateCharacters?: boolean };
 
 export type { CkGameFlags, CkSettings, CkSync, CkWidescreen };

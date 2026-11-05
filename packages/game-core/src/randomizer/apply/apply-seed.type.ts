@@ -26,6 +26,7 @@ type ApplyOptions = {
   seed?: string;
   bossRando?: BossAssignment;
   characterRando?: CharacterAssignment;
+  duplicateCharacters?: boolean;
 };
 
 type PackEdit = { at: number; old: number; next: number; why: string };

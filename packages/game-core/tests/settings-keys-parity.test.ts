@@ -9,7 +9,7 @@ const withReference = settingsC ? it : it.skip;
 
 const CONTROL_KEY = /^(key|key2|pad)_(\w+)$/;
 const HOST_READ_KEYS = new Set(['video.wide_width', 'video.tall_lines', 'video.camera_lock',
-  'chronoki.sightscope', 'chronoki.visible_techs', 'game.randomizer', 'game.disable_glitches']);
+  'chronoki.sightscope', 'chronoki.visible_techs', 'chronoki.duplicate_characters', 'game.randomizer', 'game.disable_glitches']);
 
 const readLoadedKeys = (src: string): Set<string> => {
   const body = src.slice(src.indexOf('static void setKey'), src.indexOf('int CtSettingsLoad'));
@@ -30,7 +30,7 @@ const readStems = (src: string): Set<string> => {
 const writtenKeys = (): string[] => {
   const keys: string[] = [];
   let section = '';
-  for (const line of buildCoreConfigIni({ sightscope: true, visibleTechs: true }).split('\n')) {
+  for (const line of buildCoreConfigIni({ sightscope: true, visibleTechs: true }, { randomizer: true, disableGlitches: false, duplicateCharacters: true }).split('\n')) {
     const header = /^\[(\w+)\]$/.exec(line);
     if (header) section = header[1] ?? '';
     else if (line.includes('=')) keys.push(`${section}.${line.slice(0, line.indexOf('='))}`);
