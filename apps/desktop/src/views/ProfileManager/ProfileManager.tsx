@@ -18,6 +18,7 @@ const ProfileManager = ({ onOpenProfile }: ProfileManagerProps) => {
       selected={selectedProfile?.id ?? null}
       creating={creating}
       canCreate={readyRoms.length > 0}
+      loadingProfile={manager.loadingProfile}
       onSelect={manager.select}
       onOpen={onOpenProfile}
       onDelete={manager.remove}
@@ -31,7 +32,6 @@ const ProfileManager = ({ onOpenProfile }: ProfileManagerProps) => {
     <ProfileDetailPanel
       key={selectedProfile.id}
       profile={selectedProfile}
-      readyRoms={readyRoms}
       onOpen={onOpenProfile}
       onDelete={manager.remove}
     />

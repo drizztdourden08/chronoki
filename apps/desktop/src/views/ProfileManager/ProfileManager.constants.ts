@@ -14,7 +14,7 @@ const PROFILE_TABS: TabItem[] = [
 const PROFILE_TEXT = {
   listTitle: 'Profiles',
   listLabel: 'Profile manager',
-  empty: 'No profiles yet. Add your ROM in the Library, then create a profile.',
+  empty: 'No profiles yet.',
   noRom: 'No ROM selected',
   newProfile: 'New Profile',
   emptyDetail: 'Select a profile. Double-click to open it.',

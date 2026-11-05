@@ -11,8 +11,16 @@ const useReadyRoms = (): ReadyRom[] => {
 
   useEffect(() => {
     let current = true;
-    void readReadyRoms().then((loaded) => { if (current) setRoms(loaded); });
-    return () => { current = false; };
+    const load = () => { void readReadyRoms().then((loaded) => { if (current) setRoms(loaded); }); };
+    const onVisible = () => { if (document.visibilityState === 'visible') load(); };
+    load();
+    window.addEventListener('focus', load);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      current = false;
+      window.removeEventListener('focus', load);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, []);
 
   return roms;
