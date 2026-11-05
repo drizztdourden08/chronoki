@@ -7,6 +7,7 @@ import { useGameSession } from '@app/views/GameSession';
 import { PauseLayer } from '@app/views/PauseLayer';
 import { ProfileSwitcherOverlay } from '@app/views/ProfileSwitcherOverlay';
 import { DebugFloatingControls } from '@app/compounds/DebugFloatingControls';
+import { RandomizerOverlays } from '@app/views/RandomizerOverlays';
 import { SaveStateOverlay, useSaveOverlay } from '@app/views/SaveStateOverlay';
 import { useDockBleed } from './behavior/useDockBleed';
 import './GameView.css';
@@ -31,6 +32,7 @@ const GameView = () => {
       <DebugFloatingControls profileId={launch?.profileId ?? null} gameRunning={running} />
       {running && <PauseLayer />}
       {running && <ProfileSwitcherOverlay />}
+      {running && <RandomizerOverlays profileId={launch?.profileId ?? null} />}
       {launch === null && (
         <Box className="game-view__idle">
           <Image className="game-view__mark" src={product.logos.mark} alt="" />

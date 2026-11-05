@@ -1,6 +1,6 @@
 /* @layer bridge-wasm @kind logic */
+import { randomSeed } from '@drizztdourden08/brock-randomizer';
 import type { RandomizerFormState, RandomizerOptions, RandomizerProfileConfig } from '@drizztdourden08/brock-randomizer';
-import { randomSeed } from './random-seed';
 
 const chronokiToConfig = (form: RandomizerFormState, options: unknown): RandomizerProfileConfig => ({
   mode: form.mode,
