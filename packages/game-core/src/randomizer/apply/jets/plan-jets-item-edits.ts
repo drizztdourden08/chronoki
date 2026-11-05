@@ -3,12 +3,11 @@ import { CTAS_TYPE_TABLE } from '../../checks/checks.constants';
 import { readPackEntries } from '../../checks/read-pack-entries';
 import type { EditPlan, PackEdit } from '../apply-seed.type';
 import { encodeItemName } from './encode-item-name';
+import { WHY } from './plan-jets-item-edits.constants';
 import {
   ICON_SOURCE_ITEM_ID, ITEM_PROP_PACK_ID, ITEM_PROP_PACK_TYPE, JETS_ITEM_ID, JETS_ITEM_NAME, KEY_ITEM_PROP, NAME_RECORD_BYTES,
   NAME_SPACE, NAME_TABLE_ROM,
 } from './jets-item.constants';
-
-const WHY = 'jets-of-time-item';
 
 const bytesEdit = (pack: Uint8Array, at: number, next: number[]): PackEdit[] =>
   next.flatMap((value, i): PackEdit[] => ((pack[at + i] ?? value) === value ? [] : [{ at: at + i, old: pack[at + i] ?? 0, next: value, why: WHY }]));

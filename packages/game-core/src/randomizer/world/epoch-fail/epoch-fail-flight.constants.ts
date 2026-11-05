@@ -1,7 +1,6 @@
 /* @layer bridge-wasm @kind constants */
-import type { CtRegionId, CtSpotId } from '../ct-world-keys.type';
-
-type FlightExit = { from: CtRegionId; to: CtRegionId };
+import type { CtSpotId } from '../ct-world-keys.type';
+import type { FlightExit } from './epoch-fail-flight.constants.type';
 
 const JETS_ROM_ID = 0xea;
 
@@ -16,4 +15,3 @@ const FLIGHT_EXITS: readonly FlightExit[] = [
 ];
 
 export { FLIGHT_EXITS, FLIGHT_SPOTS, JETS_ROM_ID };
-export type { FlightExit };
