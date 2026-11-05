@@ -4,14 +4,13 @@ import { ctMsuConfig } from '@chronoki/game-core';
 import { MSU_TRACK_COUNT } from '@chronoki/game-data';
 import { ctTrackName } from './ct-track-name';
 import { NO_SOUNDS } from './no-sounds.constants';
-import type { ChronokiMsuStudioGame } from './msu-studio.type';
 
-const chronokiMsuStudio: ChronokiMsuStudioGame = defineMsuStudio<never, never>({
+const chronokiMsuStudio = defineMsuStudio({
   config: ctMsuConfig,
   trackName: ctTrackName,
   baseTrackCount: MSU_TRACK_COUNT,
   sounds: NO_SOUNDS,
-  previewContext: undefined as never,
+  previewContext: undefined,
 });
 
 export { chronokiMsuStudio };

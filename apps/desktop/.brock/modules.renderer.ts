@@ -9,7 +9,7 @@ import inputRenderer from '@drizztdourden08/brock-input/renderer';
 import gameInfoRenderer from '@drizztdourden08/brock-game-info/renderer';
 import mcpRenderer from '@drizztdourden08/brock-mcp/renderer';
 import randomizerRenderer from '@drizztdourden08/brock-randomizer/renderer';
-import { msuRenderer } from '@drizztdourden08/brock-msu/renderer';
+import msuRenderer from '@drizztdourden08/brock-msu/renderer';
 
 const rendererModules: RendererModule[] = [
   updaterRenderer,
