@@ -1,7 +1,9 @@
 /* @layer tests @kind test */
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { DEFAULT_SETTINGS } from '@app/settings.constants';
 import { isSettingDisabled } from '@app/settings-controls/is-setting-disabled';
+
+vi.mock('@app/launch-flags/is-packaged', () => ({ isPackaged: () => false }));
 
 const withRatio = (aspectRatio: string) => ({ ...DEFAULT_SETTINGS, aspectRatio, vanillaSafe: false, gates: ['widescreen', 'extendY'] }) as typeof DEFAULT_SETTINGS;
 
