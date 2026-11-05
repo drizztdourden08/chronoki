@@ -6,9 +6,9 @@ import type { LiveCalls } from './live-settings.type';
 
 const reassertDialogPacing = (calls: LiveCalls | null): void => {
   if (!calls) return;
-  const { baseQ4, holdQ4, hold, fill } = liveSettingsState.dialogPacing;
+  const { baseQ4, holdQ4, hold, fill, autoSkip } = liveSettingsState.dialogPacing;
   callIfExported(() => {
-    if (calls.has(CK_EXPORT_SET_DIALOG_PACING)) calls.call(CK_EXPORT_SET_DIALOG_PACING, baseQ4, holdQ4, hold ? 1 : 0, fill ? 1 : 0);
+    if (calls.has(CK_EXPORT_SET_DIALOG_PACING)) calls.call(CK_EXPORT_SET_DIALOG_PACING, baseQ4, holdQ4, hold ? 1 : 0, fill ? 1 : 0, autoSkip ? 1 : 0);
   });
 };
 

@@ -10,7 +10,7 @@ const withReference = settingsC ? it : it.skip;
 const CONTROL_KEY = /^(key|key2|pad)_(\w+)$/;
 const HOST_READ_KEYS = new Set(['video.wide_width', 'video.tall_lines', 'video.camera_lock',
   'chronoki.sightscope', 'chronoki.visible_techs', 'chronoki.dim_flashes', 'chronoki.dialog_controls', 'chronoki.dialog_speed_q4', 'chronoki.dialog_hold_q4',
-  'chronoki.dialog_hold', 'chronoki.dialog_fill', 'chronoki.duplicate_characters', 'game.randomizer', 'game.disable_glitches']);
+  'chronoki.dialog_hold', 'chronoki.dialog_fill', 'chronoki.dialog_auto_skip', 'chronoki.duplicate_characters', 'game.randomizer', 'game.disable_glitches']);
 
 const readLoadedKeys = (src: string): Set<string> => {
   const body = src.slice(src.indexOf('static void setKey'), src.indexOf('int CtSettingsLoad'));

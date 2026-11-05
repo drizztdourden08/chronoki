@@ -49,12 +49,13 @@ int  ck_dim_flashes(void);
 void ck_dim_flashes_set(int on);
 /* dialog_reconnect.c: dialog pacing, the field typewriter's iterations a frame (wasm-build/patches/dialog-pacing.mjs).
    [chronoki] dialog_controls (0/1, default 0 = the original game), dialog_speed_q4, dialog_hold_q4 (1/4 units, 4 = 1x,
-   0 = instant), dialog_hold, dialog_fill (0/1); CkSetDialogPacing (ck_api.c) changes them live. ck_dialog_steps returns
+   0 = instant), dialog_hold, dialog_fill, dialog_auto_skip (0/1); CkSetDialogPacing (ck_api.c) changes them live. ck_dialog_steps returns
    1 when off or neutral, so the patched field.c runs its one original iteration. None of it is in a save state. */
 void ck_dialog_defaults(void);
 int  ck_dialog_ini(const char* key, int iv);
-void ck_dialog_pacing_set(int baseQ4, int holdQ4, int hold, int fill);
+void ck_dialog_pacing_set(int baseQ4, int holdQ4, int hold, int fill, int autoSkip);
 int  ck_dialog_steps(int phase, int aHeld, int bHeld);
+int  ck_dialog_autoskip_press(int waiting);   /* Auto-Skip: 1 = press A for the finished plain box */
 /* settings_reconnect.c (ck_dup_chars.inc): [chronoki] duplicate_characters, 0 or 1, default 0 (off = the original game).
    Character rando may then put two copies of one character in the party: a party byte is a SLOT (story identity) and
    sheet byte +0x00 ($7E:2600 + slot * 0x50) is its KIND (looks, attack, techs). The patched engine files
