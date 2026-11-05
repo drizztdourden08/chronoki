@@ -2,7 +2,7 @@
 import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import type { CtOptionValues, CtStartParty } from '@chronoki/game-core';
 import {
-  createCtWramWriter, createModeHooks, createStartGoldGrant, createStartMagicGrant, createStartStateCheck, HARD_START_GOLD, LEGACY_PARTY, modeOf, START_STATES,
+  createCtWramWriter, createModeHooks, createStartGoldGrant, createStartMagicGrant, createOptionsStartCheck, HARD_START_GOLD, LEGACY_PARTY,
 } from '@chronoki/game-core';
 import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
 import { chronokiMemoryOptions } from './chronoki-memory-options';
@@ -18,8 +18,7 @@ const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_
     ? createStartMagicGrant(createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge))
     : null;
   const mode = createModeHooks(options, createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge));
-  const state = START_STATES[modeOf(options).startState];
-  const check = state === undefined ? null : createStartStateCheck(state, party);
+  const check = createOptionsStartCheck(options, party);
   let logged = false;
   let polls = 0;
   return {

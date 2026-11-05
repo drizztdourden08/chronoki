@@ -13,6 +13,7 @@ export type { ModeHook, ModeHookFactory } from './mode-hook.type';
 export { createStartGoldGrant } from './create-start-gold-grant';
 export { createStartMagicGrant } from './create-start-magic-grant';
 export { createStartStateCheck } from './create-start-state-check';
+export { createOptionsStartCheck } from './create-options-start-check';
 export { giftTargetsOf } from './gift-targets-of';
 export { playSecondsOf } from './play-seconds-of';
 export type { StartGoldGrant, WramWrite } from './start-gold-grant.type';
