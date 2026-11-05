@@ -7,11 +7,13 @@ const WIDGET_GATES: Readonly<Record<string, WidgetGate>> = {
   'game-info': { readsGameData: true, requiresSetting: 'gameInfo' },
   checks: { readsGameData: true },
   inventory: { readsGameData: true },
+  cheats: { readsGameData: true, requiresSetting: 'cheatsEnabled' },
 };
 
 const WIDGET_GATE_MESSAGES: Readonly<Record<string, string>> = {
   [VANILLA_SAFE_ID]: 'Disabled in Vanilla Safe mode',
   gameInfo: 'Game Info widget is disabled',
+  cheatsEnabled: 'Cheats are disabled',
 };
 
 const WIDGET_GATE_FALLBACK_TARGET = 'gameplay';
