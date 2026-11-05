@@ -1,5 +1,5 @@
 /* @layer renderer-lib @kind types */
-type ImportKind = 'rom';
+type ImportKind = 'rom' | 'sprites';
 
 type ImportPhase = 'extract' | 'copy';
 
