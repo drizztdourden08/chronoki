@@ -14,7 +14,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   autoSaveIntervalSeconds: 300,
   masterVolume: 100,
   masterMuted: false,
-  showFps: false,
+  displayPerfInTitle: false,
   viewportConstraint: 'none',
   pixelPerfect: false,
   autoSaveMaxEntries: 5,

@@ -13,7 +13,7 @@ const ENHANCED_EXTRA_GATES: readonly string[] = ['autoSave', 'widescreen', 'scen
 const ENHANCED_CONFIG_OVERRIDES: Partial<AppSettings> = {
   vanillaSafe: false,
   gates: [...DEFAULT_GATES, ...ENHANCED_EXTRA_GATES.filter((id) => !DEFAULT_GATES.includes(id))],
-  showFps: true,
+  displayPerfInTitle: true,
   pixelPerfect: true,
   saveHoldDuration: 1,
 };

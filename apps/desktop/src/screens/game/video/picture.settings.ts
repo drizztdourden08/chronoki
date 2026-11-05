@@ -33,9 +33,10 @@ const sections: Section[] = [
     title: 'Performance',
     items: [
       {
-        key: 'showFps',
+        key: 'displayPerfInTitle',
         label: 'Show FPS',
         description: 'Display the current frames per second, and the refresh rate of your display, in the title bar while the game is running',
+        keywords: 'fps performance frame rate counter refresh rate hz',
       },
       gateItem('interpolate'),
       gateItem('freeSync'),

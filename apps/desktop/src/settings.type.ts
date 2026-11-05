@@ -20,7 +20,7 @@ interface AppSettings extends BaseSettings {
   autoSaveIntervalSeconds: number;
   masterMuted: boolean;
   volumeScale?: number;
-  showFps: boolean;
+  displayPerfInTitle: boolean;
   viewportConstraint: ViewportMode;
   pixelPerfect: boolean;
   autoSaveMaxEntries: number;
