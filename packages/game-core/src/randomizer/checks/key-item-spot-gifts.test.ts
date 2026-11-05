@@ -9,7 +9,9 @@ import type { CheckDef } from './check.type';
 import { KEY_ITEM_SPOT_GIFTS, UNBOUND_KEY_ITEM_SPOTS } from './key-item-spot-gifts.constants';
 import { spotChecksOf } from './spot-checks-of';
 
-const giftOf = (check: string, item: number): CheckDef => ({ id: check, kind: 'gift', locationId: 1, vanillaItem: item });
+const giftOf = (check: string, item: number): CheckDef => ({
+  id: check, kind: check.startsWith('chest-') ? 'chest' : 'gift', locationId: 1, vanillaItem: item,
+});
 const CHECKS: CheckDef[] = KEY_ITEM_SPOT_GIFTS.map((gift) => giftOf(gift.check, gift.item));
 
 describe('key-item spot gifts', { tags: ['critical'] }, () => {
@@ -49,8 +51,39 @@ describe('key-item spot gifts', { tags: ['critical'] }, () => {
   });
 
   it('still counts an unbound spot as virtual', () => {
-    const plan = planPackPlacement(placementFixture([['ki-taban', 'pendant']]), CHECKS);
-    expect(plan.virtual).toEqual([['ki-taban', 'pendant']]);
+    const plan = planPackPlacement(placementFixture([['ki-cyrus-grave', 'pendant']]), CHECKS);
+    expect(plan.virtual).toEqual([['ki-cyrus-grave', 'pendant']]);
+    expect(plan.unbound).toBe(1);
+  });
+
+  it('binds the settled spots to the gift or chest that gives their item', () => {
+    const bound = spotChecksOf(CHECKS);
+    expect(bound?.get('ki-zenan-bridge')).toBe('gift-078-o15-0');
+    expect(bound?.get('ki-taban')).toBe('gift-004-o8-0');
+    expect(bound?.get('ki-melchior-sun-stone')).toBe('gift-1b8-o23-1');
+    expect(bound?.get('ki-frogs-burrow')).toBe('chest-08d-0');
+  });
+
+  it('leaves the sibling gifts of a bound function as their own checks', () => {
+    const siblings = [giftOf('gift-004-o8-2', 0x79), giftOf('gift-078-o15-1', 0xcd), giftOf('gift-1b8-o23-0', 0xbb)];
+    const treasure = joinCtChecks({ checks: [...CHECKS, ...siblings], spotChecks: spotChecksOf(CHECKS) }).treasure;
+    expect(treasure.map((location) => location.key)).toEqual(siblings.map((check) => check.id));
+  });
+
+  it('skips a pinned source that holds its vanilla item: not packed, not virtual', () => {
+    const sources = [giftOf('gift-1d0-o0', 0xd9), giftOf('gift-1b8-o2', 0xd8)];
+    const placement = placementFixture([['gift-1d0-o0', 'c-trigger'], ['gift-1b8-o2', 'prism-shard']]);
+    expect(planPackPlacement(placement, [...CHECKS, ...sources])).toEqual({ pack: {}, items: new Map(), virtual: [], unbound: 0 });
+  });
+
+  it('no longer treats a giver-less spot as pinned', () => {
+    const plan = planPackPlacement(placementFixture([['ki-sunken-desert', 'c-trigger']]), CHECKS);
+    expect(plan.virtual).toEqual([['ki-sunken-desert', 'c-trigger']]);
+  });
+
+  it('still reports another item on an unbound spot as virtual', () => {
+    const plan = planPackPlacement(placementFixture([['ki-geno-dome', 'pendant']]), CHECKS);
+    expect(plan.virtual).toEqual([['ki-geno-dome', 'pendant']]);
     expect(plan.unbound).toBe(1);
   });
 });

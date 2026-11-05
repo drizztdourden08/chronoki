@@ -21,7 +21,14 @@ import { ruleMapsOfRegions } from './rule-maps-of-regions';
 import { sealedRulesOf } from './sealed-rules-of';
 import { keyItemsOf } from './epoch-fail/key-items-of';
 import { pinRoboRibbon } from './pin-robo-ribbon';
+import { pinSpotsPhase } from './pin-spots-phase';
+import type { PinnedItem } from './pinned-item.type';
+import { pinnedSourcesOf } from './pinned-sources-of';
+import { withPinnedSources } from './with-pinned-sources';
+import { unpinnedKeyItems } from './unpinned-key-items';
+import { giverLessSpotRulesOf } from './giver-less-spot-rules-of';
 import { treasureItemRulesOf } from './treasure-item-rules-of';
+import type { CtRule } from './ct-region-spec.type';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const mode = modeOf(input.options);
@@ -37,9 +44,15 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const specs = applyBucketToRegions(partied, objectives, bucketCountsOf(options, objectives.length).needed);
   const vanillaRoboRibbon = options.vanillaRoboRibbon === true;
   const joinInput = vanillaRoboRibbon ? { ...input, checks: pinRoboRibbon(input.checks) } : input;
-  const { regions, treasure } = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true);
+  const joined = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true);
+  const { treasure } = joined;
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
-  const keyItems = keyItemsOf(mode, epochFail, vanillaRoboRibbon);
+  const spotIds = specs.flatMap((spec) => spec.spots.map((spot) => spot.id));
+  const modeKeyItems = keyItemsOf(mode, epochFail, vanillaRoboRibbon);
+  const sources = pinnedSourcesOf(modeKeyItems, new Set(specs.map((spec) => spec.id)));
+  const regions = withPinnedSources(joined.regions, sources);
+  const pins = sources.map((source): PinnedItem => [source.key, source.item]);
+  const keyItems = unpinnedKeyItems(modeKeyItems, pins);
   const rest = treasure.flatMap((location): CtItem[] =>
     (location.vanillaItem === undefined ? [] : [location.vanillaItem]));
   return {
@@ -51,17 +64,21 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     sweepsEvents: true,
     regions,
     exitRules,
-    locationRules: sealedRulesOf(spotRules, treasure, input.sealedCheckIds),
+    locationRules: new Map([
+      ...sealedRulesOf(spotRules, treasure, input.sealedCheckIds),
+      ...sources.map((source): [string, CtRule] => [source.key, source.rule]),
+    ]),
     eventRules,
-    itemRules: treasureItemRulesOf(treasure, options.chronosanity === true),
+    itemRules: new Map([...treasureItemRulesOf(treasure, options.chronosanity === true), ...giverLessSpotRulesOf(spotIds)]),
     helpers: CT_HELPERS,
     options: () => options,
     goal: goalOf(mode.goal, mode.goalEvent),
+    fillPhases: [pinSpotsPhase(pins)],
     buildPool: () => ({
       progression: [...keyItems],
       rest: [
         ...rest,
-        ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, keyItems.length, { seed: input.fillerSeed, tabsanity: options.tabsanity === true }),
+        ...poolFillerOf(rest, spotIds.length, keyItems.length, { seed: input.fillerSeed, tabsanity: options.tabsanity === true }),
       ],
     }),
   };

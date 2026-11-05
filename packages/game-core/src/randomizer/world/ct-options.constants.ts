@@ -52,7 +52,10 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   { key: 'lockedCharacters', label: 'Locked characters', jotFlag: 'c', default: false, section: 'Rules', implemented: true, mystery: 0.25 },
   { key: 'addCyrusGraveSpot', label: "Add Cyrus's Grave spot", jotFlag: 'cyrus', default: false, section: 'Rules', implemented: true, mystery: 0.3 },
   { key: 'addOzzieSpot', label: "Add Ozzie's Fort spot", jotFlag: 'ozzie', default: false, section: 'Rules', implemented: true, mystery: 0.3 },
-  { key: 'vanillaRoboRibbon', label: 'Vanilla Robo Ribbon', jotFlag: 'ribbon', default: false, section: 'Rules', implemented: true, mystery: 0.25 },
+  {
+    key: 'vanillaRoboRibbon', label: 'Vanilla Robo Ribbon', jotFlag: 'ribbon', default: true, frozen: true, section: 'Rules', implemented: true,
+    hint: "Always on: the game has no ribbon item, Atropos raises Robo's stats in Geno Dome as in vanilla.",
+  },
   {
     key: 'techOrder', label: 'Tech order', jotFlag: 'tech', default: 'normal', choices: ['normal', 'balanced-random', 'full-random'],
     section: 'Rules', implemented: true, mystery: MYSTERY_TECH_ORDER,

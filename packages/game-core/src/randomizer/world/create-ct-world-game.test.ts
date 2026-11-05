@@ -7,6 +7,7 @@ import { CT_KEY_ITEMS } from './ct-key-items.constants';
 import type { CtWorldInput } from './ct-world-input.type';
 import type { CtItem } from './ct-world-keys.type';
 import { isCtKeyItem } from './is-ct-key-item';
+import { isPinnedPlacement } from './is-pinned-placement';
 import { joinCtChecks } from './join-ct-checks';
 
 const MAPS = [0x001, 0x087, 0x0c4, 0x0d6, 0x121, 0x18d, 0x3ff];
@@ -29,15 +30,18 @@ const replaySweep = (input: CtWorldInput, seed: string, locations: readonly [str
 describe('createCtWorldGame', () => {
   it('fills a fixed seed and the sweep reaches the goal', { tags: ['critical'] }, () => {
     const placement = generate(createCtWorldGame(INPUT), { seed: SEED });
-    expect(placement.locations).toHaveLength(18 + 42);
+    expect(placement.locations).toHaveLength(18 + 42 + 2);
     expect(replaySweep(INPUT, SEED, placement.locations)).toBe(true);
   });
 
-  it('places every key item once, only on key-item spots', { tags: ['critical'] }, () => {
+  it('places every key item once, on key-item spots or its pinned source', { tags: ['critical'] }, () => {
     const placement = generate(createCtWorldGame(INPUT), { seed: SEED });
     const keyPlacements = placement.locations.filter(([, item]) => isCtKeyItem(item));
-    expect(keyPlacements.map(([, item]) => item).sort()).toEqual([...CT_KEY_ITEMS].sort());
-    expect(keyPlacements.every(([location]) => location.startsWith('ki-'))).toBe(true);
+    const expected = CT_KEY_ITEMS.filter((item) => item !== 'robo-ribbon');
+    expect(keyPlacements.map(([, item]) => item).sort()).toEqual([...expected].sort());
+    expect(keyPlacements.every(([location, item]) => location.startsWith('ki-') || isPinnedPlacement(location, item))).toBe(true);
+    expect(keyPlacements.filter(([location]) => !location.startsWith('ki-')).map(([location, item]) => `${location}:${item}`).sort())
+      .toEqual(['gift-1b8-o2:prism-shard', 'gift-1d0-o0:c-trigger']);
   });
 
   it('gives the same placement for the same seed, with locked characters too', { tags: ['critical'] }, () => {
