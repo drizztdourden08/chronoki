@@ -8,3 +8,4 @@ export { REFUSED_PARTIES } from './verify.constants';
 export type { VerifyOptionSet } from './verify-option-set.type';
 export type { VerifyFailure, VerifyResult, VerifyStuck, VerifySummary } from './verify-result.type';
 export type { VerifyPartyMode, VerifySeedsRequest } from './verify-seeds.type';
+export { verifySeedEndToEnd } from './verify-seed-end-to-end';
