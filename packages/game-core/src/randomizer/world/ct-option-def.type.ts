@@ -10,6 +10,7 @@ type CtOptionDef = {
   choices?: readonly RuleOptionValue[];
   frozen?: boolean;
   section: string;
+  implemented: boolean;
   hint?: string;
   choiceLabels?: Readonly<Record<string, string>>;
 };
