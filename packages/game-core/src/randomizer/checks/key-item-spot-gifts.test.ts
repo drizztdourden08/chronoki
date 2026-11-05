@@ -50,6 +50,9 @@ describe('key-item spot gifts', { tags: ['critical'] }, () => {
     expect(ctPollEntries(CHECKS, { [first.check]: 1 })).toEqual([{ key: first.spot, checkId: first.check }]);
   });
 
+});
+
+describe('key-item spot packing', { tags: ['critical'] }, () => {
   it('still counts an unbound spot as virtual', () => {
     const plan = planPackPlacement(placementFixture([['ki-cyrus-grave', 'pendant']]), CHECKS);
     expect(plan.virtual).toEqual([['ki-cyrus-grave', 'pendant']]);

@@ -17,6 +17,8 @@ import { unpinnedKeyItems } from './unpinned-key-items';
 
 const keptOf = (mode: CtModeDef): Set<CtRegionId> => new Set(applyModeToRegions(CT_REGIONS, mode).map((spec) => spec.id));
 const GIVER_LESS = ['ki-giants-claw', 'ki-geno-dome', 'ki-sunken-desert'];
+const locationPairsOf = (region: { id: string; locations: readonly { key: string }[] }): string[][] =>
+  region.locations.map((location) => [location.key, region.id]);
 const chest = (n: number): CheckDef => ({ id: `chest-087-${n}`, kind: 'chest', locationId: 0x087, vanillaItem: 0x10 + n });
 
 describe('pinned sources', { tags: ['critical'] }, () => {
@@ -47,7 +49,7 @@ describe('pinned sources', { tags: ['critical'] }, () => {
     expect(isPinnedPlacement('gift-1b8-o2', 'prism-shard')).toBe(true);
     expect(isPinnedPlacement('gift-1d0-o0', 'pendant')).toBe(false);
     expect(isPinnedPlacement('ki-sunken-desert', 'c-trigger')).toBe(false);
-    expect(isPinnedPlacement('ki-giants-claw', 'prism-shard' as CtItem)).toBe(false);
+    expect(isPinnedPlacement('ki-giants-claw', 'prism-shard')).toBe(false);
   });
 
   it('places the pinned items on their sources in the first phase, with the source rule', () => {
@@ -55,9 +57,9 @@ describe('pinned sources', { tags: ['critical'] }, () => {
     const progression = def.buildPool({} as never).progression;
     (['prism-shard', 'robo-ribbon', 'c-trigger'] as const).forEach((item) => expect(progression).not.toContain(item));
     const placedItems = new Map<string, CtItem>();
-    void def.fillPhases?.[0]?.run({ world: { placedItems } } as never);
+    void def.fillPhases?.[0]?.run({ world: { placedItems } } as never, {} as never);
     expect(Object.fromEntries(placedItems)).toEqual({ 'gift-1d0-o0': 'c-trigger', 'gift-1b8-o2': 'prism-shard' });
-    const locations = def.regions.flatMap((region) => region.locations.map((location) => [location.key, region.id]));
+    const locations = def.regions.flatMap(locationPairsOf);
     expect(locations).toEqual(expect.arrayContaining([['gift-1d0-o0', 'end-of-time'], ['gift-1b8-o2', 'present']]));
     expect(def.locationRules?.get('gift-1d0-o0')).toBeDefined();
     expect(def.locationRules?.get('gift-1b8-o2')).toBeDefined();

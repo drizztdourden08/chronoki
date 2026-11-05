@@ -66,7 +66,7 @@ describe('planTabanOrderEdits', { tags: ['critical'] }, () => {
     expect(planTabanOrderEdits(packOf(tabanScript()), GIFTS, { 'gift-004-o8-2': 0xd7 })).toEqual({ edits: [], failed: [] });
   });
 
-  it('fails the seed rather than editing a script whose storyline tests differ (another ROM)', () => {
+  it('fails the seed, not editing a script whose storyline tests differ (another ROM)', () => {
     const plan = planTabanOrderEdits(packOf(tabanScript(0xad, 0x51)), GIFTS, { 'gift-004-o8-0': 0xd7 });
     expect(plan).toEqual({ edits: [], failed: ['gift-004-o8-0'] });
   });

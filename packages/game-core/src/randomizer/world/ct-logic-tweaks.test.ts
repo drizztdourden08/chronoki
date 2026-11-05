@@ -25,6 +25,9 @@ const inputOf = (options: CtWorldInput['options'] = {}): CtWorldInput => ({
 const locationKeys = (input: CtWorldInput): string[] =>
   createCtWorldDef(input).regions.flatMap((region) => region.locations.map((location) => location.key));
 
+const objectiveIdsOf = (options: Parameters<typeof eligibleObjectivesOf>[0]): string[] =>
+  eligibleObjectivesOf(options, LEGACY_PARTY).map((objective) => objective.id);
+
 describe('spot gift checks', () => {
   it('exist only for the switched-on spots', { tags: ['critical'] }, () => {
     expect(spotGiftChecksOf({})).toEqual([]);
@@ -62,7 +65,7 @@ describe('vanilla Robo Ribbon (superseded: always on)', () => {
 
   it('never offers a Collect Robo Ribbon objective', { tags: ['critical'] }, () => {
     [{}, { vanillaRoboRibbon: false }].forEach((options) => {
-      expect(eligibleObjectivesOf(options, LEGACY_PARTY).map((objective) => objective.id)).not.toContain('collect-robo-ribbon');
+      expect(objectiveIdsOf(options)).not.toContain('collect-robo-ribbon');
     });
   });
 
