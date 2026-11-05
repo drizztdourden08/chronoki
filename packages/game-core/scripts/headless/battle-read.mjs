@@ -1,6 +1,4 @@
 /* @layer tooling-scripts @kind logic */
-// Battle WRAM readers: seats $AEFF (slots), the battle blocks $5E2D + seat * 0x80 (+0 = kind), the per-seat tech lists
-// $94D0 + seat * 0x14 (count $A02A + seat), the character -> seat map $B1BE, the current action $B18C / $B2C8 / $B3F4.
 const SEATS = 3;
 const LIST_STRIDE = 0x14;
 const NONE = 0xff;

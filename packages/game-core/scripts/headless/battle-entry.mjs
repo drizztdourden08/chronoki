@@ -1,7 +1,4 @@
 /* @layer tooling-scripts @kind logic */
-// Guardia Forest (loc 0x13): from tile (9,38) a held LEFT walks into the Hetake pack obj21-23, the map's own ambush
-// script runs and its op 0xD8 starts a 3x Hetake battle (Belthasar notes battle_dissolve.md part 3). Test-only: the
-// Epoch Fail start warp is pointed there; no engine behaviour changes.
 const FOREST_AMBUSH = { location: 0x13, x: 9, y: 38 };
 const PAD_LEFT = 64;
 const SETTLE_FRAMES = 120;
