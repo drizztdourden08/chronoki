@@ -5,6 +5,7 @@ import { flagChecks, goldCheck, maskCheck, notBlackCheck, rosterCheck } from './
 import { inputAt } from './input-script.mjs';
 import { magicChecks } from './magic-checks.mjs';
 import { ramReader } from './ram.mjs';
+import { applyPokes, scenarioChecks } from './scenario-checks.mjs';
 
 const AFTER_START_MIN = 360;
 const POLL_EVERY = 30;
@@ -12,7 +13,7 @@ const SETTLE_EXTRA = 60;
 
 const partyMatches = (ram, prepared) => rosterCheck(ram, prepared.partyIds).ok && maskCheck(ram, prepared.partyIds).ok;
 
-const settledSince = (progress, frame) => progress.settledAt >= 0 && frame - progress.settledAt >= SETTLE_EXTRA;
+const settledSince = (progress, frame, hold) => progress.settledAt >= 0 && frame - progress.settledAt >= SETTLE_EXTRA && frame - progress.startedAt >= hold;
 
 const advance = ({ grants, ram, prepared }, progress, frame) => {
   if (progress.startedAt < 0 && grants.started()) progress.startedAt = frame;
@@ -21,13 +22,14 @@ const advance = ({ grants, ram, prepared }, progress, frame) => {
 };
 
 const runFrames = async (run) => {
-  const { engine, args, grants } = run;
+  const { engine, args, grants, ram } = run;
   const progress = { startedAt: -1, settledAt: -1, frame: 0 };
   for (; progress.frame < args.frames && engine.state.stopped === null; progress.frame++) {
     await stepFrame(engine, inputAt(progress.frame));
     grants.observe();
     advance(run, progress, progress.frame);
-    if (settledSince(progress, progress.frame)) break;
+    if (progress.startedAt >= 0) applyPokes(ram, args.scenario, progress.frame - progress.startedAt);
+    if (settledSince(progress, progress.frame, args.scenario.holdFrames)) break;
   }
   return progress;
 };
@@ -39,6 +41,7 @@ const checksOf = ({ engine, args, grants, ram, prepared }, progress) => [
   ...flagChecks(ram, prepared.flags),
   goldCheck(ram, args.options.itemDifficulty === 'hard', grants.goldGranted()),
   ...magicChecks(ram, args.options.unlockedMagic === true),
+  ...scenarioChecks(ram, args.scenario),
   notBlackCheck(lumaOf(engine.core)),
 ];
 
