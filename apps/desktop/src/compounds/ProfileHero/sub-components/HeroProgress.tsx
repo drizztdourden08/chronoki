@@ -2,6 +2,7 @@
 import { Box, Text } from '@drizztdourden08/tessera/primitives';
 import { NO_SAVES_LABEL } from '../ProfileHero.constants';
 import type { HeroProgressProps } from '../ProfileHero.type';
+import { HeroChecksLine } from './HeroChecksLine';
 import './HeroProgress.css';
 
 const HeroProgress = ({ files, checks }: HeroProgressProps) => {
@@ -15,14 +16,7 @@ const HeroProgress = ({ files, checks }: HeroProgressProps) => {
           <Text as="span" className="hero-progress__key">Left</Text>
         </Box>
       </Box>
-      {checks && (
-        <Box className="hero-progress__checks" title={`${checks.total} checks in this seed`}>
-          <Text className="hero-progress__file">Checks</Text>
-          <Text as="span" className="hero-progress__count hero-progress__count--taken">{checks.taken} taken</Text>
-          <Text as="span" className="hero-progress__count hero-progress__count--available">{checks.available} available</Text>
-          <Text as="span" className="hero-progress__count">{checks.left} left</Text>
-        </Box>
-      )}
+      {checks && <HeroChecksLine checks={checks} label="Checks" />}
       {files.length === 0 && <Text className="hero-progress__empty">{NO_SAVES_LABEL}</Text>}
       {files.map((file) => (
         <Box key={file.slot} className="hero-progress__row" title={`Save slot ${file.slot + 1}, save #${file.saveNumber}`}>
@@ -30,6 +24,7 @@ const HeroProgress = ({ files, checks }: HeroProgressProps) => {
           <Text className="hero-progress__lead">{file.lead}</Text>
           <Text className="hero-progress__stat">Lv {file.level}</Text>
           <Text className="hero-progress__stat">{file.playTime}</Text>
+          {file.checks && <HeroChecksLine checks={file.checks} label={`File ${file.slot + 1}`} />}
         </Box>
       ))}
     </Box>
