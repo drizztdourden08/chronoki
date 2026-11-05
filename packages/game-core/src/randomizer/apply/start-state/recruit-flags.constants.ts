@@ -15,4 +15,14 @@ const CT_RECRUIT_FLAGS: Readonly<Record<CtCharacter, readonly CtFlagBit[]>> = {
   magus: [],
 };
 
-export { CT_RECRUIT_FLAGS };
+const RECRUIT_FLAGS_ON: Readonly<Record<CtCharacter, boolean>> = {
+  crono: false,
+  marle: false,
+  lucca: false,
+  robo: false,
+  frog: false,
+  ayla: false,
+  magus: false,
+};
+
+export { CT_RECRUIT_FLAGS, RECRUIT_FLAGS_ON };

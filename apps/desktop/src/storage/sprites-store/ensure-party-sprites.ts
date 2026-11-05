@@ -1,7 +1,8 @@
 /* @layer renderer-lib @kind logic */
 import { platformFiles } from '../platform-files';
 import { extractPartySprites } from './extract-party-sprites';
-import { partySpriteStore, partySpritesDigest } from './party-sprite-store';
+import { partySpriteStore } from './party-sprite-store';
+import { partySpritesDigest } from './party-sprites-digest';
 import type { PartySpritesResult } from './sprites-store.type';
 
 const ensurePartySprites = async (romFile: string): Promise<PartySpritesResult> => {

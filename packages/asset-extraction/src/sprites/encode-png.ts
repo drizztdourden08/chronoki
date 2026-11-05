@@ -7,7 +7,7 @@ const encodePng = async (image: RgbaImage): Promise<Uint8Array> => {
   const context = canvas.getContext('2d');
   if (!context) throw new Error('2d canvas context unavailable');
   if (image.width > 0 && image.height > 0) {
-    context.putImageData(new ImageData(image.rgba, image.width, image.height), 0, 0);
+    context.putImageData(new ImageData(Uint8ClampedArray.from(image.rgba), image.width, image.height), 0, 0);
   }
   const blob = await canvas.convertToBlob({ type: 'image/png' });
   return new Uint8Array(await blob.arrayBuffer());

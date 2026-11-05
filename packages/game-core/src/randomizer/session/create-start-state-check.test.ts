@@ -6,6 +6,7 @@ import { fakeView } from './memory-view.fake';
 
 const okBytes = (): Record<number, number> => ({
   0x10057: 0x80, 0x100a3: 0x30, 0x100f7: 0x02, 0x100ba: 0x80, 0x0100: 0xf1, 0x0101: 0x01,
+  0x2980: 0, 0x2981: 1, 0x2982: 0x80, 0x2983: 0x80, 0x2984: 0x80, 0x2985: 0x80, 0x2986: 0x80, 0x2987: 0x80, 0x2988: 0x80, 0x29af: 0xc0,
 });
 
 describe('createStartStateCheck', { tags: ['critical'] }, () => {
@@ -22,5 +23,11 @@ describe('createStartStateCheck', { tags: ['critical'] }, () => {
 
   it('flags a wrong location', () => {
     expect(createStartStateCheck(STANDARD_START).read(fakeView({ ...okBytes(), 0x0100: 0x10 }))).toContain('location');
+  });
+
+  it('flags a wrong roster byte and joined mask', () => {
+    const line = createStartStateCheck(STANDARD_START).read(fakeView({ ...okBytes(), 0x2981: 0x80, 0x29af: 0x80 }));
+    expect(line).toContain('party 0x7e2981=0x80 expected 0x1');
+    expect(line).toContain('party 0x7e29af=0x80 expected 0xc0');
   });
 });

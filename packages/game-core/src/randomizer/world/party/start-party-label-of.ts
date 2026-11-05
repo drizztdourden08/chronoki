@@ -1,7 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import type { CtStartParty } from './ct-party.type';
-
-const ACTIVE_SLOTS = 3;
+import { ACTIVE_SLOTS } from './start-party-label-of.constants';
 
 const nameOf = (id: string): string => `${id.charAt(0).toUpperCase()}${id.slice(1)}`;
 
