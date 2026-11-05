@@ -19,9 +19,10 @@ const sections: Section[] = [
       {
         key: 'aspectRatio',
         label: 'Aspect Ratio',
-        description: 'Original uses the game width. Wide, Tall, Auto, Screen and Custom use 224 lines.',
+        description: 'Original uses the game width. Wide, Tall, Auto, Screen and Custom use 240 lines.',
         keywords: 'original widescreen 4:3 16:9 16:10 21:9 tall 3:4 4:5 custom auto detect screen',
       },
+      gateItem('extendY'),
       gateItem('sceneAdjust'),
       gateItem('wideSteamMargins'),
       gateItem('fillBottomLine'),
