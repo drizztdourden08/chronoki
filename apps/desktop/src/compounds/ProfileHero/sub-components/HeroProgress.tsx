@@ -1,11 +1,10 @@
 /* @layer renderer-components @kind component */
 import { Box, Text } from '@drizztdourden08/tessera/primitives';
 import { NO_SAVES_LABEL } from '../ProfileHero.constants';
-import type { HeroProgressFile } from '../ProfileHero.type';
+import type { HeroProgressProps } from '../ProfileHero.type';
 import './HeroProgress.css';
 
-const HeroProgress = (props: { files: HeroProgressFile[] }) => {
-  const { files } = props;
+const HeroProgress = ({ files, checks }: HeroProgressProps) => {
   return (
     <Box className="hero-progress">
       <Box className="hero-progress__head">
@@ -16,6 +15,14 @@ const HeroProgress = (props: { files: HeroProgressFile[] }) => {
           <Text as="span" className="hero-progress__key">Left</Text>
         </Box>
       </Box>
+      {checks && (
+        <Box className="hero-progress__checks" title={`${checks.total} checks in this seed`}>
+          <Text className="hero-progress__file">Checks</Text>
+          <Text as="span" className="hero-progress__count hero-progress__count--taken">{checks.taken} taken</Text>
+          <Text as="span" className="hero-progress__count hero-progress__count--available">{checks.available} available</Text>
+          <Text as="span" className="hero-progress__count">{checks.left} left</Text>
+        </Box>
+      )}
       {files.length === 0 && <Text className="hero-progress__empty">{NO_SAVES_LABEL}</Text>}
       {files.map((file) => (
         <Box key={file.slot} className="hero-progress__row" title={`Save slot ${file.slot + 1}, save #${file.saveNumber}`}>

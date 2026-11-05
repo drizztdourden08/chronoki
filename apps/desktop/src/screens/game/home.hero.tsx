@@ -9,7 +9,7 @@ import { modeOf } from '@app/profile-modes';
 import type { AppSettings } from '@app/settings.type';
 import { GamePendulum } from './game.pendulum';
 import { useGameSession } from '@app/views/GameSession';
-import { HomeDialogs, HomeTab, buildProfileFacts, romFileOf, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
+import { HomeDialogs, HomeTab, RandomizedProgress, buildProfileFacts, buildRandomizerFacts, romFileOf, useHomeRandomizerStatus, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
 
 const meta: ScreenMeta = {
   title: 'Home',
@@ -30,10 +30,13 @@ const HomeHero = (props: HeroProps) => {
   const sramImport = useHomeSramImport(profileId);
   const romFile = romFileOf(profile);
   const backdrop = useMemo(() => <GamePendulum key={romFile ?? ''} romFile={romFile} />, [romFile]);
-  const facts = useMemo(
-    () => buildProfileFacts({ romFile, lastPlayed: profile?.lastPlayed, created: profile?.created }),
-    [romFile, profile?.lastPlayed, profile?.created],
-  );
+  const randomizerStatus = useHomeRandomizerStatus();
+  const randomizer = profile?.randomizer;
+  const facts = useMemo(() => {
+    const own = buildProfileFacts({ romFile, lastPlayed: profile?.lastPlayed, created: profile?.created });
+    const run = buildRandomizerFacts(randomizer, randomizerStatus);
+    return run ? [run, ...own] : own;
+  }, [romFile, profile?.lastPlayed, profile?.created, randomizer, randomizerStatus]);
 
   const progress = useProfileProgress(profileId, running);
   const normal = useNormalSaves(profileId, running);
@@ -74,7 +77,7 @@ const HomeHero = (props: HeroProps) => {
       </Tools>
       <Facts rows={facts} />
       {lastSave && <Aside><HeroLastSaveTile save={lastSave} /></Aside>}
-      {progress && <Panel><HeroProgress files={progress} /></Panel>}
+      {progress && <Panel>{randomizer ? <RandomizedProgress files={progress} /> : <HeroProgress files={progress} />}</Panel>}
       <HomeTab profileId={profileId} running={running} normal={normal} />
       <HomeDialogs sramImport={sramImport} />
     </>

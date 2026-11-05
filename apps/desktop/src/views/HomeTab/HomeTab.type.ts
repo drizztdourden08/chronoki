@@ -1,5 +1,6 @@
 /* @layer renderer-components @kind types */
 import type { NamedSaveEntry } from '@drizztdourden08/brock-port-kit';
+import type { HeroProgressFile } from '@app/compounds/ProfileHero';
 import type { ArmedAction } from '@app/compounds/ArmedActionButton';
 import type { useHomeSramImport } from './behavior/useHomeSramImport';
 import type { useNormalSaves } from './behavior/useNormalSaves';
@@ -22,6 +23,21 @@ interface ProfileFactsInput {
   romFile: string | null;
   lastPlayed: number | undefined;
   created: number | undefined;
+}
+
+interface HomeRandomizerStatus {
+  sessionStatusLabel: string;
+}
+
+interface HomeFact {
+  label: string;
+  value: string;
+  title?: string;
+  mono?: boolean;
+}
+
+interface RandomizedProgressProps {
+  files: HeroProgressFile[];
 }
 
 interface NamedSavesData {
@@ -68,6 +84,6 @@ type TitlePendulumState =
   | { status: 'ready'; url: string; width: number; height: number };
 
 export type {
-  ArmedRow, CreateSaveFormProps, HomeDialogsProps, HomeSectionProps, HomeSramImport, HomeTabProps, NamedSavesData,
-  NormalSaves, NormalSavesSectionProps, ProfileFactsInput, SaveRowPartsInput, SramDialogState, TitlePendulumState,
+  ArmedRow, CreateSaveFormProps, HomeDialogsProps, HomeFact, HomeRandomizerStatus, HomeSectionProps, HomeSramImport,
+  HomeTabProps, NamedSavesData, NormalSaves, NormalSavesSectionProps, ProfileFactsInput, RandomizedProgressProps, SaveRowPartsInput, SramDialogState, TitlePendulumState,
 };
