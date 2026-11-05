@@ -8,6 +8,7 @@ const WIDGET_GATES: Readonly<Record<string, WidgetGate>> = {
   checks: { readsGameData: true },
   inventory: { readsGameData: true },
   cheats: { readsGameData: true, requiresSetting: 'cheatsEnabled' },
+  music: { readsGameData: true },
 };
 
 const WIDGET_GATE_MESSAGES: Readonly<Record<string, string>> = {

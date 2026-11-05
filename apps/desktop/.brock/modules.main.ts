@@ -8,6 +8,7 @@ import portKitMain from '@drizztdourden08/brock-port-kit/main';
 import inputMain from '@drizztdourden08/brock-input/main';
 import mcpMain from '@drizztdourden08/brock-mcp/main';
 import randomizerMain from '@drizztdourden08/brock-randomizer/main';
+import msuMain from '@drizztdourden08/brock-msu/main';
 
 const mainModules: MainModule[] = [
   updaterMain,
@@ -18,6 +19,7 @@ const mainModules: MainModule[] = [
   inputMain,
   mcpMain,
   randomizerMain,
+  msuMain,
 ];
 
 export { mainModules };
