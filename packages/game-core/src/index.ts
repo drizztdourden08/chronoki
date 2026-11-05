@@ -22,6 +22,8 @@ export { wholeScaleOf } from './port/aspect/whole-scale-of';
 export { frameSizeOf } from './port/frame-size/frame-size-of';
 export { sizePortFrame } from './port/frame-size/size-port-frame';
 export { CT_FRAME_SIZE_FILE } from './port/frame-size/frame-size.constants';
+export { CK_EXPORT_HAPTIC_POLL, pollHapticEvents } from './haptic-polling';
+export type { HapticEventHandler } from './haptic-polling';
 export { hostGate } from './port/host-gate';
 export { onHostGatesChange } from './port/on-host-gates-change';
 export { setHostGates } from './port/set-host-gates';

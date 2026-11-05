@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "ck_ap.h"   /* multiworld hooks (ap_reconnect.c), called by the ap-*.mjs patched engine files */
+#include "ck_haptic.h"   /* haptic events (haptic_reconnect.c), called by the haptic-events.mjs patched battle.c */
 #ifdef __cplusplus
 extern "C" {
 #endif

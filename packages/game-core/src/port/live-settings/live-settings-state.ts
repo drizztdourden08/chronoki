@@ -4,6 +4,7 @@ import type { LiveSettingsState } from './live-settings.type';
 
 const liveSettingsState: LiveSettingsState = {
   dimFlashes: false,
+  haptics: false,
   dialogPacing: { ...DIALOG_NEUTRAL_PACING },
 };
 

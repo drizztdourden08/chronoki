@@ -8,6 +8,7 @@ interface LiveCalls {
 
 interface LiveSettingsState {
   dimFlashes: boolean;
+  haptics: boolean;
   dialogPacing: CkDialogPacing;
 }
 

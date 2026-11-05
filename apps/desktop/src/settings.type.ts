@@ -1,6 +1,7 @@
 /* @layer renderer-app @kind types */
 import type { BaseSettings } from '@drizztdourden08/brock-core';
 import type { AspectRatioChoice, RenderScaleFactor } from '@chronoki/features';
+import type { HapticSettings } from '@chronoki/input-mapping';
 
 type ViewportMode = 'none' | 'fit' | 'fill';
 
@@ -30,6 +31,7 @@ interface AppSettings extends BaseSettings {
   dialogHoldToAccelerate: boolean;
   dialogFillOnB: boolean;
   dialogAutoSkip: boolean;
+  haptics: HapticSettings;
   saveHoldDuration: number;
   musicVolume: number;
   musicMuted: boolean;
