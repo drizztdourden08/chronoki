@@ -2,11 +2,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDialogStore } from '@drizztdourden08/brock-react';
 import { deleteRom, listRomsWithStatus } from '@app/storage/roms-store';
-import type { RomEntry, RomStatusMessage } from '../Roms.type';
+import type { RomBuildResult, RomEntry, RomStatusMessage } from '../Roms.type';
 import { ROMS_TEXT } from '../Roms.constants';
+import { buildRomAssets } from './build-rom-assets';
 import { importRom } from './import-rom';
-import { rebuildRomAssets } from './rebuild-rom-assets';
+import { importRomUrl } from './import-rom-url';
 import { useRomDetail } from './useRomDetail';
+import { useRomExtraction } from './useRomExtraction';
 
 const readRoms = async (): Promise<RomEntry[]> =>
   (await listRomsWithStatus()).map(({ romFile, label, hasAssets, assetSize }) => ({
@@ -22,6 +24,8 @@ const useRoms = () => {
   const [status, setStatus] = useState<RomStatusMessage | null>(null);
   const [busy, setBusy] = useState(false);
   const [version, setVersion] = useState(0);
+  const extraction = useRomExtraction();
+  const { withSprites, setSpriteError } = extraction;
   const { detail, loading } = useRomDetail(selected, version);
 
   const refresh = useCallback(async () => {
@@ -33,16 +37,24 @@ const useRoms = () => {
     void refresh();
   }, [refresh]);
 
-  const run = useCallback(async (working: string, job: () => Promise<RomStatusMessage>) => {
+  const run = useCallback(async (job: () => Promise<RomBuildResult>): Promise<RomBuildResult> => {
     setBusy(true);
-    setStatus({ success: true, message: working });
-    setStatus(await job());
+    setSpriteError(null);
+    const result = await job();
+    setSpriteError(result.spriteError);
     await refresh();
     setBusy(false);
-  }, [refresh]);
+    return result;
+  }, [refresh, setSpriteError]);
 
-  const handleDrop = useCallback((files: File[]) => run(ROMS_TEXT.working, () => importRom(files)), [run]);
-  const handleRebuild = useCallback((romFile: string) => run(ROMS_TEXT.rebuilding, () => rebuildRomAssets(romFile)), [run]);
+  const handleFileImport = useCallback((files: File[]) => run(() => importRom(files, withSprites)), [run, withSprites]);
+  const handleUrlImport = useCallback((url: string) => run(() => importRomUrl(url, withSprites)), [run, withSprites]);
+
+  const handleRebuild = useCallback(async (romFile: string) => {
+    setStatus({ success: true, message: ROMS_TEXT.rebuilding });
+    const { success, message } = await run(() => buildRomAssets(romFile, withSprites, ROMS_TEXT.rebuilt));
+    setStatus({ success, message });
+  }, [run, withSprites]);
 
   const removeRom = useCallback(async (romFile: string) => {
     await deleteRom(romFile);
@@ -61,7 +73,7 @@ const useRoms = () => {
     });
   }, [removeRom]);
 
-  return { roms, selected, setSelected, status, busy, detail, loading, handleDrop, handleRebuild, handleDelete };
+  return { roms, selected, setSelected, status, busy, detail, loading, extraction, handleFileImport, handleUrlImport, handleRebuild, handleDelete };
 };
 
 export { useRoms };

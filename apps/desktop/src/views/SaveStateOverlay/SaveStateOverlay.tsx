@@ -1,62 +1,60 @@
 /* @layer renderer-components @kind component */
-import { useEffect } from 'react';
 import { Box } from '@drizztdourden08/tessera/primitives';
 import { SaveSlot } from '@app/compounds/SaveSlot';
-import { closeSaveOverlay } from '@app/game/save-overlay';
-import { useGameSession } from '@app/views/GameSession';
-import { useOverlaySlots } from './behavior/useOverlaySlots';
-import { useSaveOverlay } from './behavior/useSaveOverlay';
 import { shortcutLabel } from './behavior/shortcut-label';
-import { useCancelOnOtherInput } from './behavior/useCancelOnOtherInput';
-import { useOverlayPresence } from './behavior/useOverlayPresence';
-import { HOLDING_HINTS, IDLE_HINTS } from './SaveStateOverlay.constants';
+import { useSaveSlots } from './behavior/useSaveSlots';
+import { useSlotActions } from './behavior/useSlotActions';
+import { useSlotTrack } from './behavior/useSlotTrack';
 import { OverlayHints } from './sub-components/OverlayHints';
 import './SaveStateOverlay.css';
+import type { SaveStateOverlayProps } from './SaveStateOverlay.type';
+import { SLOT_COUNT } from './SaveStateOverlay.constants';
 
-const SaveStateOverlay = () => {
-  const { open, slot: highlighted, holdProgress } = useSaveOverlay();
-  const { launch, running } = useGameSession();
-  const { slots, busySlot, save, load } = useOverlaySlots(open, launch?.profileId ?? null);
+const SaveStateOverlay = (props: SaveStateOverlayProps) => {
+  const { open, onClose, profileId, highlightedSlot, holdProgress, hints } = props;
+  const { slots, visible, animating, loadSlots } = useSaveSlots(open, profileId);
+  const { busy, handleSave, handleLoad } = useSlotActions(loadSlots, onClose);
+  const { trackRef, highlightedRef } = useSlotTrack({ visible, highlightedSlot });
 
-  useEffect(() => {
-    if (!running) closeSaveOverlay();
-  }, [running]);
-
-  useCancelOnOtherInput(open && highlighted !== null, closeSaveOverlay);
-
-  const { visible, exiting } = useOverlayPresence(open);
   if (!visible) return null;
 
+  const panelClass = `save-overlay ${animating === 'in' ? 'save-overlay--enter' : ''} ${animating === 'out' ? 'save-overlay--exit' : ''}`;
+
+  const showHints = highlightedSlot != null && hints != null && hints.length > 0;
+
   return (
-    <Box className="save-overlay-backdrop" onClick={closeSaveOverlay}>
-      <Box className={exiting ? 'save-overlay save-overlay--exit' : 'save-overlay'} onClick={(event) => event.stopPropagation()}>
-        <Box className="save-overlay__track">
-          {slots.map((info) => (
-            <Box
-              key={info.slot}
-              className="save-overlay__slot"
-              ref={(element: HTMLDivElement | null) => {
-                if (element && info.slot === highlighted) element.scrollIntoView({ inline: 'center', block: 'nearest' });
-              }}
-            >
-              <SaveSlot
-                slot={info.slot}
-                screenshotUrl={info.screenshot}
-                timestamp={info.savedAt ?? 0}
-                isEmpty={info.savedAt === null}
-                busy={busySlot === info.slot}
-                highlighted={info.slot === highlighted}
-                shortcutKey={shortcutLabel(info.slot)}
-                holdProgress={info.slot === highlighted ? holdProgress : undefined}
-                onSave={(target) => void save(target)}
-                onLoad={(target) => void load(target)}
-              />
-            </Box>
-          ))}
+    <Box className="save-overlay-backdrop" onClick={onClose}>
+      <Box className={panelClass} onClick={(e) => e.stopPropagation()}>
+        <Box ref={trackRef} className="save-overlay__track">
+          {Array.from({ length: SLOT_COUNT }, (_, i) => {
+            const slot = slots.find((s) => s.slot === i);
+            const isEmpty = (slot?.savedAt ?? null) === null;
+            const isHighlighted = highlightedSlot === i;
+
+            return (
+              <Box
+                key={i}
+                className="save-overlay__slot-wrapper"
+                ref={isHighlighted ? highlightedRef : undefined}
+              >
+                <SaveSlot
+                  slot={i}
+                  screenshotUrl={slot?.screenshot ?? null}
+                  timestamp={slot?.savedAt ?? 0}
+                  isEmpty={isEmpty}
+                  busy={busy === i}
+                  shortcutKey={shortcutLabel(i)}
+                  highlighted={isHighlighted}
+                  holdProgress={isHighlighted ? holdProgress : undefined}
+                  onSave={handleSave}
+                  onLoad={handleLoad}
+                />
+              </Box>
+            );
+          })}
         </Box>
-        {highlighted !== null && (
-          <OverlayHints actions={holdProgress > 0 ? HOLDING_HINTS : IDLE_HINTS} slot={highlighted} holdProgress={holdProgress} />
-        )}
+
+        {showHints && <OverlayHints hints={hints} holdProgress={holdProgress} />}
       </Box>
     </Box>
   );

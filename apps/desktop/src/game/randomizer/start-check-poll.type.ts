@@ -2,7 +2,7 @@
 import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 
 type StartCheckPoll = {
-  poll(view: MemoryView, started: boolean): void;
+  poll(view: MemoryView, newGame: boolean): void;
   reset(): void;
 };
 

@@ -10,7 +10,9 @@ const armAppliedSeed = (applied: AppliedSeed, ctx: ApplyContext): { run: LocalRu
   const run = createLocalRun(applied);
   const polled = ctPollEntries(applied.checks, applied.plan.pack);
   if (applied.plan.unbound > 0) {
-    ctx.log(`${ctx.tag} ${applied.plan.unbound} key-item spots have no check binding yet: their items are host-tracked only`);
+    const ids = new Set(applied.checks.map((check) => check.id));
+    const spots = applied.plan.virtual.filter(([location]) => !ids.has(location)).map(([location]) => location);
+    ctx.log(`${ctx.tag} ${applied.plan.unbound} key-item spots have no check binding yet (${spots.join(', ')}): their items are host-tracked only`);
   }
   return {
     run,

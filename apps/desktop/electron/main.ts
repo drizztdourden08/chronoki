@@ -7,6 +7,7 @@ import { product } from '../src/product';
 import { CHRONOKI_DATA_DOMAINS } from '../src/storage/data-domains.constants';
 import { CHRONOKI_AUTOMATION_FLAGS } from './automation/automation-flags.constants';
 import { chronokiRendererFlags } from './automation/chronoki-renderer-flags';
+import { onReady } from './lifecycle/on-ready';
 
 bootstrapApp(product, {
   modules: mainModules,
@@ -15,4 +16,5 @@ bootstrapApp(product, {
   automationFlags: CHRONOKI_AUTOMATION_FLAGS,
   rendererFlags: chronokiRendererFlags,
   dataDomains: CHRONOKI_DATA_DOMAINS,
+  onReady,
 });

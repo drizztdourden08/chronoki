@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { ScriptSplice } from '@chronoki/game-core';
 import { applyOptionsOf, applySeedToPack, deriveSealedCheckIds, planPackPlacement, planSeedSplices } from '@chronoki/game-core';
-import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
+import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/renderer';
 import { REFUSED_SAMPLE } from './chronoki-randomizer.constants';
 import { localRunHolder } from './local-run-holder';
 import { startPartyOf } from './start-party-of';

@@ -1,6 +1,6 @@
 /* @layer renderer-app @kind logic */
-import type { CaptureSummary } from '@app/bug-report/debug-capture/debug-capture.type';
+import type { DebugCaptureSessionSummary } from '@app/debug-report';
 
-const recordingId = (session: CaptureSummary): string => session.sessionKey;
+const recordingId = (session: DebugCaptureSessionSummary): string => session.sessionKey;
 
 export { recordingId };

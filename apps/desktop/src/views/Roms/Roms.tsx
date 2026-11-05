@@ -1,18 +1,19 @@
 /* @layer renderer-components @kind component */
 import { useState } from 'react';
-import { EmptyState, Stack } from '@drizztdourden08/tessera/primitives';
+import { EmptyState, Field, Stack } from '@drizztdourden08/tessera/primitives';
 import { ListDetailLayout } from '@drizztdourden08/tessera/composites';
-import { ROMS_TEXT, STEAM_TEXT } from './Roms.constants';
+import { ROMS_TEXT, ROM_ACCEPT, STEAM_TEXT } from './Roms.constants';
 import type { RomsTab } from './Roms.tabs.type';
 import { useRoms } from './behavior/useRoms';
+import { ExtractionOptions } from './sub-components/ExtractionOptions';
+import { ImportForm } from './sub-components/ImportForm';
 import { RomDetail } from './sub-components/RomDetail';
-import { RomImport } from './sub-components/RomImport';
 import { RomList } from './sub-components/RomList';
 import { RomsTabs } from './sub-components/RomsTabs';
 import { SteamImport } from './sub-components/SteamImport';
 
 const Roms = () => {
-  const { roms, selected, setSelected, status, busy, detail, loading, handleDrop, handleRebuild, handleDelete } = useRoms();
+  const { roms, selected, setSelected, status, busy, detail, loading, extraction, handleFileImport, handleUrlImport, handleRebuild, handleDelete } = useRoms();
   const [tab, setTab] = useState<RomsTab>('rom');
   const tabs = <RomsTabs value={tab} onChange={setTab} />;
   const rom = roms.find((entry) => entry.romFile === selected);
@@ -22,7 +23,19 @@ const Roms = () => {
       content: (
         <Stack>
           {tabs}
-          <RomImport busy={busy} status={status} onDrop={handleDrop} />
+          <Field hint={ROMS_TEXT.importHint} width="full">
+            <ImportForm
+              kind="rom"
+              placeholder={ROMS_TEXT.placeholder}
+              accept={ROM_ACCEPT}
+              dropLabel={ROMS_TEXT.dropLabel}
+              dropHint={ROMS_TEXT.dropHint}
+              onUrlImport={handleUrlImport}
+              onFileImport={handleFileImport}
+            >
+              <ExtractionOptions extraction={extraction} />
+            </ImportForm>
+          </Field>
         </Stack>
       ),
     },
@@ -47,7 +60,7 @@ const Roms = () => {
       listShowTitle={false}
       listLabel={ROMS_TEXT.listLabel}
       listContainers={tab === 'rom' ? romContainers : steamContainers}
-      detail={tab === 'rom' && rom ? <RomDetail rom={rom} detail={detail} loading={loading} busy={busy} onRebuild={handleRebuild} onDelete={handleDelete} /> : null}
+      detail={tab === 'rom' && rom ? <RomDetail rom={rom} detail={detail} loading={loading} busy={busy} status={status} onRebuild={handleRebuild} /> : null}
       emptyDetail={<EmptyState message={ROMS_TEXT.noSelection} />}
     />
   );

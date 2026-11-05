@@ -1,15 +1,18 @@
 /* @layer renderer-components @kind component */
-import { Field, Grid, SegmentedControl, Select, Stack, Text, TextInput } from '@drizztdourden08/tessera/primitives';
+import { Field, Grid, SegmentedControl, Select, TextInput } from '@drizztdourden08/tessera/primitives';
 import { randomizerReviewSections } from '@drizztdourden08/brock-randomizer/renderer';
 import { WizardReview } from '@drizztdourden08/tessera/composites';
 import type { ProfileStepBodyProps } from './ProfileStepBody.type';
-import { PRESET_HINTS, PRESET_OPTIONS } from '@app/profiles/presets';
+import { PRESET_OPTIONS } from '@app/profiles/presets';
+import { NO_PACK_LABEL } from '../../ProfileManager.constants';
+import { useMsuPacks } from '../../behavior/useMsuPacks';
 import { STEP_IDS, STEP_LABELS } from './ProfileCreateWizard.constants';
 import { ModuleStepBody } from './ModuleStepBody';
 import { presetLabelOf } from './behavior/preset-label-of';
 
 const ProfileStepBody = ({ wizard, readyRoms, subStep, onSubStepChange }: ProfileStepBodyProps) => {
   const { values, update } = wizard;
+  const { packs } = useMsuPacks();
 
   switch (wizard.current.id) {
     case STEP_IDS.profile:
@@ -26,10 +29,15 @@ const ProfileStepBody = ({ wizard, readyRoms, subStep, onSubStepChange }: Profil
               placeholder="Select ROM..."
             />
           </Field>
-          <Stack gap="md">
-            <SegmentedControl label="Preset" value={values.preset} options={PRESET_OPTIONS} onChange={(preset) => update({ preset })} />
-            <Text variant="body">{PRESET_HINTS[values.preset]}</Text>
-          </Stack>
+          <SegmentedControl label="Preset" value={values.preset} options={PRESET_OPTIONS} onChange={(preset) => update({ preset })} />
+          <Field label="MSU Pack">
+            <Select
+              value={values.msuPack}
+              onChange={(msuPack) => update({ msuPack })}
+              options={[{ value: '', label: NO_PACK_LABEL }, ...packs.map((name) => ({ value: name, label: name }))]}
+              placeholder={NO_PACK_LABEL}
+            />
+          </Field>
         </Grid>
       );
     case STEP_IDS.review:
@@ -42,6 +50,7 @@ const ProfileStepBody = ({ wizard, readyRoms, subStep, onSubStepChange }: Profil
               { label: 'Profile Name', value: values.name.trim() },
               { label: 'ROM', value: values.rom, title: values.rom },
               { label: 'Preset', value: presetLabelOf(values.preset) },
+              { label: 'MSU Pack', value: values.msuPack || NO_PACK_LABEL },
             ],
           }, ...randomizerReviewSections(values)]}
           disabled={wizard.busy}

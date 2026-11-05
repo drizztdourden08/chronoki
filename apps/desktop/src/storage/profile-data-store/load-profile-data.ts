@@ -4,6 +4,7 @@ import { readJson } from '@drizztdourden08/brock-core';
 import { sessionsFile } from '@app/profiles/storage/sessions-file';
 import { savesDir } from '@app/profiles/storage/saves-dir';
 import { sramPathOf } from '@app/game/sram-sync/sram-path-of';
+import { readInputProfilesState } from '@app/input/profile-store/read-input-profiles-state';
 import { platformFiles } from '../platform-files';
 import type { ProfileData } from './profile-data.type';
 
@@ -24,12 +25,20 @@ const saveSizes = async (files: FileStore, profileId: string): Promise<number[]>
 
 const loadProfileData = async (profileId: string): Promise<ProfileData> => {
   const files = platformFiles();
-  const [sizes, sram, sessions] = await Promise.all([
+  const [sizes, sram, sessions, input] = await Promise.all([
     orElse(() => saveSizes(files, profileId), []),
     orElse(() => files.stat(sramPathOf(profileId)), null),
     orElse(() => readJson<PlaySession[]>(files, sessionsFile(profileId), []), []),
+    orElse(() => readInputProfilesState(profileId), null),
   ]);
-  return { saveFiles: sizes.length, saveBytes: sizes.reduce((sum, size) => sum + size, 0), sramBytes: sram?.bytes ?? null, sessions };
+  return {
+    saveFiles: sizes.length,
+    saveBytes: sizes.reduce((sum, size) => sum + size, 0),
+    sramBytes: sram?.bytes ?? null,
+    sessions,
+    inputProfiles: input?.profiles ?? [],
+    activeInputProfileId: input?.activeProfileId ?? null,
+  };
 };
 
 export { loadProfileData };

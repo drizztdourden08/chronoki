@@ -1,7 +1,7 @@
 /* src/settings.h without the SDL window, key bindings or file dialogs. The host's options arrive as a ct_settings.ini in
    the core's file system (same keys as Belthasar's own file: [video] widescreen, render_scale, interpolation,
    wide_width (ChronoKi: the picture's even pixel width, 256 to 544), tall_lines (ChronoKi: the picture's even line count,
-   224 = off, up to 480), camera_lock (ChronoKi: 0/1, default 1), steam_margins, fill_bottom_lines, scene_adjustments, [chronoki] sightscope, visible_techs, duplicate_characters (ChronoKi: 0/1, default 0), [sound] volume, mute, [timing] sync, instant_sound_uploads).
+   224 = off, up to 480), camera_lock (ChronoKi: 0/1, default 1), steam_margins, fill_bottom_lines, scene_adjustments, [chronoki] sightscope, visible_techs, dim_flashes (0/1, default 0), dialog_controls, dialog_speed_q4, dialog_hold_q4, dialog_hold, dialog_fill (dialog_reconnect.c), duplicate_characters (ChronoKi: 0/1, default 0), [sound] volume, mute, [timing] sync, instant_sound_uploads).
    The mods live in this struct, not in WRAM: vanilla (all off) is the cartridge's own behaviour. A change takes effect
    at the next core start; Save is a no-op. */
 #include "settings.h"
@@ -19,6 +19,7 @@ static int g_randomizer = 0;
 static int g_disableGlitches = 0;
 static int g_sightscope = 0;
 static int g_visibleTechs = 0;
+static int g_dimFlashes = 0;
 static int g_dupChars = 0;
 #include "ck_dup_chars.inc"
 
@@ -29,6 +30,8 @@ int ck_randomizer(void) { return g_randomizer; }
 int ck_disable_glitches(void) { return g_disableGlitches; }
 int ck_sightscope(void) { return g_sightscope; }
 int ck_visible_techs(void) { return g_visibleTechs; }
+int ck_dim_flashes(void) { return g_dimFlashes; }
+void ck_dim_flashes_set(int on) { g_dimFlashes = on != 0; }
 void CtSettingsDefaults(CtSettings* s) {
   g_wideWidth = 0;
   g_tallLines = CK_TALL_LINES_OFF;
@@ -37,7 +40,9 @@ void CtSettingsDefaults(CtSettings* s) {
   g_disableGlitches = 0;
   g_sightscope = 0;
   g_visibleTechs = 0;
+  g_dimFlashes = 0;
   g_dupChars = 0;
+  ck_dialog_defaults();
   memset(s, 0, sizeof *s);
   s->windowScale = 2; s->renderScale = 1; s->vsync = 1;
   s->volume = 100;
@@ -77,7 +82,9 @@ static void apply(CtSettings* s, const char* sec, const char* key, const char* v
   } else if (!strcmp(sec, "chronoki")) {
     if (!strcmp(key, "sightscope")) g_sightscope = truthy(val) || iv != 0;
     else if (!strcmp(key, "visible_techs")) g_visibleTechs = truthy(val) || iv != 0;
+    else if (!strcmp(key, "dim_flashes")) g_dimFlashes = truthy(val) || iv != 0;
     else if (!strcmp(key, "duplicate_characters")) g_dupChars = truthy(val) || iv != 0;
+    else ck_dialog_ini(key, truthy(val) ? 1 : iv);
   } else if (!strcmp(sec, "sound")) {
     if (!strcmp(key, "volume")) s->volume = iv < 0 ? 0 : iv > 100 ? 100 : iv;
     else if (!strcmp(key, "mute")) s->mute = truthy(val) || iv != 0;

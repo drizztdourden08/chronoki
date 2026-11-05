@@ -5,7 +5,7 @@ import type { CtSpotSpec } from './ct-region-spec.type';
 import { CT_LOCATION_KIND_SPOT } from './ct-world.constants';
 import type { CtRegionId, CtWorldKeys } from './ct-world-keys.type';
 import { SPOT_VANILLA_ITEMS } from './spot-vanilla-items.constants';
-import { treasureItemOf } from './treasure-item-of';
+import { spotItemOfRomId } from './spot-item-of-rom-id';
 
 const spotLocationOf = (
   spot: CtSpotSpec, region: CtRegionId, bound: CheckDef | undefined,
@@ -15,7 +15,7 @@ const spotLocationOf = (
   return {
     key: spot.id,
     region,
-    vanillaItem: treasureItemOf(bound.vanillaItem),
+    vanillaItem: spotItemOfRomId(bound.vanillaItem),
     tags: { ...tags, checkId: bound.id, checkKind: bound.kind, mapId: bound.locationId },
   };
 };

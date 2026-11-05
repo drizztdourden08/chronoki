@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind constants */
 import type { CkGameFlags, CkSettings } from './core-config-ini.type';
+import { DIALOG_NEUTRAL_PACING } from './dialog-pacing/dialog-pacing.constants';
 
 const DEFAULT_CK_SETTINGS: CkSettings = {
   widescreen: 'off',
@@ -17,6 +18,9 @@ const DEFAULT_CK_SETTINGS: CkSettings = {
   instantSoundUploads: false,
   sightscope: false,
   visibleTechs: false,
+  dimFlashes: false,
+  dialogControls: false,
+  dialogPacing: DIALOG_NEUTRAL_PACING,
 };
 
 const VANILLA_GAME_FLAGS: CkGameFlags = { randomizer: false, disableGlitches: false };

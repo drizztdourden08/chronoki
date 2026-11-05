@@ -5,11 +5,15 @@ const OVERVIEW_TAB = 'overview';
 const SETTINGS_TAB = 'settings';
 const DATA_TAB = 'data';
 
+const RANDOMIZER_TAB = 'randomizer';
+
 const PROFILE_TABS: TabItem[] = [
   { id: OVERVIEW_TAB, label: 'Overview' },
   { id: SETTINGS_TAB, label: 'Settings' },
   { id: DATA_TAB, label: 'Saves and play' },
 ];
+
+const RANDOMIZER_PROFILE_TAB: TabItem = { id: RANDOMIZER_TAB, label: 'Randomizer' };
 
 const PROFILE_TEXT = {
   listTitle: 'Profiles',
@@ -28,4 +32,4 @@ const PACK_FIELD_HINT = { locked: 'Vanilla Safe is on. Your choice is kept and a
 
 const PACK_IMPORT_TEXT = { button: 'Import folder', title: 'Import a music pack from a folder', progress: 'Importing' } as const;
 
-export { DATA_TAB, PACK_IMPORT_TEXT, NO_PACK_LABEL, OVERVIEW_TAB, PACK_FIELD_HINT, PROFILE_TABS, PROFILE_TEXT, SETTINGS_TAB };
+export { DATA_TAB, PACK_IMPORT_TEXT, NO_PACK_LABEL, OVERVIEW_TAB, PACK_FIELD_HINT, PROFILE_TABS, PROFILE_TEXT, RANDOMIZER_PROFILE_TAB, RANDOMIZER_TAB, SETTINGS_TAB };

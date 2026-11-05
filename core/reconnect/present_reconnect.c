@@ -19,6 +19,8 @@ static size_t g_cap = 0;
 static long g_swaps = 0;
 static int g_hostW = 0, g_hostH = 0, g_hostRead = 0;
 
+#include "ck_dim_flashes.inc"
+
 #define CK_FRAME_SIZE_FILE "/ck_frame_size.txt"
 #define CK_FRAME_MAX_SIDE 4096
 
@@ -55,7 +57,7 @@ void CtPresentSetPicSize(CtPresenter* p, int w, int h) {
   p->picW = w; p->picH = h;
   ensure(outW(), outH());
 }
-void CtPresentUpload(CtPresenter* p, const uint8_t* rgb24) {
+static void uploadPlain(CtPresenter* p, const uint8_t* rgb24) {
   const int ow = outW(), oh = outH();
   ensure(ow, oh);
   if (!g_rgba || !rgb24) return;
@@ -72,6 +74,13 @@ void CtPresentUpload(CtPresenter* p, const uint8_t* rgb24) {
       d[0] = s[0]; d[1] = s[1]; d[2] = s[2]; d[3] = 255;
     }
   }
+}
+void CtPresentUpload(CtPresenter* p, const uint8_t* rgb24) {
+  uploadPlain(p, rgb24);
+  if (!ck_dim_flashes()) { g_dimHave = 0; return; }
+  if (!g_rgba || !rgb24) return;
+  const int gain = ckDimGain(rgb24, p->picW, p->picH);
+  if (gain < 256) ckDimApply(g_rgba, (size_t)outW() * (size_t)outH(), gain);
 }
 void CtPresentDraw(CtPresenter* p, const SDL_Rect* dst, int linear) { (void)p; (void)dst; (void)linear; }
 void CtPresentSwap(CtPresenter* p) { (void)p; g_swaps++; ck_yield_to_host(); }

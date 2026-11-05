@@ -1,4 +1,6 @@
 /* @layer bridge-wasm @kind types */
+import type { CkDialogPacing } from './dialog-pacing/dialog-pacing.type';
+
 type CkWidescreen = 'off' | '16:9' | '16:10' | '21:9';
 
 type CkSync = 'frame_perfect' | 'free';
@@ -19,6 +21,9 @@ interface CkSettings {
   instantSoundUploads: boolean;
   sightscope: boolean;
   visibleTechs: boolean;
+  dimFlashes: boolean;
+  dialogControls: boolean;
+  dialogPacing: CkDialogPacing;
 }
 
 type CkGameFlags = { randomizer: boolean; disableGlitches: boolean; duplicateCharacters?: boolean };

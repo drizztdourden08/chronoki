@@ -1,10 +1,11 @@
 /* @layer renderer-components @kind component */
-import { Card, Spinner, Stack } from '@drizztdourden08/tessera/primitives';
-import { FactsPanel } from '@drizztdourden08/tessera/composites';
+import { Spinner, Stack } from '@drizztdourden08/tessera/primitives';
 import type { Profile } from '@drizztdourden08/brock-core';
+import { buildControlFacts } from '../behavior/build-control-facts';
 import { buildPlayFacts } from '../behavior/build-play-facts';
 import { buildSaveFacts } from '../behavior/build-save-facts';
 import { useProfileData } from '../behavior/useProfileData';
+import { FactsSection } from './FactsSection';
 
 const ProfileDataTab = ({ profile }: { profile: Profile }) => {
   const data = useProfileData(profile.id);
@@ -12,12 +13,9 @@ const ProfileDataTab = ({ profile }: { profile: Profile }) => {
   if (data === null) return <Spinner size="md" />;
   return (
     <Stack gap="lg">
-      <Card title="Saves" level={4}>
-        <FactsPanel groups={[buildSaveFacts(data)]} layout="rows" label="Saves" />
-      </Card>
-      <Card title="Play" level={4}>
-        <FactsPanel groups={[buildPlayFacts(data)]} layout="rows" label="Play" />
-      </Card>
+      <FactsSection title="Saves" facts={[buildSaveFacts(data)]} />
+      <FactsSection title="Play" facts={[buildPlayFacts(data)]} />
+      <FactsSection title="Controls" facts={[buildControlFacts(data)]} />
     </Stack>
   );
 };

@@ -2,15 +2,15 @@
 import type { WizardStepDef } from '@drizztdourden08/tessera/composites';
 import type { ProfileWizardValues } from '../../../ProfileManager.type';
 import { CREATING_HINT, FINISH_LABEL, STEP_IDS, STEP_LABELS } from '../ProfileCreateWizard.constants';
-import { presetLabelOf } from './preset-label-of';
 import { profileProblem } from './profile-problem';
+import { profileSummary } from './profile-summary';
 
 const profileWizardSteps: readonly WizardStepDef<ProfileWizardValues>[] = [
   {
     id: STEP_IDS.profile,
     label: STEP_LABELS.profile,
     validate: profileProblem,
-    summary: ({ name, rom, preset }) => [name.trim(), rom, presetLabelOf(preset)].filter((part) => part !== '').join(', ') || undefined,
+    summary: profileSummary,
   },
   {
     id: STEP_IDS.review,

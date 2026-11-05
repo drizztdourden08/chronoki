@@ -3,26 +3,21 @@ import type { ReactNode } from 'react';
 import type { SettingsPatch } from '@drizztdourden08/brock-react';
 import type { AppSettings } from '@app/settings.type';
 import { GateToggle } from './GateToggle';
-import { TurboSpeedControl } from './TurboSpeedControl';
-import { RenderScaleControl } from './RenderScaleControl';
 import { VolumeRow } from './audio/VolumeRow';
-import { DetectedPackControl } from './detected-pack-control';
-import { AspectRatioRow } from './display/AspectRatioRow';
+import { VOLUME_ROWS } from './audio/audio-controls.constants';
+import type { VolumeKey } from './audio/audio.type';
 import { withAspectCascade } from './display/with-aspect-cascade';
 import { GATE_KEY_PREFIX } from './gate-keys.constants';
+import { CONTROL_OF_KEY } from './render-setting-control.constants';
 
 const renderSettingControl = (key: string, settings: AppSettings, onChange: SettingsPatch<AppSettings>): ReactNode | null => {
   if (key.startsWith(GATE_KEY_PREFIX)) {
     const cascaded: SettingsPatch<AppSettings> = (patch) => onChange(withAspectCascade(patch, settings));
     return <GateToggle id={key.slice(GATE_KEY_PREFIX.length)} settings={settings} onChange={cascaded} />;
   }
-  if (key === 'aspectRatio') return <AspectRatioRow settings={settings} onChange={onChange} />;
-  if (key === 'renderScale') return <RenderScaleControl settings={settings} onChange={onChange} />;
-  if (key === 'turboSpeed') return <TurboSpeedControl settings={settings} onChange={onChange} />;
-  if (key === 'masterVolume') return <VolumeRow settingKey="masterVolume" settings={settings} onChange={onChange} />;
-  if (key === 'musicVolume' || key === 'sfxVolume') return <VolumeRow settingKey={key} settings={settings} onChange={onChange} />;
-  if (key === 'detectedPack') return <DetectedPackControl />;
-  return null;
+  if (key in VOLUME_ROWS) return <VolumeRow settingKey={key as VolumeKey} settings={settings} onChange={onChange} />;
+  const Control = CONTROL_OF_KEY[key];
+  return Control ? <Control settings={settings} onChange={onChange} /> : null;
 };
 
 export { renderSettingControl };

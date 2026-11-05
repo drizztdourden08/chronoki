@@ -1,10 +1,11 @@
 /* @layer renderer-lib @kind types */
 type ImportKind = 'rom' | 'sprites';
 
-type ImportPhase = 'extract' | 'copy';
+type ImportPhase = 'download' | 'extract' | 'copy';
 
 interface ImportReport {
   phase: (phase: ImportPhase, message?: string) => void;
+  count: (phase: ImportPhase, loaded: number, total?: number) => void;
 }
 
 interface ImportJobParams<Result> {

@@ -5,6 +5,6 @@ const SAVE_LOAD_LOG = '[Local] In-game save load detected (play clock jumped): r
 
 const GOAL_REACHED_LOG = '[Goal] Mode goal reached';
 
-const START_CHECK_MAX_POLLS = 600;
+const START_CHECK_MAX_POLLS = 30;
 
 export { GOAL_REACHED_LOG, NO_COMPLETED, SAVE_LOAD_LOG, START_CHECK_MAX_POLLS };

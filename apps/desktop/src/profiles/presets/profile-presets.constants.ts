@@ -25,9 +25,4 @@ const PRESET_OPTIONS: { value: ProfilePresetId; label: string }[] = [
   { value: 'enhanced', label: 'Enhanced' },
 ];
 
-const PRESET_HINTS: Readonly<Record<ProfilePresetId, string>> = {
-  vanilla: 'The game as it shipped: Vanilla Safe on.',
-  enhanced: 'The game with ChronoKi changes switched on.',
-};
-
-export { DEFAULT_PROFILE_PRESET, ENHANCED_CONFIG_OVERRIDES, PRESET_HINTS, PRESET_OPTIONS, VANILLA_CONFIG_OVERRIDES };
+export { DEFAULT_PROFILE_PRESET, ENHANCED_CONFIG_OVERRIDES, PRESET_OPTIONS, VANILLA_CONFIG_OVERRIDES };

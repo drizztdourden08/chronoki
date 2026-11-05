@@ -6,7 +6,7 @@ const meta: ScreenMeta = {
   title: 'Gameplay',
   icon: 'gamepad-2',
   order: 1,
-  keywords: ['gameplay', 'vanilla safe', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward'],
+  keywords: ['gameplay', 'vanilla safe', 'save states', 'auto save', 'save on quit', 'turbo', 'fast forward', 'dialog', 'text speed'],
 };
 
 const asSeconds = (value: number): string => `${value} s`;
@@ -76,6 +76,47 @@ const sections: Section[] = [
     ],
   },
   {
+    id: 'dialog',
+    title: 'Dialog',
+    subsections: [
+      {
+        id: 'dialog-pacing',
+        title: 'Pacing',
+        items: [
+          gateItem('dialogControls'),
+          {
+            key: 'dialogSpeed',
+            label: 'Text Speed',
+            description: 'How fast text is typed into the box: below Original slows it, above it speeds it up, Instant writes each page at once. Pauses written into a line keep their length',
+            hint: 'Needs Dialog Pacing Controls.',
+            keywords: 'dialog text speed typewriter message instant',
+          },
+          {
+            key: 'dialogHoldToAccelerate',
+            label: 'Hold A to Accelerate',
+            description: 'While A is held, text is typed at the Hold Speed below',
+            hint: 'Needs Dialog Pacing Controls.',
+            keywords: 'dialog hold a accelerate fast text',
+          },
+          {
+            key: 'dialogHoldSpeed',
+            label: 'Hold Speed',
+            description: 'How fast text is typed while A is held',
+            hint: 'Needs Dialog Pacing Controls and Hold A to Accelerate.',
+            keywords: 'dialog hold speed text multiplier',
+          },
+          {
+            key: 'dialogFillOnB',
+            label: 'B Completes the Box',
+            description: 'One press writes the whole box; the next press advances',
+            hint: 'Needs Dialog Pacing Controls.',
+            keywords: 'dialog b complete fill box skip text',
+          },
+        ],
+      },
+    ],
+  },
+  {
     id: 'quality-of-life',
     title: 'Quality of Life',
     items: [
@@ -87,6 +128,11 @@ const sections: Section[] = [
       gateItem('zenanAltMusic'),
       gateItem('deathPeakAltMusic'),
     ],
+  },
+  {
+    id: 'cheats',
+    title: 'Cheats',
+    items: [gateItem('cheatsEnabled')],
   },
   {
     id: 'vanilla-safe',

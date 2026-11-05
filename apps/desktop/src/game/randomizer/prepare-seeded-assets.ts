@@ -3,7 +3,8 @@ import type { RandomizerProfileConfig } from '@drizztdourden08/brock-randomizer'
 import type { FileStore } from '@drizztdourden08/brock-core';
 import type { CtPlacement } from '@chronoki/game-core';
 import { resolveMysteryOptions } from '@chronoki/game-core';
-import { gateRandomizerBoot, pendingBoot } from '@drizztdourden08/brock-randomizer/session';
+import { pendingBoot } from '@drizztdourden08/brock-randomizer/session';
+import { gateRandomizerBoot } from '@drizztdourden08/brock-randomizer/renderer';
 import { BOOT_REFUSALS, LOCAL_MODE } from './chronoki-randomizer.constants';
 import { checksOfPack } from './checks-of-pack';
 import { localRunHolder } from './local-run-holder';

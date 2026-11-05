@@ -6,7 +6,6 @@ import { LOCATION_ID, LOCATION_MASK } from '../../game-info/wram-map.constants';
 import type { CtFlagBit, CtPoke, CtStartState } from '../apply/start-state/ct-start-state.type';
 import { LEGACY_PARTY } from '../apply/start-state/legacy-party.constants';
 import { partyPokes } from '../apply/start-state/party-pokes';
-import { INTRO_WORLD } from '../apply/start-state/start-block.constants';
 import { CT_WRAM_REGION } from '../memory/ct-memory.constants';
 import { WRAM_CPU_BASE } from './session.constants';
 import type { StartStateCheck } from './create-start-state-check.type';
@@ -30,7 +29,8 @@ const mismatchesOf = (view: MemoryView, state: CtStartState, party: CtStartParty
 };
 
 const createStartStateCheck = (state: CtStartState, party: CtStartParty = LEGACY_PARTY): StartStateCheck => ({
-  settled: (view) => locationOf(view) !== INTRO_WORLD,
+  settled: (view) => locationOf(view) === state.warp.location,
+  matches: (view) => mismatchesOf(view, state, party).length === 0,
   read: (view) => {
     const bad = mismatchesOf(view, state, party);
     return bad.length === 0

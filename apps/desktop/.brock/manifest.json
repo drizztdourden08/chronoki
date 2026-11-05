@@ -1,10 +1,25 @@
 {
   "brock": "0.120.1",
-  "generatedAt": "2026-11-04T18:20:16.842Z",
+  "generatedAt": "2026-11-05T18:21:07.267Z",
   "modules": [
+    {
+      "id": "updater",
+      "package": "@drizztdourden08/brock-updater",
+      "version": "0.120.1"
+    },
+    {
+      "id": "secrets",
+      "package": "@drizztdourden08/brock-secrets",
+      "version": "0.120.1"
+    },
     {
       "id": "display",
       "package": "@drizztdourden08/brock-display",
+      "version": "0.120.1"
+    },
+    {
+      "id": "tools",
+      "package": "@drizztdourden08/brock-tools",
       "version": "0.120.1"
     },
     {
@@ -20,6 +35,11 @@
     {
       "id": "game-info",
       "package": "@drizztdourden08/brock-game-info",
+      "version": "0.120.1"
+    },
+    {
+      "id": "mcp",
+      "package": "@drizztdourden08/brock-mcp",
       "version": "0.120.1"
     },
     {

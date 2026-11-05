@@ -7,15 +7,23 @@ import { GATE_KEY_PREFIX, OPTION_KEY_FEATURE } from './gate-keys.constants';
 import { isAspectRuleDisabled } from './is-aspect-rule-disabled';
 import { hasUnmetRequires } from './has-unmet-requires';
 
-const isSettingDisabled = (key: string, settings: AppSettings, lock: SettingLockCause | null): boolean => {
+const isOwnRuleDisabled = (key: string, settings: AppSettings): boolean => {
   if (key === 'pixelPerfect') return settings.viewportConstraint !== 'none';
-  if (key === `${GATE_KEY_PREFIX}linearFiltering` && settings.pixelPerfect && settings.viewportConstraint === 'none') return true;
-  if (isAspectRuleDisabled(key, settings)) return true;
-  if (isAudioDisabled(key, settings)) return true;
-  if (lock !== null) return true;
-  if (hasUnmetRequires(key, settings)) return true;
+  if (key === 'dialogHoldSpeed') return !settings.dialogHoldToAccelerate;
+  return key === `${GATE_KEY_PREFIX}linearFiltering` && settings.pixelPerfect && settings.viewportConstraint === 'none';
+};
+
+const isParentGateOff = (key: string, settings: AppSettings): boolean => {
   const parent = OPTION_KEY_FEATURE[key];
   return parent !== undefined && !effectiveGatesOf(settings).has(parent);
 };
+
+const isSettingDisabled = (key: string, settings: AppSettings, lock: SettingLockCause | null): boolean =>
+  isOwnRuleDisabled(key, settings)
+  || isAspectRuleDisabled(key, settings)
+  || isAudioDisabled(key, settings)
+  || lock !== null
+  || hasUnmetRequires(key, settings)
+  || isParentGateOff(key, settings);
 
 export { isSettingDisabled };

@@ -1,47 +1,53 @@
 /* @layer renderer-components @kind hook */
 import { useEffect } from 'react';
 import { getInputManager } from '@app/input/input-manager/get-input-manager';
-import { isSlotAction } from './is-slot-action';
 
-const useCancelOnOtherInput = (open: boolean, close: () => void): void => {
+const useCancelOnOtherInput = (open: boolean, close: () => void) => {
   useEffect(() => {
-    if (!open) return undefined;
-    const manager = getInputManager();
-    const mappings = manager.getFunctionMappings();
+    if (!open) return;
+    const inputMgr = getInputManager();
 
-    const onKeyDown = (event: KeyboardEvent): void => {
-      if (event.code === 'Escape') {
-        event.preventDefault();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Escape') {
+        e.preventDefault();
         close();
         return;
       }
-      const isSlotKey = mappings.some(
-        (entry) => entry.binding.type === 'keyboard' && entry.binding.code === event.code && isSlotAction(entry.action),
+      const mappings = inputMgr.getFunctionMappings();
+      const isSlotKey = mappings.some(m =>
+        m.binding.type === 'keyboard' &&
+        m.binding.code === e.code &&
+        (m.action.startsWith('load-state-') || m.action.startsWith('save-state-'))
       );
       if (!isSlotKey) close();
     };
     window.addEventListener('keydown', onKeyDown);
 
-    const slotButtons = new Set<number>();
-    for (const entry of mappings) {
-      if (entry.binding.type === 'gamepad-button' && isSlotAction(entry.action)) slotButtons.add(entry.binding.index);
+    const mappings = inputMgr.getFunctionMappings();
+    const slotButtonIndices = new Set<number>();
+    for (const m of mappings) {
+      if (m.binding.type === 'gamepad-button' && (m.action.startsWith('load-state-') || m.action.startsWith('save-state-'))) {
+        slotButtonIndices.add(m.binding.index);
+      }
     }
-    const previous = new Map<string, boolean[]>();
-    const unsubscribe = manager.onInputState((states) => {
-      for (const [key, state] of states) {
-        const before = previous.get(key) ?? [];
-        const pressed = state.buttons.some((down, index) => down && !before[index] && !slotButtons.has(index));
-        if (pressed) {
-          close();
-          return;
+
+    const prevButtons = new Map<string, boolean[]>();
+    const unsub = inputMgr.onInputState((hidStates) => {
+      for (const [key, state] of hidStates) {
+        const prev = prevButtons.get(key) ?? [];
+        for (let i = 0; i < state.buttons.length; i++) {
+          if (state.buttons[i] && !prev[i] && !slotButtonIndices.has(i)) {
+            close();
+            return;
+          }
         }
-        previous.set(key, [...state.buttons]);
+        prevButtons.set(key, [...state.buttons]);
       }
     });
 
     return () => {
       window.removeEventListener('keydown', onKeyDown);
-      unsubscribe();
+      unsub();
     };
   }, [open, close]);
 };
