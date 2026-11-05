@@ -22,7 +22,7 @@ const lockLine = (s: CkSettings): string[] =>
 
 const dialogLines = ({ dialogControls, dialogPacing: p }: CkSettings): string[] =>
   dialogControls
-    ? ['dialog_controls=1', `dialog_speed_q4=${p.baseQ4}`, `dialog_hold_q4=${p.holdQ4}`, `dialog_hold=${flag(p.hold)}`, `dialog_fill=${flag(p.fill)}`]
+    ? ['dialog_controls=1', `dialog_speed_q4=${p.baseQ4}`, `dialog_hold_q4=${p.holdQ4}`, `dialog_hold=${flag(p.hold)}`, `dialog_fill=${flag(p.fill)}`, ...(p.autoSkip ? ['dialog_auto_skip=1'] : [])]
     : [];
 
 const chronokiLines = (s: CkSettings, g: CkGameFlags): string[] => {
