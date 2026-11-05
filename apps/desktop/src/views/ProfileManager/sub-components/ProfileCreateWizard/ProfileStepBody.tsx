@@ -9,7 +9,14 @@ import { STEP_IDS, STEP_LABELS } from './ProfileCreateWizard.constants';
 import { ModuleStepBody } from './ModuleStepBody';
 import { presetLabelOf } from './behavior/preset-label-of';
 
-const ProfileStepBody = ({ wizard, readyRoms, subStep }: { wizard: WizardApi<ProfileWizardValues>; readyRoms: ReadyRom[]; subStep?: string }) => {
+type ProfileStepBodyProps = {
+  wizard: WizardApi<ProfileWizardValues>;
+  readyRoms: ReadyRom[];
+  subStep?: string;
+  onSubStepChange?: (subStep: string) => void;
+};
+
+const ProfileStepBody = ({ wizard, readyRoms, subStep, onSubStepChange }: ProfileStepBodyProps) => {
   const { values, update } = wizard;
 
   switch (wizard.current.id) {
@@ -50,7 +57,7 @@ const ProfileStepBody = ({ wizard, readyRoms, subStep }: { wizard: WizardApi<Pro
         />
       );
     default:
-      return <ModuleStepBody wizard={wizard} subStep={subStep} />;
+      return <ModuleStepBody wizard={wizard} subStep={subStep} onSubStepChange={onSubStepChange} />;
   }
 };
 

@@ -7,7 +7,7 @@ const useOptionSubStep = () => {
   const selectSubStep = useCallback((stepId: string, subStepId: string) => {
     if (stepId === OPTIONS_STEP_ID) setOptionTab(subStepId);
   }, []);
-  return { optionTab, selectSubStep };
+  return { optionTab, selectSubStep, setOptionTab };
 };
 
 export { useOptionSubStep };

@@ -8,11 +8,11 @@ import { useProfileWizard } from './behavior/useProfileWizard';
 
 const ProfileCreateWizard = ({ readyRoms, onCancel, onCreated }: ProfileCreateWizardProps) => {
   const wizard = useProfileWizard(onCreated);
-  const { optionTab, selectSubStep } = useOptionSubStep();
+  const { optionTab, selectSubStep, setOptionTab } = useOptionSubStep();
 
   return (
     <Wizard wizard={wizard} title={WIZARD_TITLE} orientation="vertical" stepperSize="sm" activeSubStepId={optionTab} onSubStepSelect={selectSubStep} onExit={onCancel}>
-      <ProfileStepBody wizard={wizard} readyRoms={readyRoms} subStep={optionTab} />
+      <ProfileStepBody wizard={wizard} readyRoms={readyRoms} subStep={optionTab} onSubStepChange={setOptionTab} />
     </Wizard>
   );
 };
