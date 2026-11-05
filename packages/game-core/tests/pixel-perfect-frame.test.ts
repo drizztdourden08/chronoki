@@ -53,7 +53,7 @@ describe('pixel perfect frame on both axes', { tags: ['critical'] }, () => {
     expect(coverFrame(area(810, 990), 3 / 4, FREE, true)).toEqual({ width: 270, height: 330, scale: 3 });
   });
 
-  it('keeps a deliberate 3:4 on a wide stage (1920x990) at 256 wide rather than changing the scale', () => {
+  it('keeps a deliberate 3:4 on a wide stage (1920x990) at 256 wide, not a new scale', () => {
     expect(coverFrame(area(1920, 990), 3 / 4, FREE, true)).toEqual({ width: 256, height: 330, scale: 3 });
   });
 

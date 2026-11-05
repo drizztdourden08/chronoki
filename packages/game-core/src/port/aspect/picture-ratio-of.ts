@@ -5,8 +5,6 @@ import { fillBox } from './fill-box';
 import { CT_FREE_RANGES } from './frame-ranges.constants';
 import { wholeBoxOf } from './whole-box-of';
 
-/* The ratio the picture is presented at: the chosen ratio, or the stage's own when the two-axis pixel perfect plan
-   widened the frame to fill the stage (so the presenter does not clip it back to the ratio box). */
 const pictureRatioOf = (effective: ReadonlySet<string>, options: GateOptions): number => {
   const ratio = aspectRatioOf(effective, options);
   const stage = options.stageArea;
