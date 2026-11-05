@@ -13,6 +13,8 @@ import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeMixerGains } from './patches/mixer-gains.mjs';
 import { writeCameraLock } from './patches/camera-lock.mjs';
+import { writeSightscope } from './patches/sightscope.mjs';
+import { writeVisibleTechs } from './patches/visible-techs.mjs';
 import { writeTallField } from './patches/tall-field.mjs';
 import { writeShapes } from './shapes.mjs';
 import { belthasar, ctSources, gameSources, hostSources, reconnectSources, root } from './sources.mjs';
@@ -91,10 +93,11 @@ const gameArgs = (gen) => [
   ...common,
   '-DCT_DATAFREE', '-DCT_XLAT_NO_GWARP', '-DCT_AUDIO_SPC_DEFAULT=1',
   '-I', abs('src'), '-I', abs('snes'), '-I', join(root, 'core', 'reconnect'), '-I', abs('src/tables'), '-I', gen.dir,
-  ...gameSources().filter((f) => !gen.state.replaced.includes(f) && !gen.gains.replaced.includes(f)).map(abs),
+  ...gameSources().filter((f) => !gen.state.replaced.includes(f) && !gen.gains.replaced.includes(f) && !gen.sight.replaced.includes(f)).map(abs),
   ...gen.gameFiles,
   ...gen.state.files,
   ...gen.gains.files,
+  ...gen.sight.files,
   ...reconnectSources,
   ...hostSources,
   '-o', join(outDir, 'chronoki.js'),
@@ -179,6 +182,8 @@ const main = () => {
   gen.gains = writeMixerGains(gen.dir, belthasar);   // the S-DSP's voice-group gains (patches/mixer-gains.mjs)
   gen.tall = writeTallField(gen.state, belthasar);   // the tall picture, gated by tall_lines (patches/tall-field.mjs)
   gen.lock = writeCameraLock(gen.state);              // Lock Camera to View, gated by camera_lock (patches/camera-lock.mjs)
+  gen.visible = writeVisibleTechs(gen.state);         // Visible Techs, gated by visible_techs (patches/visible-techs.mjs)
+  gen.sight = writeSightscope(gen.dir, belthasar);    // Sightscope, gated by sightscope; battle.c replaced in the game module (patches/sightscope.mjs)
   if (!gen.tables32) {
     const missing = join(outDir, 'tables32', 'tables_storage.c');
     if (!allowMissingTables) {
