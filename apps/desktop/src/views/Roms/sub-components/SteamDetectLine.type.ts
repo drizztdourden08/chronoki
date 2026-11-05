@@ -7,6 +7,7 @@ interface SteamDetectLineProps {
   onImport: () => void;
   onCancel: () => void;
   onRescan: () => void;
+  onBrowse: () => void;
 }
 
 export type { SteamDetectLineProps };

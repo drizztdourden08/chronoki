@@ -1,5 +1,5 @@
 /* @layer renderer-components @kind component */
-import { Button, DropZone, Field, Flex, Text } from '@drizztdourden08/tessera/primitives';
+import { DropZone, Field, Stack, Text } from '@drizztdourden08/tessera/primitives';
 import { STEAM_ACCEPT, STEAM_TEXT } from '../Roms.constants';
 import { useSteamDetect } from '../behavior/useSteamDetect';
 import { useSteamImport } from '../behavior/useSteamImport';
@@ -16,7 +16,7 @@ const SteamImport = () => {
         {marker ? (
           <SteamStatus marker={marker} busy={busy} onRemove={handleRemove} />
         ) : (
-          <>
+          <Stack>
             {detect.available && (
               <SteamDetectLine
                 status={detect.status}
@@ -24,15 +24,11 @@ const SteamImport = () => {
                 onImport={() => path && void handleImportPick({ path, size: size ?? 0 })}
                 onCancel={() => void detect.cancel()}
                 onRescan={() => void detect.scan()}
+                onBrowse={() => void handleBrowse()}
               />
             )}
-            {!busy && detect.available && (
-              <Flex direction="row">
-                <Button variant="secondary" size="sm" onClick={() => void handleBrowse()}>{STEAM_TEXT.browse}</Button>
-              </Flex>
-            )}
             {!busy && <DropZone accept={STEAM_ACCEPT} label={STEAM_TEXT.dropLabel} hint={STEAM_TEXT.dropHint} onDrop={handleDrop} />}
-          </>
+          </Stack>
         )}
       </Field>
       {status && <Text variant="body">{status.message}</Text>}
