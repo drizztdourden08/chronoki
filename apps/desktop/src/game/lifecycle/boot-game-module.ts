@@ -4,6 +4,7 @@ import type { PortSession } from '@drizztdourden08/brock-port-kit/renderer';
 import { createPortSession } from '@drizztdourden08/brock-port-kit/renderer';
 import type { CkSettings } from '@chronoki/game-core';
 import { CT_SRAM_FILE, DEFAULT_CK_SETTINGS, frameSizeOf, sizePortFrame } from '@chronoki/game-core';
+import { audioLeadOf } from '../audio-lead';
 import { prepareBootAssets } from '../randomizer/prepare-boot-assets';
 import { chronokiCore } from './chronoki-core';
 import { readProfileSram } from './read-profile-sram';
@@ -25,6 +26,7 @@ const bootGameModule = async (request: StartGameRequest, store: SaveStore): Prom
     config,
     settings,
     volume,
+    audioLeadS: audioLeadOf(),
     extraFiles: sram ? { ...frameFiles, ...steamFiles, [CT_SRAM_FILE]: sram } : { ...frameFiles, ...steamFiles },
   });
   if (await session.start()) return session;

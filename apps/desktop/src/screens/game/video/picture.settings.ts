@@ -38,6 +38,13 @@ const sections: Section[] = [
         description: 'Display the current frames per second, and the refresh rate of your display, in the title bar while the game is running',
         keywords: 'fps performance frame rate counter refresh rate hz',
       },
+      {
+        key: 'vsync',
+        label: 'V-Sync',
+        description: 'Paces the game against the display refresh rate instead of an internal timer, which smooths scrolling.',
+        hint: 'Game speed stays the same either way.',
+        keywords: 'vsync v-sync tearing judder stutter frame pacing refresh rate smooth scrolling 60hz',
+      },
       gateItem('interpolate'),
       gateItem('freeSync'),
     ],

@@ -1,0 +1,6 @@
+/* @layer bridge-wasm @kind constants */
+const AUDIO_BUFFER_STEPS = [512, 1024, 2048, 4096];
+const DEFAULT_AUDIO_SAMPLES = 2048;
+const DEFAULT_AUDIO_LEAD_S = 0.02;
+
+export { AUDIO_BUFFER_STEPS, DEFAULT_AUDIO_LEAD_S, DEFAULT_AUDIO_SAMPLES };
