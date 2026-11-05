@@ -1,7 +1,10 @@
-/* @layer renderer-app @kind hook */
+/* @layer renderer-components @kind hook */
 import { useMemo } from 'react';
 import type { HeroProps } from '@drizztdourden08/brock-react';
-import { buildProfileFacts, buildRandomizerFacts, romFileOf, useHomeRandomizerStatus } from '@app/views/HomeTab';
+import { buildProfileFacts } from './build-profile-facts';
+import { buildRandomizerFacts } from './build-randomizer-facts';
+import { romFileOf } from './rom-file-of';
+import { useHomeRandomizerStatus } from './useHomeRandomizerStatus';
 
 const useHeroFacts = (profile: HeroProps['profile']) => {
   const romFile = romFileOf(profile);

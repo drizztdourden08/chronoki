@@ -1,6 +1,6 @@
-/* @layer renderer-app @kind hook */
+/* @layer renderer-components @kind hook */
 import { useMemo } from 'react';
-import type { useNormalSaves } from '@app/views/HomeTab';
+import type { useNormalSaves } from './useNormalSaves';
 
 const useHeroLastSave = (normal: ReturnType<typeof useNormalSaves>) =>
   useMemo(() => {

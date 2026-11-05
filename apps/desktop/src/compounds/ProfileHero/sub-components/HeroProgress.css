@@ -47,13 +47,6 @@
 .hero-progress__key--taken::before { background: var(--c-secondary); }
 .hero-progress__key--available::before { background: var(--c-warning); }
 
-.hero-progress__checks {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-
 .hero-progress__count {
   font-size: var(--text-sm);
   white-space: nowrap;

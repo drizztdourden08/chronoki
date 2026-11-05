@@ -6,6 +6,8 @@ export { buildProfileFacts } from './behavior/build-profile-facts';
 export { buildRandomizerFacts } from './behavior/build-randomizer-facts';
 export { romFileOf } from './behavior/rom-file-of';
 export { useHomeRandomizerStatus } from './behavior/useHomeRandomizerStatus';
+export { useHeroFacts } from './behavior/useHeroFacts';
+export { useHeroLastSave } from './behavior/useHeroLastSave';
 export { useHomeSramImport } from './behavior/useHomeSramImport';
 export { useNormalSaves } from './behavior/useNormalSaves';
 export { useProfileProgress } from './behavior/useProfileProgress';

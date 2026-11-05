@@ -8,10 +8,8 @@ import { MODE_BADGE_LABELS } from '@app/compounds/ModeBadge';
 import { modeOf } from '@app/profile-modes';
 import type { AppSettings } from '@app/settings.type';
 import { GamePendulum } from './game.pendulum';
-import { useHeroFacts } from './home.hero-facts';
-import { useHeroLastSave } from './home.hero-last-save';
 import { useGameSession } from '@app/views/GameSession';
-import { HomeDialogs, HomeTab, RandomizedProgress, romFileOf, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
+import { HomeDialogs, HomeTab, RandomizedProgress, romFileOf, useHeroFacts, useHeroLastSave, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
 
 const meta: ScreenMeta = {
   title: 'Home',

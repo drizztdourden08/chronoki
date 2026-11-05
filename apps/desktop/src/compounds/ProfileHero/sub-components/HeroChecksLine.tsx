@@ -1,7 +1,7 @@
 /* @layer renderer-components @kind component */
 import { Box, Text } from '@drizztdourden08/tessera/primitives';
 import type { HeroChecks } from '../ProfileHero.type';
-import './HeroProgress.css';
+import './HeroChecksLine.css';
 
 const HeroChecksLine = ({ checks, label }: { checks: HeroChecks; label: string }) => (
   <Box className="hero-progress__checks" title={`${checks.total} checks in this seed`}>
