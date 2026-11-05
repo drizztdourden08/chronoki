@@ -1,5 +1,4 @@
 /* @layer bridge-wasm @kind logic */
-import type { CtCharacter } from '../ct-world-keys.type';
 import type { CharacterAssignment } from './character-assignment.type';
 import { CHARACTER_LABELS } from './character-labels.constants';
 import { CHARACTER_FIXED_SLOTS, CHARACTER_RANDO_SPOTS } from './character-rando.constants';
