@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import { deriveChestChecks } from '../checks/derive-chest-checks';
 import { deriveGiftChecks } from '../checks/derive-gift-checks';
-import type { ApplyResult, PackEdit, Placement } from './apply-seed.type';
+import type { ApplyOptions, ApplyResult, PackEdit, Placement } from './apply-seed.type';
 import { planChestEdits } from './plan-chest-edits';
 import { planGiftEdits } from './plan-gift-edits';
 import type { ScriptSplice } from './script/script-splice.type';
@@ -14,12 +14,13 @@ const applySeedToPack = (
   pack: Uint8Array,
   placement: Placement,
   splices: readonly ScriptSplice[] = [],
+  options: ApplyOptions = {},
 ): ApplyResult => {
   const chests = deriveChestChecks(pack);
   const gifts = deriveGiftChecks(pack);
   const known = new Set([...chests, ...gifts].map((c) => c.id));
   const unknown = Object.keys(placement).filter((id) => !known.has(id));
-  const chestPlan = planChestEdits(pack, chests, placement);
+  const chestPlan = planChestEdits(pack, chests, placement, options);
   const giftPlan = planGiftEdits(pack, gifts, placement);
   const edits = [...chestPlan.edits, ...giftPlan.edits];
   const failed = [...new Set([...unknown, ...chestPlan.failed, ...giftPlan.failed, ...stale(pack, edits)])];

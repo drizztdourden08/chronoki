@@ -25,3 +25,7 @@ export type {
   CtCharacter, CtEra, CtEventId, CtHelperName, CtItem, CtKeyItem, CtOptionKey, CtRegionId, CtSpotId, CtTreasureItem,
   CtWorldKeys,
 } from './ct-world-keys.type';
+export { buildPackTierTable } from './treasure-tiers/build-pack-tier-table';
+export { shiftItemByDifficulty } from './treasure-tiers/shift-item-by-difficulty';
+export { HARD_START_GOLD } from './treasure-tiers/treasure-tiers.constants';
+export type { ItemDifficulty, TierTable } from './treasure-tiers/treasure-tier.type';
