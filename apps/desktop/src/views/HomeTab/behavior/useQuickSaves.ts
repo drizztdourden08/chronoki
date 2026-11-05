@@ -2,11 +2,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { activeStateContext, saveState } from '@app/game/save-states';
 import { appLog } from '@app/log/app-log';
-import type { SlotInfo } from '../HomeTab.type';
 import { loadIntoPlay, useGameSession } from '@app/views/GameSession';
 import { ensureGameRunning } from './ensure-game-running';
-import { emptySlots } from './empty-slots';
-import { fetchQuickSlots } from './fetch-quick-slots';
+import { emptySlots, fetchQuickSlots } from '@app/game/save-slots';
+import type { SlotInfo } from '@app/game/save-slots';
 
 const useQuickSaves = (profileId: string | null, running: boolean) => {
   const { play } = useGameSession();

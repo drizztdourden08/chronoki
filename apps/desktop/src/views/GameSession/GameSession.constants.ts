@@ -7,9 +7,12 @@ const FUNCTION_ACTION_GATES: Partial<Record<FunctionAction, string>> = {
   'load-state': 'saveStates',
   'slot-next': 'saveStates',
   'slot-prev': 'saveStates',
+  menu: 'saveStates',
   turbo: 'turbo',
   ...Object.fromEntries([...SAVE_SLOT_ACTIONS, ...LOAD_SLOT_ACTIONS].map((action) => [action, 'saveStates'])),
 };
+
+const CONTROLLER_PRESENCE_DELAY_MS = 800;
 
 const SAVE_STATES_GATE = 'saveStates';
 
@@ -56,6 +59,7 @@ const FRAME_WIDTH_EXPORT = 'CkFrameWidth';
 const FRAME_HEIGHT_EXPORT = 'CkFrameHeight';
 
 export {
+  CONTROLLER_PRESENCE_DELAY_MS,
   HOST_PROBE_BOOT_FRAMES, HOST_PROBE_TURBO_FRAMES,
   INPUT_PROBE_BOOT_FRAMES, INPUT_PROBE_BUTTONS, INPUT_PROBE_STORY_BUTTONS, INPUT_PROBE_GAP_FRAMES, INPUT_PROBE_HOLD_FRAMES, INPUT_PROBE_HASH_FRAME,
   SRAM_PROBE_DEFAULT_BYTES, SRAM_PROBE_FRAMES,

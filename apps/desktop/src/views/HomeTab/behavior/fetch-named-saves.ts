@@ -2,7 +2,7 @@
 import type { NamedSaveKind } from '@drizztdourden08/brock-port-kit';
 import { platformSaveStore } from '@app/game/save-states';
 import type { NamedSavesData } from '../HomeTab.type';
-import { dataUrlOf } from './data-url-of';
+import { dataUrlOf } from '@app/game/save-slots';
 
 const fetchNamedSaves = async (profileId: string, kind: NamedSaveKind): Promise<NamedSavesData | null> => {
   try {
