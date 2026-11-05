@@ -10,7 +10,7 @@ const rowsOf = (placement: CtPlacement) => Object.fromEntries(describeCtPlacemen
 
 describe('describeCtPlacement', { tags: ['critical'] }, () => {
   it('splits locations into treasure and key items', () => {
-    const placement = placementOf([['a', 'treasure-01'], ['b', 'pendant'], ['c', 'treasure-02']], 2);
+    const placement = placementOf([['a', 'treasure-01'], ['ki-b', 'pendant'], ['c', 'treasure-02']], 2);
     expect(describeCtPlacement(placement).seed).toBe('abc');
     expect(rowsOf(placement)).toEqual({ Locations: '3', Treasure: '2', 'Key items': '1', Spheres: '2' });
   });

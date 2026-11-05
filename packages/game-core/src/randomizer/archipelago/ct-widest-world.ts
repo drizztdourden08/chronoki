@@ -6,8 +6,7 @@ import type { CtWorldKeys } from '../world/ct-world-keys.type';
 import { CT_AP_LOCATION_IDS } from './ct-ap-location-ids.constants';
 import { ctWidestChecks } from './ct-widest-checks';
 import { CT_WIDEST_OPTIONS } from './ct-widest-options.constants';
-
-const WIDEST_SEED = '';
+import { WIDEST_SEED } from './ct-widest-world.constants';
 
 const ctWidestWorld = (): World<CtWorldKeys> => {
   const def = createCtWorldDef({ checks: ctWidestChecks(), options: CT_WIDEST_OPTIONS, fillerSeed: WIDEST_SEED });
