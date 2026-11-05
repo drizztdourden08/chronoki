@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { SaveStateContext, StateResult } from '@app/game/save-states';
 
 const mocks = vi.hoisted(() => {
-  const result: StateResult = { ok: true };
-  return { steps: [] as string[], result, manager: true };
+  const holder: { steps: string[]; result: StateResult; manager: boolean } = { steps: [], result: { ok: true }, manager: true };
+  return holder;
 });
 
 vi.mock('@drizztdourden08/brock-react', () => ({ nav: { close: () => mocks.steps.push('close-menu') } }));

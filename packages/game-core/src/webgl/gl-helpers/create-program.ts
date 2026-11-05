@@ -1,9 +1,9 @@
 /* @layer bridge-wasm @kind logic */
 import { createShader } from './create-shader';
 
-const createProgram = (gl: WebGLRenderingContext, vertSrc: string, fragSrc: string, label = '[WebGL]'): WebGLProgram | null => {
-  const vert = createShader(gl, gl.VERTEX_SHADER, vertSrc, label);
-  const frag = createShader(gl, gl.FRAGMENT_SHADER, fragSrc, label);
+const createProgram = (gl: WebGLRenderingContext, vertSrc: string, fragSrc: string): WebGLProgram | null => {
+  const vert = createShader(gl, gl.VERTEX_SHADER, vertSrc);
+  const frag = createShader(gl, gl.FRAGMENT_SHADER, fragSrc);
   if (!vert || !frag) return null;
 
   const program = gl.createProgram() as WebGLProgram | null;
@@ -13,7 +13,6 @@ const createProgram = (gl: WebGLRenderingContext, vertSrc: string, fragSrc: stri
   gl.linkProgram(program);
 
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.error(`${label} Program link error:`, gl.getProgramInfoLog(program));
     gl.deleteProgram(program);
     return null;
   }
