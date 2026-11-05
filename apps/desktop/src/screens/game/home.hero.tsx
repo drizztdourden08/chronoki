@@ -8,8 +8,10 @@ import { MODE_BADGE_LABELS } from '@app/compounds/ModeBadge';
 import { modeOf } from '@app/profile-modes';
 import type { AppSettings } from '@app/settings.type';
 import { GamePendulum } from './game.pendulum';
+import { useHeroFacts } from './home.hero-facts';
+import { useHeroLastSave } from './home.hero-last-save';
 import { useGameSession } from '@app/views/GameSession';
-import { HomeDialogs, HomeTab, RandomizedProgress, buildProfileFacts, buildRandomizerFacts, romFileOf, useHomeRandomizerStatus, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
+import { HomeDialogs, HomeTab, RandomizedProgress, romFileOf, useHomeSramImport, useNormalSaves, useProfileProgress, useRevealProfileFolder } from '@app/views/HomeTab';
 
 const meta: ScreenMeta = {
   title: 'Home',
@@ -30,27 +32,12 @@ const HomeHero = (props: HeroProps) => {
   const sramImport = useHomeSramImport(profileId);
   const romFile = romFileOf(profile);
   const backdrop = useMemo(() => <GamePendulum key={romFile ?? ''} romFile={romFile} />, [romFile]);
-  const randomizerStatus = useHomeRandomizerStatus();
   const randomizer = profile?.randomizer;
-  const facts = useMemo(() => {
-    const own = buildProfileFacts({ romFile, lastPlayed: profile?.lastPlayed, created: profile?.created });
-    const run = buildRandomizerFacts(randomizer, randomizerStatus);
-    return run ? [run, ...own] : own;
-  }, [romFile, profile?.lastPlayed, profile?.created, randomizer, randomizerStatus]);
+  const facts = useHeroFacts(profile);
 
   const progress = useProfileProgress(profileId, running);
   const normal = useNormalSaves(profileId, running);
-  const lastSave = useMemo(() => {
-    const latest = normal.saves[0];
-    if (!latest) return null;
-    return {
-      name: latest.name,
-      timestamp: latest.savedAt,
-      screenshotUrl: normal.screenshots[latest.id] ?? null,
-      busy: normal.busyId === latest.id,
-      onLoad: () => void normal.load(latest.id),
-    };
-  }, [normal]);
+  const lastSave = useHeroLastSave(normal);
 
   if (!profile) return null;
 

@@ -5,7 +5,7 @@ import type { ControlsGame } from '@drizztdourden08/brock-input/renderer';
 import { presetMappings } from '../profile-edit/preset-mappings';
 import { CONTROLS_TABS } from './controls.constants';
 import { functionToAction } from './function-mapping-convert';
-import { mappingToAction } from './profile-to-brock';
+import { mappingToAction } from './mapping-to-action';
 
 const FUNCTION_DEFAULT_BINDINGS: readonly ActionBinding[] = DEFAULT_FUNCTION_MAPPINGS.map(functionToAction);
 

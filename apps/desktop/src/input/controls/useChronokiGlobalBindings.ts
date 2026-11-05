@@ -5,7 +5,7 @@ import type { GlobalBindingsStore } from '@drizztdourden08/brock-input/renderer'
 import { getInputManager } from '../input-manager/get-input-manager';
 import { storeFunctionMappings } from '../profile-store/store-function-mappings';
 import { FUNCTION_DEFAULT_BINDINGS } from './controls-game.constants';
-import { actionToFunction } from './function-mapping-convert';
+import { actionToFunction } from './action-to-function';
 
 const useChronokiGlobalBindings = (mappings: readonly ActionBinding[] | undefined, onChanged: () => void): GlobalBindingsStore =>
   useMemo((): GlobalBindingsStore => ({
