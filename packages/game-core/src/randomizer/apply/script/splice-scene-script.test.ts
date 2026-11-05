@@ -1,76 +1,26 @@
 /* @layer bridge-wasm @kind test */
 import { describe, expect, it } from 'vitest';
 import { readPackEntries } from '../../checks/read-pack-entries';
-import { changeLocationTarget, encodeChangeLocation, encodePoke, encodeSetBits, isChangeLocation } from './encode-script-ops';
+import { encodeChangeLocation } from './encode-change-location';
+import { encodePoke } from './encode-poke';
+import { encodeSetBits } from './encode-set-bits';
+import { pointerAt } from './pointer-at';
+import { spliceFixture } from './script-splice.fixture';
 import type { ScriptSplice } from './script-splice.type';
-import { spliceSceneScript, spliceSceneScripts } from './splice-scene-script';
+import { spliceSceneScript } from './splice-scene-script';
+import { spliceSceneScripts } from './splice-scene-scripts';
 
-const le32 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >>> 24) & 0xff];
-const le16 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff];
-const POKE = [0x4a, 0x00, 0x00, 0x7e, 0x01];
-const CHANGE = [0xe0, 0xf0, 0x01, 0x3f, 0x38];
-const RETURN = [0x00];
-
-const buildScript = (bodies: number[][]): number[] => {
-  const header = bodies.length * 32;
-  const pointers: number[] = [];
-  let at = header;
-  bodies.forEach((body) => {
-    pointers.push(...le16(at), ...new Array<number>(30).fill(0));
-    at += body.length;
-  });
-  return [bodies.length, ...pointers, ...bodies.flat()];
-};
-
-type Blob = { type: number; id: number; data: number[] };
-
-const buildPack = (blobs: Blob[]): Uint8Array => {
-  const bytes: number[] = [0x43, 0x54, 0x41, 0x53, ...le32(1), ...le32(blobs.length)];
-  let at = 12 + blobs.length * 16;
-  blobs.forEach((b) => {
-    bytes.push(...le32(b.type), ...le32(b.id), ...le32(at), ...le32(b.data.length));
-    at += b.data.length;
-  });
-  blobs.forEach((b) => bytes.push(...b.data));
-  return Uint8Array.from(bytes);
-};
-
-const packOf = (script: number[]): Uint8Array =>
-  buildPack([
-    { type: 3, id: 0, data: [0, 0, 0, 0, 0, 0, 0, 0, ...le16(7), 0, 0] },
-    { type: 16, id: 7, data: script },
-    { type: 16, id: 9, data: buildScript([[...POKE, ...RETURN]]) },
-    { type: 36, id: 0x400000, data: [...le32(script.length), ...le32(11), ...le32(22), ...script] },
-  ]);
-
-const entryBytes = (pack: Uint8Array, type: number, id: number): number[] => {
-  const e = readPackEntries(pack).find((x) => x.type === type && x.id === id);
-  return e ? [...pack.subarray(e.start, e.start + e.length)] : [];
-};
-
-const splice = (replace: number[]): ScriptSplice => ({
-  scene: 0,
-  anchor: (op) => isChangeLocation(op) && changeLocationTarget(op) === 0x1f0,
-  replace: Uint8Array.from(replace),
-  why: 'test',
-});
-
-const jumpScene = [
-  [0x10, 6, ...CHANGE, 0x11, 8, ...RETURN],
-  [...POKE, ...RETURN],
-  [...RETURN],
-];
+const { CHANGE, POKE, RETURN, buildScript, entryBytes, jumpScene, le32, packOf, splice } = spliceFixture;
+const grown = [...encodePoke(0x7e027e, 2, 1), ...encodeChangeLocation(0x1f1, 5, 6)];
 
 describe('spliceSceneScript', () => {
   it('replaces the anchor in a 1-object script, appends the blob and repoints the entry', { tags: ['critical'] }, () => {
-    const script = buildScript([[...POKE, ...CHANGE, ...RETURN]]);
-    const pack = packOf(script);
+    const pack = packOf(buildScript([[...POKE, ...CHANGE, ...RETURN]]));
     const before = Uint8Array.from(pack);
-    const block = [...encodePoke(0x7e027e, 2, 1), ...encodeChangeLocation(0x1f1, 5, 6)];
-    const result = spliceSceneScript(pack, splice(block));
+    const result = spliceSceneScript(pack, splice(grown));
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    expect(entryBytes(result.bytes, 16, 7)).toEqual(buildScript([[...POKE, ...block, ...RETURN]]));
+    expect(entryBytes(result.bytes, 16, 7)).toEqual(buildScript([[...POKE, ...grown, ...RETURN]]));
     expect(result.bytes.length).toBeGreaterThan(pack.length);
     expect(pack).toEqual(before);
   });
@@ -86,43 +36,8 @@ describe('spliceSceneScript', () => {
     expect(entryBytes(result.bytes, 16, 9)).toEqual(entryBytes(pack, 16, 9));
   });
 
-  it('shifts later object pointers when the replacement is longer and shorter', { tags: ['critical'] }, () => {
-    const pack = packOf(buildScript(jumpScene));
-    const longer = [...encodeSetBits(0x7f0057, 0x80), ...encodePoke(0x7e027e, 2, 1), ...encodeChangeLocation(0x1f1, 5, 6)];
-    const shorter = [0x00, 0x00];
-    [longer, shorter].forEach((block) => {
-      const result = spliceSceneScript(pack, splice(block));
-      expect(result.ok).toBe(true);
-      if (!result.ok) return;
-      const raw = entryBytes(result.bytes, 16, 7);
-      const delta = block.length - CHANGE.length;
-      expect(raw[1 + 32] | (raw[2 + 32] << 8)).toBe(96 + 2 + CHANGE.length + 3 + delta);
-      expect(raw[1 + 64] | (raw[2 + 64] << 8)).toBe(96 + 2 + CHANGE.length + 3 + 6 + delta);
-      expect(raw.length).toBe(buildScript(jumpScene).length + delta);
-    });
-  });
-
-  it('fixes a forward jump over the splice and a backward jump across it', { tags: ['critical'] }, () => {
-    const pack = packOf(buildScript(jumpScene));
-    const longer = [...encodePoke(0x7e027e, 2, 1), ...encodeChangeLocation(0x1f1, 5, 6)];
-    const shorter = [0x00, 0x00];
-    [longer, shorter].forEach((block) => {
-      const result = spliceSceneScript(pack, splice(block));
-      expect(result.ok).toBe(true);
-      if (!result.ok) return;
-      const expected = buildScript([
-        [0x10, block.length + 1, ...block, 0x11, block.length + 3, ...RETURN],
-        jumpScene[1] ?? [],
-        jumpScene[2] ?? [],
-      ]);
-      expect(entryBytes(result.bytes, 16, 7)).toEqual(expected);
-    });
-  });
-
   it('updates the identical LZ copy with its out-len', { tags: ['critical'] }, () => {
-    const pack = packOf(buildScript(jumpScene));
-    const block = [...encodePoke(0x7e027e, 2, 1), ...encodeChangeLocation(0x1f1, 5, 6)];
-    const result = spliceSceneScript(pack, splice(block));
+    const result = spliceSceneScript(packOf(buildScript(jumpScene)), splice(grown));
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     const script = entryBytes(result.bytes, 16, 7);
@@ -131,7 +46,38 @@ describe('spliceSceneScript', () => {
     expect(lz.slice(0, 4)).toEqual(le32(script.length));
     expect(lz.slice(4, 12)).toEqual([...le32(11), ...le32(22)]);
   });
+});
 
+describe('spliceSceneScript pointers and jumps', () => {
+  const pack = packOf(buildScript(jumpScene));
+  const longer = [...encodeSetBits(0x7f0057, 0x80), ...grown];
+
+  it('shifts later object pointers when the replacement is longer and shorter', { tags: ['critical'] }, () => {
+    [longer, [0x00, 0x00]].forEach((block) => {
+      const result = spliceSceneScript(pack, splice(block));
+      expect(result.ok).toBe(true);
+      if (!result.ok) return;
+      const raw = Uint8Array.from(entryBytes(result.bytes, 16, 7));
+      const delta = block.length - CHANGE.length;
+      expect(pointerAt(raw, 16)).toBe(96 + 2 + CHANGE.length + 3 + delta);
+      expect(pointerAt(raw, 32)).toBe(96 + 2 + CHANGE.length + 3 + 6 + delta);
+      expect(raw.length).toBe(buildScript(jumpScene).length + delta);
+    });
+  });
+
+  it('fixes a forward jump over the splice and a backward jump across it', { tags: ['critical'] }, () => {
+    [grown, [0x00, 0x00]].forEach((block) => {
+      const result = spliceSceneScript(pack, splice(block));
+      expect(result.ok).toBe(true);
+      if (!result.ok) return;
+      const body = [0x10, block.length + 1, ...block, 0x11, block.length + 3, ...RETURN];
+      const expected = buildScript([body, jumpScene[1] ?? [], jumpScene[2] ?? []]);
+      expect(entryBytes(result.bytes, 16, 7)).toEqual(expected);
+    });
+  });
+});
+
+describe('spliceSceneScripts', () => {
   it('refuses a missing anchor, a non-unique anchor and a missing scene', { tags: ['critical'] }, () => {
     const none = packOf(buildScript([[...POKE, ...RETURN]]));
     const twice = packOf(buildScript([[...CHANGE, ...CHANGE, ...RETURN]]));
@@ -140,7 +86,7 @@ describe('spliceSceneScript', () => {
     expect(spliceSceneScript(none, { ...splice([0]), scene: 5 }).ok).toBe(false);
   });
 
-  it('spliceSceneScripts fails the whole set and never changes the input', { tags: ['critical'] }, () => {
+  it('fails the whole set and never changes the input', { tags: ['critical'] }, () => {
     const pack = packOf(buildScript(jumpScene));
     const before = Uint8Array.from(pack);
     const bad: ScriptSplice = { ...splice([0]), anchor: () => false, why: 'bad' };

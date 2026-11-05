@@ -31,7 +31,6 @@ const buildJumpSpecs = (): Readonly<Record<number, JumpSpec>> => {
   return specs;
 };
 
-/** Jump target = op start + dispAt, plus (or, for back, minus) the unsigned byte at dispAt. Facts from ct_vm.c / move.c. */
 const JUMP_SPECS: Readonly<Record<number, JumpSpec>> = buildJumpSpecs();
 
 export { JUMP_SPECS };

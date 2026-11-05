@@ -1,12 +1,10 @@
 /* @layer bridge-wasm @kind logic */
 import { OBJECT_FUNCTIONS, OBJECT_HEADER_BYTES } from '../../checks/gift-ops.constants';
 import { mapScriptCoord } from './map-script-coord';
-import { pointerAt } from './script-ops';
+import { pointerAt } from './pointer-at';
+import { MAX_POINTER } from './script-splice.constants';
 import type { SpliceShift } from './script-splice.type';
 
-const MAX_POINTER = 0xffff;
-
-/** Rewrites the object/function pointer table of `next` in place; returns what could not be moved. */
 const shiftScriptPointers = (old: Uint8Array, next: Uint8Array, shift: SpliceShift): string[] => {
   const failed: string[] = [];
   const header = (old[0] ?? 0) * OBJECT_HEADER_BYTES;

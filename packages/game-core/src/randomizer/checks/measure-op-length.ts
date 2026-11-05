@@ -11,8 +11,9 @@ const paletteLength = (cmd: number, b: Uint8Array, o: number): number => {
 };
 
 const blockLength = (cmd: number, b: Uint8Array, o: number): number => {
-  if (cmd & 0x40) return 6;
-  return cmd & 0x80 ? 3 + word(b, o + 3) : 2;
+  const high = cmd & 0xf0;
+  if (high === 0x40 || high === 0x50) return 6;
+  return high === 0x80 ? 3 + word(b, o + 3) : 2;
 };
 
 const shortVariableLength = (op: number, cmd: number): number | null => {

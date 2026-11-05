@@ -34,7 +34,6 @@ const blobFor = (pack: Uint8Array, e: PackEntry, script: PackEntry, raw: Uint8Ar
   return blob;
 };
 
-/** Appends the new blob (plus a copy for each identical LZ entry, out-len updated) and repoints their table rows. Null if a row is missing. */
 const repointScriptEntry = (pack: Uint8Array, script: PackEntry, raw: Uint8Array): Uint8Array | null => {
   const targets = [script, ...readPackEntries(pack).filter((e) => isCopy(pack, e, script))];
   const rows = targets.map((e) => rowOf(pack, e));

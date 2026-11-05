@@ -10,10 +10,12 @@ type SpliceResult = { ok: true; bytes: Uint8Array } | { ok: false; failed: strin
 
 type BlobResult = { ok: true; raw: Uint8Array } | { ok: false; failed: string[] };
 
-type ScriptOp = { at: number; length: number };
+type EncodeResult = { ok: true; bytes: Uint8Array } | { ok: false; failed: string[] };
+
+type ScriptOp ={ at: number; length: number };
 
 type SpliceShift = { at: number; end: number; delta: number };
 
 type JumpSpec = { dispAt: number; back: boolean };
 
-export type { BlobResult, JumpSpec, ScriptOp, ScriptSplice, SpliceResult, SpliceShift };
+export type { BlobResult, EncodeResult, JumpSpec, ScriptOp, ScriptSplice, SpliceResult, SpliceShift };
