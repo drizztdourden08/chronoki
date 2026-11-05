@@ -44,6 +44,7 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   { key: 'gearRando', label: 'Gear randomization', jotFlag: 'gear', default: false, section: 'Randomization', implemented: true },
   { key: 'healingRando', label: 'Healing item randomization', jotFlag: 'heal', default: false, section: 'Randomization', implemented: true },
   { key: 'techDamageRando', label: 'Tech damage randomization', jotFlag: 'tech-damage', default: false, section: 'Randomization', implemented: true },
+  { key: 'elementRando', label: 'Element randomization', jotFlag: 'element', default: false, section: 'Randomization', implemented: true },
   { key: 'epochFail', label: 'Epoch fail', jotFlag: 'epochFail', default: false, section: 'Rules', implemented: true },
   {
     key: 'partyMode', label: 'Starting party', jotFlag: '-', default: 'random', choices: ['random', 'custom'],
