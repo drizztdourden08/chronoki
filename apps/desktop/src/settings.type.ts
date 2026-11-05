@@ -12,6 +12,7 @@ interface AppSettings extends BaseSettings {
   vanillaSafe: boolean;
   gates: string[];
   knownGates?: string[];
+  flippedDefaults?: string[];
   aspectRatio: AspectRatioChoice;
   customAspectW: number;
   customAspectH: number;
