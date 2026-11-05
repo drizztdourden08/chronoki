@@ -31,6 +31,11 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   { key: 'addCyrusGraveSpot', label: "Add Cyrus's Grave spot", jotFlag: 'cyrus', default: false, section: 'Rules', implemented: true },
   { key: 'addOzzieSpot', label: "Add Ozzie's Fort spot", jotFlag: 'ozzie', default: false, section: 'Rules', implemented: true },
   { key: 'vanillaRoboRibbon', label: 'Vanilla Robo Ribbon', jotFlag: 'ribbon', default: false, section: 'Rules', implemented: true },
+  {
+    key: 'techOrder', label: 'Tech order', jotFlag: 'tech', default: 'normal', choices: ['normal', 'balanced-random', 'full-random'],
+    section: 'Rules', implemented: true,
+    choiceLabels: { normal: 'Normal', 'balanced-random': 'Balanced random', 'full-random': 'Full random' },
+  },
   { key: 'epochFail', label: 'Epoch fail', jotFlag: 'epochFail', default: false, section: 'Rules', implemented: true },
   {
     key: 'partyMode', label: 'Starting party', jotFlag: '-', default: 'random', choices: ['random', 'custom'],

@@ -3,6 +3,7 @@ import type { CtSpotId } from '../world/ct-world-keys.type';
 import type { TabAmounts } from '../world/tabs/tab-amounts.type';
 import type { ShopPriceOption } from './shop-prices/shop-prices.type';
 import type { ItemDifficulty } from '../world/treasure-tiers/treasure-tier.type';
+import type { TechOrderMode } from './tech-order/tech-order.type';
 
 type Placement = Readonly<Record<string, number>>;
 
@@ -14,6 +15,8 @@ type ApplyOptions = {
   shopPrices?: ShopPriceOption;
   spotGifts?: readonly CtSpotId[];
   tabAmounts?: TabAmounts;
+  techOrder?: TechOrderMode;
+  seed?: string;
 };
 
 type PackEdit = { at: number; old: number; next: number; why: string };

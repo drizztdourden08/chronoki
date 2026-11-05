@@ -4,8 +4,11 @@ import { tabAmountsOf } from '../../world/tabs/tab-amounts-of';
 import type { ItemDifficulty } from '../../world/treasure-tiers/treasure-tier.type';
 import type { ApplyOptions } from '../apply-seed.type';
 import { shopPriceOptionOf } from '../shop-prices/shop-price-option-of';
+import type { TechOrderMode } from '../tech-order/tech-order.type';
 import { bossDepthsOf } from './boss-depths-of';
 import type { OptionBag, SphereLike } from './enemy-difficulty.type';
+
+const TECH_ORDER_MODES: readonly string[] = ['balanced-random', 'full-random'];
 
 const applyOptionsOf = (options: OptionBag, spheres: readonly SphereLike[], seed?: string): ApplyOptions => {
   const shopPrices = shopPriceOptionOf(options, seed ?? '');
@@ -19,6 +22,7 @@ const applyOptionsOf = (options: OptionBag, spheres: readonly SphereLike[], seed
     ...(options.bossScaling === true ? { bossDepths: bossDepthsOf(spheres) } : {}),
     ...(shopPrices === undefined ? {} : { shopPrices }),
     ...(tabAmounts === null ? {} : { tabAmounts }),
+    ...(TECH_ORDER_MODES.includes(String(options.techOrder)) ? { techOrder: options.techOrder as TechOrderMode, seed: seed ?? '' } : {}),
   };
 };
 
