@@ -1,13 +1,6 @@
 /* @layer renderer-components @kind component */
-import type { WizardApi } from '@drizztdourden08/tessera/composites';
-import type { ProfileWizardValues } from '../../ProfileManager.type';
+import type { ModuleStepBodyProps } from './ModuleStepBody.type';
 import { useModuleProfileSteps } from './behavior/useModuleProfileSteps';
-
-type ModuleStepBodyProps = {
-  wizard: WizardApi<ProfileWizardValues>;
-  subStep?: string;
-  onSubStepChange?: (subStep: string) => void;
-};
 
 const ModuleStepBody = ({ wizard, subStep, onSubStepChange }: ModuleStepBodyProps) => {
   const { values, update } = wizard;

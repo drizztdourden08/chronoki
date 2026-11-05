@@ -2,19 +2,11 @@
 import { Field, Grid, SegmentedControl, Select, Stack, Text, TextInput } from '@drizztdourden08/tessera/primitives';
 import { randomizerReviewSections } from '@drizztdourden08/brock-randomizer/renderer';
 import { WizardReview } from '@drizztdourden08/tessera/composites';
-import type { WizardApi } from '@drizztdourden08/tessera/composites';
+import type { ProfileStepBodyProps } from './ProfileStepBody.type';
 import { PRESET_HINTS, PRESET_OPTIONS } from '@app/profiles/presets';
-import type { ProfileWizardValues, ReadyRom } from '../../ProfileManager.type';
 import { STEP_IDS, STEP_LABELS } from './ProfileCreateWizard.constants';
 import { ModuleStepBody } from './ModuleStepBody';
 import { presetLabelOf } from './behavior/preset-label-of';
-
-type ProfileStepBodyProps = {
-  wizard: WizardApi<ProfileWizardValues>;
-  readyRoms: ReadyRom[];
-  subStep?: string;
-  onSubStepChange?: (subStep: string) => void;
-};
 
 const ProfileStepBody = ({ wizard, readyRoms, subStep, onSubStepChange }: ProfileStepBodyProps) => {
   const { values, update } = wizard;
