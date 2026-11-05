@@ -17,6 +17,7 @@ type SaveLoadWatch = {
 type GameStartWatch = {
   observe(view: MemoryView): boolean;
   started(): boolean;
+  newGame(): boolean;
   reset(): void;
 };
 

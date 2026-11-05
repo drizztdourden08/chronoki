@@ -13,7 +13,7 @@ const chronokiPollHooks = {
     const view = chronokiRawMemoryBridge.view();
     if (view === null || run === null) return;
     const started = gameStartGate.observe(view);
-    run.start.observe(view, started);
+    run.start.observe(view, started, gameStartGate.newGame());
     if (!started) return;
     if (run.saveLoad.loaded(view)) {
       appRandomizerLog(SAVE_LOAD_LOG);
