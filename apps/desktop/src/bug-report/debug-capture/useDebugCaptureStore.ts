@@ -1,9 +1,9 @@
 /* @layer renderer-lib @kind logic */
 import { create } from 'zustand';
-import { requireAppApi } from '@app/ipc/require-app-api';
 import type { DebugCaptureStore } from './debug-capture-store.type';
 import { MAX_RECORDING_MS, MAX_SNAPSHOTS, SAMPLE_INTERVAL_MS } from './debug-capture-store.constants';
 import { captureActiveFrameBlob } from './capture-active-frame-blob';
+import { finishRecording } from './finish-recording';
 import { takeSnapshot } from './take-snapshot';
 
 let timer: ReturnType<typeof setTimeout> | null = null;
@@ -58,7 +58,7 @@ const useDebugCaptureStore = create<DebugCaptureStore>((set, get) => ({
     set({ isCapturing: false, snapshots: [], screenshots: [] });
     if (!profileId || (snapshots.length === 0 && screenshots.length === 0)) return;
     const sessionKey = `session-${startedAt ?? Date.now()}`;
-    void requireAppApi().finalizeDebugCaptureSession({ profileId, sessionKey, snapshots, screenshots });
+    void finishRecording(profileId, sessionKey, snapshots, screenshots);
   },
   toggle: (profileId: string) => {
     const state = get();
