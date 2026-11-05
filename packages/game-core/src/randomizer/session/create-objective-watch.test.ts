@@ -45,6 +45,13 @@ describe('createObjectiveWatch', { tags: ['critical'] }, () => {
     expect(writes).toEqual([[OBJECTIVE_LATCH_AT, 2]]);
   });
 
+  it('keeps settle state while newGame stays true, as the start watch reports it', () => {
+    const { writes, watch } = setup(2);
+    watch.observe(fakeView({ 0x0100: 5, [SETTLED]: 0x04 }), true, true);
+    watch.observe(fakeView({ 0x0100: 6, [SETTLED]: 0x04 }), true, true);
+    expect(writes).toEqual([[OBJECTIVE_LATCH_AT, 2]]);
+  });
+
   it('waits for the game start', () => {
     const { writes, watch } = setup(1);
     watch.observe(fakeView({ [HIT]: 0x02 }), false, false);

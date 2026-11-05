@@ -18,6 +18,7 @@ const createObjectiveWatch = (
   let seenAt = new Map<number, number>();
   let reported = -1;
   let opened = false;
+  let wasStarted = false;
 
   const doneAt = (index: number, source: ObjectiveSource, view: MemoryView): boolean => {
     if (!objectiveDoneNow(source, view)) {
@@ -31,8 +32,10 @@ const createObjectiveWatch = (
   };
 
   return {
-    observe: (view, started, newGame) => {
-      if (newGame) {
+    observe: (view, started) => {
+      const justStarted = started && !wasStarted;
+      wasStarted = started;
+      if (justStarted) {
         seenAt = new Map();
         reported = -1;
         opened = false;
@@ -51,6 +54,7 @@ const createObjectiveWatch = (
     },
     goalReached: () => false,
     reset: () => {
+      wasStarted = false;
       seenAt = new Map();
       reported = -1;
       opened = false;
