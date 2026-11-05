@@ -12,16 +12,16 @@ const KEY_ITEM_SPOT_GIFTS: readonly KeyItemSpotGift[] = [
   { spot: 'ki-sun-palace', check: 'gift-0fb-o17', item: 0xde },
   { spot: 'ki-mt-woe', check: 'gift-17e-o10', item: 0xe0 },
   { spot: 'ki-fionas-shrine', check: 'gift-053-o1', item: 0xaa },
+  { spot: 'ki-zenan-bridge', check: 'gift-078-o15-0', item: 0xdb },
+  { spot: 'ki-taban', check: 'gift-004-o8-2', item: 0x79 },
+  { spot: 'ki-melchior-sun-stone', check: 'gift-1b8-o23-1', item: 0x55 },
+  { spot: 'ki-frogs-burrow', check: 'chest-08d-0', item: 0x99 },
 ];
 
 const UNBOUND_KEY_ITEM_SPOTS: Readonly<Partial<Record<CtSpotId, string>>> = {
-  'ki-zenan-bridge': 'two candidate gifts (castle chef gift-078-o15-0, knight captain gift-086-o13/gift-087-o13)',
-  'ki-taban': 'three Taban gifts in one function (gift-004-o8-0/1/2); which one follows Heckran is not settled',
-  'ki-melchior-sun-stone': 'two Sun Stone gifts in one function (gift-1b8-o23-0, gift-1b8-o23-1)',
-  'ki-frogs-burrow': 'a chest in the burrow, not a gift; no chest binding yet',
-  'ki-giants-claw': 'the Rainbow Shell is not an add-item gift; no operand found',
-  'ki-geno-dome': "Robo's Ribbon is not an add-item gift; no operand found",
-  'ki-sunken-desert': 'no add-item gift after Retinite found',
+  'ki-giants-claw': 'the Rainbow Shell is a story flag, not an item; pinned to its vanilla Prism Shard',
+  'ki-geno-dome': "Atropos raises Robo's stats directly, no item; pinned to its vanilla Robo Ribbon",
+  'ki-sunken-desert': 'Retinite gives no item; pinned to its vanilla Chrono Trigger',
 };
 
 export { KEY_ITEM_SPOT_GIFTS, UNBOUND_KEY_ITEM_SPOTS };

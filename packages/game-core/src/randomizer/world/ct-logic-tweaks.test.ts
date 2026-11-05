@@ -48,9 +48,9 @@ describe('spot gift checks', () => {
 });
 
 describe('vanilla Robo Ribbon', () => {
-  it('is off by default and keeps the ribbon in the pool', { tags: ['critical'] }, () => {
+  it('is off by default and keeps the ribbon check, the ribbon itself pinned at Geno Dome', { tags: ['critical'] }, () => {
     expect(ctOptionValues().vanillaRoboRibbon).toBe(false);
-    expect(createCtWorldDef(inputOf()).buildPool({} as never).progression).toContain('robo-ribbon');
+    expect(createCtWorldDef(inputOf()).buildPool({} as never).progression).not.toContain('robo-ribbon');
     expect(locationKeys(inputOf())).toContain('chest-test-1');
   });
 

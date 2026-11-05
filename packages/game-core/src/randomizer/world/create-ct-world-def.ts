@@ -21,6 +21,9 @@ import { ruleMapsOfRegions } from './rule-maps-of-regions';
 import { sealedRulesOf } from './sealed-rules-of';
 import { keyItemsOf } from './epoch-fail/key-items-of';
 import { pinRoboRibbon } from './pin-robo-ribbon';
+import { pinSpotsPhase } from './pin-spots-phase';
+import { pinnedSpotsOf } from './pinned-spots-of';
+import { unpinnedKeyItems } from './unpinned-key-items';
 import { treasureItemRulesOf } from './treasure-item-rules-of';
 
 const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
@@ -39,7 +42,9 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const joinInput = vanillaRoboRibbon ? { ...input, checks: pinRoboRibbon(input.checks) } : input;
   const { regions, treasure } = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true);
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
-  const keyItems = keyItemsOf(mode, epochFail, vanillaRoboRibbon);
+  const spotIds = specs.flatMap((spec) => spec.spots.map((spot) => spot.id));
+  const pins = pinnedSpotsOf(spotIds, mode.keyItems);
+  const keyItems = unpinnedKeyItems(keyItemsOf(mode, epochFail, vanillaRoboRibbon), pins);
   const rest = treasure.flatMap((location): CtItem[] =>
     (location.vanillaItem === undefined ? [] : [location.vanillaItem]));
   return {
@@ -57,11 +62,12 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     helpers: CT_HELPERS,
     options: () => options,
     goal: goalOf(mode.goal, mode.goalEvent),
+    fillPhases: [pinSpotsPhase(pins)],
     buildPool: () => ({
       progression: [...keyItems],
       rest: [
         ...rest,
-        ...poolFillerOf(rest, specs.flatMap((spec) => spec.spots).length, keyItems.length, { seed: input.fillerSeed, tabsanity: options.tabsanity === true }),
+        ...poolFillerOf(rest, spotIds.length - pins.length, keyItems.length, { seed: input.fillerSeed, tabsanity: options.tabsanity === true }),
       ],
     }),
   };
