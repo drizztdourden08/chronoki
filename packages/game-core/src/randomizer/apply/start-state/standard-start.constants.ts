@@ -23,7 +23,6 @@ const STANDARD_START: CtStartState = {
     { at: 0x7e2881, value: 0x1f0, width: 2 },
     { at: 0x7e2883, value: 0x1f1, width: 2 },
   ],
-  party: { join: [1] },
   warp: { location: 0x1f1, x: 0x4e, y: 0x4b, facing: 1 },
 };
 
