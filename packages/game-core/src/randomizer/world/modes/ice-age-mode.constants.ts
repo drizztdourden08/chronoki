@@ -26,6 +26,7 @@ const ICE_AGE_MODE: CtModeDef = {
   startFlags: [{ at: 0x7f00a6, bits: 0x04 }],
   goal: 'ice-age-woe',
   goalEvent: 'beat-giga-gaia',
+  excludeDroppedTreasure: true,
   implemented: true,
 };
 

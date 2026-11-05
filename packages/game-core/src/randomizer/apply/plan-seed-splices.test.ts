@@ -19,6 +19,6 @@ describe('planSeedSplices', () => {
   });
 
   it('refuses a mode that is not available yet', { tags: ['critical'] }, () => {
-    expect(() => planSeedSplices({ gameMode: 'lost-worlds' }, LEGACY_PARTY)).toThrow(/not available yet/);
+    expect(() => planSeedSplices({ gameMode: 'vanilla-rando' }, LEGACY_PARTY)).toThrow(/not available yet/);
   });
 });

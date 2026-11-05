@@ -32,6 +32,7 @@ const LEGACY_OF_CYRUS_MODE: CtModeDef = {
   startFlags: [{ at: 0x7f019e, bits: 0x40 }],
   goal: 'beat-ozzie',
   goalEvent: 'beat-ozzie',
+  excludeDroppedTreasure: true,
   implemented: true,
 };
 
