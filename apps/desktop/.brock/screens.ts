@@ -12,6 +12,7 @@ import GameGameplayAudioSettings, { meta as gameGameplayAudioSettingsMeta } from
 import { meta as gameGameplayControlsCustomMeta } from '../src/screens/game/gameplay/controls.custom';
 import GameGameplayGameplaySettings, { meta as gameGameplayGameplaySettingsMeta } from '../src/screens/game/gameplay/gameplay.settings';
 import { meta as gameHomeHeroMeta } from '../src/screens/game/home.hero';
+import GameVideoCameraSettings, { meta as gameVideoCameraSettingsMeta } from '../src/screens/game/video/camera.settings';
 import GameVideoGraphicsSettings, { meta as gameVideoGraphicsSettingsMeta } from '../src/screens/game/video/graphics.settings';
 import GameVideoPictureSettings, { meta as gameVideoPictureSettingsMeta } from '../src/screens/game/video/picture.settings';
 import GameVideoWindowSettings, { meta as gameVideoWindowSettingsMeta } from '../src/screens/game/video/window.settings';
@@ -29,6 +30,7 @@ const screenTree = buildScreenTree(config, [
   { kind: 'custom', bucket: 'game', group: 'gameplay', id: 'controls', component: lazyComponent(() => import('../src/screens/game/gameplay/controls.custom')), meta: gameGameplayControlsCustomMeta },
   { kind: 'settings', bucket: 'game', group: 'gameplay', id: 'gameplay', sections: GameGameplayGameplaySettings, meta: gameGameplayGameplaySettingsMeta },
   { kind: 'hero', bucket: 'game', id: 'home', component: lazyComponent(() => import('../src/screens/game/home.hero')), meta: gameHomeHeroMeta },
+  { kind: 'settings', bucket: 'game', group: 'video', id: 'camera', sections: GameVideoCameraSettings, meta: gameVideoCameraSettingsMeta },
   { kind: 'settings', bucket: 'game', group: 'video', id: 'graphics', sections: GameVideoGraphicsSettings, meta: gameVideoGraphicsSettingsMeta },
   { kind: 'settings', bucket: 'game', group: 'video', id: 'picture', sections: GameVideoPictureSettings, meta: gameVideoPictureSettingsMeta },
   { kind: 'settings', bucket: 'game', group: 'video', id: 'window', sections: GameVideoWindowSettings, meta: gameVideoWindowSettingsMeta },
