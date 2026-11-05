@@ -72,7 +72,7 @@ const HomeHero = (props: HeroProps) => {
       </Tools>
       <Facts rows={facts} />
       {lastSave && <Aside><HeroLastSaveTile save={lastSave} /></Aside>}
-      <Panel><HeroProgress files={progress} /></Panel>
+      {progress && <Panel><HeroProgress files={progress} /></Panel>}
       <HomeTab profileId={profileId} running={running} normal={normal} />
       <HomeDialogs sramImport={sramImport} />
     </>

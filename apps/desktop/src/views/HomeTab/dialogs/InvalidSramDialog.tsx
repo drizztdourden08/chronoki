@@ -1,7 +1,8 @@
 /* @layer renderer-components @kind component */
 import { Dialog } from '@drizztdourden08/tessera/composites';
-import { Text } from '@drizztdourden08/tessera/primitives';
+import { Box, Icon, Text } from '@drizztdourden08/tessera/primitives';
 import type { HomeDialogsProps } from '../HomeTab.type';
+import './HomeTabDialogs.css';
 
 const InvalidSramDialog = ({ sramImport }: HomeDialogsProps) => {
   const { dialog, close } = sramImport;
@@ -15,7 +16,10 @@ const InvalidSramDialog = ({ sramImport }: HomeDialogsProps) => {
       onConfirm={close}
       onCancel={close}
     >
-      <Text as="p">{dialog.detail ?? 'That file is not a valid Chrono Trigger SRAM save.'}</Text>
+      <Box className="home-tab-dialogs__callout home-tab-dialogs__callout--bad">
+        <Icon className="home-tab-dialogs__callout-icon" name="triangle-alert" />
+        <Text as="span">{dialog.detail ?? 'That file is not a valid Chrono Trigger SRAM save.'}</Text>
+      </Box>
     </Dialog>
   );
 };
