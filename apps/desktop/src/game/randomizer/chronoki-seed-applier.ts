@@ -3,6 +3,7 @@ import type { SeedApplier } from '@drizztdourden08/brock-randomizer/session';
 import type { CtPlacement } from '@chronoki/game-core';
 import { armAppliedSeed } from './arm-applied-seed';
 import { NOT_APPLIED_RESULT } from './chronoki-randomizer.constants';
+import { gameStartGate } from './game-start-gate';
 import { localRunHolder } from './local-run-holder';
 import { onAnyLoad } from './on-any-load';
 
@@ -12,6 +13,7 @@ const revert = (): void => {
   stopLoadWatch?.();
   stopLoadWatch = null;
   localRunHolder.run = null;
+  gameStartGate.reset();
 };
 
 const chronokiSeedApplier: SeedApplier<CtPlacement, unknown> = {

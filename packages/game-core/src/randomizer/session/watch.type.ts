@@ -14,4 +14,10 @@ type SaveLoadWatch = {
   reset(): void;
 };
 
-export type { GiftTarget, GiftWatch, SaveLoadWatch };
+type GameStartWatch = {
+  observe(view: MemoryView): boolean;
+  started(): boolean;
+  reset(): void;
+};
+
+export type { GameStartWatch, GiftTarget, GiftWatch, SaveLoadWatch };
