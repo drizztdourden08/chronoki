@@ -21,7 +21,7 @@ describe('createStartCheckPoll', { tags: ['critical'] }, () => {
     state.loud = [];
   });
 
-  it('waits for the warp to land before reading, then logs a match quietly', () => {
+  it('waits for the warp to land before reading, then logs a match without a toast', () => {
     let landed = false;
     const poll = createStartCheckPoll(checkOf(() => landed, true));
     poll.poll(VIEW, true);

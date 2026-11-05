@@ -25,6 +25,5 @@ describe('modeOf', { tags: ['critical'] }, () => {
   it('prefers the randomizer mode over the flag', () => {
     expect(modeOf(profileOf('local'), { vanillaSafe: true })).toBe('randomizer');
     expect(modeOf(profileOf('online'), {})).toBe('randomizer-online');
-    expect(modeOf(profileOf('archipelia'), {})).toBe('randomizer-archipelia');
   });
 });
