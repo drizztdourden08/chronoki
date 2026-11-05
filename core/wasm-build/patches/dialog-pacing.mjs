@@ -43,10 +43,8 @@ const PACING_TAIL = BLOCK_TAIL.replace("    }\n    // C0/EB79", "    }\n    } } 
 // Auto-Skip: the A press (C0/1AAC, field.c's talkPressed) is made by ck_dialog_autoskip_press for a plain box waiting at the end of
 // its text ($0129 == 7, $0134 == $FFFF = tbWaiting). Never for a choice box (isChoice = the VM's tbChoice), name entry (nameId),
 // the ATB selector, game over or a live cursor ($0162 == 2). Off, the call returns 0 and touches nothing.
-const WAITING_LINE = '    int tbWaiting = tbActive && bx && bx[0x0129] == 7 && bx[0x0134] == 0xFF && bx[0x0135] == 0xFF;
-';
-const AUTOSKIP_LINE = '    if (ck_dialog_autoskip_press(tbWaiting && !isChoice && nameId < 0 && !atbGate && !gameOver && decSt != 2)) talkPressed = 1;   /* ChronoKi Auto-Skip */
-';
+const WAITING_LINE = '    int tbWaiting = tbActive && bx && bx[0x0129] == 7 && bx[0x0134] == 0xFF && bx[0x0135] == 0xFF;\n';
+const AUTOSKIP_LINE = '    if (ck_dialog_autoskip_press(tbWaiting && !isChoice && nameId < 0 && !atbGate && !gameOver && decSt != 2)) talkPressed = 1;   /* ChronoKi Auto-Skip */\n';
 
 // [what to find, what to put, how many times it must occur]
 const DIALOG_PATCHES = [
