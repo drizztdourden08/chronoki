@@ -1,22 +1,7 @@
 /* @layer renderer-components @kind constants */
+import { FUNCTION_ACTION_LABELS, SNES_BUTTONS, SNES_BUTTON_LABELS } from '@chronoki/input-mapping';
 import type { FunctionAction, SnesButton } from '@chronoki/input-mapping';
-import { publicAsset } from '@app/input/button-icons/public-asset';
-
-const MODIFIER_CODES = new Set([
-  'ShiftLeft', 'ShiftRight', 'ControlLeft', 'ControlRight',
-  'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight',
-]);
-
-const CANCEL_ARM_DELAY_MS = 150;
-const LISTEN_ARM_DELAY_MS = 200;
-
-const CONTROLS_TABS = [
-  { id: 'controls', label: 'Game Controls' },
-  { id: 'shortcuts', label: 'Shortcuts & Functions' },
-  { id: 'options', label: 'Options' },
-];
-
-const SIDE_PANEL_SIZE = { width: 192, minWidth: 160, maxWidth: 360 };
+import type { ActionDef, ControlsTabDef, ReservedRow } from '@drizztdourden08/brock-input/renderer';
 
 const SHORTCUT_ACTIONS: readonly FunctionAction[] = [
   'save-state-1', 'save-state-2', 'save-state-3', 'save-state-4',
@@ -38,32 +23,38 @@ const SNES_ACTION_LABELS: Record<SnesButton, string> = {
   Up: 'Move Up', Down: 'Move Down', Left: 'Move Left', Right: 'Move Right',
 };
 
-const NARROW_CONTAINER_WIDTH = 640;
-const PROFILES_FOLD_KEY = 'controls.profiles.collapsed';
-const DEVICES_FOLD_KEY = 'controls.devices.collapsed';
-const PROFILES_DEFAULT_FOLDED = true;
-
 const SNES_ICON_IDS: Record<SnesButton, string> = {
   A: 'snes-a', B: 'snes-b', X: 'snes-x', Y: 'snes-y', L: 'snes-l', R: 'snes-r',
   Start: 'snes-start', Select: 'snes-select',
   Up: 'snes-dup', Down: 'snes-ddown', Left: 'snes-dleft', Right: 'snes-dright',
 };
 
-const GENERIC_DEVICE_ICON = publicAsset('buttons/generic/generic_joystick.svg');
-const KEYBOARD_DEVICE_ICON = publicAsset('buttons/keyboard/keyboard.svg');
+const SNES_ACTION_DEFS: readonly ActionDef[] = SNES_BUTTONS.map((button) => ({
+  id: button,
+  label: SNES_ACTION_LABELS[button],
+  middleLabel: SNES_BUTTON_LABELS[button],
+  glyph: SNES_ICON_IDS[button],
+}));
 
-const DEVICE_FAMILY_ICON: Record<string, string> = {
-  xbox: publicAsset('buttons/xbox/controller_xboxseries.svg'),
-  playstation: publicAsset('buttons/playstation/controller_playstation5.svg'),
-  nintendo: publicAsset('buttons/switch/controller_switch_pro.svg'),
-};
+const SHORTCUT_ACTION_DEFS: readonly ActionDef[] = SHORTCUT_ACTIONS.map((action) => ({
+  id: action,
+  label: FUNCTION_ACTION_LABELS[action],
+}));
 
-const SDL_TYPE_ICON: Record<string, string> = {
-  gamecube: publicAsset('buttons/gc/controller_gamecube.svg'),
-};
+const RESERVED_SHORTCUTS: readonly ReservedRow[] = [
+  { label: 'Open Menu', bindingLabel: 'Esc', glyph: 'kb-escape' },
+];
 
-export {
-  CANCEL_ARM_DELAY_MS, CONTROLS_TABS, DEVICE_FAMILY_ICON, GENERIC_DEVICE_ICON, KEYBOARD_DEVICE_ICON,
-  DEVICES_FOLD_KEY, LISTEN_ARM_DELAY_MS, MODIFIER_CODES, NARROW_CONTAINER_WIDTH, PROFILES_DEFAULT_FOLDED, PROFILES_FOLD_KEY, SDL_TYPE_ICON, SHORTCUT_ACTIONS,
-  SIDE_PANEL_SIZE, SNES_ACTION_LABELS, SNES_ICON_IDS,
-};
+const CONTROLS_TABS: readonly ControlsTabDef[] = [
+  {
+    id: 'controls', label: 'Game Controls', kind: 'actions', scope: 'profile',
+    actions: SNES_ACTION_DEFS, middleLabel: 'SNES', acceptsDeviceDrop: true,
+  },
+  {
+    id: 'shortcuts', label: 'Shortcuts & Functions', kind: 'actions', scope: 'global',
+    title: 'Keyboard Shortcuts', actions: SHORTCUT_ACTION_DEFS, reserved: RESERVED_SHORTCUTS,
+  },
+  { id: 'options', label: 'Options', kind: 'options' },
+];
+
+export { CONTROLS_TABS };
