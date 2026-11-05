@@ -10,7 +10,6 @@ type CtStartState = {
   flags: readonly CtFlagBit[];
   clear?: readonly CtFlagBit[];
   pokes: readonly CtPoke[];
-  party: { join: readonly number[] };
   warp: { location: number; x: number; y: number; facing?: number };
 };
 
