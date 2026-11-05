@@ -8,10 +8,4 @@ interface PartyPickerProps {
   spriteUrlOf?: (id: CtCharacter) => string | null;
 }
 
-interface PartySlotGroupProps {
-  title: string;
-  members: readonly CtCharacter[];
-  offset: number;
-}
-
-export type { PartyPickerProps, PartySlotGroupProps };
+export type { PartyPickerProps };
