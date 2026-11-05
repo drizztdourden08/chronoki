@@ -3,7 +3,7 @@ import {
   CONTROL_COUNT, CONTROL_EFFECT_BYTES, CONTROL_FIXED_BYTE, CONTROL_TABLE, EFFECT_REF_FLAG, EFFECT_REF_MASK, FIRST_TECH_ID,
   LAST_TECH_ID, MOVED_TABLES,
 } from './tech-order.constants';
-import type { TechIdMaps } from './tech-id-maps-of';
+import type { TechIdMaps } from './tech-id-maps-of.type';
 import type { RecordTable, RomSpace, RomStage } from './tech-order.type';
 
 const techIds = Array.from({ length: LAST_TECH_ID }, (_, i) => FIRST_TECH_ID + i);

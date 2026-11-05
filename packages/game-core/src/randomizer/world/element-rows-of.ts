@@ -5,8 +5,8 @@ import type { ElementAssignment } from '../apply/element-rando/element-rando.typ
 const elementRowsOf = (elements: ElementAssignment | undefined): { label: string; value: string }[] => {
   if (elements === undefined) return [];
   return [
-    ...MAGIC_USERS.map((user) => ({ label: 'Element', value: `${CHARACTER_NAMES[user]} → ${ELEMENT_NAMES[elements.characters[user]]}` })),
-    ...elements.robo.map((element, i) => ({ label: 'Element', value: `${ROBO_TECH_NAMES[i] ?? 'Robo'} → ${ELEMENT_NAMES[element]}` })),
+    ...MAGIC_USERS.map((user) => ({ label: 'Element', value: `${CHARACTER_NAMES[user]} -> ${ELEMENT_NAMES[elements.characters[user]]}` })),
+    ...elements.robo.map((element, i) => ({ label: 'Element', value: `${ROBO_TECH_NAMES[i] ?? 'Robo'} -> ${ELEMENT_NAMES[element]}` })),
   ];
 };
 

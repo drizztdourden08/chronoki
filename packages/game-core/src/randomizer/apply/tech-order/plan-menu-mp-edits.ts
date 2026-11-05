@@ -1,6 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import { MENU_MP_REQS_BYTES, MENU_MP_REQS_ROM } from './tech-order.constants';
-import type { TechIdMaps } from './tech-id-maps-of';
+import type { TechIdMaps } from './tech-id-maps-of.type';
 import type { RomSpace, RomStage } from './tech-order.type';
 
 const planMenuMpEdits = (space: RomSpace, stage: RomStage, maps: TechIdMaps): string[] =>

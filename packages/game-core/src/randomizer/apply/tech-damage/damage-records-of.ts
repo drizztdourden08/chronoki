@@ -1,12 +1,11 @@
 /* @layer bridge-wasm @kind logic */
 import { CONTROL_TABLE, EFFECT_REF_FLAG, EFFECT_REF_MASK, FIRST_TECH_ID } from '../tech-order/tech-order.constants';
 import type { RomSpace } from '../tech-order/tech-order.type';
+import type { DamageRecords } from './damage-records-of.type';
 import {
   ATTACK_POWER_AT, ATTACK_RECORD_BYTES, ATTACK_RECORD_ROM, ATTACK_TYPE_AT, CONTROL_EFFECT_COUNT, CONTROL_FIRST_EFFECT_AT,
   DAMAGE_TYPES, LAST_CONTROLLED_TECH_ID,
 } from './tech-damage.constants';
-
-type DamageRecords = { records: number[]; failed: string[] };
 
 const effectRefsOf = (space: RomSpace, tech: number): number[] => {
   const refs: number[] = [];

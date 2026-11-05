@@ -17,8 +17,10 @@ const standard = CT_MODES.find((mode) => mode.id === CT_DEFAULT_MODE);
 const start: CtRegionId = standard?.start ?? 'present';
 const BASE = standard ? applyModeToRegions(CT_REGIONS, standard) : [];
 
-const eventsOf = (specs: readonly CtRegionSpec[], id: CtRegionId): { id: string; rule?: unknown }[] =>
+const eventsOf = (specs: readonly CtRegionSpec[], id: CtRegionId): readonly { id: string; rule?: unknown }[] =>
   specs.find((spec) => spec.id === id)?.events ?? [];
+
+const idsOf = (specs: readonly CtRegionSpec[]): string[] => specs.flatMap((spec) => spec.events.map((e) => e.id));
 
 const swapped: CharacterAssignment = { marle: 'marle', lucca: 'lucca', frog: 'frog', robo: 'ayla', ayla: 'robo' };
 
@@ -42,7 +44,7 @@ describe('recruit spots with an assignment', { tags: ['critical'] }, () => {
     const specs = applyStartPartyToRegions(BASE, start, ['crono', 'ayla'], swapped);
     expect(eventsOf(specs, 'future').map((e) => e.id)).toEqual([]);
     expect(eventsOf(specs, 'prehistory').map((e) => e.id)).toEqual(['robo']);
-    const all = specs.flatMap((spec) => spec.events.map((e) => e.id));
+    const all = idsOf(specs);
     expect(all.filter((id) => id === 'ayla')).toHaveLength(1);
   });
 

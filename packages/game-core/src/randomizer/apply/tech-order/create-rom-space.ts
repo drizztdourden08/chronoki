@@ -2,10 +2,9 @@
 import { CTAS_TYPE_TABLE } from '../../checks/checks.constants';
 import { readPackEntries } from '../../checks/read-pack-entries';
 import { namedTableOf } from './named-table-of';
+import type { Region } from './create-rom-space.type';
 import { CC_MENU_TABLE_NAME, CC_MENU_TABLE_ROM } from './tech-order.constants';
 import type { RomSpace } from './tech-order.type';
-
-type Region = { rom: number; start: number; length: number };
 
 const createRomSpace = (pack: Uint8Array): RomSpace => {
   const menuCopy = namedTableOf(pack, CC_MENU_TABLE_NAME);

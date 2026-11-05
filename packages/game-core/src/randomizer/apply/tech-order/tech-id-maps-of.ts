@@ -1,8 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import { FIRST_TECH_ID, LAST_TECH_ID, TECH_SLOTS } from './tech-order.constants';
+import type { TechIdMaps } from './tech-id-maps-of.type';
 import type { SlotPermutations } from './tech-order.type';
-
-type TechIdMaps = { newIdOf(id: number): number; oldIdOf(id: number): number; slotOf(character: number, slot: number): number };
 
 const inRange = (id: number): boolean => id >= FIRST_TECH_ID && id <= LAST_TECH_ID;
 
@@ -18,5 +17,4 @@ const techIdMapsOf = (perms: SlotPermutations): TechIdMaps => {
   return { newIdOf, oldIdOf, slotOf };
 };
 
-export type { TechIdMaps };
 export { techIdMapsOf };

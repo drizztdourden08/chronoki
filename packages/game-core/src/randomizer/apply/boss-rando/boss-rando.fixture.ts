@@ -1,17 +1,13 @@
 /* @layer bridge-wasm @kind fixture */
 import { ENEMY_COUNT, REWARDS_RECORD_BYTES, REWARDS_ROM, STATS_RECORD_BYTES, STATS_ROM } from '../enemy-table/enemy-table.constants';
 import { BOSS_RANDO_SPOTS } from './boss-spots.constants';
-
-type Blob = { type: number; id: number; data: number[] };
-
-const le16 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff];
-const le32 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >>> 24) & 0xff];
-
-const slotOf = (index: number): number => (index % 2 === 0 ? 3 + index : 0x80 | (3 + index));
-const levelOf = (index: number): number => 10 + index * 3;
-const hpOf = (index: number): number => 1000 * (index + 1);
-
-const sceneScript = (enemy: number, slot: number): number[] => [1, ...le16(32), ...new Array<number>(30).fill(0), 0x83, enemy, slot, 0x00];
+import type { Blob } from './boss-rando.fixture.type';
+import { hpOf } from './hp-of.fixture';
+import { le16 } from './le16.fixture';
+import { le32 } from './le32.fixture';
+import { levelOf } from './level-of.fixture';
+import { sceneScript } from './scene-script.fixture';
+import { slotOf } from './slot-of.fixture';
 
 const sceneBlobs = (scene: number, script: number): Blob[] => [
   { type: 3, id: scene, data: [0, 0, 0, 0, 0, 0, 0, 0, ...le16(script), 0, 0] },
@@ -54,4 +50,4 @@ const syntheticBossPack = (overrides: Readonly<Record<number, number[]>> = {}): 
   return packOf([...blobs, ...tableBlobs()]);
 };
 
-export { hpOf, levelOf, sceneScript, slotOf, syntheticBossPack };
+export { syntheticBossPack };

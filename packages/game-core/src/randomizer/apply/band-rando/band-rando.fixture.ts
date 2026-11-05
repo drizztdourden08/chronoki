@@ -3,8 +3,8 @@ import { itemRomFixture } from '../../world/treasure-tiers/item-rom.fixture';
 import { HEAL_AMOUNT_TABLE, HEAL_KIND_TABLE, HEAL_RECORD_ROM } from '../healing-rando/healing-rando.constants';
 import { ATTACK_RECORD_BYTES, ATTACK_RECORD_ROM, LAST_CONTROLLED_TECH_ID } from '../tech-damage/tech-damage.constants';
 import { CONTROL_TABLE } from '../tech-order/tech-order.constants';
-
-type Entry = { type: number; id: number; data: number[] };
+import { ATTACK_ROWS, HEAL_ENTRY_COUNT, HEAL_ROWS, TECH_REFS } from './band-rando.fixture.constants';
+import type { Entry } from './band-rando.fixture.type';
 
 const le32 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >>> 24) & 0xff];
 
@@ -27,11 +27,6 @@ const runsOf = (rom: Map<number, number>): Entry[] => {
   return runs;
 };
 
-const HEAL_ROWS: readonly (readonly [number, number, number, number])[] = [
-  [1, 1, 1, 50], [2, 1, 4, 50], [3, 1, 10, 50], [4, 2, 1, 10], [5, 2, 3, 10], [6, 2, 6, 10],
-];
-const HEAL_ENTRY_COUNT = 20;
-
 const gearStats = (rom: Map<number, number>): void => {
   [[1, 5], [2, 20], [3, 50], [4, 7], [5, 8], [6, 9]].forEach(([id, attack]) => rom.set(0x0c0262 + (id ?? 0) * 5, attack ?? 0));
   rom.set(0x0c047e, 30);
@@ -45,9 +40,6 @@ const healRecords = (rom: Map<number, number>): void => {
     [0x80, 0x80, mult, base].forEach((b, i) => rom.set(HEAL_RECORD_ROM + index * 4 + i, b));
   });
 };
-
-const ATTACK_ROWS: readonly (readonly [number, number, number])[] = [[1, 1, 10], [2, 3, 20], [3, 2, 8], [4, 5, 40], [5, 1, 30]];
-const TECH_REFS: readonly (readonly number[])[] = [[1, 0x80], [2, 0x83], [0x82, 0], [0x84, 0]];
 
 const techRecords = (rom: Map<number, number>): void => {
   for (let i = 0; i < (LAST_CONTROLLED_TECH_ID + 1) * CONTROL_TABLE.size; i += 1) if (!rom.has(CONTROL_TABLE.rom + i)) rom.set(CONTROL_TABLE.rom + i, 0);

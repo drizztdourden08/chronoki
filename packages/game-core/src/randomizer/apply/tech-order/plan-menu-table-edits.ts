@@ -4,7 +4,7 @@ import { namedTableOf } from './named-table-of';
 import {
   DESC_ROW_BYTES, DESC_TABLE_NAME, FIRST_TECH_ID, LAST_TECH_ID, MP_COST_TABLE_NAME, MP_INDEX_TABLE_NAME,
 } from './tech-order.constants';
-import type { TechIdMaps } from './tech-id-maps-of';
+import type { TechIdMaps } from './tech-id-maps-of.type';
 import type { TechOrderPlan } from './tech-order.type';
 
 const techIds = Array.from({ length: LAST_TECH_ID }, (_, i) => FIRST_TECH_ID + i);

@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind constants */
-type MysteryWeights = Readonly<Record<string, number>>;
+import type { MysteryWeights } from './mystery-weights.constants.type';
 
 const MYSTERY_GAME_MODE: MysteryWeights = { standard: 6, 'lost-worlds': 1, 'legacy-of-cyrus': 1, 'ice-age': 1, 'vanilla-rando': 1 };
 const MYSTERY_ITEM_DIFFICULTY: MysteryWeights = { easy: 2, normal: 4, hard: 2 };

@@ -1,22 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import { WRAM_BANK_7F } from '../../../game-info/wram-map.constants';
-import type { CtRule } from '../ct-region-spec.type';
-import type { CtKeyItem, CtOptionKey, CtRegionId } from '../ct-world-keys.type';
-import type { ObjectiveDef, ObjectiveKind } from './objective-def.type';
-
-type FlagObjectiveInput = {
-  id: string;
-  label: string;
-  kind: ObjectiveKind;
-  at: number;
-  mask: number;
-  settle: boolean;
-  regions: readonly CtRegionId[];
-  rule: CtRule;
-  items?: readonly CtKeyItem[];
-  option?: CtOptionKey;
-  bank7e?: boolean;
-};
+import type { FlagObjectiveInput } from './flag-objective.type';
+import type { ObjectiveDef } from './objective-def.type';
 
 const flagObjective = (input: FlagObjectiveInput): ObjectiveDef => ({
   id: input.id,
@@ -29,5 +14,4 @@ const flagObjective = (input: FlagObjectiveInput): ObjectiveDef => ({
   ...(input.option === undefined ? {} : { option: input.option }),
 });
 
-export type { FlagObjectiveInput };
 export { flagObjective };

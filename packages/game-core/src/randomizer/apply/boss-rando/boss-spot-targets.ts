@@ -5,8 +5,6 @@ import type { BossAssignment, BossSpot } from './boss-rando.type';
 import { BOSS_RATIO_FIELDS, BOSS_SPOT_FIELDS } from './boss-spot-stats.constants';
 import { BOSS_RANDO_SPOTS } from './boss-spots.constants';
 
-type Values = Readonly<Record<EnemyField, number>>;
-
 const targetOf = (spot: BossSpot, mover: BossSpot, byId: ReadonlyMap<number, EnemyStats>): Partial<Record<EnemyField, number>> | null => {
   const home = byId.get(spot.enemy)?.values;
   const own = byId.get(mover.enemy)?.values;
@@ -17,7 +15,7 @@ const targetOf = (spot: BossSpot, mover: BossSpot, byId: ReadonlyMap<number, Ene
     target[field] = home[field];
   });
   BOSS_RATIO_FIELDS.forEach((field) => {
-    target[field] = Math.round((own as Values)[field] * ratio);
+    target[field] = Math.round(own[field] * ratio);
   });
   return target;
 };

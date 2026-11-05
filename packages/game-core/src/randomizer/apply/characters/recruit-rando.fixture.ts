@@ -1,39 +1,10 @@
 /* @layer bridge-wasm @kind fixture */
 import type { CtCharacter } from '../../world/ct-world-keys.type';
-import { CHARACTER_IDS, FIXED_LOADER_OPS, RECRUIT_SPOT_SCENES } from './recruit-spot-edits.constants';
-
-type Blob = { type: number; id: number; data: number[] };
-
-const OBJECTS = 3;
-const FUNCTIONS = 16;
-const HEADER = OBJECTS * 32;
-const OP_END = 0x00;
-const OP_JOIN = 0xd3;
-const OP_LEAVE = 0xd4;
-const OP_IF_ACTIVE = 0xd2;
-const OP_NPC_LOADER = 0x81;
-
-const le16 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff];
-const le32 = (v: number): number[] => [v & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >>> 24) & 0xff];
-
-const scriptOf = (spot: CtCharacter, holder: CtCharacter): number[] => {
-  const own = CHARACTER_IDS[spot];
-  const id = CHARACTER_IDS[holder];
-  const fixed = FIXED_LOADER_OPS[holder];
-  const functions: { object: number; fn: number; ops: number[] }[] = [
-    { object: 0, fn: 0, ops: [FIXED_LOADER_OPS[spot], OP_END] },
-    { object: 1, fn: 0, ops: [fixed, OP_NPC_LOADER, id, OP_IF_ACTIVE, id, 0, OP_END] },
-    { object: 1, fn: 1, ops: [OP_JOIN, id, fixed, OP_LEAVE, own, OP_END] },
-    { object: 2, fn: 0, ops: [OP_JOIN, CHARACTER_IDS.crono, OP_END] },
-  ];
-  const table = new Array<number>(OBJECTS * FUNCTIONS * 2).fill(0);
-  const body: number[] = [];
-  functions.forEach(({ object, fn, ops }) => {
-    table.splice((object * FUNCTIONS + fn) * 2, 2, ...le16(HEADER + body.length));
-    body.push(...ops);
-  });
-  return [OBJECTS, ...table, ...body];
-};
+import { le16 } from './le16.fixture';
+import { le32 } from './le32.fixture';
+import type { Blob } from './recruit-rando.fixture.type';
+import { RECRUIT_SPOT_SCENES } from './recruit-spot-edits.constants';
+import { scriptOf } from './script-of.fixture';
 
 const sceneBlobs = (scene: number, script: number): Blob[] => [
   { type: 3, id: scene, data: [0, 0, 0, 0, 0, 0, 0, 0, ...le16(script), 0, 0] },
@@ -60,4 +31,4 @@ const syntheticRecruitPack = (skipScene?: number): Uint8Array => {
   return packOf(blobs);
 };
 
-export { scriptOf, syntheticRecruitPack };
+export { syntheticRecruitPack };

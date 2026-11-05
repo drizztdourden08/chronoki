@@ -53,11 +53,11 @@ describe('createObjectiveWatch', { tags: ['critical'] }, () => {
 
   it('is part of the mode hooks only with the bucket list on', () => {
     const writes: number[] = [];
-    const write = (offset: number): boolean => !!writes.push(offset);
+    const write = (offset: number): boolean => writes.push(offset) > 0;
     const view = fakeView({ [HIT]: 0xff, [SETTLED]: 0xff });
-    createModeHooks({}, write, 'seed', ['crono']).observe(view, true, false);
+    createModeHooks({}, write, { seed: 'seed', party: ['crono'] }).observe(view, true, false);
     expect(writes).toEqual([]);
-    createModeHooks({ bucketList: true, objectiveCount: 8 }, write, 'seed', ['crono']).observe(view, true, false);
+    createModeHooks({ bucketList: true, objectiveCount: 8 }, write, { seed: 'seed', party: ['crono'] }).observe(view, true, false);
     expect(writes.length).toBeGreaterThan(0);
   });
 });

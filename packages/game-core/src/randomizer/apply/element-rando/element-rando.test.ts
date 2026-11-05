@@ -20,17 +20,19 @@ const FIXED: ElementAssignment = {
 const elementOf = (pack: Uint8Array, tech: number): number | undefined =>
   createRomSpace(pack).read(CONTROL_TABLE.rom + tech * CONTROL_TABLE.size + ELEMENT_BYTE_AT);
 
+const expectRolled = (seed: string): void => {
+  const rolled = rollElementAssignment(seed);
+  const given = Object.values(rolled.characters);
+  expect(new Set(given)).toEqual(new Set(ELEMENTS));
+  const doubled = ELEMENTS.filter((element) => given.filter((one) => one === element).length === 2);
+  expect(doubled).toHaveLength(1);
+  expect(new Set(rolled.robo)).toEqual(new Set(ELEMENTS.filter((element) => element !== doubled[0])));
+  expect(rollElementAssignment(seed)).toEqual(rolled);
+};
+
 describe('element assignment roll', { tags: ['critical'] }, () => {
   it('gives every element to a magic user, doubles one, and is stable per seed', () => {
-    ['a', 'b', 'c', 'd', 'e', 'f'].forEach((seed) => {
-      const rolled = rollElementAssignment(seed);
-      const given = Object.values(rolled.characters);
-      expect(new Set(given)).toEqual(new Set(ELEMENTS));
-      const doubled = ELEMENTS.filter((element) => given.filter((one) => one === element).length === 2);
-      expect(doubled).toHaveLength(1);
-      expect(new Set(rolled.robo)).toEqual(new Set(ELEMENTS.filter((element) => element !== doubled[0])));
-      expect(rollElementAssignment(seed)).toEqual(rolled);
-    });
+    ['a', 'b', 'c', 'd', 'e', 'f'].forEach((seed) => expectRolled(seed));
   });
 
   it('is only rolled when the option is on', () => {

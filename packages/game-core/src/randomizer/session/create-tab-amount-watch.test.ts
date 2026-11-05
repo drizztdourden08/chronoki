@@ -64,12 +64,12 @@ describe('createTabAmountWatch', { tags: ['critical'] }, () => {
   it('is part of the mode hooks only with a seed that changes an amount', () => {
     const { writes, write } = recorder();
     const options = { powerTabMin: 5, powerTabMax: 5 };
-    const hooks = createModeHooks(options, write, 'seed-a');
+    const hooks = createModeHooks(options, write, { seed: 'seed-a' });
     hooks.observe(fakeView(state(10, 2)), true, false);
     hooks.observe(fakeView(state(11, 1)), true, false);
     expect(writes).toEqual([[POWER_BASE, 15], [POWER_WORK, 25]]);
     const none = recorder();
-    const off = createModeHooks({}, none.write, 'seed-a');
+    const off = createModeHooks({}, none.write, { seed: 'seed-a' });
     off.observe(fakeView(state(10, 2)), true, false);
     off.observe(fakeView(state(11, 1)), true, false);
     expect(none.writes).toEqual([]);

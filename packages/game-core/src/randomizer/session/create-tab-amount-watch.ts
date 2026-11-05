@@ -32,7 +32,7 @@ const createTabAmountWatch = (write: WramWrite, amounts: TabAmounts): ModeHook =
       const extra = amounts[slot.kind] - 1;
       const sheet = (rises[i] ?? []).findIndex((left) => left > 0);
       if (extra <= 0 || (drops[i] ?? 0) === 0 || sheet < 0) return;
-      const boosted = boostTabStat(view, write, slot, sheet, extra);
+      const boosted = boostTabStat({ view, write, slot, sheet, extra });
       if (boosted === null) return;
       drops[i] = 0;
       (rises[i] ?? [])[sheet] = 0;

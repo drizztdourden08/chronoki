@@ -29,6 +29,30 @@ const run = (mode: 'balanced-random' | 'full-random', seed = SEED) => {
   return { pack, plan, perms, maps: techIdMapsOf(perms), before: createRomSpace(pack), after: createRomSpace(applied(pack, plan.edits)) };
 };
 
+type Run = ReturnType<typeof run>;
+
+const expectTableMoved = (table: (typeof MOVED_TABLES)[number], { maps, before, after }: Run): void =>
+  ids.forEach((id) => {
+    for (let b = 0; b < table.size; b += 1) {
+      expect(after.read(table.rom + maps.newIdOf(id) * table.size + b)).toBe(before.read(table.rom + id * table.size + b));
+    }
+  });
+
+const expectSeatRewritten = (members: number[], base: number, { perms, before, after }: Run): void =>
+  members.forEach((character, seat) => {
+    for (let tech = 0; tech < 3; tech += 1) {
+      const at = base + tech * 3 + seat;
+      const level = before.read(at) ?? 0;
+      expect(after.read(at)).toBe((perms[character]?.[level - 1] ?? 0) + 1);
+    }
+  });
+
+const expectCopiesAgree = (space: ReturnType<typeof createRomSpace>, edited: Uint8Array, addr: number): void => {
+  const spots = space.locate(addr);
+  expect(spots.length).toBeGreaterThan(1);
+  expect(new Set(spots.map((at) => edited[at])).size).toBe(1);
+};
+
 describe('tech order permutations', { tags: ['critical'] }, () => {
   it('permutes the eight slots of each character and keeps field-usable techs in place', () => {
     for (const mode of ['balanced-random', 'full-random'] as const) {
@@ -63,13 +87,9 @@ describe('tech order edits', { tags: ['critical'] }, () => {
   });
 
   it('moves each tech record with the tech and leaves the TP-order slots in place', () => {
-    const { plan, maps, before, after } = run('full-random');
-    expect(plan.failed).toEqual([]);
-    MOVED_TABLES.forEach((table) => ids.forEach((id) => {
-      for (let b = 0; b < table.size; b += 1) {
-        expect(after.read(table.rom + maps.newIdOf(id) * table.size + b)).toBe(before.read(table.rom + id * table.size + b));
-      }
-    }));
+    const result = run('full-random');
+    expect(result.plan.failed).toEqual([]);
+    MOVED_TABLES.forEach((table) => expectTableMoved(table, result));
   });
 
   it('keeps the magic gate byte in its slot and remaps the effect references', () => {
@@ -87,18 +107,15 @@ describe('tech order edits', { tags: ['critical'] }, () => {
   });
 
   it('rewrites the combination requirements to the slot the required tech now sits in', () => {
-    const { perms, before, after } = run('full-random');
+    const result = run('full-random');
+    const { before } = result;
     const groups = [{ members: [0, 1], base: 0x0c27fa }, { members: [0, 2], base: 0x0c2803 }];
     expect(before.read(LEARN_REFS_ROM)).toBe(0xc0);
-    groups.forEach((group) => group.members.forEach((character, seat) => {
-      for (let tech = 0; tech < 3; tech += 1) {
-        const at = group.base + tech * 3 + seat;
-        const level = before.read(at) ?? 0;
-        expect(after.read(at)).toBe((perms[character]?.[level - 1] ?? 0) + 1);
-      }
-    }));
+    groups.forEach((group) => expectSeatRewritten(group.members, group.base, result));
   });
+});
 
+describe('tech order menu edits', { tags: ['critical'] }, () => {
   it('moves the menu tables with the techs and updates every copy of the pack bytes', () => {
     const { pack, plan, maps } = run('balanced-random');
     const edited = applied(pack, plan.edits);
@@ -117,12 +134,7 @@ describe('tech order edits', { tags: ['critical'] }, () => {
     }
     const names = MOVED_TABLES[4];
     const space = createRomSpace(edited);
-    ids.forEach((id) => {
-      const addr = (names?.rom ?? 0) + id * (names?.size ?? 0);
-      const spots = space.locate(addr);
-      expect(spots.length).toBeGreaterThan(1);
-      expect(new Set(spots.map((at) => edited[at])).size).toBe(1);
-    });
+    ids.forEach((id) => expectCopiesAgree(space, edited, (names?.rom ?? 0) + id * (names?.size ?? 0)));
   });
 
   it('refuses instead of half-applying when a table is missing from the pack', () => {

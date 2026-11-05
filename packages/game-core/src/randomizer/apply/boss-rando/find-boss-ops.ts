@@ -15,7 +15,7 @@ const opInScene = (pack: Uint8Array, scene: number, enemy: number): BossOp | nul
 
 const findBossOps = (pack: Uint8Array, spot: BossSpot): BossOp[] | null => {
   const ops = spot.scenes.map((scene) => opInScene(pack, scene, spot.enemy));
-  return ops.every((op) => op !== null) ? (ops as BossOp[]) : null;
+  return ops.every((op) => op !== null) ? ops : null;
 };
 
 export { findBossOps };

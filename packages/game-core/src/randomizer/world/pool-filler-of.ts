@@ -4,10 +4,10 @@ import { FILLER_DEFAULT_SEED, FILLER_STREAM } from './pool-filler.constants';
 import { isCtKeyItem } from './is-ct-key-item';
 import { tabFillerOf } from './tabs/tab-filler-of';
 import type { CtItem } from './ct-world-keys.type';
+import type { PoolFillerOptions } from './pool-filler-of.type';
 
 const poolFillerOf = (
-  rest: readonly CtItem[], spotCount: number, keyItemCount: number, seed: string = FILLER_DEFAULT_SEED,
-  tabsanity = false,
+  rest: readonly CtItem[], spotCount: number, keyItemCount: number, { seed = FILLER_DEFAULT_SEED, tabsanity = false }: PoolFillerOptions = {},
 ): CtItem[] => {
   const source = rest.filter((item) => !isCtKeyItem(item));
   const missing = Math.max(0, spotCount - keyItemCount);

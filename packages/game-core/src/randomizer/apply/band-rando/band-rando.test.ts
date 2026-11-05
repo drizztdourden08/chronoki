@@ -20,6 +20,20 @@ const BAND = { min: 0.5, max: 1.5 };
 const read = (pack: Uint8Array, addr: number): number | undefined => createRomSpace(pack).read(addr);
 const power = (pack: Uint8Array, record: number): number | undefined => read(pack, ATTACK_RECORD_ROM + record * ATTACK_RECORD_BYTES + ATTACK_POWER_AT);
 const matchesPack = (pack: Uint8Array, edits: readonly PackEdit[]): void => edits.forEach((e) => expect(pack[e.at]).toBe(e.old));
+const stat = (p: Uint8Array, addr: number): number => read(p, addr) ?? 0;
+const swordsOf = (out: Uint8Array): number[] => [1, 2, 3].map((id) => stat(out, 0x0c0262 + id * 5));
+const differsFrom = (out: Uint8Array, base: Uint8Array): boolean => out.some((b, i) => b !== base[i]);
+const HEAL_MULTS = [1, 4, 10, 1, 3, 6];
+const healAmountOf = (p: Uint8Array, index: number): number => {
+  const t = namedTableOf(p, HEAL_AMOUNT_TABLE);
+  return t === null ? -1 : (p[t.at + index * 2] ?? 0) | ((p[t.at + index * 2 + 1] ?? 0) << 8);
+};
+const healAmountsOf = (out: Uint8Array): number[] =>
+  [1, 2, 3, 4, 5, 6].map((index, i) => {
+    const record = HEAL_RECORD_ROM + index * 4;
+    expect((read(out, record + 3) ?? 0) * (HEAL_MULTS[i] ?? 1)).toBe(healAmountOf(out, index));
+    return healAmountOf(out, index);
+  });
 
 describe('band randomization helpers', { tags: ['critical'] }, () => {
   it('keeps the order of the values and stays inside the limit', () => {
@@ -36,7 +50,6 @@ describe('band randomization helpers', { tags: ['critical'] }, () => {
 
 describe('gear randomization', { tags: ['critical'] }, () => {
   const pack = syntheticBandPack();
-  const stat = (p: Uint8Array, addr: number): number => read(p, addr) ?? 0;
   const after = (seed: string): Uint8Array => appliedTo(pack, planGearRandoEdits(pack, seed).edits);
 
   it('plans edits that match the pack and are the same for the same seed', () => {
@@ -49,14 +62,14 @@ describe('gear randomization', { tags: ['critical'] }, () => {
   it('keeps weapons of one class in order, near vanilla, and changes something for some seed', () => {
     const changed = ['a', 'b', 'c', 'd', 'e'].map((seed) => {
       const out = after(seed);
-      const swords = [1, 2, 3].map((id) => stat(out, 0x0c0262 + id * 5));
+      const swords = swordsOf(out);
       expect(swords[0]).toBeLessThanOrEqual(swords[1] ?? 0);
       expect(swords[1]).toBeLessThanOrEqual(swords[2] ?? 0);
       expect(swords[0]).toBeGreaterThanOrEqual(Math.floor(5 * 0.75));
       expect(swords[2]).toBeLessThanOrEqual(Math.ceil(50 * 1.25));
       expect(stat(out, 0x0c047e)).toBeGreaterThanOrEqual(Math.floor(30 * 0.75));
       expect(stat(out, 0x0c047e)).toBeLessThanOrEqual(Math.ceil(30 * 1.25));
-      return out.some((b, i) => b !== pack[i]);
+      return differsFrom(out, pack);
     });
     expect(changed).toContain(true);
   });
@@ -64,29 +77,19 @@ describe('gear randomization', { tags: ['critical'] }, () => {
 
 describe('healing item randomization', { tags: ['critical'] }, () => {
   const pack = syntheticBandPack();
-  const amountOf = (p: Uint8Array, index: number): number => {
-    const t = namedTableOf(p, HEAL_AMOUNT_TABLE);
-    return t === null ? -1 : (p[t.at + index * 2] ?? 0) | ((p[t.at + index * 2 + 1] ?? 0) << 8);
-  };
-
   it('keeps the battle record and the field table in agreement, in order, inside the band', () => {
     ['a', 'b', 'c'].forEach((seed) => {
       const plan = planHealingRandoEdits(pack, seed);
       expect(plan.failed).toEqual([]);
       matchesPack(pack, plan.edits);
       const out = appliedTo(pack, plan.edits);
-      const mults = [1, 4, 10, 1, 3, 6];
-      const amounts = [1, 2, 3, 4, 5, 6].map((index, i) => {
-        const record = HEAL_RECORD_ROM + index * 4;
-        expect((read(out, record + 3) ?? 0) * (mults[i] ?? 1)).toBe(amountOf(out, index));
-        return amountOf(out, index);
-      });
+      const amounts = healAmountsOf(out);
       expect(amounts[0]).toBeLessThanOrEqual(amounts[1] ?? 0);
       expect(amounts[1]).toBeLessThanOrEqual(amounts[2] ?? 0);
       expect(amounts[3]).toBeLessThanOrEqual(amounts[4] ?? 0);
       expect(amounts[4]).toBeLessThanOrEqual(amounts[5] ?? 0);
       expect(amounts[2]).toBeLessThanOrEqual(999);
-      expect(amountOf(out, 7)).toBe(0);
+      expect(healAmountOf(out, 7)).toBe(0);
     });
   });
 
