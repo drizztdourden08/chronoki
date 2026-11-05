@@ -48,7 +48,7 @@ const DIALOG_PATCHES = [
 
 // names the inserted code uses, which must already be in field.c where it lands (a rename upstream fails here, not in emcc)
 const NEEDED = ['#define PAD_A 0x100\n', '#define PAD_B 0x001\n', 'const uint16_t padSerial = ', 'int tbSlotPos[4] = ',
-  'int CtFieldNmiTilemapArm(uint8_t v46) {', '#include "ck_reconnect.h"\n'];
+  'tbSlotN[4] = ', 'CtFieldNmiTilemapArm(nb[0x0146])', '#include "ck_reconnect.h"\n'];
 
 const occurrences = (text, find) => (find ? text.split(find).length - 1 : 0);
 
