@@ -6,6 +6,7 @@ export { configFile } from './config-file';
 export { inputProfilesFile } from './input-profiles-file';
 export { profileFile } from './profile-file';
 export { placementFile } from './profile-placement-file';
+export { roomCacheFile } from './profile-room-file';
 export { sessionsFile } from './sessions-file';
 export { getAppState } from './get-app-state';
 export { listProfiles } from './list-profiles';

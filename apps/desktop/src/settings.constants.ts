@@ -1,6 +1,7 @@
 /* @layer renderer-app @kind constants */
 import { DEFAULT_BASE_SETTINGS } from '@drizztdourden08/brock-core';
 import { DEFAULT_GATE_OPTIONS, DEFAULT_GATES } from '@chronoki/features';
+import { DEFAULT_HAPTIC_SETTINGS } from '@chronoki/input-mapping';
 import { AUDIO_OUTPUT_AUTO, DEFAULT_AUDIO_SAMPLES } from './game/audio-lead';
 import type { AppSettings } from './settings.type';
 
@@ -25,6 +26,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   dialogHoldToAccelerate: true,
   dialogFillOnB: true,
   dialogAutoSkip: false,
+  haptics: { ...DEFAULT_HAPTIC_SETTINGS },
   saveHoldDuration: 2,
   musicVolume: 100,
   musicMuted: false,

@@ -2,6 +2,7 @@
 import type { SeedApplier } from '@drizztdourden08/brock-randomizer/session';
 import type { CtPlacement } from '@chronoki/game-core';
 import { armAppliedSeed } from './arm-applied-seed';
+import { setForeignNames } from './archipelago/set-foreign-names';
 import { NOT_APPLIED_RESULT } from './chronoki-randomizer.constants';
 import { gameStartGate } from './game-start-gate';
 import { localRunHolder } from './local-run-holder';
@@ -23,6 +24,7 @@ const chronokiSeedApplier: SeedApplier<CtPlacement, unknown> = {
     revert();
     const { run, result } = armAppliedSeed(applied, ctx);
     localRunHolder.run = run;
+    if (ctx.foreign !== undefined) setForeignNames(placement.locations.map(([location]) => location), ctx.foreign);
     stopLoadWatch = onAnyLoad(() => {
       run.gifts.reset();
       run.saveLoad.reset();

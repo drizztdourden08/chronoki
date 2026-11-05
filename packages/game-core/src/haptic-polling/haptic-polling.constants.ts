@@ -1,0 +1,9 @@
+/* @layer bridge-wasm @kind constants */
+const CK_EXPORT_HAPTIC_POLL = 'CkHapticPoll';
+
+const HAPTIC_STATE_COUNT = 8;
+const HAPTIC_STATE_RING = 12;
+const HAPTIC_EVENT_BYTES = 8;
+const HAPTIC_RING_MAX = 32;
+
+export { CK_EXPORT_HAPTIC_POLL, HAPTIC_EVENT_BYTES, HAPTIC_RING_MAX, HAPTIC_STATE_COUNT, HAPTIC_STATE_RING };

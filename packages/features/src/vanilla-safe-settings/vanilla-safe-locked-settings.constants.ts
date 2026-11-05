@@ -12,6 +12,7 @@ const VANILLA_SAFE_LOCKED_SETTINGS: ReadonlySet<string> = new Set([
   'dialogHoldToAccelerate',
   'dialogFillOnB',
   'dialogAutoSkip',
+  'haptics.enabled',
 ]);
 
 export { VANILLA_SAFE_LOCKED_SETTINGS };
