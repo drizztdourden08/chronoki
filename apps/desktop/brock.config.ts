@@ -25,8 +25,14 @@ export default defineBrockConfig({
     profilesRoute: 'data/profiles',
     // no public repo yet (owner decision pending): product.repo stays out, so the updater is inert
     protocols: [{ scheme: 'chronoki', name: 'ChronoKi' }],
+    fileAssociations: [
+      { ext: 'msul', name: 'Music Pack', description: 'ChronoKi music pack', progId: 'ChronoKi.MusicPack', mimeType: 'application/x-msul', icon: 'msul' },
+    ],
   },
   packaging: {
+    fileAssociations: {
+      msul: { role: 'Editor' },
+    },
     extraResources: [
       { from: 'node_modules/@drizztdourden08/tessera/fonts/chronotype/LICENSE.txt', to: 'fonts/chronotype/license.txt' },
       { from: 'node_modules/@drizztdourden08/tessera/fonts/chronotype/README.txt', to: 'fonts/chronotype/readme.txt' },
