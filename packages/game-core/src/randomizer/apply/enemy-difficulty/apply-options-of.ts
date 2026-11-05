@@ -10,6 +10,8 @@ import type { OptionBag, SphereLike } from './enemy-difficulty.type';
 
 const TECH_ORDER_MODES: readonly string[] = ['balanced-random', 'full-random'];
 
+const SEEDED_OPTIONS: readonly string[] = ['techOrder', 'gearRando', 'healingRando', 'techDamageRando'];
+
 const applyOptionsOf = (options: OptionBag, spheres: readonly SphereLike[], seed?: string): ApplyOptions => {
   const shopPrices = shopPriceOptionOf(options, seed ?? '');
   const spotGifts = spotGiftsOf(options).map((gift) => gift.spot);
@@ -22,7 +24,11 @@ const applyOptionsOf = (options: OptionBag, spheres: readonly SphereLike[], seed
     ...(options.bossScaling === true ? { bossDepths: bossDepthsOf(spheres) } : {}),
     ...(shopPrices === undefined ? {} : { shopPrices }),
     ...(tabAmounts === null ? {} : { tabAmounts }),
-    ...(TECH_ORDER_MODES.includes(String(options.techOrder)) ? { techOrder: options.techOrder as TechOrderMode, seed: seed ?? '' } : {}),
+    ...(TECH_ORDER_MODES.includes(String(options.techOrder)) ? { techOrder: options.techOrder as TechOrderMode } : {}),
+    ...(options.gearRando === true ? { gearRando: true } : {}),
+    ...(options.healingRando === true ? { healingRando: true } : {}),
+    ...(options.techDamageRando === true ? { techDamageRando: true } : {}),
+    ...(SEEDED_OPTIONS.some((key) => options[key] === true || TECH_ORDER_MODES.includes(String(options[key]))) ? { seed: seed ?? '' } : {}),
   };
 };
 
