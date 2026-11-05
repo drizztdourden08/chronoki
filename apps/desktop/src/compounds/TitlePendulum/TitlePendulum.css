@@ -3,6 +3,8 @@
   --title-pendulum-amplitude: var(--angle-title-pendulum);
   --title-pendulum-half-period: var(--duration-title-pendulum);
   --title-pendulum-rest: var(--offset-title-pendulum);
+  --title-pendulum-pivot: var(--pivot-title-pendulum);
+  --title-pendulum-length: var(--length-title-pendulum);
 
   position: absolute;
   inset: 0;
@@ -14,7 +16,7 @@
 .title-pendulum__arm {
   position: absolute;
   bottom: var(--title-pendulum-rest);
-  left: 50%;
+  left: var(--title-pendulum-pivot);
   display: flex;
   translate: -50% 0;
   transform-origin: 50% 0;
