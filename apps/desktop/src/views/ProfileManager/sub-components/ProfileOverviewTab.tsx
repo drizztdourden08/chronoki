@@ -4,6 +4,7 @@ import { FactsPanel } from '@drizztdourden08/tessera/composites';
 import type { Profile } from '@drizztdourden08/brock-core';
 import { updateProfile } from '@app/storage/profile-store';
 import { MODE_LABELS } from '@app/profiles/profile-mode-labels.constants';
+import { modeOfProfile } from '@app/profiles/mode-of-profile';
 import type { ReadyRom } from '../ProfileManager.type';
 import { buildProfileFacts } from '../behavior/build-profile-facts';
 import { useProfileSettings } from '../behavior/useProfileSettings';
@@ -12,7 +13,7 @@ import { ProfileMsuPackField } from './ProfileMsuPackField';
 
 const ProfileOverviewTab = ({ profile, readyRoms }: { profile: Profile; readyRoms: ReadyRom[] }) => {
   const settings = useProfileSettings(profile.id);
-  const modeLabel = MODE_LABELS[settings?.vanillaSafe === true ? 'vanilla-safe' : 'vanilla'];
+  const modeLabel = MODE_LABELS[modeOfProfile(profile, settings?.vanillaSafe === true)];
   return (
     <Stack gap="lg">
       <Card title="Edit" level={4}>
