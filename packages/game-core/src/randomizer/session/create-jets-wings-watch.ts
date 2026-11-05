@@ -5,11 +5,10 @@ import {
   EPOCH_BOARDED_AT, EPOCH_STATE_ADDRESSES, EPOCH_STATE_WINGED, EPOCH_WINGS_BIT, JETS_ITEM_ID, LOCATION_ID, LOCATION_MASK,
   LOCATION_OVERWORLD_FIRST, LOCATION_OVERWORLD_LAST,
 } from './jets-wings.constants';
+import { JETS_ONLY } from './create-jets-wings-watch.constants';
 import type { ModeHook } from './mode-hook.type';
 import { readInventoryCounts } from './read-inventory-counts';
 import type { WramWrite } from './start-gold-grant.type';
-
-const JETS_ONLY: ReadonlySet<number> = new Set([JETS_ITEM_ID]);
 
 const onOverworld = (view: MemoryView): boolean => {
   const location = view.word(CT_WRAM_REGION, LOCATION_ID) & LOCATION_MASK;

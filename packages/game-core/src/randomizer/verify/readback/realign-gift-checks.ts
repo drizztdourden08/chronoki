@@ -22,7 +22,7 @@ const realignGiftChecks = (before: Uint8Array, after: Uint8Array, checks: readon
     const now = operandSpots(after, afterScripts, check.scriptId);
     if (was.length !== now.length) return check;
     const spots = check.patchAt.map((p) => now[was.indexOf(p)]);
-    return spots.every((p) => p !== undefined) ? { ...check, patchAt: spots as number[] } : check;
+    return spots.every((p): p is number => p !== undefined) ? { ...check, patchAt: spots } : check;
   });
 };
 

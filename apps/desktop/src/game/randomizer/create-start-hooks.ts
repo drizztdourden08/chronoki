@@ -7,7 +7,8 @@ import {
 import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
 import { chronokiMemoryOptions } from './chronoki-memory-options';
 import { chronokiRawMemoryBridge } from './chronoki-raw-memory-bridge';
-import { GOAL_REACHED_LOG, START_CHECK_MAX_POLLS } from './chronoki-poll-hooks.constants';
+import { GOAL_REACHED_LOG } from './chronoki-poll-hooks.constants';
+import { createStartCheckPoll } from './create-start-check-poll';
 import type { StartHooks } from './start-hooks.type';
 
 const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_PARTY): StartHooks => {
@@ -18,10 +19,8 @@ const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_
     ? createStartMagicGrant(createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge))
     : null;
   const mode = createModeHooks(options, createCtWramWriter(chronokiMemoryOptions, chronokiRawMemoryBridge));
-  const check = createOptionsStartCheck(options, party);
-  let logged = false;
+  const checkPoll = createStartCheckPoll(createOptionsStartCheck(options, party));
   let goalLogged = false;
-  let polls = 0;
   return {
     observe: (view: MemoryView, started: boolean, newGame: boolean): void => {
       grant?.observe(started && newGame, view);
@@ -31,20 +30,15 @@ const createStartHooks = (options: CtOptionValues, party: CtStartParty = LEGACY_
         goalLogged = true;
         appRandomizerLog(GOAL_REACHED_LOG);
       }
-      if (!started || logged || check === null) return;
-      polls += 1;
-      if (!check.settled(view) && polls < START_CHECK_MAX_POLLS) return;
-      logged = true;
-      appRandomizerLog(check.read(view));
+      checkPoll.poll(view, started);
     },
     goalReached: (): boolean => mode.goalReached(),
     reset: (): void => {
       grant?.reset();
       magic?.reset();
       mode.reset();
-      logged = false;
+      checkPoll.reset();
       goalLogged = false;
-      polls = 0;
     },
   };
 };

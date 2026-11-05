@@ -10,6 +10,9 @@ import { treasureRomIdOf } from '../treasure-rom-id-of';
 const patched = applyEpochFailToRegions(CT_REGIONS);
 const spotsOf = (regions: typeof CT_REGIONS) => regions.flatMap((region) => region.spots);
 const mentionsJets = (rule: unknown): boolean => JSON.stringify(rule ?? null).includes('jets-of-time');
+const exitRuleOf = (flight: { from: string; to: string }): unknown =>
+  patched.find((region) => region.id === flight.from)?.exits.find((candidate) => candidate.to === flight.to)?.rule;
+const jetsExitsOf = (regions: typeof CT_REGIONS) => regions.flatMap((region) => region.exits.filter((exit) => mentionsJets(exit.rule)));
 
 describe('applyEpochFailToRegions', { tags: ['critical'] }, () => {
   it('requires the Jets of Time at every flight spot and only there', () => {
@@ -22,12 +25,8 @@ describe('applyEpochFailToRegions', { tags: ['critical'] }, () => {
   });
 
   it('requires them on the flight exits and leaves the other exits alone', () => {
-    FLIGHT_EXITS.forEach((flight) => {
-      const exit = patched.find((region) => region.id === flight.from)?.exits.find((candidate) => candidate.to === flight.to);
-      expect(mentionsJets(exit?.rule)).toBe(true);
-    });
-    const exits = patched.flatMap((region) => region.exits.filter((exit) => mentionsJets(exit.rule)));
-    expect(exits).toHaveLength(FLIGHT_EXITS.length);
+    FLIGHT_EXITS.forEach((flight) => expect(mentionsJets(exitRuleOf(flight))).toBe(true));
+    expect(jetsExitsOf(patched)).toHaveLength(FLIGHT_EXITS.length);
   });
 
   it('leaves the regions untouched when the input is not patched', () => {
