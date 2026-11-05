@@ -1,0 +1,19 @@
+/* @layer bridge-wasm @kind constants */
+const OP_POKE_BYTE = 0x4a;
+const OP_POKE_WORD = 0x4b;
+const OP_SET_GLOBAL_BIT = 0x65;
+const OP_RESERVE_ADD = 0xd0;
+const OP_JOIN = 0xd3;
+const OP_CHANGE_LOCATION_FADE = 0xe0;
+const CHANGE_LOCATION_OPS: readonly number[] = [0xdd, 0xde, 0xdf, 0xe0, 0xe1];
+const CHANGE_LOCATION_BYTES = 5;
+const LOCATION_MASK = 0x1ff;
+const FLAG_PAGE_BIT = 0x80;
+const FLAG_BASE = 0x7f0000;
+const FLAG_BYTES = 0x200;
+const FLAG_PAGE_BYTES = 0x100;
+
+export {
+  CHANGE_LOCATION_BYTES, CHANGE_LOCATION_OPS, FLAG_BASE, FLAG_BYTES, FLAG_PAGE_BIT, FLAG_PAGE_BYTES, LOCATION_MASK,
+  OP_CHANGE_LOCATION_FADE, OP_JOIN, OP_POKE_BYTE, OP_POKE_WORD, OP_RESERVE_ADD, OP_SET_GLOBAL_BIT,
+};
