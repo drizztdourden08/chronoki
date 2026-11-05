@@ -4,7 +4,7 @@ import type { CtOptionValues, CtStartParty } from '@chronoki/game-core';
 import {
   createCtWramWriter, createModeHooks, createStartGoldGrant, createStartMagicGrant, createOptionsStartCheck, HARD_START_GOLD, LEGACY_PARTY,
 } from '@chronoki/game-core';
-import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
+import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/renderer';
 import { chronokiMemoryOptions } from './chronoki-memory-options';
 import { chronokiRawMemoryBridge } from './chronoki-raw-memory-bridge';
 import { GOAL_REACHED_LOG } from './chronoki-poll-hooks.constants';

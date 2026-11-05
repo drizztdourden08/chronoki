@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
+import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/renderer';
 import { toast } from '@drizztdourden08/tessera/composites';
 import { REFUSAL_TOAST_MS, START_MISMATCH_TOAST } from './chronoki-randomizer.constants';
 

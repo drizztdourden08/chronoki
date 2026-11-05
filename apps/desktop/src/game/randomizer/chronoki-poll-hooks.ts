@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind logic */
-import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
+import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/renderer';
 import { chronokiRawMemoryBridge } from './chronoki-raw-memory-bridge';
 import { NO_COMPLETED, SAVE_LOAD_LOG } from './chronoki-poll-hooks.constants';
 import { gameLoadedSignal } from './game-loaded-signal';

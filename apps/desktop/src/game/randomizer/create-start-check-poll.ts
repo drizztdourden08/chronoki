@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { MemoryView } from '@drizztdourden08/brock-randomizer/memory';
 import type { createOptionsStartCheck } from '@chronoki/game-core';
-import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/session';
+import { appRandomizerLog } from '@drizztdourden08/brock-randomizer/renderer';
 import { START_CHECK_MAX_POLLS } from './chronoki-poll-hooks.constants';
 import { reportStartMismatch } from './report-start-mismatch';
 import type { StartCheckPoll } from './start-check-poll.type';
