@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind constants */
-import type { CtKeyItem } from './ct-world-keys.type';
+import type { CtBaseKeyItem, CtKeyItem } from './ct-world-keys.type';
 
-const CT_KEY_ITEMS: readonly CtKeyItem[] = [
+const CT_KEY_ITEMS: readonly CtBaseKeyItem[] = [
   'gate-key', 'pendant', 'dreamstone', 'ruby-knife', 'c-trigger', 'clone', 'bent-sword', 'bent-hilt', 'hero-medal',
   'prism-shard', 'moon-stone', 'tomas-pop', 'jerky', 'grand-leon', 'robo-ribbon',
 ];
@@ -22,6 +22,7 @@ const CT_KEY_ITEM_NAMES: Readonly<Record<CtKeyItem, string>> = {
   jerky: 'Jerky',
   'grand-leon': 'Grand Leon',
   'robo-ribbon': "Robo's Ribbon",
+  'jets-of-time': 'Jets of Time',
 };
 
 const VANILLA_KEY_ITEM_ROM_IDS: ReadonlySet<number> = new Set([

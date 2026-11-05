@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind type */
 import type { CtRule } from '../ct-region-spec.type';
+import type { CtOptionValues } from '../ct-world-input.type';
 import type { CtEra, CtEventId, CtKeyItem, CtRegionId, CtSpotId } from '../ct-world-keys.type';
 
 type CtModeId = 'standard' | 'lost-worlds' | 'legacy-of-cyrus' | 'ice-age' | 'vanilla-rando';
@@ -16,6 +17,10 @@ type CtRulePatches = Readonly<{
 
 type CtExtraExit = { from: CtRegionId; to: CtRegionId; rule?: CtRule };
 
+type CtRemovedExit = { from: CtRegionId; to: CtRegionId };
+
+type CtExtraEvent = { id: CtEventId; region: CtRegionId; rule?: CtRule };
+
 type CtModeDef = {
   id: CtModeId;
   label: string;
@@ -26,7 +31,14 @@ type CtModeDef = {
   rulePatches: CtRulePatches;
   keyItems: readonly CtKeyItem[];
   goal: CtGoalId;
+  goalEvent?: CtEventId;
   startState: CtStartStateId;
+  removedExits?: readonly CtRemovedExit[];
+  removedSpots?: readonly CtSpotId[];
+  removedRegions?: readonly CtRegionId[];
+  extraEvents?: readonly CtExtraEvent[];
+  forcedOptions?: CtOptionValues;
+  excludeDroppedTreasure?: boolean;
 };
 
-export type { CtExtraExit, CtGoalId, CtModeDef, CtModeId, CtRulePatches, CtStartStateId };
+export type { CtExtraEvent, CtExtraExit, CtGoalId, CtModeDef, CtModeId, CtRemovedExit, CtRulePatches, CtStartStateId };

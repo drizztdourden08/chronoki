@@ -11,8 +11,9 @@ const isTreasureCheck = (check: CheckDef, bound: ReadonlySet<string>): boolean =
 
 const treasureLocationsOf = (
   checks: readonly CheckDef[], bound: ReadonlySet<string>, mapRegions: ReadonlyMap<number, CtRegionId>,
+  dropped: ReadonlySet<number> = new Set(),
 ): WorldLocation<CtWorldKeys>[] =>
-    checks.filter((check) => isTreasureCheck(check, bound)).map((check) => ({
+    checks.filter((check) => isTreasureCheck(check, bound) && !dropped.has(check.locationId)).map((check) => ({
       key: check.id,
       region: mapRegions.get(check.locationId) ?? CT_UNSORTED,
       vanillaItem: treasureItemOf(check.vanillaItem),

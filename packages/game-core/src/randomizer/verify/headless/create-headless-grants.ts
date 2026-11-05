@@ -5,6 +5,7 @@ import { createCtMemoryBridge } from '../../memory/create-ct-memory-bridge';
 import { createCtWramWriter } from '../../memory/create-ct-wram-writer';
 import type { CtMemoryOptions } from '../../memory/ct-memory-options.type';
 import { createGameStartWatch } from '../../session/create-game-start-watch';
+import { createModeHooks } from '../../session/create-mode-hooks';
 import { createStartGoldGrant } from '../../session/create-start-gold-grant';
 import { createStartMagicGrant } from '../../session/create-start-magic-grant';
 import { HARD_START_GOLD } from '../../world/treasure-tiers/treasure-tiers.constants';
@@ -16,6 +17,7 @@ const createHeadlessGrants = (options: CtOptionValues, memory: CtMemoryOptions):
   const watch = createGameStartWatch();
   const gold = options.itemDifficulty === 'hard' ? createStartGoldGrant(write, HARD_START_GOLD) : null;
   const magic = options.unlockedMagic === true ? createStartMagicGrant(write) : null;
+  const mode = createModeHooks(options, write);
   return {
     observe: () => {
       const view = bridge.view();
@@ -23,6 +25,7 @@ const createHeadlessGrants = (options: CtOptionValues, memory: CtMemoryOptions):
       watch.observe(view);
       gold?.observe(watch.started() && watch.newGame(), view);
       magic?.observe(watch.started() && watch.newGame(), view);
+      mode.observe(view, watch.started(), watch.newGame());
     },
     started: () => watch.started(),
     goldGranted: () => gold?.granted() ?? false,

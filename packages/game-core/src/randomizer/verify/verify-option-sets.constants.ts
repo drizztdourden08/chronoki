@@ -19,11 +19,18 @@ const choiceSets: VerifyOptionSet[] = implementedOptions
     .filter((choice) => choice !== option.default)
     .map((choice) => ({ name: `${option.key}:${String(choice)}`, options: { [option.key]: choice } })));
 
+const epochFailImplemented = CT_OPTION_CATALOG.some((option) => option.key === 'epochFail' && option.implemented);
+
+const crossSets: VerifyOptionSet[] = epochFailImplemented
+  ? [{ name: 'cross:epochFail+pendant+magic', options: { epochFail: true, earlyPendantCharge: true, unlockedMagic: true } }]
+  : [];
+
 const VERIFY_OPTION_SETS: readonly VerifyOptionSet[] = [
   { name: 'default', options: {} },
   ...modeSets,
   ...flippedSets,
   ...choiceSets,
+  ...crossSets,
 ];
 
 export { VERIFY_OPTION_SETS };

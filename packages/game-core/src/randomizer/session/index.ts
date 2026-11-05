@@ -6,6 +6,8 @@ export { readJoinedCharacters } from './read-joined-characters';
 export { createGameStartWatch } from './create-game-start-watch';
 export { createGiftWatch } from './create-gift-watch';
 export { createSaveLoadWatch } from './create-save-load-watch';
+export { createModeHooks } from './create-mode-hooks';
+export type { ModeHook, ModeHookFactory } from './mode-hook.type';
 export { createStartGoldGrant } from './create-start-gold-grant';
 export { createStartMagicGrant } from './create-start-magic-grant';
 export { createStartStateCheck } from './create-start-state-check';

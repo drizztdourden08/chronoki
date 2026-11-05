@@ -24,6 +24,7 @@ const CT_OPTION_CATALOG: readonly CtOptionDef[] = [
   { key: 'lockedCharacters', label: 'Locked characters', jotFlag: 'c', default: false, section: 'Rules', implemented: true },
   { key: 'addCyrusGraveSpot', label: "Add Cyrus's Grave spot", jotFlag: 'cyrus', default: false, section: 'Rules', implemented: false },
   { key: 'addOzzieSpot', label: "Add Ozzie's Fort spot", jotFlag: 'ozzie', default: false, section: 'Rules', implemented: false },
+  { key: 'epochFail', label: 'Epoch fail', jotFlag: 'epochFail', default: false, section: 'Rules', implemented: false },
   {
     key: 'partyMode', label: 'Starting party', jotFlag: '-', default: 'random', choices: ['random', 'custom'],
     section: 'Party', implemented: true, choiceLabels: { random: 'Random', custom: 'Choose' },
