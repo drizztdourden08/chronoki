@@ -9,7 +9,7 @@ const SPOT_VANILLA_ITEMS: Readonly<Record<CtSpotId, CtItem>> = {
   'ki-sunken-desert': 'c-trigger',
   'ki-arris-dome': 'clone',
   'ki-mt-woe': 'bent-sword',
-  'ki-carpenters-wife': 'treasure-000', // original reward is the Tools (rom id 0xda), not modelled in CtItem
+  'ki-carpenters-wife': 'treasure-000',
   'ki-denadoro-mts': 'tomas-pop',
   'ki-zenan-bridge': 'hero-medal',
   'ki-giants-claw': 'prism-shard',

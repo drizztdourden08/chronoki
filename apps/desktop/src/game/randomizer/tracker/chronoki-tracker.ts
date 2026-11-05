@@ -19,7 +19,7 @@ const baseOf = (placement?: CtPlacement) => trackerFromDef(createCtWorldDef(trac
 const chronokiTracker: TrackerProvider<CtPlacement> = {
   world: (input) => baseOf(input.placement).world(input),
   worldKey: (input) => worldKeyOf(input.placement),
-  vanilla: () => vanillaOf(() => baseOf().vanilla?.() as CtPlacement | undefined),
+  vanilla: () => vanillaOf(() => baseOf().vanilla?.()),
   sphereOf: (placement) => baseOf(placement).sphereOf?.(placement) ?? new Map<string, number>(),
   get checks() {
     return currentPollEntries();
