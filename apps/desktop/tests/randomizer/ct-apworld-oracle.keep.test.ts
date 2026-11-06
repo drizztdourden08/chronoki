@@ -4,7 +4,7 @@ import { ctPlayerFileOf, ctWidestChecks } from '@chronoki/game-core/archipelago'
 import type { CtWorldInput } from '@chronoki/game-core';
 import { parseApSpoiler, replayForward } from '@drizztdourden08/brock-randomizer/test-kit';
 import { ctApworldRig } from './ct-apworld-rig';
-import { CT_ORACLE_PENDING_CASES, CT_SHAPE_CASES } from './ct-apworld-shape.cases';
+import { CT_ORACLE_EXTRA_CASES, CT_SHAPE_CASES } from './ct-apworld-shape.cases';
 import type { CtShapeCase } from './ct-apworld-shape.cases';
 import { ctReplayModelOf } from './ct-replay-model';
 
@@ -34,8 +34,8 @@ describeAp('the world package against Archipelago', { tags: ['e2e'] }, () => {
     console.log(`apworld oracle: ${rig.installWorldPackage()}`);
   }, INSTALL_TIMEOUT_MS);
 
-  const caseTest = (golden: CtShapeCase, register: typeof it | typeof it.skip) => {
-    register(`generates ${SEEDS_PER_CASE} ${golden.name} seeds whose spoiler reaches the goal`, async () => {
+  const caseTest = (golden: CtShapeCase) => {
+    it(`generates ${SEEDS_PER_CASE} ${golden.name} seeds whose spoiler reaches the goal`, async () => {
       const yaml = ctPlayerFileOf({ slotName: SLOT, world: inputOf(golden), seedText: golden.seed }).yaml;
       for (let seed = 1; seed <= SEEDS_PER_CASE; seed += 1) {
         const run = await rig.generate(yaml, seed);
@@ -48,9 +48,7 @@ describeAp('the world package against Archipelago', { tags: ['e2e'] }, () => {
     }, CASE_TIMEOUT_MS);
   };
 
-  for (const golden of CT_SHAPE_CASES) caseTest(golden, it);
+  for (const golden of CT_SHAPE_CASES) caseTest(golden);
 
-  describe('pending until C2/C3 (I-155)', () => {
-    for (const pending of CT_ORACLE_PENDING_CASES) caseTest(pending, it.skip);
-  });
+  for (const extra of CT_ORACLE_EXTRA_CASES) caseTest(extra);
 });

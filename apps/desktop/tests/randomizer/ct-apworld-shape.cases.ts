@@ -16,7 +16,7 @@ const CT_SHAPE_CASES: readonly CtShapeCase[] = [
   { name: 'vanilla-rando', seed: 'golden-vanilla-rando', options: { gameMode: 'vanilla-rando' } },
 ];
 
-const CT_ORACLE_PENDING_CASES: readonly CtShapeCase[] = [
+const CT_ORACLE_EXTRA_CASES: readonly CtShapeCase[] = [
   caseOf('character-rando', { characterRando: true }),
   caseOf('character-rando-duplicates', { characterRando: true, duplicateCharacters: true }),
   caseOf('bucket-list', { bucketList: true }),
@@ -24,11 +24,11 @@ const CT_ORACLE_PENDING_CASES: readonly CtShapeCase[] = [
 ];
 
 const CT_SHAPE_PARTY_CASES: readonly CtShapeCase[] = [
-  ...CT_ORACLE_PENDING_CASES,
+  ...CT_ORACLE_EXTRA_CASES,
   caseOf('custom-party-1', { partyMode: 'custom', startingParty: 'crono' }),
   caseOf('custom-party-7', { partyMode: 'custom', startingParty: ALL_SEVEN }),
   caseOf('locked-characters', { lockedCharacters: true }),
 ];
 
-export { CT_ORACLE_PENDING_CASES, CT_SHAPE_CASES, CT_SHAPE_PARTY_CASES };
+export { CT_ORACLE_EXTRA_CASES, CT_SHAPE_CASES, CT_SHAPE_PARTY_CASES };
 export type { CtShapeCase };

@@ -22,7 +22,7 @@ describe('the exported trees keep one shape per location, exit, event and the st
   }
 
   it('balances every present location against one item', () => {
-    for (const shape of CT_SHAPE_CASES) {
+    for (const shape of [...CT_SHAPE_CASES, ...CT_SHAPE_PARTY_CASES]) {
       for (const seed of seedsOf(shape)) {
         const model = ctPreRolledOf(inputOf(shape, seed), seed).world;
         const pooled = Object.values(model.pool).reduce((sum, count) => sum + count, 0);
