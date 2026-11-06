@@ -3,4 +3,6 @@ import type { LocationRequires } from '@drizztdourden08/brock-randomizer/archipe
 
 const ALWAYS_PRESENT: LocationRequires = { always: true };
 
-export { ALWAYS_PRESENT };
+const PRESENT_BY_MODE: LocationRequires = { present: 'mode' };
+
+export { ALWAYS_PRESENT, PRESENT_BY_MODE };
