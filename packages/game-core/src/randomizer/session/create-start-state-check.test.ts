@@ -30,6 +30,8 @@ describe('createStartStateCheck', { tags: ['critical'] }, () => {
     expect(check.settled(fakeView({ ...okBytes(), 0x0100: 0x00, 0x0101: 0x00 }))).toBe(false);
     expect(check.settled(fakeView({ ...okBytes(), 0x0100: 0xf0, 0x0101: 0x01 }))).toBe(false);
     expect(check.settled(fakeView(okBytes()))).toBe(true);
+    expect(check.underway(fakeView({ ...okBytes(), 0x0100: 0x00, 0x0101: 0x00 }))).toBe(false);
+    expect(check.underway(fakeView({ ...okBytes(), 0x0100: 0xf0, 0x0101: 0x01 }))).toBe(true);
   });
 
   it('matches only when nothing is off', () => {

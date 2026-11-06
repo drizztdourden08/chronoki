@@ -5,6 +5,7 @@ type StartStateCheck = {
   read(view: MemoryView): string;
   matches(view: MemoryView): boolean;
   settled(view: MemoryView): boolean;
+  underway(view: MemoryView): boolean;
 };
 
 export type { StartStateCheck };
