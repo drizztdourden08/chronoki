@@ -132,6 +132,7 @@ const sections: Section[] = [
       gateItem('visibleTechList'),
       gateItem('fastTabs'),
       gateItem('treasureTierMarkers'),
+      gateItem('locationBanner'),
       gateItem('zenanAltMusic'),
       gateItem('deathPeakAltMusic'),
     ],
