@@ -1,6 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import { playerFileOf } from '@drizztdourden08/brock-randomizer/archipelago';
 import type { ExportedOption, PlayerFile } from '@drizztdourden08/brock-randomizer/archipelago';
+import { effectiveOptionsOf } from '../world/modes/effective-options-of';
 import { withCtOptionDefaults } from '../world/with-ct-option-defaults';
 import { AP_GAME } from './ap-game.constants';
 import { ctOptionRows } from './ct-option-rows';
@@ -14,7 +15,7 @@ const rowDefaultsOf = (rows: readonly ExportedOption[]): Record<string, unknown>
 
 const ctPlayerFileOf = (input: CtPlayerFileInput): PlayerFile => {
   const { seedText } = input;
-  const world = { ...input.world, options: withCtOptionDefaults(input.world.options) };
+  const world = { ...input.world, options: effectiveOptionsOf(withCtOptionDefaults(input.world.options)) };
   const preRolled = input.preRolled ?? (seedText === undefined ? undefined : { ...ctPreRolledOf(world, seedText) });
   const schemaRows = input.schemaRows ?? ctOptionRows();
   return playerFileOf({
