@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ctFillWorldOf, ctPreRolledOf, ctWidestChecks, ctWidestWorld } from '@chronoki/game-core/archipelago';
 import type { CtWorldInput } from '@chronoki/game-core';
 import { treeShapeDiff } from '@drizztdourden08/brock-randomizer/test-kit';
-import { CT_SHAPE_CASES, CT_SHAPE_PARTY_CASES, CT_SHAPE_PENDING_CASES } from './ct-apworld-shape.cases';
+import { CT_SHAPE_CASES, CT_SHAPE_PARTY_CASES } from './ct-apworld-shape.cases';
 import type { CtShapeCase } from './ct-apworld-shape.cases';
 
 const SEEDS_PER_CASE = 3;
@@ -20,14 +20,6 @@ describe('the exported trees keep one shape per location, exit, event and the st
       for (const seed of seedsOf(shape)) expect(shapeDiffOf(shape, seed), `${shape.name} ${seed}`).toEqual([]);
     });
   }
-
-  describe.skip('pending until C3 (I-155)', () => {
-    for (const shape of CT_SHAPE_PENDING_CASES) {
-      it(`${shape.name} matches the widest world on ${SEEDS_PER_CASE} seeds`, () => {
-        for (const seed of seedsOf(shape)) expect(shapeDiffOf(shape, seed), `${shape.name} ${seed}`).toEqual([]);
-      });
-    }
-  });
 
   it('balances every present location against one item', () => {
     for (const shape of CT_SHAPE_CASES) {

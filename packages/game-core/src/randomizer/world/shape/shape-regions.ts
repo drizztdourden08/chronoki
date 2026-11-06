@@ -2,6 +2,7 @@
 import type { CtRegionSpec } from '../ct-region-spec.type';
 import { exitNameOf } from '../exit-name-of';
 import { SHAPE_GOAL_SPEC } from './shape-goal.constants';
+import { shapeBucket } from './shape-bucket';
 import { shapeModesToRegions } from './shape-modes-to-regions';
 import { shapeRecruits } from './shape-recruits';
 import { shapeStartHub } from './shape-start-hub';
@@ -17,7 +18,8 @@ const assertUnique = (names: readonly string[], what: string): void => {
 
 const shapeRegionsOf = (): CtRegionSpec[] => {
   const hub = shapeStartHub(SHAPE_MODES);
-  const specs = shapeRecruits([{ ...hub, events: [SHAPE_GOAL_SPEC] }, ...shapeModesToRegions(SHAPE_MODES)]);
+  const hubbed = shapeRecruits([{ ...hub, events: [SHAPE_GOAL_SPEC] }, ...shapeModesToRegions(SHAPE_MODES)]);
+  const specs = shapeBucket(hubbed);
   assertUnique(specs.flatMap((spec) => spec.exits.map((exit) => exitNameOf(spec.id, exit.to))), 'exit');
   assertUnique(specs.flatMap((spec) => spec.events.map((event) => event.id)), 'event');
   return specs;

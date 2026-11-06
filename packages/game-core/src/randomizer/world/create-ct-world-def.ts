@@ -1,8 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { GameWorldDef } from '@drizztdourden08/brock-randomizer/world';
-import { applyBucketToRegions } from './bucket/apply-bucket-to-regions';
-import { bucketCountsOf } from './bucket/bucket-counts-of';
-import { objectivesOf } from './bucket/objectives-of';
+import { ctWorldSpecsOf } from './ct-world-specs-of';
+import { duplicateCharactersOf } from './duplicate-characters-of';
 import { goalOf } from './goal-of';
 import { CT_HELPERS } from './ct-helpers.constants';
 import { ctOptionValues } from './ct-option-values';
@@ -10,16 +9,10 @@ import { CT_GAME, CT_OPTION_SCHEMAS, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA } fro
 import type { CtWorldInput } from './ct-world-input.type';
 import type { CtItem, CtWorldKeys } from './ct-world-keys.type';
 import { joinCtChecks } from './join-ct-checks';
-import { applyEpochFailToRegions } from './epoch-fail/apply-epoch-fail-to-regions';
-import { applyModeToRegions } from './modes/apply-mode-to-regions';
 import { modeOf } from './modes/mode-of';
-import { applyStartPartyToRegions } from './recruits/apply-start-party-to-regions';
 import { LEGACY_PARTY } from './recruits/legacy-party.constants';
-import { CT_REGIONS } from './regions/ct-regions.constants';
 import { shapeGoal } from './shape/shape-goal';
-import { shapeRegionsOf } from './shape/shape-regions';
 import { shapeSeedValues } from './shape/shape-seed-values';
-import { SHAPE_MENU_REGION } from './shape/shape.constants';
 import { poolFillerOf } from './pool-filler-of';
 import { ruleMapsOfRegions } from './rule-maps-of-regions';
 import { sealedRulesOf } from './sealed-rules-of';
@@ -39,24 +32,15 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const mode = modeOf(input.options);
   const options = ctOptionValues({ ...input.options, ...mode.forcedOptions });
   const epochFail = options.epochFail === true;
-  const modeKept = applyModeToRegions(CT_REGIONS, mode);
   const shaped = input.shape === 'one';
-  const moded = shaped ? shapeRegionsOf() : modeKept;
-  const start = shaped ? SHAPE_MENU_REGION : mode.start;
   const party = input.startParty ?? LEGACY_PARTY;
-  const duplicate = options.characterRando === true && options.duplicateCharacters === true;
-  const epoched = applyEpochFailToRegions(moded);
-  const partied = shaped
-    ? epoched
-    : applyStartPartyToRegions(epoched, start, party, { assignment: input.characters, duplicate });
-  const objectives = objectivesOf(input.options, input.fillerSeed ?? '', party);
-  const specs = applyBucketToRegions(partied, objectives, bucketCountsOf(options, objectives.length).needed);
+  const duplicate = duplicateCharactersOf(options);
+  const { specs, scope, start, objectives, needed } = ctWorldSpecsOf(input, { mode, options, party, duplicate });
   const vanillaRoboRibbon = options.vanillaRoboRibbon === true;
   const joinInput = vanillaRoboRibbon ? { ...input, checks: pinRoboRibbon(input.checks) } : input;
-  const joined = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true, shaped ? modeKept : specs);
+  const joined = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true, scope);
   const { treasure } = joined;
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
-  const scope = shaped ? modeKept : specs;
   const spotIds = scope.flatMap((spec) => spec.spots.map((spot) => spot.id));
   const modeKeyItems = keyItemsOf(mode, epochFail, vanillaRoboRibbon);
   const sources = pinnedSourcesOf(modeKeyItems, new Set(scope.map((spec) => spec.id)));
@@ -72,7 +56,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     optionSchemas: CT_OPTION_SCHEMAS,
     start,
     sweepsEvents: true,
-    ...(shaped ? { seedValues: () => shapeSeedValues(input, duplicate) } : {}),
+    ...(shaped ? { seedValues: () => shapeSeedValues(input, duplicate, { objectives, needed }) } : {}),
     regions,
     exitRules,
     locationRules: locationRulesOf(sealedRulesOf(spotRules, treasure, input.sealedCheckIds), treasure, sources),

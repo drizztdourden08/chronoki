@@ -24,13 +24,11 @@ const CT_ORACLE_PENDING_CASES: readonly CtShapeCase[] = [
 ];
 
 const CT_SHAPE_PARTY_CASES: readonly CtShapeCase[] = [
-  ...CT_ORACLE_PENDING_CASES.filter(({ name }) => name !== 'bucket-list'),
+  ...CT_ORACLE_PENDING_CASES,
   caseOf('custom-party-1', { partyMode: 'custom', startingParty: 'crono' }),
   caseOf('custom-party-7', { partyMode: 'custom', startingParty: ALL_SEVEN }),
   caseOf('locked-characters', { lockedCharacters: true }),
 ];
 
-const CT_SHAPE_PENDING_CASES: readonly CtShapeCase[] = CT_ORACLE_PENDING_CASES.filter(({ name }) => name === 'bucket-list');
-
-export { CT_ORACLE_PENDING_CASES, CT_SHAPE_CASES, CT_SHAPE_PARTY_CASES, CT_SHAPE_PENDING_CASES };
+export { CT_ORACLE_PENDING_CASES, CT_SHAPE_CASES, CT_SHAPE_PARTY_CASES };
 export type { CtShapeCase };
