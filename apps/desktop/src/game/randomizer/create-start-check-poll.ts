@@ -12,6 +12,7 @@ const createStartCheckPoll = (check: ReturnType<typeof createOptionsStartCheck>)
   return {
     poll: (view: MemoryView, newGame: boolean): void => {
       if (!newGame || logged || check === null) return;
+      if (!check.settled(view) && !check.underway(view)) return;
       polls += 1;
       if (!check.settled(view) && polls < START_CHECK_MAX_POLLS) return;
       logged = true;

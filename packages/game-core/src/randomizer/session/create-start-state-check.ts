@@ -30,6 +30,7 @@ const mismatchesOf = (view: MemoryView, state: CtStartState, party: CtStartParty
 
 const createStartStateCheck = (state: CtStartState, party: CtStartParty = LEGACY_PARTY): StartStateCheck => ({
   settled: (view) => locationOf(view) === state.warp.location,
+  underway: (view) => locationOf(view) !== 0,
   matches: (view) => mismatchesOf(view, state, party).length === 0,
   read: (view) => {
     const bad = mismatchesOf(view, state, party);

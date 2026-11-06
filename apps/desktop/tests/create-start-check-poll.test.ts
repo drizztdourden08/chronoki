@@ -11,8 +11,8 @@ vi.mock('@app/game/randomizer/report-start-mismatch', () => ({ reportStartMismat
 
 const VIEW: MemoryView = { byte: () => 0, word: () => 0 };
 
-const checkOf = (settled: () => boolean, matches: boolean) => ({
-  settled, matches: () => matches, read: () => (matches ? 'ok line' : 'MISMATCH line'),
+const checkOf = (settled: () => boolean, matches: boolean, underway: () => boolean = () => true) => ({
+  settled, underway, matches: () => matches, read: () => (matches ? 'ok line' : 'MISMATCH line'),
 });
 
 describe('createStartCheckPoll', { tags: ['critical'] }, () => {
@@ -31,6 +31,16 @@ describe('createStartCheckPoll', { tags: ['critical'] }, () => {
     poll.poll(VIEW, true);
     expect(state.logged).toEqual(['ok line']);
     expect(state.loud).toEqual([]);
+  });
+
+  it('does not time out while the title or attract demo is still showing (no map yet)', () => {
+    let underway = false;
+    const poll = createStartCheckPoll(checkOf(() => false, false, () => underway));
+    for (let i = 0; i < START_CHECK_MAX_POLLS * 2; i += 1) poll.poll(VIEW, true);
+    expect(state.loud).toEqual([]);
+    underway = true;
+    for (let i = 0; i < START_CHECK_MAX_POLLS; i += 1) poll.poll(VIEW, true);
+    expect(state.loud).toEqual(['MISMATCH line']);
   });
 
   it('never reads a loaded save (not a fresh New Game)', () => {
