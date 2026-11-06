@@ -2,18 +2,15 @@
 import { applyBucketToRegions } from './bucket/apply-bucket-to-regions';
 import { bucketCountsOf } from './bucket/bucket-counts-of';
 import { objectivesOf } from './bucket/objectives-of';
-import type { CtOptionValues, CtWorldInput } from './ct-world-input.type';
+import type { CtWorldInput } from './ct-world-input.type';
+import type { SpecsContext } from './ct-world-specs-of.type';
 import type { CtWorldSpecs } from './ct-world-specs.type';
 import { applyEpochFailToRegions } from './epoch-fail/apply-epoch-fail-to-regions';
 import { applyModeToRegions } from './modes/apply-mode-to-regions';
-import type { CtModeDef } from './modes/ct-mode-def.type';
-import type { CtStartParty } from './party/ct-party.type';
 import { applyStartPartyToRegions } from './recruits/apply-start-party-to-regions';
 import { CT_REGIONS } from './regions/ct-regions.constants';
 import { shapeRegionsOf } from './shape/shape-regions';
 import { SHAPE_MENU_REGION } from './shape/shape.constants';
-
-type SpecsContext = { mode: CtModeDef; options: CtOptionValues; party: CtStartParty; duplicate: boolean };
 
 const ctWorldSpecsOf = (input: CtWorldInput, context: SpecsContext): CtWorldSpecs => {
   const { mode, options, party, duplicate } = context;
