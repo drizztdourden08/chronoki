@@ -6,6 +6,11 @@ import { GateToggle } from './GateToggle';
 import { VolumeRow } from './audio/VolumeRow';
 import { VOLUME_ROWS } from './audio/audio-controls.constants';
 import type { VolumeKey } from './audio/audio.type';
+import { HighlightColorControl } from './highlight/HighlightColorControl';
+import { HIGHLIGHT_KEYS } from './highlight/highlight.constants';
+import type { HighlightKey } from './highlight/highlight.type';
+import { OnlineSessionToggle } from './online/OnlineSessionToggle';
+import { SESSION_SWITCHES } from './online/online.constants';
 import { HapticControl } from './haptics/HapticControl';
 import { HAPTICS_PREFIX } from './haptics/haptics.constants';
 import { withAspectCascade } from './display/with-aspect-cascade';
@@ -19,6 +24,8 @@ const renderSettingControl = (key: string, settings: AppSettings, onChange: Sett
   }
   if (key in VOLUME_ROWS) return <VolumeRow settingKey={key as VolumeKey} settings={settings} onChange={onChange} />;
   if (key.startsWith(HAPTICS_PREFIX)) return <HapticControl settingKey={key} settings={settings} onChange={onChange} />;
+  if (key in SESSION_SWITCHES) return <OnlineSessionToggle settingKey={key} />;
+  if ((HIGHLIGHT_KEYS as readonly string[]).includes(key)) return <HighlightColorControl settingKey={key as HighlightKey} settings={settings} onChange={onChange} />;
   const Control = CONTROL_OF_KEY[key];
   return Control ? <Control settings={settings} onChange={onChange} /> : null;
 };

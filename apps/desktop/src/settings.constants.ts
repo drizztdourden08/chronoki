@@ -4,6 +4,7 @@ import { ONLINE_NOTICE_DEFAULTS } from '@drizztdourden08/brock-randomizer/archip
 import { DEFAULT_GATE_OPTIONS, DEFAULT_GATES } from '@chronoki/features';
 import { DEFAULT_HAPTIC_SETTINGS } from '@chronoki/input-mapping';
 import { AUDIO_OUTPUT_AUTO, DEFAULT_AUDIO_SAMPLES } from './game/audio-lead';
+import { DEFAULT_HIGHLIGHTS } from './settings-controls/highlight/highlight.constants';
 import type { AppSettings } from './settings.type';
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -28,6 +29,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   dialogHoldToAccelerate: true,
   dialogFillOnB: true,
   dialogAutoSkip: false,
+  ...DEFAULT_HIGHLIGHTS,
   haptics: { ...DEFAULT_HAPTIC_SETTINGS },
   experimentalFeaturesEnabled: false,
   saveHoldDuration: 2,
