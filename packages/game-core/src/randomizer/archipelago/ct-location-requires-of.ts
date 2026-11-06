@@ -2,8 +2,10 @@
 import type { LocationRequires } from '@drizztdourden08/brock-randomizer/archipelago';
 import type { WorldLocation } from '@drizztdourden08/brock-randomizer/world';
 import type { CtWorldKeys } from '../world/ct-world-keys.type';
-import { ALWAYS_PRESENT } from './ct-location-requires-of.constants';
+import { ctEveryModeLocationKeys } from './ct-every-mode-location-keys';
+import { ALWAYS_PRESENT, PRESENT_BY_MODE } from './ct-location-requires-of.constants';
 
-const ctLocationRequiresOf = (_location: WorldLocation<CtWorldKeys>): LocationRequires => ALWAYS_PRESENT;
+const ctLocationRequiresOf = (location: WorldLocation<CtWorldKeys>): LocationRequires =>
+  (ctEveryModeLocationKeys().has(String(location.key)) ? ALWAYS_PRESENT : PRESENT_BY_MODE);
 
 export { ctLocationRequiresOf };
