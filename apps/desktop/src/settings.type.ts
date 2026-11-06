@@ -33,6 +33,8 @@ interface AppSettings extends BaseSettings, OnlineNoticeSettings {
   dialogFillOnB: boolean;
   dialogAutoSkip: boolean;
   haptics: HapticSettings;
+  hudHighlightPrimary: string;
+  hudHighlightSecondary: string;
   experimentalFeaturesEnabled: boolean;
   saveHoldDuration: number;
   musicVolume: number;
