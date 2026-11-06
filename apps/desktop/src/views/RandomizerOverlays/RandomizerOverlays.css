@@ -10,3 +10,15 @@
   max-width: 40%;
   pointer-events: none;
 }
+
+.online-notices {
+  display: contents;
+}
+
+.online-notices .text-el--tone-primary {
+  --tone-ink: var(--notice-item, var(--c-primary-text));
+}
+
+.online-notices .text-el--tone-secondary {
+  --tone-ink: var(--notice-player, var(--c-secondary));
+}
