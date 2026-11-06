@@ -7,9 +7,10 @@ import type { CtWorldKeys } from '../world/ct-world-keys.type';
 import { PIN_SPOTS_PHASE_ID } from '../world/pin-spots-phase.constants';
 import { rollCtNonItem } from '../world/roll-ct-non-item';
 import { withCtOptionDefaults } from '../world/with-ct-option-defaults';
+import { ctApLockedOptionsOf } from './ct-ap-locked-options-of';
 
 const ctFillWorldOf = (rawInput: CtWorldInput, seed: string): ModelFillWorld<CtWorldKeys> => {
-  const { input } = rollCtNonItem({ ...rawInput, options: withCtOptionDefaults(rawInput.options) }, seed);
+  const { input } = rollCtNonItem({ ...rawInput, options: ctApLockedOptionsOf(withCtOptionDefaults(rawInput.options)) }, seed);
   const game = createCtWorldGame(input);
   const rng = createRng(seed);
   const build = game.build({ request: { seed }, prep: undefined, rng, attempt: 0 });

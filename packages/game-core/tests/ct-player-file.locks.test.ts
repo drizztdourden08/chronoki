@@ -20,6 +20,16 @@ describe('online play locks', { tags: ['critical'] }, () => {
     expect(() => fileOf(over)).toThrow(message);
   });
 
+  it('forces a random party to custom crono,marle in the YAML and in pre_rolled', () => {
+    const random = ctPlayerFileOf({ slotName: 'Crono', seedText: 'lock-seed', world: { checks: [], options: withCtOptionDefaults({ partyMode: 'random' }) } });
+    const custom = ctPlayerFileOf({
+      slotName: 'Crono', seedText: 'lock-seed',
+      world: { checks: [], options: withCtOptionDefaults({ partyMode: 'custom', startingParty: 'crono,marle' }) },
+    });
+    expect(random.yaml).toBe(custom.yaml);
+    expect(random.yaml).toMatch(/partyMode: (custom|\d+)/);
+  });
+
   it('accepts the custom party the export assumes', () => {
     expect(() => fileOf({ partyMode: 'custom', startingParty: 'crono,marle' })).not.toThrow();
   });

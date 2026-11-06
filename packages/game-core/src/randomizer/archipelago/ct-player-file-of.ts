@@ -4,6 +4,7 @@ import type { ExportedOption, PlayerFile } from '@drizztdourden08/brock-randomiz
 import { effectiveOptionsOf } from '../world/modes/effective-options-of';
 import { withCtOptionDefaults } from '../world/with-ct-option-defaults';
 import { AP_GAME } from './ap-game.constants';
+import { ctApLockedOptionsOf } from './ct-ap-locked-options-of';
 import { ctApUnsupportedOf } from './ct-ap-unsupported-of';
 import { ctOptionRows } from './ct-option-rows';
 import { ctPlayerValuesOf } from './ct-player-values-of';
@@ -16,7 +17,7 @@ const rowDefaultsOf = (rows: readonly ExportedOption[]): Record<string, unknown>
 
 const ctPlayerFileOf = (input: CtPlayerFileInput): PlayerFile => {
   const { seedText } = input;
-  const world = { ...input.world, options: effectiveOptionsOf(withCtOptionDefaults(input.world.options)) };
+  const world = { ...input.world, options: effectiveOptionsOf(ctApLockedOptionsOf(withCtOptionDefaults(input.world.options))) };
   const unsupported = ctApUnsupportedOf(world.options);
   if (unsupported.length > 0) throw new Error(unsupported.join(' '));
   const preRolled = input.preRolled ?? (seedText === undefined ? undefined : { ...ctPreRolledOf(world, seedText) });
