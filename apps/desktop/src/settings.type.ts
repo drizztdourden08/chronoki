@@ -1,5 +1,6 @@
 /* @layer renderer-app @kind types */
 import type { BaseSettings } from '@drizztdourden08/brock-core';
+import type { OnlineNoticeSettings } from '@drizztdourden08/brock-randomizer/archipelago';
 import type { AspectRatioChoice, RenderScaleFactor } from '@chronoki/features';
 import type { HapticSettings } from '@chronoki/input-mapping';
 
@@ -9,7 +10,7 @@ type MsuConfigMode = 'auto' | 'manual';
 
 type MsuFormat = 'false' | 'msu1' | 'opuz' | 'layered';
 
-interface AppSettings extends BaseSettings {
+interface AppSettings extends BaseSettings, OnlineNoticeSettings {
   vanillaSafe: boolean;
   gates: string[];
   knownGates?: string[];

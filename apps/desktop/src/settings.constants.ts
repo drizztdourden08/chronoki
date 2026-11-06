@@ -1,5 +1,6 @@
 /* @layer renderer-app @kind constants */
 import { DEFAULT_BASE_SETTINGS } from '@drizztdourden08/brock-core';
+import { ONLINE_NOTICE_DEFAULTS } from '@drizztdourden08/brock-randomizer/archipelago';
 import { DEFAULT_GATE_OPTIONS, DEFAULT_GATES } from '@chronoki/features';
 import { DEFAULT_HAPTIC_SETTINGS } from '@chronoki/input-mapping';
 import { AUDIO_OUTPUT_AUTO, DEFAULT_AUDIO_SAMPLES } from './game/audio-lead';
@@ -7,6 +8,7 @@ import type { AppSettings } from './settings.type';
 
 const DEFAULT_SETTINGS: AppSettings = {
   ...DEFAULT_BASE_SETTINGS,
+  ...ONLINE_NOTICE_DEFAULTS,
   vanillaSafe: false,
   gates: DEFAULT_GATES,
   aspectRatio: DEFAULT_GATE_OPTIONS.aspectRatio,
