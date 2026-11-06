@@ -2,6 +2,7 @@
 import type { ApOptionDef } from '@drizztdourden08/brock-randomizer/archipelago';
 import type { CtOptionDef } from '../world/ct-option-def.type';
 import { ctUiOptions } from '../world/ct-ui-options';
+import { CT_DEATH_LINK_DEF } from './ct-death-link-def.constants';
 import { CT_AP_EXCLUDED_OPTIONS } from './ct-option-rows.constants';
 
 const kindOf = (option: CtOptionDef): ApOptionDef['kind'] => {
@@ -22,8 +23,11 @@ const defOf = (option: CtOptionDef): ApOptionDef => ({
 });
 
 const ctApOptionDefs = (): readonly ApOptionDef[] =>
-  ctUiOptions()
-    .filter((option) => option.implemented && !CT_AP_EXCLUDED_OPTIONS.includes(option.key))
-    .map(defOf);
+  [
+    ...ctUiOptions()
+      .filter((option) => option.implemented && !CT_AP_EXCLUDED_OPTIONS.includes(option.key))
+      .map(defOf),
+    CT_DEATH_LINK_DEF,
+  ];
 
 export { ctApOptionDefs };
