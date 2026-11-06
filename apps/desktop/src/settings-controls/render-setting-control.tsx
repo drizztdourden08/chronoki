@@ -6,6 +6,8 @@ import { GateToggle } from './GateToggle';
 import { VolumeRow } from './audio/VolumeRow';
 import { VOLUME_ROWS } from './audio/audio-controls.constants';
 import type { VolumeKey } from './audio/audio.type';
+import { HapticControl } from './haptics/HapticControl';
+import { HAPTICS_PREFIX } from './haptics/haptics.constants';
 import { withAspectCascade } from './display/with-aspect-cascade';
 import { GATE_KEY_PREFIX } from './gate-keys.constants';
 import { CONTROL_OF_KEY } from './render-setting-control.constants';
@@ -16,6 +18,7 @@ const renderSettingControl = (key: string, settings: AppSettings, onChange: Sett
     return <GateToggle id={key.slice(GATE_KEY_PREFIX.length)} settings={settings} onChange={cascaded} />;
   }
   if (key in VOLUME_ROWS) return <VolumeRow settingKey={key as VolumeKey} settings={settings} onChange={onChange} />;
+  if (key.startsWith(HAPTICS_PREFIX)) return <HapticControl settingKey={key} settings={settings} onChange={onChange} />;
   const Control = CONTROL_OF_KEY[key];
   return Control ? <Control settings={settings} onChange={onChange} /> : null;
 };
