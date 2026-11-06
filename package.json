@@ -18,7 +18,9 @@
     "core:import": "node tooling/import-core/src/cli.ts",
     "core:check": "node tooling/import-core/src/cli.ts --check",
     "core:wasm": "node core/wasm-build/build.mjs",
+    "predev": "pnpm apworld",
     "dev": "pnpm --filter ./apps/desktop dev",
+    "prebuild": "pnpm apworld",
     "build": "pnpm --filter ./apps/desktop package",
     "build:web": "pnpm --filter ./apps/desktop build:web",
     "preview": "pnpm --filter ./apps/desktop exec electron-vite preview",
@@ -31,8 +33,8 @@
     "structure": "brock structure --check",
     "prose": "brock prose",
     "deadcode": "brock knip",
-    "apworld": "brock apworld export --entry packages/game-core/src/randomizer/archipelago/index.ts --fn exportCtWorld && brock apworld build --ap-version 0.6.6 --ap-version 0.6.7 --ap-version 0.6.8 --ap-public apps/desktop/public/archipelago",
-    "refresh-apworld": "brock apworld refresh --entry packages/game-core/src/randomizer/archipelago/index.ts --fn exportCtWorld --ap-source packages/game-core/src/randomizer --ap-version 0.6.6 --ap-version 0.6.7 --ap-version 0.6.8 --ap-public apps/desktop/public/archipelago",
+    "apworld": "brock apworld export --entry ../../packages/game-core/src/randomizer/archipelago/index.ts --fn exportCtWorld && brock apworld build --ap-version 0.6.6 --ap-version 0.6.7 --ap-version 0.6.8 --ap-public public/archipelago",
+    "refresh-apworld": "brock apworld refresh --entry ../../packages/game-core/src/randomizer/archipelago/index.ts --fn exportCtWorld --ap-source ../../packages/game-core/src/randomizer --ap-version 0.6.6 --ap-version 0.6.7 --ap-version 0.6.8 --ap-public public/archipelago",
     "duplicates": "jscpd ."
   },
   "devDependencies": {

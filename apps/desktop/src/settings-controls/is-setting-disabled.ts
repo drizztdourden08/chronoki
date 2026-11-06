@@ -10,6 +10,7 @@ import { hasUnmetRequires } from './has-unmet-requires';
 
 const isOwnRuleDisabled = (key: string, settings: AppSettings): boolean => {
   if (key === 'pixelPerfect') return settings.viewportConstraint !== 'none';
+  if (key === 'experimentalFeaturesEnabled') return !settings.developerToolsEnabled;
   if (key === 'dialogHoldSpeed') return !settings.dialogHoldToAccelerate;
   return key === `${GATE_KEY_PREFIX}linearFiltering` && settings.pixelPerfect && settings.viewportConstraint === 'none';
 };

@@ -3,8 +3,10 @@ import { MobileShell, isMobileHost } from '@drizztdourden08/brock-port-kit/rende
 import { GameSessionContext } from './GameSession.context';
 import type { GameSessionProps } from './GameSession.type';
 import { useGameSessionValue } from './behavior/useGameSessionValue';
+import { useExperimentalFlag } from './behavior/useExperimentalFlag';
 
 const GameSession = ({ children }: GameSessionProps) => {
+  useExperimentalFlag();
   const value = useGameSessionValue();
   return (
     <GameSessionContext.Provider value={value}>

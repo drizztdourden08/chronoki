@@ -29,6 +29,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   dialogFillOnB: true,
   dialogAutoSkip: false,
   haptics: { ...DEFAULT_HAPTIC_SETTINGS },
+  experimentalFeaturesEnabled: false,
   saveHoldDuration: 2,
   musicVolume: 100,
   musicMuted: false,
