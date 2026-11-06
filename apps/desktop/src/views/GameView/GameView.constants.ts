@@ -1,6 +1,8 @@
 /* @layer renderer-components @kind constants */
 import type { DockEdgeName } from './GameView.type';
 
+const GAME_CONTEXT = 'game';
+
 const DOCK_GAP = 8;
 
 const DOCK_GAP_TOLERANCE = 0.5;
@@ -15,4 +17,4 @@ const BLEED_VARS: Record<DockEdgeName, string> = {
 
 const DOCK_EDGE_NAMES: readonly DockEdgeName[] = ['top', 'right', 'bottom', 'left'];
 
-export { BLEED_VARS, DOCK_EDGE_NAMES, DOCK_GAP, DOCK_GAP_TOLERANCE, DOCK_MAIN_SELECTOR, DOCK_SELECTOR };
+export { BLEED_VARS, DOCK_EDGE_NAMES, DOCK_GAP, DOCK_GAP_TOLERANCE, DOCK_MAIN_SELECTOR, DOCK_SELECTOR, GAME_CONTEXT };

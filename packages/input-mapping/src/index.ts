@@ -56,3 +56,4 @@ export { getBindingLabel } from './runtime/binding-display/get-binding-label';
 export { BUTTON_ICON_PATHS } from './runtime/button-icons/button-icon-paths';
 export { KEY_CODE_ICON_IDS, SNES_ICON_MAP } from './runtime/button-icons/keyboard-icon-paths.constants';
 export { keyCodeToIconId } from './runtime/button-icons/key-code-to-icon-id';
+export * from './public-api/haptics';

@@ -2,6 +2,7 @@
 import type { SettingLockCause } from '@drizztdourden08/brock-react';
 import type { AppSettings } from '@app/settings.type';
 import { isAudioDisabled } from './audio/is-audio-disabled';
+import { isHapticsSettingDisabled } from './haptics/is-haptics-disabled';
 import { effectiveGatesOf } from './effective-gates-of';
 import { GATE_KEY_PREFIX, OPTION_KEY_FEATURE } from './gate-keys.constants';
 import { isAspectRuleDisabled } from './is-aspect-rule-disabled';
@@ -22,6 +23,7 @@ const isSettingDisabled = (key: string, settings: AppSettings, lock: SettingLock
   isOwnRuleDisabled(key, settings)
   || isAspectRuleDisabled(key, settings)
   || isAudioDisabled(key, settings)
+  || isHapticsSettingDisabled(key, settings)
   || lock !== null
   || hasUnmetRequires(key, settings)
   || isParentGateOff(key, settings);

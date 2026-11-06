@@ -10,19 +10,21 @@ import { setTurboSpeed, setTurboVolume } from '@app/game/turbo';
 import { applyLiveVolume } from '@app/game/turbo/apply-live-volume';
 import type { AppSettings } from '@app/settings.type';
 import type { useCoreSettings } from './useCoreSettings';
+import { useHapticSettings } from './useHapticSettings';
 
 const useHostFeatures = ({ settings, gates, volume, autoSaveIntervalSeconds, autoSaveMaxEntries, turboSpeed }: ReturnType<typeof useCoreSettings>): void => {
   const { settings: app } = useSettings<AppSettings>();
   const { audioSamples, audioFreq, audioChannels, vsync } = app;
+  const hapticsOn = useHapticSettings();
   useEffect(() => { setAudioSamples(audioSamples); }, [audioSamples]);
   useEffect(() => { setAudioOutput(audioFreq, audioChannels); }, [audioFreq, audioChannels]);
   useEffect(() => { applyFrameSchedule(vsync); }, [vsync]);
   useEffect(() => { setHostGates(gates); }, [gates]);
   const { baseQ4, holdQ4, hold, fill, autoSkip } = settings.dialogPacing;
   useEffect(() => {
-    setLiveSettings({ dimFlashes: gates.has('dimFlashes'), dialogPacing: { baseQ4, holdQ4, hold, fill, autoSkip } });
+    setLiveSettings({ dimFlashes: gates.has('dimFlashes'), haptics: hapticsOn, dialogPacing: { baseQ4, holdQ4, hold, fill, autoSkip } });
     pushLiveSettings();
-  }, [gates, baseQ4, holdQ4, hold, fill, autoSkip]);
+  }, [gates, hapticsOn, baseQ4, holdQ4, hold, fill, autoSkip]);
   useEffect(() => { setAutoSaveInterval(autoSaveIntervalSeconds); }, [autoSaveIntervalSeconds]);
   useEffect(() => { setAutoSaveMaxEntries(autoSaveMaxEntries); }, [autoSaveMaxEntries]);
   useEffect(() => { setTurboSpeed(turboSpeed); }, [turboSpeed]);

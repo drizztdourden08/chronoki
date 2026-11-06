@@ -1,0 +1,5 @@
+/* @layer renderer-widgets @kind style */
+.cheats-tab {
+  padding: var(--space-md, 12px);
+  overflow-y: auto;
+}

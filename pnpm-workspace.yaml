@@ -25,6 +25,7 @@ catalog:
   '@vitejs/plugin-react': ^5.2.0
   electron: ^42.2.0
   electron-builder: ^26.8.1
+  fflate: ^0.8.3
   electron-vite: ^5.0.0
   eslint: ^10.4.0
   jscpd: ^4.0.5
