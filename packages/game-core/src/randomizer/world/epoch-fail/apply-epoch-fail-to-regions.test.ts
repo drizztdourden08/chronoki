@@ -13,12 +13,13 @@ const mentionsJets = (rule: unknown): boolean => JSON.stringify(rule ?? null).in
 const exitRuleOf = (flight: { from: string; to: string }): unknown =>
   patched.find((region) => region.id === flight.from)?.exits.find((candidate) => candidate.to === flight.to)?.rule;
 const jetsExitsOf = (regions: typeof CT_REGIONS) => regions.flatMap((region) => region.exits.filter((exit) => mentionsJets(exit.rule)));
+const storyGatedIds = spotsOf(CT_REGIONS).filter((spot) => mentionsJets(spot.rule)).map((spot) => spot.id);
 
 describe('applyEpochFailToRegions', { tags: ['critical'] }, () => {
   it('requires the Jets of Time at every flight spot and only there', () => {
     const before = new Map(spotsOf(CT_REGIONS).map((spot) => [spot.id, spot]));
     spotsOf(patched).forEach((spot) => {
-      expect(mentionsJets(spot.rule)).toBe(FLIGHT_SPOTS.includes(spot.id));
+      expect(mentionsJets(spot.rule)).toBe(FLIGHT_SPOTS.includes(spot.id) || storyGatedIds.includes(spot.id));
       if (!FLIGHT_SPOTS.includes(spot.id)) expect(spot).toBe(before.get(spot.id));
     });
     FLIGHT_SPOTS.forEach((id) => expect(before.has(id)).toBe(true));
@@ -29,8 +30,8 @@ describe('applyEpochFailToRegions', { tags: ['critical'] }, () => {
     expect(jetsExitsOf(patched)).toHaveLength(FLIGHT_EXITS.length);
   });
 
-  it('leaves the regions untouched when the input is not patched', () => {
-    expect(spotsOf(CT_REGIONS).some((spot) => mentionsJets(spot.rule))).toBe(false);
+  it('leaves the regions untouched when the input is not patched: only the Heckran story gate names the Jets', () => {
+    expect(storyGatedIds).toEqual(['ki-taban']);
   });
 });
 
