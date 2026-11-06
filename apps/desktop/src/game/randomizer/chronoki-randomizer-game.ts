@@ -1,5 +1,6 @@
 /* @layer bridge-wasm @kind logic */
 import { defineRandomizerGame } from '@drizztdourden08/brock-randomizer';
+import { ArchipeliaConnection } from '@drizztdourden08/brock-randomizer/renderer';
 import type { CtPlacement } from '@chronoki/game-core';
 import { CT_GAME, CT_PLACEMENT_SCHEMAS, CT_WORLD_SCHEMA, ctUiOptions, describeCtPlacement } from '@chronoki/game-core';
 import { chronokiCore } from '../lifecycle/chronoki-core';
@@ -19,7 +20,7 @@ import { CHRONOKI_RANDOMIZER_LABELS } from './chronoki-randomizer.constants';
 import { chronokiSeedApplier } from './chronoki-seed-applier';
 import { chronokiToConfig } from './chronoki-to-config';
 import { rollChronokiSeed } from './roll-chronoki-seed';
-import { ASIDE_LABEL, CT_LOG_RULES, CT_RUN_PANELS, CtOptionsAside, ctImpactOptionTabs } from './views';
+import { ASIDE_LABEL, CT_LOG_RULES, CT_RUN_PANELS, CtArchipelagoFilesSlot, CtOptionsAside, ctImpactOptionTabs } from './views';
 
 const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
   id: CT_GAME,
@@ -46,8 +47,9 @@ const chronokiRandomizerGame = defineRandomizerGame<CtPlacement>({
     optionTabs: ctImpactOptionTabs,
     optionsAside: CtOptionsAside,
     optionsAsideLabel: ASIDE_LABEL,
-    runPanels: CT_RUN_PANELS,
+    runPanels: [CtArchipelagoFilesSlot, ...CT_RUN_PANELS],
     logRules: CT_LOG_RULES,
+    connection: { archipelia: ArchipeliaConnection },
     checksWidget: { settings: ChecksNotifySettings },
   },
 });
