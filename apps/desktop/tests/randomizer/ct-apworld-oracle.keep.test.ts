@@ -29,8 +29,7 @@ const skipReason = !rig.hasArchipelago()
   ? 'ArchipelagoGenerate.exe not found'
   : `Archipelago ${rig.installedVersion()} is not in SUPPORTED_AP_VERSIONS`;
 if (!rig.supportsInstalledVersion()) {
-  process.stderr.write(`apworld oracle: ${skipReason}, the generator half is skipped
-`);
+  process.stderr.write(`apworld oracle: ${skipReason}, the generator half is skipped\n`);
   describe('the world package against Archipelago', { tags: ['e2e'] }, () => {
     it.skip(`skipped: ${skipReason}`, () => undefined);
   });
