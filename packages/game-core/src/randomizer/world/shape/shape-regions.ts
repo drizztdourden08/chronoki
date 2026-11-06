@@ -1,7 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { CtRegionSpec } from '../ct-region-spec.type';
 import { exitNameOf } from '../exit-name-of';
-import { SHAPE_GOAL_SPEC } from './shape-goal';
+import { SHAPE_GOAL_SPEC } from './shape-goal.constants';
 import { shapeModesToRegions } from './shape-modes-to-regions';
 import { shapeStartHub } from './shape-start-hub';
 import { SHAPE_MODES } from './shape.constants';

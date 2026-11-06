@@ -1,6 +1,6 @@
 /* @layer tests @kind test */
 import { describe, expect, it } from 'vitest';
-import { ctPlayerFileOf } from '../src/randomizer/archipelago';
+import { ctPlayerFileOf, ctWidestChecks } from '../src/randomizer/archipelago';
 import { withCtOptionDefaults } from '../src/randomizer/world/with-ct-option-defaults';
 
 const fileOf = (over: Record<string, unknown>) =>
@@ -21,10 +21,10 @@ describe('online play locks', { tags: ['critical'] }, () => {
   });
 
   it('forces a random party to custom crono,marle in the YAML and in pre_rolled', () => {
-    const random = ctPlayerFileOf({ slotName: 'Crono', seedText: 'lock-seed', world: { checks: [], options: withCtOptionDefaults({ partyMode: 'random' }) } });
+    const random = ctPlayerFileOf({ slotName: 'Crono', seedText: 'lock-seed', world: { checks: ctWidestChecks(), options: withCtOptionDefaults({ partyMode: 'random' }) } });
     const custom = ctPlayerFileOf({
       slotName: 'Crono', seedText: 'lock-seed',
-      world: { checks: [], options: withCtOptionDefaults({ partyMode: 'custom', startingParty: 'crono,marle' }) },
+      world: { checks: ctWidestChecks(), options: withCtOptionDefaults({ partyMode: 'custom', startingParty: 'crono,marle' }) },
     });
     expect(random.yaml).toBe(custom.yaml);
     expect(random.yaml).toMatch(/partyMode: (custom|\d+)/);

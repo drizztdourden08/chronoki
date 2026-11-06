@@ -6,7 +6,7 @@ import type { CtModeDef } from '../modes/ct-mode-def.type';
 import { applyModeToRegions } from '../modes/apply-mode-to-regions';
 import { CT_REGIONS } from '../regions/ct-regions.constants';
 import { gatedRuleOf } from './gated-rule-of';
-import type { ModeView } from './per-mode-rules-of';
+import type { ModeView } from './per-mode-rules-of.type';
 import { perModeRulesOf } from './per-mode-rules-of';
 
 const withRule = <Base extends object>(base: Base, rule: CtRule | undefined): Base & { rule?: CtRule } =>

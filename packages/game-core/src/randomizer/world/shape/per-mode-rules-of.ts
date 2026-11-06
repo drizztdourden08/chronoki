@@ -1,10 +1,7 @@
 /* @layer bridge-wasm @kind logic */
 import type { CtRegionSpec, CtRule } from '../ct-region-spec.type';
 import type { CtModeId } from '../modes/ct-mode-def.type';
-
-type ModeView = { id: CtModeId; specs: ReadonlyMap<string, CtRegionSpec> };
-
-type PerModeRules<Key> = Map<Key, Map<CtModeId, CtRule | undefined>>;
+import type { ModeView, PerModeRules } from './per-mode-rules-of.type';
 
 const perModeRulesOf = <Key extends string>(
   views: readonly ModeView[],
@@ -25,5 +22,4 @@ const perModeRulesOf = <Key extends string>(
   return byKey;
 };
 
-export type { ModeView, PerModeRules };
 export { perModeRulesOf };

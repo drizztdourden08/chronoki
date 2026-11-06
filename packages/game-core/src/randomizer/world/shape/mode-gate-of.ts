@@ -10,7 +10,8 @@ const { any, option, when } = CT_KIT;
 const modeGateOf = (keptIn: ReadonlySet<CtModeId>, rule: CtRule | undefined): CtRule | undefined => {
   const off = SHAPE_MODES.filter((mode) => !keptIn.has(mode.id)).map((mode) => option('gameMode', mode.id));
   if (off.length === 0) return rule;
-  return when(off.length === 1 ? off[0] : any(...off), FALSE, rule ?? TRUE);
+  const [first, ...rest] = off;
+  return when(rest.length === 0 && first !== undefined ? first : any(...off), FALSE, rule ?? TRUE);
 };
 
 export { modeGateOf };
