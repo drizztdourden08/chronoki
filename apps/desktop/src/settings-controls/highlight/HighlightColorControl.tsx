@@ -1,15 +1,15 @@
 /* @layer renderer-app @kind component */
 import { useRef, useState } from 'react';
-import { ColorSwatch } from '@drizztdourden08/tessera/primitives';
+import { Box, ColorSwatch } from '@drizztdourden08/tessera/primitives';
 import { ColorPickerPopover } from '@drizztdourden08/tessera/composites/ColorPickerPopover';
 import type { HighlightColorControlProps } from './highlight.type';
 
 const HighlightColorControl = ({ settingKey, settings, onChange }: HighlightColorControlProps) => {
-  const anchorRef = useRef<HTMLSpanElement>(null);
+  const anchorRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const value = settings[settingKey];
   return (
-    <span ref={anchorRef}>
+    <Box as="span" ref={anchorRef}>
       <ColorSwatch color={value} aria-label="Pick a colour" aria-expanded={open} onClick={() => setOpen(!open)} />
       <ColorPickerPopover
         open={open}
@@ -19,7 +19,7 @@ const HighlightColorControl = ({ settingKey, settings, onChange }: HighlightColo
         onClose={() => setOpen(false)}
         disableAlpha
       />
-    </span>
+    </Box>
   );
 };
 
