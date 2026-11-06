@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ctFillWorldOf, ctPreRolledOf, ctWidestChecks, ctWidestWorld } from '@chronoki/game-core/archipelago';
 import type { CtWorldInput } from '@chronoki/game-core';
 import { treeShapeDiff } from '@drizztdourden08/brock-randomizer/test-kit';
-import { CT_SHAPE_CASES, CT_SHAPE_PENDING_CASES } from './ct-apworld-shape.cases';
+import { CT_SHAPE_CASES, CT_SHAPE_PARTY_CASES, CT_SHAPE_PENDING_CASES } from './ct-apworld-shape.cases';
 import type { CtShapeCase } from './ct-apworld-shape.cases';
 
 const SEEDS_PER_CASE = 3;
@@ -15,13 +15,13 @@ const shapeDiffOf = (shape: CtShapeCase, seed: string): string[] =>
   treeShapeDiff(ctWidestWorld(), ctFillWorldOf(inputOf(shape, seed), seed).world);
 
 describe('the exported trees keep one shape per location, exit, event and the start', { tags: ['critical'] }, () => {
-  for (const shape of CT_SHAPE_CASES) {
+  for (const shape of [...CT_SHAPE_CASES, ...CT_SHAPE_PARTY_CASES]) {
     it(`${shape.name} matches the widest world on ${SEEDS_PER_CASE} seeds`, () => {
       for (const seed of seedsOf(shape)) expect(shapeDiffOf(shape, seed), `${shape.name} ${seed}`).toEqual([]);
     });
   }
 
-  describe.skip('pending until C2/C3 (I-155)', () => {
+  describe.skip('pending until C3 (I-155)', () => {
     for (const shape of CT_SHAPE_PENDING_CASES) {
       it(`${shape.name} matches the widest world on ${SEEDS_PER_CASE} seeds`, () => {
         for (const seed of seedsOf(shape)) expect(shapeDiffOf(shape, seed), `${shape.name} ${seed}`).toEqual([]);
