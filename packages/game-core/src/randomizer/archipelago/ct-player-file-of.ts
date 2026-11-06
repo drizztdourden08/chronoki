@@ -6,9 +6,8 @@ import { AP_GAME } from './ap-game.constants';
 import { ctOptionRows } from './ct-option-rows';
 import { ctPlayerValuesOf } from './ct-player-values-of';
 import { ctPreRolledOf } from './ct-pre-rolled-of';
+import { KIT_INPUT_KEYS } from './ct-player-file-of.constants';
 import type { CtPlayerFileInput } from './ct-player-file-input.type';
-
-const KIT_INPUT_KEYS: ReadonlySet<string> = new Set(['pre_rolled', 'seed_text']);
 
 const rowDefaultsOf = (rows: readonly ExportedOption[]): Record<string, unknown> =>
   Object.fromEntries(rows.filter((row) => !KIT_INPUT_KEYS.has(row.key)).map((row) => [row.key, row.default]));
