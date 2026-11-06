@@ -18,6 +18,7 @@ import { LEGACY_PARTY } from './recruits/legacy-party.constants';
 import { CT_REGIONS } from './regions/ct-regions.constants';
 import { shapeGoal } from './shape/shape-goal';
 import { shapeRegionsOf } from './shape/shape-regions';
+import { shapeSeedValues } from './shape/shape-seed-values';
 import { SHAPE_MENU_REGION } from './shape/shape.constants';
 import { poolFillerOf } from './pool-filler-of';
 import { ruleMapsOfRegions } from './rule-maps-of-regions';
@@ -43,10 +44,11 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const moded = shaped ? shapeRegionsOf() : modeKept;
   const start = shaped ? SHAPE_MENU_REGION : mode.start;
   const party = input.startParty ?? LEGACY_PARTY;
-  const partied = applyStartPartyToRegions(
-    applyEpochFailToRegions(moded), start, party,
-    { assignment: input.characters, duplicate: options.characterRando === true && options.duplicateCharacters === true },
-  );
+  const duplicate = options.characterRando === true && options.duplicateCharacters === true;
+  const epoched = applyEpochFailToRegions(moded);
+  const partied = shaped
+    ? epoched
+    : applyStartPartyToRegions(epoched, start, party, { assignment: input.characters, duplicate });
   const objectives = objectivesOf(input.options, input.fillerSeed ?? '', party);
   const specs = applyBucketToRegions(partied, objectives, bucketCountsOf(options, objectives.length).needed);
   const vanillaRoboRibbon = options.vanillaRoboRibbon === true;
@@ -70,6 +72,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     optionSchemas: CT_OPTION_SCHEMAS,
     start,
     sweepsEvents: true,
+    ...(shaped ? { seedValues: () => shapeSeedValues(input, duplicate) } : {}),
     regions,
     exitRules,
     locationRules: locationRulesOf(sealedRulesOf(spotRules, treasure, input.sealedCheckIds), treasure, sources),

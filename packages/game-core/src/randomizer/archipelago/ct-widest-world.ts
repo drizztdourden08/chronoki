@@ -18,7 +18,9 @@ const ctWidestWorld = (): World<CtWorldKeys> => {
   }));
   const game = worldGameFromDef({ ...def, regions });
   const request = { seed: WIDEST_SEED };
-  return game.build({ request, prep: undefined, rng: createRng(WIDEST_SEED), attempt: 0 }).world;
+  const { world } = game.build({ request, prep: undefined, rng: createRng(WIDEST_SEED), attempt: 0 });
+  world.seedValues.clear();
+  return world;
 };
 
 export { ctWidestWorld };
