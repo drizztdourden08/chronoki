@@ -406,6 +406,9 @@ const CT_AP_LOCATION_IDS: Readonly<Record<string, number>> = {
   'ki-sun-palace': 0x434B0193,
   'ki-taban': 0x434B0194,
   'ki-zenan-bridge': 0x434B0195,
+  'ki-geno-dome': 0x434B0196,
+  'ki-giants-claw': 0x434B0197,
+  'ki-sunken-desert': 0x434B0198,
 };
 
 export { CT_AP_LOCATION_IDS };
