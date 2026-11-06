@@ -8,9 +8,10 @@ import { ctPlayerValuesOf } from './ct-player-values-of';
 import { ctPreRolledOf } from './ct-pre-rolled-of';
 import type { CtPlayerFileInput } from './ct-player-file-input.type';
 
-// every row the world declares gets its default, as RotP's full options snapshot does (death_link included)
+const KIT_INPUT_KEYS: ReadonlySet<string> = new Set(['pre_rolled', 'seed_text']);
+
 const rowDefaultsOf = (rows: readonly ExportedOption[]): Record<string, unknown> =>
-  Object.fromEntries(rows.map((row) => [row.key, row.default]));
+  Object.fromEntries(rows.filter((row) => !KIT_INPUT_KEYS.has(row.key)).map((row) => [row.key, row.default]));
 
 const ctPlayerFileOf = (input: CtPlayerFileInput): PlayerFile => {
   const { seedText } = input;
