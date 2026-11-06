@@ -38,7 +38,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const moded = applyModeToRegions(CT_REGIONS, mode);
   const party = input.startParty ?? LEGACY_PARTY;
   const partied = applyStartPartyToRegions(
-    epochFail ? applyEpochFailToRegions(moded) : moded, mode.start, party,
+    applyEpochFailToRegions(moded), mode.start, party,
     { assignment: input.characters, duplicate: options.characterRando === true && options.duplicateCharacters === true },
   );
   const objectives = objectivesOf(input.options, input.fillerSeed ?? '', party);

@@ -18,6 +18,9 @@ const GOLDEN_CASES: readonly GoldenCase[] = [
 ];
 
 const SEEDS_PER_CASE = 3;
+const GENERATION_LIMIT_MS = 600_000;
+const CASE_TIMEOUT_MS = SEEDS_PER_CASE * GENERATION_LIMIT_MS + 60_000;
+const INSTALL_TIMEOUT_MS = 300_000;
 const SLOT = 'Oracle';
 
 const inputOf = ({ seed, options }: GoldenCase): CtWorldInput => ({ checks: ctWidestChecks(), options, fillerSeed: seed });
@@ -38,7 +41,7 @@ if (!rig.supportsInstalledVersion()) {
 describeAp('the world package against Archipelago', { tags: ['e2e'] }, () => {
   it('installs the built package', () => {
     console.log(`apworld oracle: ${rig.installWorldPackage()}`);
-  });
+  }, INSTALL_TIMEOUT_MS);
 
   for (const golden of GOLDEN_CASES) {
     it(`generates ${SEEDS_PER_CASE} ${golden.name} seeds whose spoiler reaches the goal`, async () => {
@@ -51,6 +54,6 @@ describeAp('the world package against Archipelago', { tags: ['e2e'] }, () => {
         expect(verdict.sphereMisses, `${golden.name} seed ${seed}`).toEqual([]);
         expect(verdict.beaten, `${golden.name} seed ${seed}`).toBe(true);
       }
-    });
+    }, CASE_TIMEOUT_MS);
   }
 });
