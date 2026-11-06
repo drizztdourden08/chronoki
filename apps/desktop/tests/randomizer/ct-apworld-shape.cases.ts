@@ -16,7 +16,6 @@ const CT_SHAPE_CASES: readonly CtShapeCase[] = [
   { name: 'vanilla-rando', seed: 'golden-vanilla-rando', options: { gameMode: 'vanilla-rando' } },
 ];
 
-// The four extra oracle cases (6 golden + these 4 = the plan's 10). Pending until C2/C3 (I-155).
 const CT_ORACLE_PENDING_CASES: readonly CtShapeCase[] = [
   caseOf('character-rando', { characterRando: true }),
   caseOf('character-rando-duplicates', { characterRando: true, duplicateCharacters: true }),
@@ -24,7 +23,6 @@ const CT_ORACLE_PENDING_CASES: readonly CtShapeCase[] = [
   caseOf('custom-party', { partyMode: 'custom', startingParty: 'crono,marle,lucca' }),
 ];
 
-// Need C2/C3 (Brock seedValues, not landed). Pending until C2/C3 (I-155).
 const CT_SHAPE_PENDING_CASES: readonly CtShapeCase[] = [
   ...CT_ORACLE_PENDING_CASES,
   caseOf('custom-party-1', { partyMode: 'custom', startingParty: 'crono' }),

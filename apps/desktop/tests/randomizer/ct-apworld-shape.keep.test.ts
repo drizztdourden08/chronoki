@@ -21,8 +21,7 @@ describe('the exported trees keep one shape per location, exit, event and the st
     });
   }
 
-  // until C2/C3 (I-155)
-  describe.skip('pending cases', () => {
+  describe.skip('pending until C2/C3 (I-155)', () => {
     for (const shape of CT_SHAPE_PENDING_CASES) {
       it(`${shape.name} matches the widest world on ${SEEDS_PER_CASE} seeds`, () => {
         for (const seed of seedsOf(shape)) expect(shapeDiffOf(shape, seed), `${shape.name} ${seed}`).toEqual([]);

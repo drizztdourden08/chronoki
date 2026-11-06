@@ -1,5 +1,5 @@
 /* @layer bridge-wasm @kind constants */
-const CT_EVENT_NAME_PREFIX = 'Event: ';
+const CT_EVENT_NAME_PREFIX = 'Event - ';
 
 const CT_EVENT_NAMES: Readonly<Record<string, string>> = {
   'ck-goal': 'Goal reached',

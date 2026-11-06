@@ -50,6 +50,7 @@ describeAp('the world package against Archipelago', { tags: ['e2e'] }, () => {
 
   for (const golden of CT_SHAPE_CASES) caseTest(golden, it);
 
-  // until C2/C3 (I-155)
-  for (const pending of CT_ORACLE_PENDING_CASES) caseTest(pending, it.skip);
+  describe('pending until C2/C3 (I-155)', () => {
+    for (const pending of CT_ORACLE_PENDING_CASES) caseTest(pending, it.skip);
+  });
 });
