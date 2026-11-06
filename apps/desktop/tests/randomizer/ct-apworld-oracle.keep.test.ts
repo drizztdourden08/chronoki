@@ -1,21 +1,12 @@
 /* @layer tests @kind test */
 import { describe, expect, it } from 'vitest';
 import { ctPlayerFileOf, ctWidestChecks } from '@chronoki/game-core/archipelago';
-import type { CtOptionValues, CtWorldInput } from '@chronoki/game-core';
+import type { CtWorldInput } from '@chronoki/game-core';
 import { parseApSpoiler, replayForward } from '@drizztdourden08/brock-randomizer/test-kit';
 import { ctApworldRig } from './ct-apworld-rig';
+import { CT_ORACLE_PENDING_CASES, CT_SHAPE_CASES } from './ct-apworld-shape.cases';
+import type { CtShapeCase } from './ct-apworld-shape.cases';
 import { ctReplayModelOf } from './ct-replay-model';
-
-interface GoldenCase { name: string; seed: string; options: CtOptionValues }
-
-const GOLDEN_CASES: readonly GoldenCase[] = [
-  { name: 'standard', seed: 'golden-standard', options: { gameMode: 'standard' } },
-  { name: 'standard-epoch-fail', seed: 'golden-epoch-fail', options: { gameMode: 'standard', epochFail: true } },
-  { name: 'lost-worlds', seed: 'golden-lost-worlds', options: { gameMode: 'lost-worlds' } },
-  { name: 'legacy-of-cyrus', seed: 'golden-legacy-of-cyrus', options: { gameMode: 'legacy-of-cyrus' } },
-  { name: 'ice-age', seed: 'golden-ice-age', options: { gameMode: 'ice-age' } },
-  { name: 'vanilla-rando', seed: 'golden-vanilla-rando', options: { gameMode: 'vanilla-rando' } },
-];
 
 const SEEDS_PER_CASE = 3;
 const GENERATION_LIMIT_MS = 600_000;
@@ -23,7 +14,7 @@ const CASE_TIMEOUT_MS = SEEDS_PER_CASE * GENERATION_LIMIT_MS + 60_000;
 const INSTALL_TIMEOUT_MS = 300_000;
 const SLOT = 'Oracle';
 
-const inputOf = ({ seed, options }: GoldenCase): CtWorldInput => ({ checks: ctWidestChecks(), options, fillerSeed: seed });
+const inputOf = ({ seed, options }: CtShapeCase): CtWorldInput => ({ checks: ctWidestChecks(), options, fillerSeed: seed });
 
 const rig = ctApworldRig;
 const describeAp = rig.supportsInstalledVersion() ? describe : describe.skip;
@@ -43,8 +34,8 @@ describeAp('the world package against Archipelago', { tags: ['e2e'] }, () => {
     console.log(`apworld oracle: ${rig.installWorldPackage()}`);
   }, INSTALL_TIMEOUT_MS);
 
-  for (const golden of GOLDEN_CASES) {
-    it(`generates ${SEEDS_PER_CASE} ${golden.name} seeds whose spoiler reaches the goal`, async () => {
+  const caseTest = (golden: CtShapeCase, register: typeof it | typeof it.skip) => {
+    register(`generates ${SEEDS_PER_CASE} ${golden.name} seeds whose spoiler reaches the goal`, async () => {
       const yaml = ctPlayerFileOf({ slotName: SLOT, world: inputOf(golden), seedText: golden.seed }).yaml;
       for (let seed = 1; seed <= SEEDS_PER_CASE; seed += 1) {
         const run = await rig.generate(yaml, seed);
@@ -55,5 +46,10 @@ describeAp('the world package against Archipelago', { tags: ['e2e'] }, () => {
         expect(verdict.beaten, `${golden.name} seed ${seed}`).toBe(true);
       }
     }, CASE_TIMEOUT_MS);
-  }
+  };
+
+  for (const golden of CT_SHAPE_CASES) caseTest(golden, it);
+
+  // until C2/C3 (I-155)
+  for (const pending of CT_ORACLE_PENDING_CASES) caseTest(pending, it.skip);
 });
