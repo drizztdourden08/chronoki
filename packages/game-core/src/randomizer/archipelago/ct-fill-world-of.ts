@@ -11,7 +11,7 @@ import { ctApLockedOptionsOf } from './ct-ap-locked-options-of';
 
 const ctFillWorldOf = (rawInput: CtWorldInput, seed: string): ModelFillWorld<CtWorldKeys> => {
   const { input } = rollCtNonItem({ ...rawInput, options: ctApLockedOptionsOf(withCtOptionDefaults(rawInput.options)) }, seed);
-  const game = createCtWorldGame(input);
+  const game = createCtWorldGame({ ...input, shape: 'one' });
   const rng = createRng(seed);
   const build = game.build({ request: { seed }, prep: undefined, rng, attempt: 0 });
   game.fillPhases.filter((phase) => phase.id === PIN_SPOTS_PHASE_ID).forEach((phase) => phase.run(build, rng));

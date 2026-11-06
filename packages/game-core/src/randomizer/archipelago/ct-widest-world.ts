@@ -9,7 +9,9 @@ import { CT_WIDEST_OPTIONS } from './ct-widest-options.constants';
 import { WIDEST_SEED } from './ct-widest-world.constants';
 
 const ctWidestWorld = (): World<CtWorldKeys> => {
-  const def = createCtWorldDef({ checks: ctWidestChecks(), options: CT_WIDEST_OPTIONS, fillerSeed: WIDEST_SEED });
+  const def = createCtWorldDef({
+    checks: ctWidestChecks(), options: CT_WIDEST_OPTIONS, fillerSeed: WIDEST_SEED, shape: 'one',
+  });
   const regions = def.regions.map((region) => ({
     ...region,
     locations: region.locations.filter((location) => location.key in CT_AP_LOCATION_IDS),
