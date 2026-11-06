@@ -15,6 +15,7 @@ type CtWorldInput = {
   startParty?: CtStartParty;
   characters?: CharacterAssignment;
   fillerSeed?: string;
+  shape?: 'one';
 };
 
 export type { CtOptionValues, CtWorldInput };

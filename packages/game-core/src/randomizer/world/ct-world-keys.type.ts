@@ -13,14 +13,14 @@ type CtItem = CtKeyItem | CtTreasureItem;
 type CtCharacter = 'crono' | 'marle' | 'lucca' | 'robo' | 'frog' | 'ayla' | 'magus';
 
 type CtEventId = CtCharacter | 'masamune' | 'kings-trial-done' | 'beat-lavos'
-  | 'beat-ozzie' | 'cyrus-done' | 'beat-giga-gaia' | `objective-${string}`;
+  | 'beat-ozzie' | 'cyrus-done' | 'beat-giga-gaia' | 'ck-goal' | `objective-${string}`;
 
 type CtEra = 'present' | 'middle-ages' | 'future' | 'prehistory' | 'dark-ages' | 'end-of-time' | 'none';
 
 type CtRegionId =
   | 'present' | 'middle-ages' | 'giants-claw' | 'magus-castle' | 'future' | 'death-peak' | 'black-omen'
   | 'prehistory' | 'tyrano-lair' | 'end-of-time' | 'dark-ages' | 'ocean-palace' | 'lavos' | 'unsorted'
-  | 'northern-ruins' | 'ozzies-fort';
+  | 'northern-ruins' | 'ozzies-fort' | 'menu';
 
 type CtSpotId =
   | 'ki-zenan-bridge' | 'ki-denadoro-mts' | 'ki-frogs-burrow' | 'ki-giants-claw' | 'ki-kings-trial'

@@ -16,6 +16,9 @@ import { modeOf } from './modes/mode-of';
 import { applyStartPartyToRegions } from './recruits/apply-start-party-to-regions';
 import { LEGACY_PARTY } from './recruits/legacy-party.constants';
 import { CT_REGIONS } from './regions/ct-regions.constants';
+import { shapeGoal } from './shape/shape-goal';
+import { shapeRegionsOf } from './shape/shape-regions';
+import { SHAPE_MENU_REGION } from './shape/shape.constants';
 import { poolFillerOf } from './pool-filler-of';
 import { ruleMapsOfRegions } from './rule-maps-of-regions';
 import { sealedRulesOf } from './sealed-rules-of';
@@ -35,22 +38,26 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
   const mode = modeOf(input.options);
   const options = ctOptionValues({ ...input.options, ...mode.forcedOptions });
   const epochFail = options.epochFail === true;
-  const moded = applyModeToRegions(CT_REGIONS, mode);
+  const modeKept = applyModeToRegions(CT_REGIONS, mode);
+  const shaped = input.shape === 'one';
+  const moded = shaped ? shapeRegionsOf() : modeKept;
+  const start = shaped ? SHAPE_MENU_REGION : mode.start;
   const party = input.startParty ?? LEGACY_PARTY;
   const partied = applyStartPartyToRegions(
-    applyEpochFailToRegions(moded), mode.start, party,
+    applyEpochFailToRegions(moded), start, party,
     { assignment: input.characters, duplicate: options.characterRando === true && options.duplicateCharacters === true },
   );
   const objectives = objectivesOf(input.options, input.fillerSeed ?? '', party);
   const specs = applyBucketToRegions(partied, objectives, bucketCountsOf(options, objectives.length).needed);
   const vanillaRoboRibbon = options.vanillaRoboRibbon === true;
   const joinInput = vanillaRoboRibbon ? { ...input, checks: pinRoboRibbon(input.checks) } : input;
-  const joined = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true);
+  const joined = joinCtChecks(joinInput, specs, mode.excludeDroppedTreasure === true, shaped ? modeKept : specs);
   const { treasure } = joined;
   const { exitRules, spotRules, eventRules } = ruleMapsOfRegions(specs);
-  const spotIds = specs.flatMap((spec) => spec.spots.map((spot) => spot.id));
+  const scope = shaped ? modeKept : specs;
+  const spotIds = scope.flatMap((spec) => spec.spots.map((spot) => spot.id));
   const modeKeyItems = keyItemsOf(mode, epochFail, vanillaRoboRibbon);
-  const sources = pinnedSourcesOf(modeKeyItems, new Set(specs.map((spec) => spec.id)));
+  const sources = pinnedSourcesOf(modeKeyItems, new Set(scope.map((spec) => spec.id)));
   const regions = withPinnedSources(joined.regions, sources);
   const pins = sources.map((source): PinnedItem => [source.key, source.item]);
   const keyItems = unpinnedKeyItems(modeKeyItems, pins);
@@ -61,7 +68,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     worldSchema: CT_WORLD_SCHEMA,
     placementSchemas: CT_PLACEMENT_SCHEMAS,
     optionSchemas: CT_OPTION_SCHEMAS,
-    start: mode.start,
+    start,
     sweepsEvents: true,
     regions,
     exitRules,
@@ -74,7 +81,7 @@ const createCtWorldDef = (input: CtWorldInput): GameWorldDef<CtWorldKeys> => {
     ]),
     helpers: CT_HELPERS,
     options: () => options,
-    goal: goalOf(mode.goal, mode.goalEvent),
+    goal: shaped ? shapeGoal : goalOf(mode.goal, mode.goalEvent),
     fillPhases: [pinSpotsPhase(pins)],
     buildPool: () => ({
       progression: [...keyItems],
