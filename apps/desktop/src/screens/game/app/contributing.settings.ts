@@ -14,6 +14,13 @@ const sections: Section[] = [
         description: 'Turns on developer tools.',
         keywords: 'developer mode devtools instrumentation',
       },
+      {
+        key: 'experimentalFeaturesEnabled',
+        label: 'Experimental Features',
+        description: 'Enables unfinished features: Archipelago online play.',
+        hint: 'Needs Developer Mode.',
+        keywords: 'experimental unfinished archipelago online',
+      },
     ],
   },
   {
