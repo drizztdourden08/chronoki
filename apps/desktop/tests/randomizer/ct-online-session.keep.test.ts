@@ -22,8 +22,9 @@ describe('a ChronoKi online session against the fake server', { tags: ['critical
 
   it('reads the slot data into a placement of the room checks', async () => {
     const { session } = await boot(ctRoom(), adapter);
-    expect(session.placement).toMatchObject({ seed: expect.any(String) });
-    const locations = (session.placement as { locations: [string, string][] }).locations.map(([location]) => location);
+    const placement = session.placement as { seed: string; locations: [string, string][] } | null;
+    expect(placement).toMatchObject({ seed: expect.any(String) });
+    const locations = (placement?.locations ?? []).map(([location]) => location);
     expect(locations).toContain(LOCATION_KEY);
   });
 

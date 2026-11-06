@@ -3,6 +3,7 @@ import type { ScoutedInput } from '@drizztdourden08/brock-randomizer/archipelago
 import type { CtPlacement } from '../world/ct-placement.type';
 import { duplicateFlagOf } from '../world/duplicate-flag-of';
 import { rollMysteryOptions } from '../world/mystery/roll-mystery-options';
+import { withCtOptionDefaults } from '../world/with-ct-option-defaults';
 import { rollCtNonItem } from '../world/roll-ct-non-item';
 import { ctApIds } from './ct-ap-ids';
 import type { CtSlotData } from './ct-slot-data.type';
@@ -12,7 +13,7 @@ const itemKeyOf = (scout: ScoutedInput['scouted'][number], slot: number): string
   scout.player === slot ? ctApIds.itemKeyOf(scout.item) : FOREIGN_ITEM_KEY;
 
 const ctPlacementOfScouts = (slotData: CtSlotData, input: ScoutedInput): CtPlacement => {
-  const { options, startParty, bosses, characters, elements, objectives } = rollCtNonItem({ checks: [], options: slotData.options }, slotData.seed);
+  const { options, startParty, bosses, characters, elements, objectives } = rollCtNonItem({ checks: [], options: withCtOptionDefaults(slotData.options) }, slotData.seed);
   const locations = input.scouted.flatMap((scout): [string, string][] => {
     const location = scout.locationKey || ctApIds.locationKeyOf(scout.location);
     const item = itemKeyOf(scout, input.slot);

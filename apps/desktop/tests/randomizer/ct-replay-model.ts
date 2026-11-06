@@ -24,7 +24,7 @@ const ctReplayModelOf = (input: CtWorldInput, seed: string): ReplayModel<CtState
     eventKey: (name) => (name.startsWith(EVENT_PREFIX) ? name.slice(EVENT_PREFIX.length) : undefined),
     place: (pairs) => {
       world.placedItems.clear();
-      pairs.forEach(([location, item]) => world.placedItems.set(location as never, item as never));
+      pairs.forEach(([location, item]) => world.placedItems.set(location, item as never));
     },
     startState: () => createCollectionState(world),
     reachedLocation: (state, key) => canCollectLocation(state, key as never),

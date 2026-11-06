@@ -25,9 +25,15 @@ const inputOf = ({ seed, options }: GoldenCase): CtWorldInput => ({ checks: ctWi
 const rig = ctApworldRig;
 const describeAp = rig.supportsInstalledVersion() ? describe : describe.skip;
 
-if (!rig.hasArchipelago()) console.log('apworld oracle: ArchipelagoGenerate.exe not found, the generator half is skipped');
-else if (!rig.supportsInstalledVersion()) {
-  console.log(`apworld oracle: Archipelago ${rig.installedVersion()} is not in SUPPORTED_AP_VERSIONS, the generator half is skipped`);
+const skipReason = !rig.hasArchipelago()
+  ? 'ArchipelagoGenerate.exe not found'
+  : `Archipelago ${rig.installedVersion()} is not in SUPPORTED_AP_VERSIONS`;
+if (!rig.supportsInstalledVersion()) {
+  process.stderr.write(`apworld oracle: ${skipReason}, the generator half is skipped
+`);
+  describe('the world package against Archipelago', { tags: ['e2e'] }, () => {
+    it.skip(`skipped: ${skipReason}`, () => undefined);
+  });
 }
 
 describeAp('the world package against Archipelago', { tags: ['e2e'] }, () => {

@@ -5,7 +5,12 @@ import { CT_AP_ITEM_NAMES } from '../src/randomizer/archipelago/ct-ap-item-names
 import { CT_AP_LOCATION_NAMES } from '../src/randomizer/archipelago/ct-ap-location-names.constants';
 
 const EXPORT_FILES = ['game.json', 'locations.json', 'regions.json', 'items.json', 'rules.json', 'options.json'];
-const NOT_PLAIN_TEXT = /[\u0000-\u001f\u007f-\u009f�]/;
+const REPLACEMENT_CHAR = 0xfffd;
+const isPlainChar = (char: string): boolean => {
+  const code = char.charCodeAt(0);
+  return code > 0x1f && (code < 0x7f || code > 0x9f) && code !== REPLACEMENT_CHAR;
+};
+const NOT_PLAIN_TEXT = { test: (text: string): boolean => [...text].some((char) => !isPlainChar(char)) };
 
 interface NamedRow { key: string; name: string }
 

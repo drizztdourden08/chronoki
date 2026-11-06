@@ -4,6 +4,7 @@ import { ITEM_ID_MAX, ITEM_STACK_MAX } from '../src/cheats';
 import { GOLD, GOLD_MAX, INVENTORY_COUNTS, INVENTORY_IDS } from '../src/game-info/wram-map.constants';
 import { giveCtItem } from '../src/randomizer/online';
 import type { CtGiveAction, CtGiveItem, CtGiveTarget } from '../src/randomizer/online';
+import type { TabStatSlot } from '../src/randomizer/session/tab-stat-slot.type';
 import { JETS_ITEM_ID } from '../src/randomizer/session/jets-wings.constants';
 
 const PTR = 0x100;
@@ -56,7 +57,7 @@ describe('giving a ChronoKi item to the running game', { tags: ['critical'] }, (
 
   it('gives a tab as the one inventory item its stat slot names', () => {
     const target = targetOf();
-    const stat = { kind: 'power', id: 0x41, base: 0, work: 0, baseCap: 0 } as unknown as Extract<CtGiveItem, { type: 'tab' }>['stat'];
+    const stat: TabStatSlot = { kind: 'power', id: 0x41, base: 0, work: 0, baseCap: 0 };
     expect(giveCtItem(target, actionOf({ type: 'tab', stat }))).toBe('settled');
     expect([idAt(target, 0), countAt(target, 0)]).toEqual([0x41, 1]);
   });

@@ -3,11 +3,13 @@ import { describe, expect, it } from 'vitest';
 import { ctOptionRows, ctPlayerFileOf } from '../src/randomizer/archipelago';
 import { ctPlayerValuesOf } from '../src/randomizer/archipelago/ct-player-values-of';
 import type { CtOptionValues } from '../src/randomizer/world/ct-world-input.type';
+import { CT_OPTION_CATALOG } from '../src/randomizer/world/ct-options.constants';
+import { withCtOptionDefaults } from '../src/randomizer/world/with-ct-option-defaults';
 
 const SLOT = 'Crono';
 const UNKNOWN_KEY = 'notAnOption';
 
-const optionsOf = (over: Record<string, unknown>): CtOptionValues => over as CtOptionValues;
+const optionsOf = (over: Record<string, unknown>): CtOptionValues => withCtOptionDefaults(over);
 const renderYaml = (over: Record<string, unknown>, deathLink?: boolean): string =>
   ctPlayerFileOf({
     slotName: SLOT, world: { checks: [], options: optionsOf(over) }, ...(deathLink === undefined ? {} : { deathLink }),
@@ -42,9 +44,9 @@ describe('the player file', { tags: ['critical'] }, () => {
   });
 
   it('fills the default of an option the profile left out, partySize among them', () => {
-    const row = ctOptionRows().find((candidate) => candidate.key === 'partySize');
-    expect(row).toBeDefined();
-    expect(writtenAs('partySize', String(row?.default))).toContain(lineOf(renderYaml({}), 'partySize'));
+    const option = CT_OPTION_CATALOG.find((candidate) => candidate.key === 'partySize');
+    expect(option).toBeDefined();
+    expect(writtenAs('partySize', String(option?.default))).toContain(lineOf(renderYaml({}), 'partySize'));
   });
 
   it('writes a value the profile did set over the default', () => {
